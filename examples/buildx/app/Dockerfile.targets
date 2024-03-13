@@ -1,8 +1,0 @@
-FROM alpine as build-me
-RUN echo 👍
-
-FROM build-me as also-build-me
-RUN echo 🤙
-
-FROM build-me as dont-build-me
-RUN [ "true" = "false" ]

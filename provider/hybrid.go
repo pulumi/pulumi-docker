@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
@@ -37,7 +38,7 @@ type dockerHybridProvider struct {
 // Track a list of native resource tokens
 const (
 	dockerImageTok = "docker:index/image:Image"
-	buildxTok      = "docker:buildx/image:Image"
+	buildxTok      = "docker:buildx/image"
 )
 
 // gRPC methods for the hybrid provider
@@ -176,12 +177,11 @@ func (dp dockerHybridProvider) GetPluginInfo(context.Context, *empty.Empty) (*rp
 
 func (dp dockerHybridProvider) providerFor(urn resource.URN) rpc.ResourceProviderServer {
 	tok := urn.Type().String()
-	switch tok {
-	case dockerImageTok:
+	if tok == dockerImageTok {
 		return dp.nativeProvider
-	case buildxTok:
-		return dp.buildxProvider
-	default:
-		return dp.bridgedProvider
 	}
+	if strings.HasPrefix(tok, buildxTok) {
+		return dp.buildxProvider
+	}
+	return dp.bridgedProvider
 }

@@ -12,39 +12,40 @@ import (
 )
 
 var (
-	_ = (fmt.Stringer)(ExportWithOCI{})
-	_ = (fmt.Stringer)(ExportWithCompression{})
-	_ = (fmt.Stringer)(ExportWithAnnotations{})
-	_ = (fmt.Stringer)(ExportWithNames{})
-	_ = (fmt.Stringer)((*ExportTar)(nil))
-	_ = (fmt.Stringer)((*ExportLocal)(nil))
-	_ = (fmt.Stringer)((*ExportEntry)(nil))
-	_ = (fmt.Stringer)((*ExportRegistry)(nil))
-	_ = (fmt.Stringer)((*ExportImage)(nil))
-	_ = (fmt.Stringer)((*ExportOCI)(nil))
+	_ = (fmt.Stringer)((*Export)(nil))
 	_ = (fmt.Stringer)((*ExportDocker)(nil))
-	_ = (infer.Annotated)((*ExportEntry)(nil))
-	_ = (infer.Annotated)((*ExportTar)(nil))
-	_ = (infer.Annotated)((*ExportLocal)(nil))
-	_ = (infer.Annotated)((*ExportRegistry)(nil))
-	_ = (infer.Annotated)((*ExportImage)(nil))
-	_ = (infer.Annotated)((*ExportOCI)(nil))
+	_ = (fmt.Stringer)((*ExportImage)(nil))
+	_ = (fmt.Stringer)((*ExportLocal)(nil))
+	_ = (fmt.Stringer)((*ExportOCI)(nil))
+	_ = (fmt.Stringer)((*ExportRegistry)(nil))
+	_ = (fmt.Stringer)((*ExportTar)(nil))
+	_ = (fmt.Stringer)(ExportWithAnnotations{})
+	_ = (fmt.Stringer)(ExportWithCompression{})
+	_ = (fmt.Stringer)(ExportWithNames{})
+	_ = (fmt.Stringer)(ExportWithOCI{})
+	_ = (infer.Annotated)((*Export)(nil))
 	_ = (infer.Annotated)((*ExportDocker)(nil))
+	_ = (infer.Annotated)((*ExportImage)(nil))
+	_ = (infer.Annotated)((*ExportLocal)(nil))
+	_ = (infer.Annotated)((*ExportOCI)(nil))
+	_ = (infer.Annotated)((*ExportRegistry)(nil))
+	_ = (infer.Annotated)((*ExportTar)(nil))
 )
 
-type ExportEntry struct {
-	Tar      *ExportTar      `pulumi:"tar,optional"`
-	Local    *ExportLocal    `pulumi:"local,optional"`
-	Registry *ExportRegistry `pulumi:"registry,optional"`
-	Image    *ExportImage    `pulumi:"image,optional"`
-	OCI      *ExportOCI      `pulumi:"oci,optional"`
-	Docker   *ExportDocker   `pulumi:"docker,optional"`
-	Raw      Raw             `pulumi:"raw,optional"`
+type Export struct {
+	Tar       *ExportTar       `pulumi:"tar,optional"`
+	Local     *ExportLocal     `pulumi:"local,optional"`
+	Registry  *ExportRegistry  `pulumi:"registry,optional"`
+	Image     *ExportImage     `pulumi:"image,optional"`
+	OCI       *ExportOCI       `pulumi:"oci,optional"`
+	Docker    *ExportDocker    `pulumi:"docker,optional"`
+	CacheOnly *ExportCacheOnly `pulumi:"cacheonly,optional"`
+	Raw       Raw              `pulumi:"raw,optional"`
 
 	Disabled bool `pulumi:"disabled,optional"`
 }
 
-func (e *ExportEntry) Annotate(a infer.Annotator) {
+func (e *Export) Annotate(a infer.Annotator) {
 	a.Describe(&e.Tar, dedent(`
 		Export to a local directory as a tarball.`,
 	))
@@ -67,20 +68,24 @@ func (e *ExportEntry) Annotate(a infer.Annotator) {
 		A raw string as you would provide it to the Docker CLI (e.g.,
 		"type=docker")`,
 	))
+	a.Describe(&e.CacheOnly, dedent(`
+		A no-op export. Helpful for silencing the 'no exports' warning if you
+		just want to populate caches.
+	`))
 
 	a.Describe(&e.Disabled, dedent(`
 		When "true" this entry will be excluded. Defaults to "false".
 	`))
 }
 
-func (e ExportEntry) String() string {
+func (e Export) String() string {
 	if e.Disabled {
 		return ""
 	}
-	return join(e.Tar, e.Local, e.Registry, e.Image, e.OCI, e.Docker, e.Raw)
+	return join(e.Tar, e.Local, e.Registry, e.Image, e.OCI, e.Docker, e.CacheOnly, e.Raw)
 }
 
-func (e ExportEntry) pushed() bool {
+func (e Export) pushed() bool {
 	if e.Raw != "" {
 		exp, err := buildflags.ParseExports([]string{e.Raw.String()})
 		if err != nil {
@@ -95,6 +100,15 @@ func (e ExportEntry) pushed() bool {
 		return e.Image.Push != nil && *e.Image.Push
 	}
 	return false
+}
+
+type ExportCacheOnly struct{}
+
+func (e *ExportCacheOnly) String() string {
+	if e == nil {
+		return ""
+	}
+	return "type=cacheonly"
 }
 
 type ExportDocker struct {

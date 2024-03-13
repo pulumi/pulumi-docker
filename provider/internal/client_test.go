@@ -5,16 +5,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/docker/buildx/controller/pb"
+	"github.com/docker/docker/api/types/registry"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
-
-	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 )
 
 func TestAuth(t *testing.T) {
-	d, err := newDockerClient()
+	h, err := newHost(nil)
 	require.NoError(t, err)
 
 	user := "pulumibot"
@@ -22,66 +20,283 @@ func TestAuth(t *testing.T) {
 		user = u
 	}
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
-	host := "pulumi.com" // Fake host -- we don't actually hit it.
-	name := "test-resource"
+	address := "docker.io"
 
-	t.Cleanup(func() {
-		_ = d.cli.ConfigFile().GetCredentialsStore(host).Erase(host)
-	})
-
-	err = d.Auth(context.Background(), name, RegistryAuth{
-		Address:  host,
+	cli, err := wrap(h, RegistryAuth{
+		Address:  address,
 		Username: user,
 		Password: password,
 	})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
-	// Perform a second auth; it should be cached.
-	err = d.Auth(context.Background(), name, RegistryAuth{
-		Address:  host,
-		Username: user,
-		Password: password,
-	})
+	_, err = cli.Client().RegistryLogin(context.Background(), registry.AuthConfig{ServerAddress: address})
 	assert.NoError(t, err)
 }
 
-func TestBuild(t *testing.T) {
-	d, err := newDockerClient()
-	require.NoError(t, err)
+func TestCustomHost(t *testing.T) {
+	socket := "unix:///foo/bar.sock"
 
+	t.Run("env", func(t *testing.T) {
+		t.Setenv("DOCKER_HOST", socket)
+
+		h, err := newHost(nil)
+		require.NoError(t, err)
+		cli, err := wrap(h)
+		require.NoError(t, err)
+
+		assert.Equal(t, socket, cli.Client().DaemonHost())
+		assert.Equal(t, socket, cli.DockerEndpoint().Host)
+	})
+
+	t.Run("config", func(t *testing.T) {
+		h, err := newHost(&Config{Host: socket})
+		require.NoError(t, err)
+		cli, err := wrap(h)
+		require.NoError(t, err)
+
+		assert.Equal(t, socket, cli.Client().DaemonHost())
+		assert.Equal(t, socket, cli.DockerEndpoint().Host)
+	})
+}
+
+func TestBuild(t *testing.T) {
 	// Workaround for https://github.com/pulumi/pulumi-go-provider/issues/159
 	ctrl, ctx := gomock.WithContext(context.Background(), t)
 	pctx := NewMockProviderContext(ctrl)
-	pctx.EXPECT().LogStatus(diag.Info, gomock.Any()).AnyTimes()
+	pctx.EXPECT().Log(gomock.Any(), gomock.Any()).AnyTimes()
+	pctx.EXPECT().LogStatus(gomock.Any(), gomock.Any()).AnyTimes()
 	pctx.EXPECT().Done().Return(ctx.Done()).AnyTimes()
 	pctx.EXPECT().Value(gomock.Any()).DoAndReturn(func(key any) any { return ctx.Value(key) }).AnyTimes()
 	pctx.EXPECT().Err().Return(ctx.Err()).AnyTimes()
 	pctx.EXPECT().Deadline().Return(ctx.Deadline()).AnyTimes()
 
-	_, err = d.Build(pctx, "resource-name", build{opts: pb.BuildOptions{
-		ContextPath:    "../testdata/",
-		DockerfileName: "../testdata/Dockerfile",
-	}})
-	assert.NoError(t, err)
+	context := func(path string) BuildContext {
+		return BuildContext{Context: Context{Location: path}}
+	}
+	exampleContext := context("../../examples/buildx/app")
+
+	tests := []struct {
+		name string
+		skip bool
+		args ImageArgs
+
+		auths []RegistryAuth
+	}{
+		{
+			name: "multiPlatform",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.multiPlatform",
+				},
+				Platforms: []Platform{"plan9/amd64", "plan9/arm64"},
+			},
+		},
+		{
+			name: "registryPush",
+			skip: os.Getenv("DOCKER_HUB_PASSWORD") == "",
+			args: ImageArgs{
+				Context: exampleContext,
+				Tags:    []string{"docker.io/pulumibot/buildkit-e2e:unit"},
+				Push:    true,
+			},
+			auths: []RegistryAuth{{
+				Address:  "docker.io",
+				Username: "pulumibot",
+				Password: os.Getenv("DOCKER_HUB_PASSWORD"),
+			}},
+		},
+		{
+			name: "cached",
+			args: ImageArgs{
+				Context:   exampleContext,
+				Tags:      []string{"cached"},
+				CacheTo:   []CacheTo{{Local: &CacheToLocal{Dest: "tmp/cache", CacheWithMode: CacheWithMode{Mode: "max"}}}},
+				CacheFrom: []CacheFrom{{Local: &CacheFromLocal{Src: "tmp/cache"}}},
+			},
+		},
+		{
+			name: "buildArgs",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.buildArgs",
+				},
+				BuildArgs: map[string]string{
+					"SET_ME_TO_TRUE": "true",
+				},
+			},
+		},
+		{
+			name: "extraHosts",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.extraHosts",
+				},
+				AddHosts: []string{
+					"metadata.google.internal:169.254.169.254",
+				},
+			},
+		},
+		{
+			name: "sshMount",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.sshMount",
+				},
+				SSH: []SSH{{ID: "default"}},
+			},
+		},
+		{
+			name: "secrets",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.secrets",
+				},
+				Secrets: map[string]string{
+					"password": "hunter2",
+				},
+				NoCache: true,
+			},
+		},
+		{
+			name: "labels",
+			args: ImageArgs{
+				Context: exampleContext,
+				Labels: map[string]string{
+					"description": "foo",
+				},
+			},
+		},
+		{
+			name: "target",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.target",
+				},
+				Target: "build-me",
+			},
+		},
+		{
+			name: "namedContext",
+			args: ImageArgs{
+				Context: BuildContext{
+					Context: Context{
+						Location: "../../examples/buildx/app",
+					},
+					Named: NamedContexts{
+						"golang:latest": Context{
+							Location: "docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984",
+						},
+					},
+				},
+				Dockerfile: Dockerfile{
+					Location: "../../examples/buildx/app/Dockerfile.namedContexts",
+				},
+			},
+		},
+		{
+			name: "remoteContext",
+			args: ImageArgs{
+				Context: BuildContext{
+					Context: Context{
+						Location: "https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile",
+					},
+				},
+			},
+		},
+		{
+			name: "remoteContextWithInline",
+			args: ImageArgs{
+				Context: BuildContext{
+					Context: Context{
+						Location: "https://github.com/docker-library/hello-world.git",
+					},
+				},
+				Dockerfile: Dockerfile{
+					Inline: dedent(`
+					FROM busybox
+					COPY hello.c ./
+					`),
+				},
+			},
+		},
+		{
+			name: "inline",
+			args: ImageArgs{
+				Context: exampleContext,
+				Dockerfile: Dockerfile{
+					Inline: dedent(`
+					FROM alpine
+					RUN echo 👍
+					`),
+				},
+			},
+		},
+		{
+			name: "dockerLoad",
+			args: ImageArgs{
+				Context: exampleContext,
+				Load:    true,
+			},
+		},
+	}
+
+	// Add an exec: true version for all of our test cases.
+	for _, tt := range tests {
+		tt := tt
+		tt.name = "exec-" + tt.name
+		tt.args.Exec = true
+		tests = append(tests, tt)
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if tt.skip {
+				t.Skip()
+			}
+			h, err := newHost(nil)
+			require.NoError(t, err)
+			cli, err := wrap(h, tt.auths...)
+			require.NoError(t, err)
+
+			build, err := tt.args.toBuild(pctx, false)
+			require.NoError(t, err)
+
+			_, err = cli.Build(pctx, build)
+			assert.NoError(t, err, cli.err.String())
+		})
+	}
 }
 
 func TestBuildkitEnabled(t *testing.T) {
-	d, err := newDockerClient()
+	h, err := newHost(nil)
 	require.NoError(t, err)
-	ok, err := d.BuildKitEnabled()
+	cli, err := wrap(h)
+	require.NoError(t, err)
+
+	ok, err := cli.BuildKitEnabled()
 	assert.NoError(t, err)
 	assert.True(t, ok)
 }
 
 func TestInspect(t *testing.T) {
-	d, err := newDockerClient()
+	h, err := newHost(nil)
+	require.NoError(t, err)
+	cli, err := wrap(h)
 	require.NoError(t, err)
 
-	v2, err := d.Inspect(context.Background(), "test", "pulumibot/myapp:buildx")
+	v2, err := cli.Inspect(context.Background(), "pulumibot/myapp:buildx")
 	assert.NoError(t, err)
 	assert.Equal(t, 2, v2[0].OCIManifest.SchemaVersion)
 
-	v1, err := d.Inspect(context.Background(), "test", "pulumi/pulumi")
+	v1, err := cli.Inspect(context.Background(), "pulumi/pulumi")
 	assert.NoError(t, err)
 	assert.Nil(t, v1[0].OCIManifest)
 }
