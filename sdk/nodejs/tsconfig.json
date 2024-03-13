@@ -15,6 +15,7 @@
     "files": [
         "buildx/image.ts",
         "buildx/index.ts",
+        "buildx/index_.ts",
         "config/index.ts",
         "config/vars.ts",
         "container.ts",

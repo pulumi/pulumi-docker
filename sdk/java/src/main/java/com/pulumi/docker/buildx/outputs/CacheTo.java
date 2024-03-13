@@ -17,7 +17,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 @CustomType
-public final class CacheToEntry {
+public final class CacheTo {
     /**
      * @return Push cache to Azure&#39;s blob storage service.
      * 
@@ -66,7 +66,7 @@ public final class CacheToEntry {
      */
     private @Nullable CacheToS3 s3;
 
-    private CacheToEntry() {}
+    private CacheTo() {}
     /**
      * @return Push cache to Azure&#39;s blob storage service.
      * 
@@ -135,7 +135,7 @@ public final class CacheToEntry {
         return new Builder();
     }
 
-    public static Builder builder(CacheToEntry defaults) {
+    public static Builder builder(CacheTo defaults) {
         return new Builder(defaults);
     }
     @CustomType.Builder
@@ -149,7 +149,7 @@ public final class CacheToEntry {
         private @Nullable CacheToRegistry registry;
         private @Nullable CacheToS3 s3;
         public Builder() {}
-        public Builder(CacheToEntry defaults) {
+        public Builder(CacheTo defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.azblob = defaults.azblob;
     	      this.disabled = defaults.disabled;
@@ -209,8 +209,8 @@ public final class CacheToEntry {
             this.s3 = s3;
             return this;
         }
-        public CacheToEntry build() {
-            final var _resultValue = new CacheToEntry();
+        public CacheTo build() {
+            final var _resultValue = new CacheTo();
             _resultValue.azblob = azblob;
             _resultValue.disabled = disabled;
             _resultValue.gha = gha;

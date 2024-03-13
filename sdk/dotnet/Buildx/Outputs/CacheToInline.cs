@@ -10,6 +10,9 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Buildx.Outputs
 {
 
+    /// <summary>
+    /// Include an inline cache with the exported image.
+    /// </summary>
     [OutputType]
     public sealed class CacheToInline
     {

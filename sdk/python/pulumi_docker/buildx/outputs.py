@@ -14,14 +14,14 @@ from ._enums import *
 __all__ = [
     'BuildContext',
     'BuilderConfig',
+    'CacheFrom',
     'CacheFromAzureBlob',
-    'CacheFromEntry',
     'CacheFromGitHubActions',
     'CacheFromLocal',
     'CacheFromRegistry',
     'CacheFromS3',
+    'CacheTo',
     'CacheToAzureBlob',
-    'CacheToEntry',
     'CacheToGitHubActions',
     'CacheToInline',
     'CacheToLocal',
@@ -29,8 +29,9 @@ __all__ = [
     'CacheToS3',
     'Context',
     'Dockerfile',
+    'Export',
+    'ExportCacheOnly',
     'ExportDocker',
-    'ExportEntry',
     'ExportImage',
     'ExportLocal',
     'ExportOCI',
@@ -124,68 +125,7 @@ class BuilderConfig(dict):
 
 
 @pulumi.output_type
-class CacheFromAzureBlob(dict):
-    @staticmethod
-    def __key_warning(key: str):
-        suggest = None
-        if key == "accountUrl":
-            suggest = "account_url"
-        elif key == "secretAccessKey":
-            suggest = "secret_access_key"
-
-        if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in CacheFromAzureBlob. Access the value via the '{suggest}' property getter instead.")
-
-    def __getitem__(self, key: str) -> Any:
-        CacheFromAzureBlob.__key_warning(key)
-        return super().__getitem__(key)
-
-    def get(self, key: str, default = None) -> Any:
-        CacheFromAzureBlob.__key_warning(key)
-        return super().get(key, default)
-
-    def __init__(__self__, *,
-                 name: str,
-                 account_url: Optional[str] = None,
-                 secret_access_key: Optional[str] = None):
-        """
-        :param str name: The name of the cache image.
-        :param str account_url: Base URL of the storage account.
-        :param str secret_access_key: Blob storage account key.
-        """
-        pulumi.set(__self__, "name", name)
-        if account_url is not None:
-            pulumi.set(__self__, "account_url", account_url)
-        if secret_access_key is not None:
-            pulumi.set(__self__, "secret_access_key", secret_access_key)
-
-    @property
-    @pulumi.getter
-    def name(self) -> str:
-        """
-        The name of the cache image.
-        """
-        return pulumi.get(self, "name")
-
-    @property
-    @pulumi.getter(name="accountUrl")
-    def account_url(self) -> Optional[str]:
-        """
-        Base URL of the storage account.
-        """
-        return pulumi.get(self, "account_url")
-
-    @property
-    @pulumi.getter(name="secretAccessKey")
-    def secret_access_key(self) -> Optional[str]:
-        """
-        Blob storage account key.
-        """
-        return pulumi.get(self, "secret_access_key")
-
-
-@pulumi.output_type
-class CacheFromEntry(dict):
+class CacheFrom(dict):
     def __init__(__self__, *,
                  azblob: Optional['outputs.CacheFromAzureBlob'] = None,
                  disabled: Optional[bool] = None,
@@ -283,6 +223,67 @@ class CacheFromEntry(dict):
         MinIO.
         """
         return pulumi.get(self, "s3")
+
+
+@pulumi.output_type
+class CacheFromAzureBlob(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "accountUrl":
+            suggest = "account_url"
+        elif key == "secretAccessKey":
+            suggest = "secret_access_key"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheFromAzureBlob. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheFromAzureBlob.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheFromAzureBlob.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 name: str,
+                 account_url: Optional[str] = None,
+                 secret_access_key: Optional[str] = None):
+        """
+        :param str name: The name of the cache image.
+        :param str account_url: Base URL of the storage account.
+        :param str secret_access_key: Blob storage account key.
+        """
+        pulumi.set(__self__, "name", name)
+        if account_url is not None:
+            pulumi.set(__self__, "account_url", account_url)
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of the cache image.
+        """
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="accountUrl")
+    def account_url(self) -> Optional[str]:
+        """
+        Base URL of the storage account.
+        """
+        return pulumi.get(self, "account_url")
+
+    @property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> Optional[str]:
+        """
+        Blob storage account key.
+        """
+        return pulumi.get(self, "secret_access_key")
 
 
 @pulumi.output_type
@@ -569,98 +570,7 @@ class CacheFromS3(dict):
 
 
 @pulumi.output_type
-class CacheToAzureBlob(dict):
-    @staticmethod
-    def __key_warning(key: str):
-        suggest = None
-        if key == "accountUrl":
-            suggest = "account_url"
-        elif key == "ignoreError":
-            suggest = "ignore_error"
-        elif key == "secretAccessKey":
-            suggest = "secret_access_key"
-
-        if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in CacheToAzureBlob. Access the value via the '{suggest}' property getter instead.")
-
-    def __getitem__(self, key: str) -> Any:
-        CacheToAzureBlob.__key_warning(key)
-        return super().__getitem__(key)
-
-    def get(self, key: str, default = None) -> Any:
-        CacheToAzureBlob.__key_warning(key)
-        return super().get(key, default)
-
-    def __init__(__self__, *,
-                 name: str,
-                 account_url: Optional[str] = None,
-                 ignore_error: Optional[bool] = None,
-                 mode: Optional['CacheMode'] = None,
-                 secret_access_key: Optional[str] = None):
-        """
-        :param str name: The name of the cache image.
-        :param str account_url: Base URL of the storage account.
-        :param bool ignore_error: Ignore errors caused by failed cache exports.
-        :param 'CacheMode' mode: The cache mode to use. Defaults to `min`.
-        :param str secret_access_key: Blob storage account key.
-        """
-        pulumi.set(__self__, "name", name)
-        if account_url is not None:
-            pulumi.set(__self__, "account_url", account_url)
-        if ignore_error is None:
-            ignore_error = False
-        if ignore_error is not None:
-            pulumi.set(__self__, "ignore_error", ignore_error)
-        if mode is None:
-            mode = 'min'
-        if mode is not None:
-            pulumi.set(__self__, "mode", mode)
-        if secret_access_key is not None:
-            pulumi.set(__self__, "secret_access_key", secret_access_key)
-
-    @property
-    @pulumi.getter
-    def name(self) -> str:
-        """
-        The name of the cache image.
-        """
-        return pulumi.get(self, "name")
-
-    @property
-    @pulumi.getter(name="accountUrl")
-    def account_url(self) -> Optional[str]:
-        """
-        Base URL of the storage account.
-        """
-        return pulumi.get(self, "account_url")
-
-    @property
-    @pulumi.getter(name="ignoreError")
-    def ignore_error(self) -> Optional[bool]:
-        """
-        Ignore errors caused by failed cache exports.
-        """
-        return pulumi.get(self, "ignore_error")
-
-    @property
-    @pulumi.getter
-    def mode(self) -> Optional['CacheMode']:
-        """
-        The cache mode to use. Defaults to `min`.
-        """
-        return pulumi.get(self, "mode")
-
-    @property
-    @pulumi.getter(name="secretAccessKey")
-    def secret_access_key(self) -> Optional[str]:
-        """
-        Blob storage account key.
-        """
-        return pulumi.get(self, "secret_access_key")
-
-
-@pulumi.output_type
-class CacheToEntry(dict):
+class CacheTo(dict):
     def __init__(__self__, *,
                  azblob: Optional['outputs.CacheToAzureBlob'] = None,
                  disabled: Optional[bool] = None,
@@ -774,6 +684,97 @@ class CacheToEntry(dict):
         Push cache to AWS S3 or S3-compatible services such as MinIO.
         """
         return pulumi.get(self, "s3")
+
+
+@pulumi.output_type
+class CacheToAzureBlob(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "accountUrl":
+            suggest = "account_url"
+        elif key == "ignoreError":
+            suggest = "ignore_error"
+        elif key == "secretAccessKey":
+            suggest = "secret_access_key"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheToAzureBlob. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheToAzureBlob.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheToAzureBlob.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 name: str,
+                 account_url: Optional[str] = None,
+                 ignore_error: Optional[bool] = None,
+                 mode: Optional['CacheMode'] = None,
+                 secret_access_key: Optional[str] = None):
+        """
+        :param str name: The name of the cache image.
+        :param str account_url: Base URL of the storage account.
+        :param bool ignore_error: Ignore errors caused by failed cache exports.
+        :param 'CacheMode' mode: The cache mode to use. Defaults to `min`.
+        :param str secret_access_key: Blob storage account key.
+        """
+        pulumi.set(__self__, "name", name)
+        if account_url is not None:
+            pulumi.set(__self__, "account_url", account_url)
+        if ignore_error is None:
+            ignore_error = False
+        if ignore_error is not None:
+            pulumi.set(__self__, "ignore_error", ignore_error)
+        if mode is None:
+            mode = 'min'
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of the cache image.
+        """
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="accountUrl")
+    def account_url(self) -> Optional[str]:
+        """
+        Base URL of the storage account.
+        """
+        return pulumi.get(self, "account_url")
+
+    @property
+    @pulumi.getter(name="ignoreError")
+    def ignore_error(self) -> Optional[bool]:
+        """
+        Ignore errors caused by failed cache exports.
+        """
+        return pulumi.get(self, "ignore_error")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional['CacheMode']:
+        """
+        The cache mode to use. Defaults to `min`.
+        """
+        return pulumi.get(self, "mode")
+
+    @property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> Optional[str]:
+        """
+        Blob storage account key.
+        """
+        return pulumi.get(self, "secret_access_key")
 
 
 @pulumi.output_type
@@ -896,7 +897,13 @@ class CacheToGitHubActions(dict):
 
 @pulumi.output_type
 class CacheToInline(dict):
+    """
+    Include an inline cache with the exported image.
+    """
     def __init__(__self__):
+        """
+        Include an inline cache with the exported image.
+        """
         pass
 
 
@@ -1434,6 +1441,131 @@ class Dockerfile(dict):
 
 
 @pulumi.output_type
+class Export(dict):
+    def __init__(__self__, *,
+                 cacheonly: Optional['outputs.ExportCacheOnly'] = None,
+                 disabled: Optional[bool] = None,
+                 docker: Optional['outputs.ExportDocker'] = None,
+                 image: Optional['outputs.ExportImage'] = None,
+                 local: Optional['outputs.ExportLocal'] = None,
+                 oci: Optional['outputs.ExportOCI'] = None,
+                 raw: Optional[str] = None,
+                 registry: Optional['outputs.ExportRegistry'] = None,
+                 tar: Optional['outputs.ExportTar'] = None):
+        """
+        :param 'ExportCacheOnlyArgs' cacheonly: A no-op export. Helpful for silencing the 'no exports' warning if you
+               just want to populate caches.
+        :param bool disabled: When `true` this entry will be excluded. Defaults to `false`.
+        :param 'ExportDockerArgs' docker: Export as a Docker image layout.
+        :param 'ExportImageArgs' image: Outputs the build result into a container image format.
+        :param 'ExportLocalArgs' local: Export to a local directory as files and directories.
+        :param 'ExportOCIArgs' oci: Identical to the Docker exporter but uses OCI media types by default.
+        :param str raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=docker`)
+        :param 'ExportRegistryArgs' registry: Identical to the Image exporter, but pushes by default.
+        :param 'ExportTarArgs' tar: Export to a local directory as a tarball.
+        """
+        if cacheonly is not None:
+            pulumi.set(__self__, "cacheonly", cacheonly)
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if docker is not None:
+            pulumi.set(__self__, "docker", docker)
+        if image is not None:
+            pulumi.set(__self__, "image", image)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if oci is not None:
+            pulumi.set(__self__, "oci", oci)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if tar is not None:
+            pulumi.set(__self__, "tar", tar)
+
+    @property
+    @pulumi.getter
+    def cacheonly(self) -> Optional['outputs.ExportCacheOnly']:
+        """
+        A no-op export. Helpful for silencing the 'no exports' warning if you
+        just want to populate caches.
+        """
+        return pulumi.get(self, "cacheonly")
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[bool]:
+        """
+        When `true` this entry will be excluded. Defaults to `false`.
+        """
+        return pulumi.get(self, "disabled")
+
+    @property
+    @pulumi.getter
+    def docker(self) -> Optional['outputs.ExportDocker']:
+        """
+        Export as a Docker image layout.
+        """
+        return pulumi.get(self, "docker")
+
+    @property
+    @pulumi.getter
+    def image(self) -> Optional['outputs.ExportImage']:
+        """
+        Outputs the build result into a container image format.
+        """
+        return pulumi.get(self, "image")
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional['outputs.ExportLocal']:
+        """
+        Export to a local directory as files and directories.
+        """
+        return pulumi.get(self, "local")
+
+    @property
+    @pulumi.getter
+    def oci(self) -> Optional['outputs.ExportOCI']:
+        """
+        Identical to the Docker exporter but uses OCI media types by default.
+        """
+        return pulumi.get(self, "oci")
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[str]:
+        """
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        `type=docker`)
+        """
+        return pulumi.get(self, "raw")
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional['outputs.ExportRegistry']:
+        """
+        Identical to the Image exporter, but pushes by default.
+        """
+        return pulumi.get(self, "registry")
+
+    @property
+    @pulumi.getter
+    def tar(self) -> Optional['outputs.ExportTar']:
+        """
+        Export to a local directory as a tarball.
+        """
+        return pulumi.get(self, "tar")
+
+
+@pulumi.output_type
+class ExportCacheOnly(dict):
+    def __init__(__self__):
+        pass
+
+
+@pulumi.output_type
 class ExportDocker(dict):
     @staticmethod
     def __key_warning(key: str):
@@ -1563,111 +1695,6 @@ class ExportDocker(dict):
     def tar(self) -> Optional[bool]:
         """
         Bundle the output into a tarball layout.
-        """
-        return pulumi.get(self, "tar")
-
-
-@pulumi.output_type
-class ExportEntry(dict):
-    def __init__(__self__, *,
-                 disabled: Optional[bool] = None,
-                 docker: Optional['outputs.ExportDocker'] = None,
-                 image: Optional['outputs.ExportImage'] = None,
-                 local: Optional['outputs.ExportLocal'] = None,
-                 oci: Optional['outputs.ExportOCI'] = None,
-                 raw: Optional[str] = None,
-                 registry: Optional['outputs.ExportRegistry'] = None,
-                 tar: Optional['outputs.ExportTar'] = None):
-        """
-        :param bool disabled: When `true` this entry will be excluded. Defaults to `false`.
-        :param 'ExportDockerArgs' docker: Export as a Docker image layout.
-        :param 'ExportImageArgs' image: Outputs the build result into a container image format.
-        :param 'ExportLocalArgs' local: Export to a local directory as files and directories.
-        :param 'ExportOCIArgs' oci: Identical to the Docker exporter but uses OCI media types by default.
-        :param str raw: A raw string as you would provide it to the Docker CLI (e.g.,
-               `type=docker`)
-        :param 'ExportRegistryArgs' registry: Identical to the Image exporter, but pushes by default.
-        :param 'ExportTarArgs' tar: Export to a local directory as a tarball.
-        """
-        if disabled is not None:
-            pulumi.set(__self__, "disabled", disabled)
-        if docker is not None:
-            pulumi.set(__self__, "docker", docker)
-        if image is not None:
-            pulumi.set(__self__, "image", image)
-        if local is not None:
-            pulumi.set(__self__, "local", local)
-        if oci is not None:
-            pulumi.set(__self__, "oci", oci)
-        if raw is not None:
-            pulumi.set(__self__, "raw", raw)
-        if registry is not None:
-            pulumi.set(__self__, "registry", registry)
-        if tar is not None:
-            pulumi.set(__self__, "tar", tar)
-
-    @property
-    @pulumi.getter
-    def disabled(self) -> Optional[bool]:
-        """
-        When `true` this entry will be excluded. Defaults to `false`.
-        """
-        return pulumi.get(self, "disabled")
-
-    @property
-    @pulumi.getter
-    def docker(self) -> Optional['outputs.ExportDocker']:
-        """
-        Export as a Docker image layout.
-        """
-        return pulumi.get(self, "docker")
-
-    @property
-    @pulumi.getter
-    def image(self) -> Optional['outputs.ExportImage']:
-        """
-        Outputs the build result into a container image format.
-        """
-        return pulumi.get(self, "image")
-
-    @property
-    @pulumi.getter
-    def local(self) -> Optional['outputs.ExportLocal']:
-        """
-        Export to a local directory as files and directories.
-        """
-        return pulumi.get(self, "local")
-
-    @property
-    @pulumi.getter
-    def oci(self) -> Optional['outputs.ExportOCI']:
-        """
-        Identical to the Docker exporter but uses OCI media types by default.
-        """
-        return pulumi.get(self, "oci")
-
-    @property
-    @pulumi.getter
-    def raw(self) -> Optional[str]:
-        """
-        A raw string as you would provide it to the Docker CLI (e.g.,
-        `type=docker`)
-        """
-        return pulumi.get(self, "raw")
-
-    @property
-    @pulumi.getter
-    def registry(self) -> Optional['outputs.ExportRegistry']:
-        """
-        Identical to the Image exporter, but pushes by default.
-        """
-        return pulumi.get(self, "registry")
-
-    @property
-    @pulumi.getter
-    def tar(self) -> Optional['outputs.ExportTar']:
-        """
-        Export to a local directory as a tarball.
         """
         return pulumi.get(self, "tar")
 

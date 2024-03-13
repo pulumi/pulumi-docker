@@ -7,17 +7,15 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Docker.Buildx.Inputs
+namespace Pulumi.Docker.Buildx.Outputs
 {
 
-    /// <summary>
-    /// Include an inline cache with the exported image.
-    /// </summary>
-    public sealed class CacheToInlineArgs : global::Pulumi.ResourceArgs
+    [OutputType]
+    public sealed class ExportCacheOnly
     {
-        public CacheToInlineArgs()
+        [OutputConstructor]
+        private ExportCacheOnly()
         {
         }
-        public static new CacheToInlineArgs Empty => new CacheToInlineArgs();
     }
 }

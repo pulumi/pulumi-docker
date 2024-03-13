@@ -10,6 +10,11 @@ export type Image = import("./image").Image;
 export const Image: typeof import("./image").Image = null as any;
 utilities.lazyLoad(exports, ["Image"], () => require("./image"));
 
+export { IndexArgs } from "./index_";
+export type Index = import("./index_").Index;
+export const Index: typeof import("./index_").Index = null as any;
+utilities.lazyLoad(exports, ["Index"], () => require("./index_"));
+
 
 // Export enums:
 export * from "../types/enums/buildx";
@@ -20,6 +25,8 @@ const _module = {
         switch (type) {
             case "docker:buildx/image:Image":
                 return new Image(name, <any>undefined, { urn })
+            case "docker:buildx/image:Index":
+                return new Index(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }

@@ -1233,22 +1233,7 @@ export namespace buildx {
         name?: string;
     }
 
-    export interface CacheFromAzureBlob {
-        /**
-         * Base URL of the storage account.
-         */
-        accountUrl?: string;
-        /**
-         * The name of the cache image.
-         */
-        name: string;
-        /**
-         * Blob storage account key.
-         */
-        secretAccessKey?: string;
-    }
-
-    export interface CacheFromEntry {
+    export interface CacheFrom {
         /**
          * Upload build caches to Azure's blob storage service.
          */
@@ -1284,14 +1269,29 @@ export namespace buildx {
         s3?: outputs.buildx.CacheFromS3;
     }
     /**
-     * cacheFromEntryProvideDefaults sets the appropriate defaults for CacheFromEntry
+     * cacheFromProvideDefaults sets the appropriate defaults for CacheFrom
      */
-    export function cacheFromEntryProvideDefaults(val: CacheFromEntry): CacheFromEntry {
+    export function cacheFromProvideDefaults(val: CacheFrom): CacheFrom {
         return {
             ...val,
             gha: (val.gha ? outputs.buildx.cacheFromGitHubActionsProvideDefaults(val.gha) : undefined),
             s3: (val.s3 ? outputs.buildx.cacheFromS3ProvideDefaults(val.s3) : undefined),
         };
+    }
+
+    export interface CacheFromAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
+        accountUrl?: string;
+        /**
+         * The name of the cache image.
+         */
+        name: string;
+        /**
+         * Blob storage account key.
+         */
+        secretAccessKey?: string;
     }
 
     export interface CacheFromGitHubActions {
@@ -1405,40 +1405,7 @@ export namespace buildx {
         };
     }
 
-    export interface CacheToAzureBlob {
-        /**
-         * Base URL of the storage account.
-         */
-        accountUrl?: string;
-        /**
-         * Ignore errors caused by failed cache exports.
-         */
-        ignoreError?: boolean;
-        /**
-         * The cache mode to use. Defaults to `min`.
-         */
-        mode?: enums.buildx.CacheMode;
-        /**
-         * The name of the cache image.
-         */
-        name: string;
-        /**
-         * Blob storage account key.
-         */
-        secretAccessKey?: string;
-    }
-    /**
-     * cacheToAzureBlobProvideDefaults sets the appropriate defaults for CacheToAzureBlob
-     */
-    export function cacheToAzureBlobProvideDefaults(val: CacheToAzureBlob): CacheToAzureBlob {
-        return {
-            ...val,
-            ignoreError: (val.ignoreError) ?? false,
-            mode: (val.mode) ?? "min",
-        };
-    }
-
-    export interface CacheToEntry {
+    export interface CacheTo {
         /**
          * Push cache to Azure's blob storage service.
          */
@@ -1480,9 +1447,9 @@ export namespace buildx {
         s3?: outputs.buildx.CacheToS3;
     }
     /**
-     * cacheToEntryProvideDefaults sets the appropriate defaults for CacheToEntry
+     * cacheToProvideDefaults sets the appropriate defaults for CacheTo
      */
-    export function cacheToEntryProvideDefaults(val: CacheToEntry): CacheToEntry {
+    export function cacheToProvideDefaults(val: CacheTo): CacheTo {
         return {
             ...val,
             azblob: (val.azblob ? outputs.buildx.cacheToAzureBlobProvideDefaults(val.azblob) : undefined),
@@ -1490,6 +1457,39 @@ export namespace buildx {
             local: (val.local ? outputs.buildx.cacheToLocalProvideDefaults(val.local) : undefined),
             registry: (val.registry ? outputs.buildx.cacheToRegistryProvideDefaults(val.registry) : undefined),
             s3: (val.s3 ? outputs.buildx.cacheToS3ProvideDefaults(val.s3) : undefined),
+        };
+    }
+
+    export interface CacheToAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
+        accountUrl?: string;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: boolean;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
+        mode?: enums.buildx.CacheMode;
+        /**
+         * The name of the cache image.
+         */
+        name: string;
+        /**
+         * Blob storage account key.
+         */
+        secretAccessKey?: string;
+    }
+    /**
+     * cacheToAzureBlobProvideDefaults sets the appropriate defaults for CacheToAzureBlob
+     */
+    export function cacheToAzureBlobProvideDefaults(val: CacheToAzureBlob): CacheToAzureBlob {
+        return {
+            ...val,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
         };
     }
 
@@ -1541,6 +1541,9 @@ export namespace buildx {
         };
     }
 
+    /**
+     * Include an inline cache with the exported image.
+     */
     export interface CacheToInline {
     }
 
@@ -1738,6 +1741,62 @@ export namespace buildx {
         location?: string;
     }
 
+    export interface Export {
+        /**
+         * A no-op export. Helpful for silencing the 'no exports' warning if you
+         * just want to populate caches.
+         */
+        cacheonly?: outputs.buildx.ExportCacheOnly;
+        /**
+         * When `true` this entry will be excluded. Defaults to `false`.
+         */
+        disabled?: boolean;
+        /**
+         * Export as a Docker image layout.
+         */
+        docker?: outputs.buildx.ExportDocker;
+        /**
+         * Outputs the build result into a container image format.
+         */
+        image?: outputs.buildx.ExportImage;
+        /**
+         * Export to a local directory as files and directories.
+         */
+        local?: outputs.buildx.ExportLocal;
+        /**
+         * Identical to the Docker exporter but uses OCI media types by default.
+         */
+        oci?: outputs.buildx.ExportOCI;
+        /**
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * `type=docker`)
+         */
+        raw?: string;
+        /**
+         * Identical to the Image exporter, but pushes by default.
+         */
+        registry?: outputs.buildx.ExportRegistry;
+        /**
+         * Export to a local directory as a tarball.
+         */
+        tar?: outputs.buildx.ExportTar;
+    }
+    /**
+     * exportProvideDefaults sets the appropriate defaults for Export
+     */
+    export function exportProvideDefaults(val: Export): Export {
+        return {
+            ...val,
+            docker: (val.docker ? outputs.buildx.exportDockerProvideDefaults(val.docker) : undefined),
+            image: (val.image ? outputs.buildx.exportImageProvideDefaults(val.image) : undefined),
+            oci: (val.oci ? outputs.buildx.exportOCIProvideDefaults(val.oci) : undefined),
+            registry: (val.registry ? outputs.buildx.exportRegistryProvideDefaults(val.registry) : undefined),
+        };
+    }
+
+    export interface ExportCacheOnly {
+    }
+
     export interface ExportDocker {
         /**
          * Attach an arbitrary key/value annotation to the image.
@@ -1783,54 +1842,6 @@ export namespace buildx {
             forceCompression: (val.forceCompression) ?? false,
             ociMediaTypes: (val.ociMediaTypes) ?? false,
             tar: (val.tar) ?? true,
-        };
-    }
-
-    export interface ExportEntry {
-        /**
-         * When `true` this entry will be excluded. Defaults to `false`.
-         */
-        disabled?: boolean;
-        /**
-         * Export as a Docker image layout.
-         */
-        docker?: outputs.buildx.ExportDocker;
-        /**
-         * Outputs the build result into a container image format.
-         */
-        image?: outputs.buildx.ExportImage;
-        /**
-         * Export to a local directory as files and directories.
-         */
-        local?: outputs.buildx.ExportLocal;
-        /**
-         * Identical to the Docker exporter but uses OCI media types by default.
-         */
-        oci?: outputs.buildx.ExportOCI;
-        /**
-         * A raw string as you would provide it to the Docker CLI (e.g.,
-         * `type=docker`)
-         */
-        raw?: string;
-        /**
-         * Identical to the Image exporter, but pushes by default.
-         */
-        registry?: outputs.buildx.ExportRegistry;
-        /**
-         * Export to a local directory as a tarball.
-         */
-        tar?: outputs.buildx.ExportTar;
-    }
-    /**
-     * exportEntryProvideDefaults sets the appropriate defaults for ExportEntry
-     */
-    export function exportEntryProvideDefaults(val: ExportEntry): ExportEntry {
-        return {
-            ...val,
-            docker: (val.docker ? outputs.buildx.exportDockerProvideDefaults(val.docker) : undefined),
-            image: (val.image ? outputs.buildx.exportImageProvideDefaults(val.image) : undefined),
-            oci: (val.oci ? outputs.buildx.exportOCIProvideDefaults(val.oci) : undefined),
-            registry: (val.registry ? outputs.buildx.exportRegistryProvideDefaults(val.registry) : undefined),
         };
     }
 

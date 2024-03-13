@@ -10,10 +10,10 @@ import com.pulumi.docker.buildx.enums.NetworkMode;
 import com.pulumi.docker.buildx.enums.Platform;
 import com.pulumi.docker.buildx.inputs.BuildContextArgs;
 import com.pulumi.docker.buildx.inputs.BuilderConfigArgs;
-import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
-import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromArgs;
+import com.pulumi.docker.buildx.inputs.CacheToArgs;
 import com.pulumi.docker.buildx.inputs.DockerfileArgs;
-import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
+import com.pulumi.docker.buildx.inputs.ExportArgs;
 import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
 import com.pulumi.docker.buildx.inputs.SSHArgs;
 import java.lang.Boolean;
@@ -142,7 +142,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="cacheFrom")
-    private @Nullable Output<List<CacheFromEntryArgs>> cacheFrom;
+    private @Nullable Output<List<CacheFromArgs>> cacheFrom;
 
     /**
      * @return Cache export configuration.
@@ -150,7 +150,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
-    public Optional<Output<List<CacheFromEntryArgs>>> cacheFrom() {
+    public Optional<Output<List<CacheFromArgs>>> cacheFrom() {
         return Optional.ofNullable(this.cacheFrom);
     }
 
@@ -161,7 +161,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="cacheTo")
-    private @Nullable Output<List<CacheToEntryArgs>> cacheTo;
+    private @Nullable Output<List<CacheToArgs>> cacheTo;
 
     /**
      * @return Cache import configuration.
@@ -169,7 +169,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
-    public Optional<Output<List<CacheToEntryArgs>>> cacheTo() {
+    public Optional<Output<List<CacheToArgs>>> cacheTo() {
         return Optional.ofNullable(this.cacheTo);
     }
 
@@ -212,16 +212,72 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Use `exec` mode to build this image.
+     * 
+     * By default the provider embeds a v25 Docker client with v0.12 buildx
+     * support. This helps ensure consistent behavior across environments and
+     * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+     * be desirable if you require a specific version of buildx. For example
+     * you may want to run a custom `docker-buildx` binary with support for
+     * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+     * 
+     * When this is set to `true` the provider will instead execute the
+     * `docker-buildx` binary directly to perform its operations. The user is
+     * responsible for ensuring this binary exists, with correct permissions
+     * and pre-configured builders, at a path Docker expects (e.g.
+     * `~/.docker/cli-plugins`).
+     * 
+     * `exec` mode replicates Docker&#39;s exact behavior but has some
+     * disadvantages. Debugging may be more difficult as Pulumi will not be
+     * able to surface fine-grained errors and warnings. Additionally
+     * credentials are temporarily written to disk in order to provide them to
+     * the `docker-buildx` binary.
+     * 
+     */
+    @Import(name="exec")
+    private @Nullable Output<Boolean> exec;
+
+    /**
+     * @return Use `exec` mode to build this image.
+     * 
+     * By default the provider embeds a v25 Docker client with v0.12 buildx
+     * support. This helps ensure consistent behavior across environments and
+     * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+     * be desirable if you require a specific version of buildx. For example
+     * you may want to run a custom `docker-buildx` binary with support for
+     * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+     * 
+     * When this is set to `true` the provider will instead execute the
+     * `docker-buildx` binary directly to perform its operations. The user is
+     * responsible for ensuring this binary exists, with correct permissions
+     * and pre-configured builders, at a path Docker expects (e.g.
+     * `~/.docker/cli-plugins`).
+     * 
+     * `exec` mode replicates Docker&#39;s exact behavior but has some
+     * disadvantages. Debugging may be more difficult as Pulumi will not be
+     * able to surface fine-grained errors and warnings. Additionally
+     * credentials are temporarily written to disk in order to provide them to
+     * the `docker-buildx` binary.
+     * 
+     */
+    public Optional<Output<Boolean>> exec() {
+        return Optional.ofNullable(this.exec);
+    }
+
+    /**
      * Controls where images are persisted after building.
      * 
      * Images are only stored in the local cache unless `exports` are
      * explicitly configured.
      * 
+     * Exporting to multiple destinations requires a daemon running BuildKit
+     * 0.13 or later.
+     * 
      * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
     @Import(name="exports")
-    private @Nullable Output<List<ExportEntryArgs>> exports;
+    private @Nullable Output<List<ExportArgs>> exports;
 
     /**
      * @return Controls where images are persisted after building.
@@ -229,10 +285,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * Images are only stored in the local cache unless `exports` are
      * explicitly configured.
      * 
+     * Exporting to multiple destinations requires a daemon running BuildKit
+     * 0.13 or later.
+     * 
      * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
-    public Optional<Output<List<ExportEntryArgs>>> exports() {
+    public Optional<Output<List<ExportArgs>>> exports() {
         return Optional.ofNullable(this.exports);
     }
 
@@ -491,8 +550,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * Equivalent to Docker&#39;s `--target` flag.
      * 
      */
-    @Import(name="targets")
-    private @Nullable Output<List<String>> targets;
+    @Import(name="target")
+    private @Nullable Output<String> target;
 
     /**
      * @return Set the target build stage(s) to build.
@@ -502,8 +561,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * Equivalent to Docker&#39;s `--target` flag.
      * 
      */
-    public Optional<Output<List<String>>> targets() {
-        return Optional.ofNullable(this.targets);
+    public Optional<Output<String>> target() {
+        return Optional.ofNullable(this.target);
     }
 
     private ImageArgs() {}
@@ -517,6 +576,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         this.cacheTo = $.cacheTo;
         this.context = $.context;
         this.dockerfile = $.dockerfile;
+        this.exec = $.exec;
         this.exports = $.exports;
         this.labels = $.labels;
         this.load = $.load;
@@ -529,7 +589,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         this.secrets = $.secrets;
         this.ssh = $.ssh;
         this.tags = $.tags;
-        this.targets = $.targets;
+        this.target = $.target;
     }
 
     public static Builder builder() {
@@ -700,7 +760,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheFrom(@Nullable Output<List<CacheFromEntryArgs>> cacheFrom) {
+        public Builder cacheFrom(@Nullable Output<List<CacheFromArgs>> cacheFrom) {
             $.cacheFrom = cacheFrom;
             return this;
         }
@@ -713,7 +773,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheFrom(List<CacheFromEntryArgs> cacheFrom) {
+        public Builder cacheFrom(List<CacheFromArgs> cacheFrom) {
             return cacheFrom(Output.of(cacheFrom));
         }
 
@@ -725,7 +785,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheFrom(CacheFromEntryArgs... cacheFrom) {
+        public Builder cacheFrom(CacheFromArgs... cacheFrom) {
             return cacheFrom(List.of(cacheFrom));
         }
 
@@ -737,7 +797,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheTo(@Nullable Output<List<CacheToEntryArgs>> cacheTo) {
+        public Builder cacheTo(@Nullable Output<List<CacheToArgs>> cacheTo) {
             $.cacheTo = cacheTo;
             return this;
         }
@@ -750,7 +810,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheTo(List<CacheToEntryArgs> cacheTo) {
+        public Builder cacheTo(List<CacheToArgs> cacheTo) {
             return cacheTo(Output.of(cacheTo));
         }
 
@@ -762,7 +822,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheTo(CacheToEntryArgs... cacheTo) {
+        public Builder cacheTo(CacheToArgs... cacheTo) {
             return cacheTo(List.of(cacheTo));
         }
 
@@ -817,17 +877,79 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
+         * @param exec Use `exec` mode to build this image.
+         * 
+         * By default the provider embeds a v25 Docker client with v0.12 buildx
+         * support. This helps ensure consistent behavior across environments and
+         * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+         * be desirable if you require a specific version of buildx. For example
+         * you may want to run a custom `docker-buildx` binary with support for
+         * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+         * 
+         * When this is set to `true` the provider will instead execute the
+         * `docker-buildx` binary directly to perform its operations. The user is
+         * responsible for ensuring this binary exists, with correct permissions
+         * and pre-configured builders, at a path Docker expects (e.g.
+         * `~/.docker/cli-plugins`).
+         * 
+         * `exec` mode replicates Docker&#39;s exact behavior but has some
+         * disadvantages. Debugging may be more difficult as Pulumi will not be
+         * able to surface fine-grained errors and warnings. Additionally
+         * credentials are temporarily written to disk in order to provide them to
+         * the `docker-buildx` binary.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder exec(@Nullable Output<Boolean> exec) {
+            $.exec = exec;
+            return this;
+        }
+
+        /**
+         * @param exec Use `exec` mode to build this image.
+         * 
+         * By default the provider embeds a v25 Docker client with v0.12 buildx
+         * support. This helps ensure consistent behavior across environments and
+         * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+         * be desirable if you require a specific version of buildx. For example
+         * you may want to run a custom `docker-buildx` binary with support for
+         * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+         * 
+         * When this is set to `true` the provider will instead execute the
+         * `docker-buildx` binary directly to perform its operations. The user is
+         * responsible for ensuring this binary exists, with correct permissions
+         * and pre-configured builders, at a path Docker expects (e.g.
+         * `~/.docker/cli-plugins`).
+         * 
+         * `exec` mode replicates Docker&#39;s exact behavior but has some
+         * disadvantages. Debugging may be more difficult as Pulumi will not be
+         * able to surface fine-grained errors and warnings. Additionally
+         * credentials are temporarily written to disk in order to provide them to
+         * the `docker-buildx` binary.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder exec(Boolean exec) {
+            return exec(Output.of(exec));
+        }
+
+        /**
          * @param exports Controls where images are persisted after building.
          * 
          * Images are only stored in the local cache unless `exports` are
          * explicitly configured.
+         * 
+         * Exporting to multiple destinations requires a daemon running BuildKit
+         * 0.13 or later.
          * 
          * Equivalent to Docker&#39;s `--output` flag.
          * 
          * @return builder
          * 
          */
-        public Builder exports(@Nullable Output<List<ExportEntryArgs>> exports) {
+        public Builder exports(@Nullable Output<List<ExportArgs>> exports) {
             $.exports = exports;
             return this;
         }
@@ -838,12 +960,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * Images are only stored in the local cache unless `exports` are
          * explicitly configured.
          * 
+         * Exporting to multiple destinations requires a daemon running BuildKit
+         * 0.13 or later.
+         * 
          * Equivalent to Docker&#39;s `--output` flag.
          * 
          * @return builder
          * 
          */
-        public Builder exports(List<ExportEntryArgs> exports) {
+        public Builder exports(List<ExportArgs> exports) {
             return exports(Output.of(exports));
         }
 
@@ -853,12 +978,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * Images are only stored in the local cache unless `exports` are
          * explicitly configured.
          * 
+         * Exporting to multiple destinations requires a daemon running BuildKit
+         * 0.13 or later.
+         * 
          * Equivalent to Docker&#39;s `--output` flag.
          * 
          * @return builder
          * 
          */
-        public Builder exports(ExportEntryArgs... exports) {
+        public Builder exports(ExportArgs... exports) {
             return exports(List.of(exports));
         }
 
@@ -1231,7 +1359,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param targets Set the target build stage(s) to build.
+         * @param target Set the target build stage(s) to build.
          * 
          * If not specified all targets will be built by default.
          * 
@@ -1240,13 +1368,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder targets(@Nullable Output<List<String>> targets) {
-            $.targets = targets;
+        public Builder target(@Nullable Output<String> target) {
+            $.target = target;
             return this;
         }
 
         /**
-         * @param targets Set the target build stage(s) to build.
+         * @param target Set the target build stage(s) to build.
          * 
          * If not specified all targets will be built by default.
          * 
@@ -1255,22 +1383,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder targets(List<String> targets) {
-            return targets(Output.of(targets));
-        }
-
-        /**
-         * @param targets Set the target build stage(s) to build.
-         * 
-         * If not specified all targets will be built by default.
-         * 
-         * Equivalent to Docker&#39;s `--target` flag.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder targets(String... targets) {
-            return targets(List.of(targets));
+        public Builder target(String target) {
+            return target(Output.of(target));
         }
 
         public ImageArgs build() {

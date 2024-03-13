@@ -14,27 +14,28 @@ __all__ = [
     'BuildContextArgs',
     'BuilderConfigArgs',
     'CacheFromAzureBlobArgs',
-    'CacheFromEntryArgs',
     'CacheFromGitHubActionsArgs',
     'CacheFromLocalArgs',
     'CacheFromRegistryArgs',
     'CacheFromS3Args',
+    'CacheFromArgs',
     'CacheToAzureBlobArgs',
-    'CacheToEntryArgs',
     'CacheToGitHubActionsArgs',
     'CacheToInlineArgs',
     'CacheToLocalArgs',
     'CacheToRegistryArgs',
     'CacheToS3Args',
+    'CacheToArgs',
     'ContextArgs',
     'DockerfileArgs',
+    'ExportCacheOnlyArgs',
     'ExportDockerArgs',
-    'ExportEntryArgs',
     'ExportImageArgs',
     'ExportLocalArgs',
     'ExportOCIArgs',
     'ExportRegistryArgs',
     'ExportTarArgs',
+    'ExportArgs',
     'RegistryAuthArgs',
     'SSHArgs',
 ]
@@ -186,135 +187,6 @@ class CacheFromAzureBlobArgs:
     @secret_access_key.setter
     def secret_access_key(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "secret_access_key", value)
-
-
-@pulumi.input_type
-class CacheFromEntryArgs:
-    def __init__(__self__, *,
-                 azblob: Optional[pulumi.Input['CacheFromAzureBlobArgs']] = None,
-                 disabled: Optional[pulumi.Input[bool]] = None,
-                 gha: Optional[pulumi.Input['CacheFromGitHubActionsArgs']] = None,
-                 local: Optional[pulumi.Input['CacheFromLocalArgs']] = None,
-                 raw: Optional[pulumi.Input[str]] = None,
-                 registry: Optional[pulumi.Input['CacheFromRegistryArgs']] = None,
-                 s3: Optional[pulumi.Input['CacheFromS3Args']] = None):
-        """
-        :param pulumi.Input['CacheFromAzureBlobArgs'] azblob: Upload build caches to Azure's blob storage service.
-        :param pulumi.Input[bool] disabled: When `true` this entry will be excluded. Defaults to `false`.
-        :param pulumi.Input['CacheFromGitHubActionsArgs'] gha: Recommended for use with GitHub Actions workflows.
-               
-               An action like `crazy-max/ghaction-github-runtime` is recommended to
-               expose appropriate credentials to your GitHub workflow.
-        :param pulumi.Input['CacheFromLocalArgs'] local: A simple backend which caches images on your local filesystem.
-        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
-               `type=inline`).
-        :param pulumi.Input['CacheFromRegistryArgs'] registry: Upload build caches to remote registries.
-        :param pulumi.Input['CacheFromS3Args'] s3: Upload build caches to AWS S3 or an S3-compatible services such as
-               MinIO.
-        """
-        if azblob is not None:
-            pulumi.set(__self__, "azblob", azblob)
-        if disabled is not None:
-            pulumi.set(__self__, "disabled", disabled)
-        if gha is not None:
-            pulumi.set(__self__, "gha", gha)
-        if local is not None:
-            pulumi.set(__self__, "local", local)
-        if raw is not None:
-            pulumi.set(__self__, "raw", raw)
-        if registry is not None:
-            pulumi.set(__self__, "registry", registry)
-        if s3 is not None:
-            pulumi.set(__self__, "s3", s3)
-
-    @property
-    @pulumi.getter
-    def azblob(self) -> Optional[pulumi.Input['CacheFromAzureBlobArgs']]:
-        """
-        Upload build caches to Azure's blob storage service.
-        """
-        return pulumi.get(self, "azblob")
-
-    @azblob.setter
-    def azblob(self, value: Optional[pulumi.Input['CacheFromAzureBlobArgs']]):
-        pulumi.set(self, "azblob", value)
-
-    @property
-    @pulumi.getter
-    def disabled(self) -> Optional[pulumi.Input[bool]]:
-        """
-        When `true` this entry will be excluded. Defaults to `false`.
-        """
-        return pulumi.get(self, "disabled")
-
-    @disabled.setter
-    def disabled(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "disabled", value)
-
-    @property
-    @pulumi.getter
-    def gha(self) -> Optional[pulumi.Input['CacheFromGitHubActionsArgs']]:
-        """
-        Recommended for use with GitHub Actions workflows.
-
-        An action like `crazy-max/ghaction-github-runtime` is recommended to
-        expose appropriate credentials to your GitHub workflow.
-        """
-        return pulumi.get(self, "gha")
-
-    @gha.setter
-    def gha(self, value: Optional[pulumi.Input['CacheFromGitHubActionsArgs']]):
-        pulumi.set(self, "gha", value)
-
-    @property
-    @pulumi.getter
-    def local(self) -> Optional[pulumi.Input['CacheFromLocalArgs']]:
-        """
-        A simple backend which caches images on your local filesystem.
-        """
-        return pulumi.get(self, "local")
-
-    @local.setter
-    def local(self, value: Optional[pulumi.Input['CacheFromLocalArgs']]):
-        pulumi.set(self, "local", value)
-
-    @property
-    @pulumi.getter
-    def raw(self) -> Optional[pulumi.Input[str]]:
-        """
-        A raw string as you would provide it to the Docker CLI (e.g.,
-        `type=inline`).
-        """
-        return pulumi.get(self, "raw")
-
-    @raw.setter
-    def raw(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "raw", value)
-
-    @property
-    @pulumi.getter
-    def registry(self) -> Optional[pulumi.Input['CacheFromRegistryArgs']]:
-        """
-        Upload build caches to remote registries.
-        """
-        return pulumi.get(self, "registry")
-
-    @registry.setter
-    def registry(self, value: Optional[pulumi.Input['CacheFromRegistryArgs']]):
-        pulumi.set(self, "registry", value)
-
-    @property
-    @pulumi.getter
-    def s3(self) -> Optional[pulumi.Input['CacheFromS3Args']]:
-        """
-        Upload build caches to AWS S3 or an S3-compatible services such as
-        MinIO.
-        """
-        return pulumi.get(self, "s3")
-
-    @s3.setter
-    def s3(self, value: Optional[pulumi.Input['CacheFromS3Args']]):
-        pulumi.set(self, "s3", value)
 
 
 @pulumi.input_type
@@ -636,6 +508,135 @@ class CacheFromS3Args:
 
 
 @pulumi.input_type
+class CacheFromArgs:
+    def __init__(__self__, *,
+                 azblob: Optional[pulumi.Input['CacheFromAzureBlobArgs']] = None,
+                 disabled: Optional[pulumi.Input[bool]] = None,
+                 gha: Optional[pulumi.Input['CacheFromGitHubActionsArgs']] = None,
+                 local: Optional[pulumi.Input['CacheFromLocalArgs']] = None,
+                 raw: Optional[pulumi.Input[str]] = None,
+                 registry: Optional[pulumi.Input['CacheFromRegistryArgs']] = None,
+                 s3: Optional[pulumi.Input['CacheFromS3Args']] = None):
+        """
+        :param pulumi.Input['CacheFromAzureBlobArgs'] azblob: Upload build caches to Azure's blob storage service.
+        :param pulumi.Input[bool] disabled: When `true` this entry will be excluded. Defaults to `false`.
+        :param pulumi.Input['CacheFromGitHubActionsArgs'] gha: Recommended for use with GitHub Actions workflows.
+               
+               An action like `crazy-max/ghaction-github-runtime` is recommended to
+               expose appropriate credentials to your GitHub workflow.
+        :param pulumi.Input['CacheFromLocalArgs'] local: A simple backend which caches images on your local filesystem.
+        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=inline`).
+        :param pulumi.Input['CacheFromRegistryArgs'] registry: Upload build caches to remote registries.
+        :param pulumi.Input['CacheFromS3Args'] s3: Upload build caches to AWS S3 or an S3-compatible services such as
+               MinIO.
+        """
+        if azblob is not None:
+            pulumi.set(__self__, "azblob", azblob)
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if gha is not None:
+            pulumi.set(__self__, "gha", gha)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if s3 is not None:
+            pulumi.set(__self__, "s3", s3)
+
+    @property
+    @pulumi.getter
+    def azblob(self) -> Optional[pulumi.Input['CacheFromAzureBlobArgs']]:
+        """
+        Upload build caches to Azure's blob storage service.
+        """
+        return pulumi.get(self, "azblob")
+
+    @azblob.setter
+    def azblob(self, value: Optional[pulumi.Input['CacheFromAzureBlobArgs']]):
+        pulumi.set(self, "azblob", value)
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        When `true` this entry will be excluded. Defaults to `false`.
+        """
+        return pulumi.get(self, "disabled")
+
+    @disabled.setter
+    def disabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "disabled", value)
+
+    @property
+    @pulumi.getter
+    def gha(self) -> Optional[pulumi.Input['CacheFromGitHubActionsArgs']]:
+        """
+        Recommended for use with GitHub Actions workflows.
+
+        An action like `crazy-max/ghaction-github-runtime` is recommended to
+        expose appropriate credentials to your GitHub workflow.
+        """
+        return pulumi.get(self, "gha")
+
+    @gha.setter
+    def gha(self, value: Optional[pulumi.Input['CacheFromGitHubActionsArgs']]):
+        pulumi.set(self, "gha", value)
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional[pulumi.Input['CacheFromLocalArgs']]:
+        """
+        A simple backend which caches images on your local filesystem.
+        """
+        return pulumi.get(self, "local")
+
+    @local.setter
+    def local(self, value: Optional[pulumi.Input['CacheFromLocalArgs']]):
+        pulumi.set(self, "local", value)
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[pulumi.Input[str]]:
+        """
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        `type=inline`).
+        """
+        return pulumi.get(self, "raw")
+
+    @raw.setter
+    def raw(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "raw", value)
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional[pulumi.Input['CacheFromRegistryArgs']]:
+        """
+        Upload build caches to remote registries.
+        """
+        return pulumi.get(self, "registry")
+
+    @registry.setter
+    def registry(self, value: Optional[pulumi.Input['CacheFromRegistryArgs']]):
+        pulumi.set(self, "registry", value)
+
+    @property
+    @pulumi.getter
+    def s3(self) -> Optional[pulumi.Input['CacheFromS3Args']]:
+        """
+        Upload build caches to AWS S3 or an S3-compatible services such as
+        MinIO.
+        """
+        return pulumi.get(self, "s3")
+
+    @s3.setter
+    def s3(self, value: Optional[pulumi.Input['CacheFromS3Args']]):
+        pulumi.set(self, "s3", value)
+
+
+@pulumi.input_type
 class CacheToAzureBlobArgs:
     def __init__(__self__, *,
                  name: pulumi.Input[str],
@@ -723,155 +724,6 @@ class CacheToAzureBlobArgs:
     @secret_access_key.setter
     def secret_access_key(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "secret_access_key", value)
-
-
-@pulumi.input_type
-class CacheToEntryArgs:
-    def __init__(__self__, *,
-                 azblob: Optional[pulumi.Input['CacheToAzureBlobArgs']] = None,
-                 disabled: Optional[pulumi.Input[bool]] = None,
-                 gha: Optional[pulumi.Input['CacheToGitHubActionsArgs']] = None,
-                 inline: Optional[pulumi.Input['CacheToInlineArgs']] = None,
-                 local: Optional[pulumi.Input['CacheToLocalArgs']] = None,
-                 raw: Optional[pulumi.Input[str]] = None,
-                 registry: Optional[pulumi.Input['CacheToRegistryArgs']] = None,
-                 s3: Optional[pulumi.Input['CacheToS3Args']] = None):
-        """
-        :param pulumi.Input['CacheToAzureBlobArgs'] azblob: Push cache to Azure's blob storage service.
-        :param pulumi.Input[bool] disabled: When `true` this entry will be excluded. Defaults to `false`.
-        :param pulumi.Input['CacheToGitHubActionsArgs'] gha: Recommended for use with GitHub Actions workflows.
-               
-               An action like `crazy-max/ghaction-github-runtime` is recommended to
-               expose appropriate credentials to your GitHub workflow.
-        :param pulumi.Input['CacheToInlineArgs'] inline: The inline cache storage backend is the simplest implementation to get
-               started with, but it does not handle multi-stage builds. Consider the
-               `registry` cache backend instead.
-        :param pulumi.Input['CacheToLocalArgs'] local: A simple backend which caches imagines on your local filesystem.
-        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
-               `type=inline`)
-        :param pulumi.Input['CacheToRegistryArgs'] registry: Push caches to remote registries. Incompatible with the `docker` build
-               driver.
-        :param pulumi.Input['CacheToS3Args'] s3: Push cache to AWS S3 or S3-compatible services such as MinIO.
-        """
-        if azblob is not None:
-            pulumi.set(__self__, "azblob", azblob)
-        if disabled is not None:
-            pulumi.set(__self__, "disabled", disabled)
-        if gha is not None:
-            pulumi.set(__self__, "gha", gha)
-        if inline is not None:
-            pulumi.set(__self__, "inline", inline)
-        if local is not None:
-            pulumi.set(__self__, "local", local)
-        if raw is not None:
-            pulumi.set(__self__, "raw", raw)
-        if registry is not None:
-            pulumi.set(__self__, "registry", registry)
-        if s3 is not None:
-            pulumi.set(__self__, "s3", s3)
-
-    @property
-    @pulumi.getter
-    def azblob(self) -> Optional[pulumi.Input['CacheToAzureBlobArgs']]:
-        """
-        Push cache to Azure's blob storage service.
-        """
-        return pulumi.get(self, "azblob")
-
-    @azblob.setter
-    def azblob(self, value: Optional[pulumi.Input['CacheToAzureBlobArgs']]):
-        pulumi.set(self, "azblob", value)
-
-    @property
-    @pulumi.getter
-    def disabled(self) -> Optional[pulumi.Input[bool]]:
-        """
-        When `true` this entry will be excluded. Defaults to `false`.
-        """
-        return pulumi.get(self, "disabled")
-
-    @disabled.setter
-    def disabled(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "disabled", value)
-
-    @property
-    @pulumi.getter
-    def gha(self) -> Optional[pulumi.Input['CacheToGitHubActionsArgs']]:
-        """
-        Recommended for use with GitHub Actions workflows.
-
-        An action like `crazy-max/ghaction-github-runtime` is recommended to
-        expose appropriate credentials to your GitHub workflow.
-        """
-        return pulumi.get(self, "gha")
-
-    @gha.setter
-    def gha(self, value: Optional[pulumi.Input['CacheToGitHubActionsArgs']]):
-        pulumi.set(self, "gha", value)
-
-    @property
-    @pulumi.getter
-    def inline(self) -> Optional[pulumi.Input['CacheToInlineArgs']]:
-        """
-        The inline cache storage backend is the simplest implementation to get
-        started with, but it does not handle multi-stage builds. Consider the
-        `registry` cache backend instead.
-        """
-        return pulumi.get(self, "inline")
-
-    @inline.setter
-    def inline(self, value: Optional[pulumi.Input['CacheToInlineArgs']]):
-        pulumi.set(self, "inline", value)
-
-    @property
-    @pulumi.getter
-    def local(self) -> Optional[pulumi.Input['CacheToLocalArgs']]:
-        """
-        A simple backend which caches imagines on your local filesystem.
-        """
-        return pulumi.get(self, "local")
-
-    @local.setter
-    def local(self, value: Optional[pulumi.Input['CacheToLocalArgs']]):
-        pulumi.set(self, "local", value)
-
-    @property
-    @pulumi.getter
-    def raw(self) -> Optional[pulumi.Input[str]]:
-        """
-        A raw string as you would provide it to the Docker CLI (e.g.,
-        `type=inline`)
-        """
-        return pulumi.get(self, "raw")
-
-    @raw.setter
-    def raw(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "raw", value)
-
-    @property
-    @pulumi.getter
-    def registry(self) -> Optional[pulumi.Input['CacheToRegistryArgs']]:
-        """
-        Push caches to remote registries. Incompatible with the `docker` build
-        driver.
-        """
-        return pulumi.get(self, "registry")
-
-    @registry.setter
-    def registry(self, value: Optional[pulumi.Input['CacheToRegistryArgs']]):
-        pulumi.set(self, "registry", value)
-
-    @property
-    @pulumi.getter
-    def s3(self) -> Optional[pulumi.Input['CacheToS3Args']]:
-        """
-        Push cache to AWS S3 or S3-compatible services such as MinIO.
-        """
-        return pulumi.get(self, "s3")
-
-    @s3.setter
-    def s3(self, value: Optional[pulumi.Input['CacheToS3Args']]):
-        pulumi.set(self, "s3", value)
 
 
 @pulumi.input_type
@@ -998,6 +850,9 @@ class CacheToGitHubActionsArgs:
 @pulumi.input_type
 class CacheToInlineArgs:
     def __init__(__self__):
+        """
+        Include an inline cache with the exported image.
+        """
         pass
 
 
@@ -1479,6 +1334,155 @@ class CacheToS3Args:
 
 
 @pulumi.input_type
+class CacheToArgs:
+    def __init__(__self__, *,
+                 azblob: Optional[pulumi.Input['CacheToAzureBlobArgs']] = None,
+                 disabled: Optional[pulumi.Input[bool]] = None,
+                 gha: Optional[pulumi.Input['CacheToGitHubActionsArgs']] = None,
+                 inline: Optional[pulumi.Input['CacheToInlineArgs']] = None,
+                 local: Optional[pulumi.Input['CacheToLocalArgs']] = None,
+                 raw: Optional[pulumi.Input[str]] = None,
+                 registry: Optional[pulumi.Input['CacheToRegistryArgs']] = None,
+                 s3: Optional[pulumi.Input['CacheToS3Args']] = None):
+        """
+        :param pulumi.Input['CacheToAzureBlobArgs'] azblob: Push cache to Azure's blob storage service.
+        :param pulumi.Input[bool] disabled: When `true` this entry will be excluded. Defaults to `false`.
+        :param pulumi.Input['CacheToGitHubActionsArgs'] gha: Recommended for use with GitHub Actions workflows.
+               
+               An action like `crazy-max/ghaction-github-runtime` is recommended to
+               expose appropriate credentials to your GitHub workflow.
+        :param pulumi.Input['CacheToInlineArgs'] inline: The inline cache storage backend is the simplest implementation to get
+               started with, but it does not handle multi-stage builds. Consider the
+               `registry` cache backend instead.
+        :param pulumi.Input['CacheToLocalArgs'] local: A simple backend which caches imagines on your local filesystem.
+        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=inline`)
+        :param pulumi.Input['CacheToRegistryArgs'] registry: Push caches to remote registries. Incompatible with the `docker` build
+               driver.
+        :param pulumi.Input['CacheToS3Args'] s3: Push cache to AWS S3 or S3-compatible services such as MinIO.
+        """
+        if azblob is not None:
+            pulumi.set(__self__, "azblob", azblob)
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if gha is not None:
+            pulumi.set(__self__, "gha", gha)
+        if inline is not None:
+            pulumi.set(__self__, "inline", inline)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if s3 is not None:
+            pulumi.set(__self__, "s3", s3)
+
+    @property
+    @pulumi.getter
+    def azblob(self) -> Optional[pulumi.Input['CacheToAzureBlobArgs']]:
+        """
+        Push cache to Azure's blob storage service.
+        """
+        return pulumi.get(self, "azblob")
+
+    @azblob.setter
+    def azblob(self, value: Optional[pulumi.Input['CacheToAzureBlobArgs']]):
+        pulumi.set(self, "azblob", value)
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        When `true` this entry will be excluded. Defaults to `false`.
+        """
+        return pulumi.get(self, "disabled")
+
+    @disabled.setter
+    def disabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "disabled", value)
+
+    @property
+    @pulumi.getter
+    def gha(self) -> Optional[pulumi.Input['CacheToGitHubActionsArgs']]:
+        """
+        Recommended for use with GitHub Actions workflows.
+
+        An action like `crazy-max/ghaction-github-runtime` is recommended to
+        expose appropriate credentials to your GitHub workflow.
+        """
+        return pulumi.get(self, "gha")
+
+    @gha.setter
+    def gha(self, value: Optional[pulumi.Input['CacheToGitHubActionsArgs']]):
+        pulumi.set(self, "gha", value)
+
+    @property
+    @pulumi.getter
+    def inline(self) -> Optional[pulumi.Input['CacheToInlineArgs']]:
+        """
+        The inline cache storage backend is the simplest implementation to get
+        started with, but it does not handle multi-stage builds. Consider the
+        `registry` cache backend instead.
+        """
+        return pulumi.get(self, "inline")
+
+    @inline.setter
+    def inline(self, value: Optional[pulumi.Input['CacheToInlineArgs']]):
+        pulumi.set(self, "inline", value)
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional[pulumi.Input['CacheToLocalArgs']]:
+        """
+        A simple backend which caches imagines on your local filesystem.
+        """
+        return pulumi.get(self, "local")
+
+    @local.setter
+    def local(self, value: Optional[pulumi.Input['CacheToLocalArgs']]):
+        pulumi.set(self, "local", value)
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[pulumi.Input[str]]:
+        """
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        `type=inline`)
+        """
+        return pulumi.get(self, "raw")
+
+    @raw.setter
+    def raw(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "raw", value)
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional[pulumi.Input['CacheToRegistryArgs']]:
+        """
+        Push caches to remote registries. Incompatible with the `docker` build
+        driver.
+        """
+        return pulumi.get(self, "registry")
+
+    @registry.setter
+    def registry(self, value: Optional[pulumi.Input['CacheToRegistryArgs']]):
+        pulumi.set(self, "registry", value)
+
+    @property
+    @pulumi.getter
+    def s3(self) -> Optional[pulumi.Input['CacheToS3Args']]:
+        """
+        Push cache to AWS S3 or S3-compatible services such as MinIO.
+        """
+        return pulumi.get(self, "s3")
+
+    @s3.setter
+    def s3(self, value: Optional[pulumi.Input['CacheToS3Args']]):
+        pulumi.set(self, "s3", value)
+
+
+@pulumi.input_type
 class ContextArgs:
     def __init__(__self__, *,
                  location: pulumi.Input[str]):
@@ -1571,6 +1575,12 @@ class DockerfileArgs:
     @location.setter
     def location(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "location", value)
+
+
+@pulumi.input_type
+class ExportCacheOnlyArgs:
+    def __init__(__self__):
+        pass
 
 
 @pulumi.input_type
@@ -1715,143 +1725,6 @@ class ExportDockerArgs:
 
     @tar.setter
     def tar(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "tar", value)
-
-
-@pulumi.input_type
-class ExportEntryArgs:
-    def __init__(__self__, *,
-                 disabled: Optional[pulumi.Input[bool]] = None,
-                 docker: Optional[pulumi.Input['ExportDockerArgs']] = None,
-                 image: Optional[pulumi.Input['ExportImageArgs']] = None,
-                 local: Optional[pulumi.Input['ExportLocalArgs']] = None,
-                 oci: Optional[pulumi.Input['ExportOCIArgs']] = None,
-                 raw: Optional[pulumi.Input[str]] = None,
-                 registry: Optional[pulumi.Input['ExportRegistryArgs']] = None,
-                 tar: Optional[pulumi.Input['ExportTarArgs']] = None):
-        """
-        :param pulumi.Input[bool] disabled: When `true` this entry will be excluded. Defaults to `false`.
-        :param pulumi.Input['ExportDockerArgs'] docker: Export as a Docker image layout.
-        :param pulumi.Input['ExportImageArgs'] image: Outputs the build result into a container image format.
-        :param pulumi.Input['ExportLocalArgs'] local: Export to a local directory as files and directories.
-        :param pulumi.Input['ExportOCIArgs'] oci: Identical to the Docker exporter but uses OCI media types by default.
-        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
-               `type=docker`)
-        :param pulumi.Input['ExportRegistryArgs'] registry: Identical to the Image exporter, but pushes by default.
-        :param pulumi.Input['ExportTarArgs'] tar: Export to a local directory as a tarball.
-        """
-        if disabled is not None:
-            pulumi.set(__self__, "disabled", disabled)
-        if docker is not None:
-            pulumi.set(__self__, "docker", docker)
-        if image is not None:
-            pulumi.set(__self__, "image", image)
-        if local is not None:
-            pulumi.set(__self__, "local", local)
-        if oci is not None:
-            pulumi.set(__self__, "oci", oci)
-        if raw is not None:
-            pulumi.set(__self__, "raw", raw)
-        if registry is not None:
-            pulumi.set(__self__, "registry", registry)
-        if tar is not None:
-            pulumi.set(__self__, "tar", tar)
-
-    @property
-    @pulumi.getter
-    def disabled(self) -> Optional[pulumi.Input[bool]]:
-        """
-        When `true` this entry will be excluded. Defaults to `false`.
-        """
-        return pulumi.get(self, "disabled")
-
-    @disabled.setter
-    def disabled(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "disabled", value)
-
-    @property
-    @pulumi.getter
-    def docker(self) -> Optional[pulumi.Input['ExportDockerArgs']]:
-        """
-        Export as a Docker image layout.
-        """
-        return pulumi.get(self, "docker")
-
-    @docker.setter
-    def docker(self, value: Optional[pulumi.Input['ExportDockerArgs']]):
-        pulumi.set(self, "docker", value)
-
-    @property
-    @pulumi.getter
-    def image(self) -> Optional[pulumi.Input['ExportImageArgs']]:
-        """
-        Outputs the build result into a container image format.
-        """
-        return pulumi.get(self, "image")
-
-    @image.setter
-    def image(self, value: Optional[pulumi.Input['ExportImageArgs']]):
-        pulumi.set(self, "image", value)
-
-    @property
-    @pulumi.getter
-    def local(self) -> Optional[pulumi.Input['ExportLocalArgs']]:
-        """
-        Export to a local directory as files and directories.
-        """
-        return pulumi.get(self, "local")
-
-    @local.setter
-    def local(self, value: Optional[pulumi.Input['ExportLocalArgs']]):
-        pulumi.set(self, "local", value)
-
-    @property
-    @pulumi.getter
-    def oci(self) -> Optional[pulumi.Input['ExportOCIArgs']]:
-        """
-        Identical to the Docker exporter but uses OCI media types by default.
-        """
-        return pulumi.get(self, "oci")
-
-    @oci.setter
-    def oci(self, value: Optional[pulumi.Input['ExportOCIArgs']]):
-        pulumi.set(self, "oci", value)
-
-    @property
-    @pulumi.getter
-    def raw(self) -> Optional[pulumi.Input[str]]:
-        """
-        A raw string as you would provide it to the Docker CLI (e.g.,
-        `type=docker`)
-        """
-        return pulumi.get(self, "raw")
-
-    @raw.setter
-    def raw(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "raw", value)
-
-    @property
-    @pulumi.getter
-    def registry(self) -> Optional[pulumi.Input['ExportRegistryArgs']]:
-        """
-        Identical to the Image exporter, but pushes by default.
-        """
-        return pulumi.get(self, "registry")
-
-    @registry.setter
-    def registry(self, value: Optional[pulumi.Input['ExportRegistryArgs']]):
-        pulumi.set(self, "registry", value)
-
-    @property
-    @pulumi.getter
-    def tar(self) -> Optional[pulumi.Input['ExportTarArgs']]:
-        """
-        Export to a local directory as a tarball.
-        """
-        return pulumi.get(self, "tar")
-
-    @tar.setter
-    def tar(self, value: Optional[pulumi.Input['ExportTarArgs']]):
         pulumi.set(self, "tar", value)
 
 
@@ -2522,6 +2395,161 @@ class ExportTarArgs:
     @dest.setter
     def dest(self, value: pulumi.Input[str]):
         pulumi.set(self, "dest", value)
+
+
+@pulumi.input_type
+class ExportArgs:
+    def __init__(__self__, *,
+                 cacheonly: Optional[pulumi.Input['ExportCacheOnlyArgs']] = None,
+                 disabled: Optional[pulumi.Input[bool]] = None,
+                 docker: Optional[pulumi.Input['ExportDockerArgs']] = None,
+                 image: Optional[pulumi.Input['ExportImageArgs']] = None,
+                 local: Optional[pulumi.Input['ExportLocalArgs']] = None,
+                 oci: Optional[pulumi.Input['ExportOCIArgs']] = None,
+                 raw: Optional[pulumi.Input[str]] = None,
+                 registry: Optional[pulumi.Input['ExportRegistryArgs']] = None,
+                 tar: Optional[pulumi.Input['ExportTarArgs']] = None):
+        """
+        :param pulumi.Input['ExportCacheOnlyArgs'] cacheonly: A no-op export. Helpful for silencing the 'no exports' warning if you
+               just want to populate caches.
+        :param pulumi.Input[bool] disabled: When `true` this entry will be excluded. Defaults to `false`.
+        :param pulumi.Input['ExportDockerArgs'] docker: Export as a Docker image layout.
+        :param pulumi.Input['ExportImageArgs'] image: Outputs the build result into a container image format.
+        :param pulumi.Input['ExportLocalArgs'] local: Export to a local directory as files and directories.
+        :param pulumi.Input['ExportOCIArgs'] oci: Identical to the Docker exporter but uses OCI media types by default.
+        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=docker`)
+        :param pulumi.Input['ExportRegistryArgs'] registry: Identical to the Image exporter, but pushes by default.
+        :param pulumi.Input['ExportTarArgs'] tar: Export to a local directory as a tarball.
+        """
+        if cacheonly is not None:
+            pulumi.set(__self__, "cacheonly", cacheonly)
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if docker is not None:
+            pulumi.set(__self__, "docker", docker)
+        if image is not None:
+            pulumi.set(__self__, "image", image)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if oci is not None:
+            pulumi.set(__self__, "oci", oci)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if tar is not None:
+            pulumi.set(__self__, "tar", tar)
+
+    @property
+    @pulumi.getter
+    def cacheonly(self) -> Optional[pulumi.Input['ExportCacheOnlyArgs']]:
+        """
+        A no-op export. Helpful for silencing the 'no exports' warning if you
+        just want to populate caches.
+        """
+        return pulumi.get(self, "cacheonly")
+
+    @cacheonly.setter
+    def cacheonly(self, value: Optional[pulumi.Input['ExportCacheOnlyArgs']]):
+        pulumi.set(self, "cacheonly", value)
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        When `true` this entry will be excluded. Defaults to `false`.
+        """
+        return pulumi.get(self, "disabled")
+
+    @disabled.setter
+    def disabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "disabled", value)
+
+    @property
+    @pulumi.getter
+    def docker(self) -> Optional[pulumi.Input['ExportDockerArgs']]:
+        """
+        Export as a Docker image layout.
+        """
+        return pulumi.get(self, "docker")
+
+    @docker.setter
+    def docker(self, value: Optional[pulumi.Input['ExportDockerArgs']]):
+        pulumi.set(self, "docker", value)
+
+    @property
+    @pulumi.getter
+    def image(self) -> Optional[pulumi.Input['ExportImageArgs']]:
+        """
+        Outputs the build result into a container image format.
+        """
+        return pulumi.get(self, "image")
+
+    @image.setter
+    def image(self, value: Optional[pulumi.Input['ExportImageArgs']]):
+        pulumi.set(self, "image", value)
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional[pulumi.Input['ExportLocalArgs']]:
+        """
+        Export to a local directory as files and directories.
+        """
+        return pulumi.get(self, "local")
+
+    @local.setter
+    def local(self, value: Optional[pulumi.Input['ExportLocalArgs']]):
+        pulumi.set(self, "local", value)
+
+    @property
+    @pulumi.getter
+    def oci(self) -> Optional[pulumi.Input['ExportOCIArgs']]:
+        """
+        Identical to the Docker exporter but uses OCI media types by default.
+        """
+        return pulumi.get(self, "oci")
+
+    @oci.setter
+    def oci(self, value: Optional[pulumi.Input['ExportOCIArgs']]):
+        pulumi.set(self, "oci", value)
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[pulumi.Input[str]]:
+        """
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        `type=docker`)
+        """
+        return pulumi.get(self, "raw")
+
+    @raw.setter
+    def raw(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "raw", value)
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional[pulumi.Input['ExportRegistryArgs']]:
+        """
+        Identical to the Image exporter, but pushes by default.
+        """
+        return pulumi.get(self, "registry")
+
+    @registry.setter
+    def registry(self, value: Optional[pulumi.Input['ExportRegistryArgs']]):
+        pulumi.set(self, "registry", value)
+
+    @property
+    @pulumi.getter
+    def tar(self) -> Optional[pulumi.Input['ExportTarArgs']]:
+        """
+        Export to a local directory as a tarball.
+        """
+        return pulumi.get(self, "tar")
+
+    @tar.setter
+    def tar(self, value: Optional[pulumi.Input['ExportTarArgs']]):
+        pulumi.set(self, "tar", value)
 
 
 @pulumi.input_type

@@ -5,12 +5,11 @@ package com.pulumi.docker.buildx.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.docker.buildx.inputs.CacheToAzureBlobArgs;
-import com.pulumi.docker.buildx.inputs.CacheToGitHubActionsArgs;
-import com.pulumi.docker.buildx.inputs.CacheToInlineArgs;
-import com.pulumi.docker.buildx.inputs.CacheToLocalArgs;
-import com.pulumi.docker.buildx.inputs.CacheToRegistryArgs;
-import com.pulumi.docker.buildx.inputs.CacheToS3Args;
+import com.pulumi.docker.buildx.inputs.CacheFromAzureBlobArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromGitHubActionsArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromLocalArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromRegistryArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromS3Args;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -18,22 +17,22 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 
-public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
+public final class CacheFromArgs extends com.pulumi.resources.ResourceArgs {
 
-    public static final CacheToEntryArgs Empty = new CacheToEntryArgs();
+    public static final CacheFromArgs Empty = new CacheFromArgs();
 
     /**
-     * Push cache to Azure&#39;s blob storage service.
+     * Upload build caches to Azure&#39;s blob storage service.
      * 
      */
     @Import(name="azblob")
-    private @Nullable Output<CacheToAzureBlobArgs> azblob;
+    private @Nullable Output<CacheFromAzureBlobArgs> azblob;
 
     /**
-     * @return Push cache to Azure&#39;s blob storage service.
+     * @return Upload build caches to Azure&#39;s blob storage service.
      * 
      */
-    public Optional<Output<CacheToAzureBlobArgs>> azblob() {
+    public Optional<Output<CacheFromAzureBlobArgs>> azblob() {
         return Optional.ofNullable(this.azblob);
     }
 
@@ -60,7 +59,7 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="gha")
-    private @Nullable Output<CacheToGitHubActionsArgs> gha;
+    private @Nullable Output<CacheFromGitHubActionsArgs> gha;
 
     /**
      * @return Recommended for use with GitHub Actions workflows.
@@ -69,47 +68,28 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
      * expose appropriate credentials to your GitHub workflow.
      * 
      */
-    public Optional<Output<CacheToGitHubActionsArgs>> gha() {
+    public Optional<Output<CacheFromGitHubActionsArgs>> gha() {
         return Optional.ofNullable(this.gha);
     }
 
     /**
-     * The inline cache storage backend is the simplest implementation to get
-     * started with, but it does not handle multi-stage builds. Consider the
-     * `registry` cache backend instead.
-     * 
-     */
-    @Import(name="inline")
-    private @Nullable Output<CacheToInlineArgs> inline;
-
-    /**
-     * @return The inline cache storage backend is the simplest implementation to get
-     * started with, but it does not handle multi-stage builds. Consider the
-     * `registry` cache backend instead.
-     * 
-     */
-    public Optional<Output<CacheToInlineArgs>> inline() {
-        return Optional.ofNullable(this.inline);
-    }
-
-    /**
-     * A simple backend which caches imagines on your local filesystem.
+     * A simple backend which caches images on your local filesystem.
      * 
      */
     @Import(name="local")
-    private @Nullable Output<CacheToLocalArgs> local;
+    private @Nullable Output<CacheFromLocalArgs> local;
 
     /**
-     * @return A simple backend which caches imagines on your local filesystem.
+     * @return A simple backend which caches images on your local filesystem.
      * 
      */
-    public Optional<Output<CacheToLocalArgs>> local() {
+    public Optional<Output<CacheFromLocalArgs>> local() {
         return Optional.ofNullable(this.local);
     }
 
     /**
      * A raw string as you would provide it to the Docker CLI (e.g.,
-     * `type=inline`)
+     * `type=inline`).
      * 
      */
     @Import(name="raw")
@@ -117,7 +97,7 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * @return A raw string as you would provide it to the Docker CLI (e.g.,
-     * `type=inline`)
+     * `type=inline`).
      * 
      */
     public Optional<Output<String>> raw() {
@@ -125,44 +105,43 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Push caches to remote registries. Incompatible with the `docker` build
-     * driver.
+     * Upload build caches to remote registries.
      * 
      */
     @Import(name="registry")
-    private @Nullable Output<CacheToRegistryArgs> registry;
+    private @Nullable Output<CacheFromRegistryArgs> registry;
 
     /**
-     * @return Push caches to remote registries. Incompatible with the `docker` build
-     * driver.
+     * @return Upload build caches to remote registries.
      * 
      */
-    public Optional<Output<CacheToRegistryArgs>> registry() {
+    public Optional<Output<CacheFromRegistryArgs>> registry() {
         return Optional.ofNullable(this.registry);
     }
 
     /**
-     * Push cache to AWS S3 or S3-compatible services such as MinIO.
+     * Upload build caches to AWS S3 or an S3-compatible services such as
+     * MinIO.
      * 
      */
     @Import(name="s3")
-    private @Nullable Output<CacheToS3Args> s3;
+    private @Nullable Output<CacheFromS3Args> s3;
 
     /**
-     * @return Push cache to AWS S3 or S3-compatible services such as MinIO.
+     * @return Upload build caches to AWS S3 or an S3-compatible services such as
+     * MinIO.
      * 
      */
-    public Optional<Output<CacheToS3Args>> s3() {
+    public Optional<Output<CacheFromS3Args>> s3() {
         return Optional.ofNullable(this.s3);
     }
 
-    private CacheToEntryArgs() {}
+    private CacheFromArgs() {}
 
-    private CacheToEntryArgs(CacheToEntryArgs $) {
+    private CacheFromArgs(CacheFromArgs $) {
         this.azblob = $.azblob;
         this.disabled = $.disabled;
         this.gha = $.gha;
-        this.inline = $.inline;
         this.local = $.local;
         this.raw = $.raw;
         this.registry = $.registry;
@@ -172,39 +151,39 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
     public static Builder builder() {
         return new Builder();
     }
-    public static Builder builder(CacheToEntryArgs defaults) {
+    public static Builder builder(CacheFromArgs defaults) {
         return new Builder(defaults);
     }
 
     public static final class Builder {
-        private CacheToEntryArgs $;
+        private CacheFromArgs $;
 
         public Builder() {
-            $ = new CacheToEntryArgs();
+            $ = new CacheFromArgs();
         }
 
-        public Builder(CacheToEntryArgs defaults) {
-            $ = new CacheToEntryArgs(Objects.requireNonNull(defaults));
+        public Builder(CacheFromArgs defaults) {
+            $ = new CacheFromArgs(Objects.requireNonNull(defaults));
         }
 
         /**
-         * @param azblob Push cache to Azure&#39;s blob storage service.
+         * @param azblob Upload build caches to Azure&#39;s blob storage service.
          * 
          * @return builder
          * 
          */
-        public Builder azblob(@Nullable Output<CacheToAzureBlobArgs> azblob) {
+        public Builder azblob(@Nullable Output<CacheFromAzureBlobArgs> azblob) {
             $.azblob = azblob;
             return this;
         }
 
         /**
-         * @param azblob Push cache to Azure&#39;s blob storage service.
+         * @param azblob Upload build caches to Azure&#39;s blob storage service.
          * 
          * @return builder
          * 
          */
-        public Builder azblob(CacheToAzureBlobArgs azblob) {
+        public Builder azblob(CacheFromAzureBlobArgs azblob) {
             return azblob(Output.of(azblob));
         }
 
@@ -238,7 +217,7 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder gha(@Nullable Output<CacheToGitHubActionsArgs> gha) {
+        public Builder gha(@Nullable Output<CacheFromGitHubActionsArgs> gha) {
             $.gha = gha;
             return this;
         }
@@ -252,59 +231,34 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder gha(CacheToGitHubActionsArgs gha) {
+        public Builder gha(CacheFromGitHubActionsArgs gha) {
             return gha(Output.of(gha));
         }
 
         /**
-         * @param inline The inline cache storage backend is the simplest implementation to get
-         * started with, but it does not handle multi-stage builds. Consider the
-         * `registry` cache backend instead.
+         * @param local A simple backend which caches images on your local filesystem.
          * 
          * @return builder
          * 
          */
-        public Builder inline(@Nullable Output<CacheToInlineArgs> inline) {
-            $.inline = inline;
-            return this;
-        }
-
-        /**
-         * @param inline The inline cache storage backend is the simplest implementation to get
-         * started with, but it does not handle multi-stage builds. Consider the
-         * `registry` cache backend instead.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder inline(CacheToInlineArgs inline) {
-            return inline(Output.of(inline));
-        }
-
-        /**
-         * @param local A simple backend which caches imagines on your local filesystem.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder local(@Nullable Output<CacheToLocalArgs> local) {
+        public Builder local(@Nullable Output<CacheFromLocalArgs> local) {
             $.local = local;
             return this;
         }
 
         /**
-         * @param local A simple backend which caches imagines on your local filesystem.
+         * @param local A simple backend which caches images on your local filesystem.
          * 
          * @return builder
          * 
          */
-        public Builder local(CacheToLocalArgs local) {
+        public Builder local(CacheFromLocalArgs local) {
             return local(Output.of(local));
         }
 
         /**
          * @param raw A raw string as you would provide it to the Docker CLI (e.g.,
-         * `type=inline`)
+         * `type=inline`).
          * 
          * @return builder
          * 
@@ -316,7 +270,7 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param raw A raw string as you would provide it to the Docker CLI (e.g.,
-         * `type=inline`)
+         * `type=inline`).
          * 
          * @return builder
          * 
@@ -326,50 +280,50 @@ public final class CacheToEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registry Push caches to remote registries. Incompatible with the `docker` build
-         * driver.
+         * @param registry Upload build caches to remote registries.
          * 
          * @return builder
          * 
          */
-        public Builder registry(@Nullable Output<CacheToRegistryArgs> registry) {
+        public Builder registry(@Nullable Output<CacheFromRegistryArgs> registry) {
             $.registry = registry;
             return this;
         }
 
         /**
-         * @param registry Push caches to remote registries. Incompatible with the `docker` build
-         * driver.
+         * @param registry Upload build caches to remote registries.
          * 
          * @return builder
          * 
          */
-        public Builder registry(CacheToRegistryArgs registry) {
+        public Builder registry(CacheFromRegistryArgs registry) {
             return registry(Output.of(registry));
         }
 
         /**
-         * @param s3 Push cache to AWS S3 or S3-compatible services such as MinIO.
+         * @param s3 Upload build caches to AWS S3 or an S3-compatible services such as
+         * MinIO.
          * 
          * @return builder
          * 
          */
-        public Builder s3(@Nullable Output<CacheToS3Args> s3) {
+        public Builder s3(@Nullable Output<CacheFromS3Args> s3) {
             $.s3 = s3;
             return this;
         }
 
         /**
-         * @param s3 Push cache to AWS S3 or S3-compatible services such as MinIO.
+         * @param s3 Upload build caches to AWS S3 or an S3-compatible services such as
+         * MinIO.
          * 
          * @return builder
          * 
          */
-        public Builder s3(CacheToS3Args s3) {
+        public Builder s3(CacheFromS3Args s3) {
             return s3(Output.of(s3));
         }
 
-        public CacheToEntryArgs build() {
+        public CacheFromArgs build() {
             return $;
         }
     }

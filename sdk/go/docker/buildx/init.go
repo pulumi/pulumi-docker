@@ -23,6 +23,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 	switch typ {
 	case "docker:buildx/image:Image":
 		r = &Image{}
+	case "docker:buildx/image:Index":
+		r = &Index{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}

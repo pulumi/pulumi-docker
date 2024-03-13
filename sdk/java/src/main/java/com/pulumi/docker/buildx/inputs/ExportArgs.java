@@ -5,6 +5,7 @@ package com.pulumi.docker.buildx.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.docker.buildx.inputs.ExportCacheOnlyArgs;
 import com.pulumi.docker.buildx.inputs.ExportDockerArgs;
 import com.pulumi.docker.buildx.inputs.ExportImageArgs;
 import com.pulumi.docker.buildx.inputs.ExportLocalArgs;
@@ -18,9 +19,26 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 
-public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
+public final class ExportArgs extends com.pulumi.resources.ResourceArgs {
 
-    public static final ExportEntryArgs Empty = new ExportEntryArgs();
+    public static final ExportArgs Empty = new ExportArgs();
+
+    /**
+     * A no-op export. Helpful for silencing the &#39;no exports&#39; warning if you
+     * just want to populate caches.
+     * 
+     */
+    @Import(name="cacheonly")
+    private @Nullable Output<ExportCacheOnlyArgs> cacheonly;
+
+    /**
+     * @return A no-op export. Helpful for silencing the &#39;no exports&#39; warning if you
+     * just want to populate caches.
+     * 
+     */
+    public Optional<Output<ExportCacheOnlyArgs>> cacheonly() {
+        return Optional.ofNullable(this.cacheonly);
+    }
 
     /**
      * When `true` this entry will be excluded. Defaults to `false`.
@@ -144,9 +162,10 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.tar);
     }
 
-    private ExportEntryArgs() {}
+    private ExportArgs() {}
 
-    private ExportEntryArgs(ExportEntryArgs $) {
+    private ExportArgs(ExportArgs $) {
+        this.cacheonly = $.cacheonly;
         this.disabled = $.disabled;
         this.docker = $.docker;
         this.image = $.image;
@@ -160,19 +179,42 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     public static Builder builder() {
         return new Builder();
     }
-    public static Builder builder(ExportEntryArgs defaults) {
+    public static Builder builder(ExportArgs defaults) {
         return new Builder(defaults);
     }
 
     public static final class Builder {
-        private ExportEntryArgs $;
+        private ExportArgs $;
 
         public Builder() {
-            $ = new ExportEntryArgs();
+            $ = new ExportArgs();
         }
 
-        public Builder(ExportEntryArgs defaults) {
-            $ = new ExportEntryArgs(Objects.requireNonNull(defaults));
+        public Builder(ExportArgs defaults) {
+            $ = new ExportArgs(Objects.requireNonNull(defaults));
+        }
+
+        /**
+         * @param cacheonly A no-op export. Helpful for silencing the &#39;no exports&#39; warning if you
+         * just want to populate caches.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheonly(@Nullable Output<ExportCacheOnlyArgs> cacheonly) {
+            $.cacheonly = cacheonly;
+            return this;
+        }
+
+        /**
+         * @param cacheonly A no-op export. Helpful for silencing the &#39;no exports&#39; warning if you
+         * just want to populate caches.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheonly(ExportCacheOnlyArgs cacheonly) {
+            return cacheonly(Output.of(cacheonly));
         }
 
         /**
@@ -345,7 +387,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
             return tar(Output.of(tar));
         }
 
-        public ExportEntryArgs build() {
+        public ExportArgs build() {
             return $;
         }
     }

@@ -374,6 +374,194 @@ func (o BuilderConfigPtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+type CacheFrom struct {
+	// Upload build caches to Azure's blob storage service.
+	Azblob *CacheFromAzureBlob `pulumi:"azblob"`
+	// When `true` this entry will be excluded. Defaults to `false`.
+	Disabled *bool `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha *CacheFromGitHubActions `pulumi:"gha"`
+	// A simple backend which caches images on your local filesystem.
+	Local *CacheFromLocal `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// `type=inline`).
+	Raw *string `pulumi:"raw"`
+	// Upload build caches to remote registries.
+	Registry *CacheFromRegistry `pulumi:"registry"`
+	// Upload build caches to AWS S3 or an S3-compatible services such as
+	// MinIO.
+	S3 *CacheFromS3 `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheFrom
+func (val *CacheFrom) Defaults() *CacheFrom {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Gha = tmp.Gha.Defaults()
+
+	tmp.S3 = tmp.S3.Defaults()
+
+	return &tmp
+}
+
+// CacheFromInput is an input type that accepts CacheFromArgs and CacheFromOutput values.
+// You can construct a concrete instance of `CacheFromInput` via:
+//
+//	CacheFromArgs{...}
+type CacheFromInput interface {
+	pulumi.Input
+
+	ToCacheFromOutput() CacheFromOutput
+	ToCacheFromOutputWithContext(context.Context) CacheFromOutput
+}
+
+type CacheFromArgs struct {
+	// Upload build caches to Azure's blob storage service.
+	Azblob CacheFromAzureBlobPtrInput `pulumi:"azblob"`
+	// When `true` this entry will be excluded. Defaults to `false`.
+	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha CacheFromGitHubActionsPtrInput `pulumi:"gha"`
+	// A simple backend which caches images on your local filesystem.
+	Local CacheFromLocalPtrInput `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// `type=inline`).
+	Raw pulumi.StringPtrInput `pulumi:"raw"`
+	// Upload build caches to remote registries.
+	Registry CacheFromRegistryPtrInput `pulumi:"registry"`
+	// Upload build caches to AWS S3 or an S3-compatible services such as
+	// MinIO.
+	S3 CacheFromS3PtrInput `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromArgs
+func (val *CacheFromArgs) Defaults() *CacheFromArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+
+	return &tmp
+}
+func (CacheFromArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFrom)(nil)).Elem()
+}
+
+func (i CacheFromArgs) ToCacheFromOutput() CacheFromOutput {
+	return i.ToCacheFromOutputWithContext(context.Background())
+}
+
+func (i CacheFromArgs) ToCacheFromOutputWithContext(ctx context.Context) CacheFromOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromOutput)
+}
+
+// CacheFromArrayInput is an input type that accepts CacheFromArray and CacheFromArrayOutput values.
+// You can construct a concrete instance of `CacheFromArrayInput` via:
+//
+//	CacheFromArray{ CacheFromArgs{...} }
+type CacheFromArrayInput interface {
+	pulumi.Input
+
+	ToCacheFromArrayOutput() CacheFromArrayOutput
+	ToCacheFromArrayOutputWithContext(context.Context) CacheFromArrayOutput
+}
+
+type CacheFromArray []CacheFromInput
+
+func (CacheFromArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheFrom)(nil)).Elem()
+}
+
+func (i CacheFromArray) ToCacheFromArrayOutput() CacheFromArrayOutput {
+	return i.ToCacheFromArrayOutputWithContext(context.Background())
+}
+
+func (i CacheFromArray) ToCacheFromArrayOutputWithContext(ctx context.Context) CacheFromArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromArrayOutput)
+}
+
+type CacheFromOutput struct{ *pulumi.OutputState }
+
+func (CacheFromOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFrom)(nil)).Elem()
+}
+
+func (o CacheFromOutput) ToCacheFromOutput() CacheFromOutput {
+	return o
+}
+
+func (o CacheFromOutput) ToCacheFromOutputWithContext(ctx context.Context) CacheFromOutput {
+	return o
+}
+
+// Upload build caches to Azure's blob storage service.
+func (o CacheFromOutput) Azblob() CacheFromAzureBlobPtrOutput {
+	return o.ApplyT(func(v CacheFrom) *CacheFromAzureBlob { return v.Azblob }).(CacheFromAzureBlobPtrOutput)
+}
+
+// When `true` this entry will be excluded. Defaults to `false`.
+func (o CacheFromOutput) Disabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheFrom) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
+}
+
+// Recommended for use with GitHub Actions workflows.
+//
+// An action like `crazy-max/ghaction-github-runtime` is recommended to
+// expose appropriate credentials to your GitHub workflow.
+func (o CacheFromOutput) Gha() CacheFromGitHubActionsPtrOutput {
+	return o.ApplyT(func(v CacheFrom) *CacheFromGitHubActions { return v.Gha }).(CacheFromGitHubActionsPtrOutput)
+}
+
+// A simple backend which caches images on your local filesystem.
+func (o CacheFromOutput) Local() CacheFromLocalPtrOutput {
+	return o.ApplyT(func(v CacheFrom) *CacheFromLocal { return v.Local }).(CacheFromLocalPtrOutput)
+}
+
+// A raw string as you would provide it to the Docker CLI (e.g.,
+// `type=inline`).
+func (o CacheFromOutput) Raw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFrom) *string { return v.Raw }).(pulumi.StringPtrOutput)
+}
+
+// Upload build caches to remote registries.
+func (o CacheFromOutput) Registry() CacheFromRegistryPtrOutput {
+	return o.ApplyT(func(v CacheFrom) *CacheFromRegistry { return v.Registry }).(CacheFromRegistryPtrOutput)
+}
+
+// Upload build caches to AWS S3 or an S3-compatible services such as
+// MinIO.
+func (o CacheFromOutput) S3() CacheFromS3PtrOutput {
+	return o.ApplyT(func(v CacheFrom) *CacheFromS3 { return v.S3 }).(CacheFromS3PtrOutput)
+}
+
+type CacheFromArrayOutput struct{ *pulumi.OutputState }
+
+func (CacheFromArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheFrom)(nil)).Elem()
+}
+
+func (o CacheFromArrayOutput) ToCacheFromArrayOutput() CacheFromArrayOutput {
+	return o
+}
+
+func (o CacheFromArrayOutput) ToCacheFromArrayOutputWithContext(ctx context.Context) CacheFromArrayOutput {
+	return o
+}
+
+func (o CacheFromArrayOutput) Index(i pulumi.IntInput) CacheFromOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) CacheFrom {
+		return vs[0].([]CacheFrom)[vs[1].(int)]
+	}).(CacheFromOutput)
+}
+
 type CacheFromAzureBlob struct {
 	// Base URL of the storage account.
 	AccountUrl *string `pulumi:"accountUrl"`
@@ -547,194 +735,6 @@ func (o CacheFromAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 		}
 		return v.SecretAccessKey
 	}).(pulumi.StringPtrOutput)
-}
-
-type CacheFromEntry struct {
-	// Upload build caches to Azure's blob storage service.
-	Azblob *CacheFromAzureBlob `pulumi:"azblob"`
-	// When `true` this entry will be excluded. Defaults to `false`.
-	Disabled *bool `pulumi:"disabled"`
-	// Recommended for use with GitHub Actions workflows.
-	//
-	// An action like `crazy-max/ghaction-github-runtime` is recommended to
-	// expose appropriate credentials to your GitHub workflow.
-	Gha *CacheFromGitHubActions `pulumi:"gha"`
-	// A simple backend which caches images on your local filesystem.
-	Local *CacheFromLocal `pulumi:"local"`
-	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// `type=inline`).
-	Raw *string `pulumi:"raw"`
-	// Upload build caches to remote registries.
-	Registry *CacheFromRegistry `pulumi:"registry"`
-	// Upload build caches to AWS S3 or an S3-compatible services such as
-	// MinIO.
-	S3 *CacheFromS3 `pulumi:"s3"`
-}
-
-// Defaults sets the appropriate defaults for CacheFromEntry
-func (val *CacheFromEntry) Defaults() *CacheFromEntry {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-	tmp.Gha = tmp.Gha.Defaults()
-
-	tmp.S3 = tmp.S3.Defaults()
-
-	return &tmp
-}
-
-// CacheFromEntryInput is an input type that accepts CacheFromEntryArgs and CacheFromEntryOutput values.
-// You can construct a concrete instance of `CacheFromEntryInput` via:
-//
-//	CacheFromEntryArgs{...}
-type CacheFromEntryInput interface {
-	pulumi.Input
-
-	ToCacheFromEntryOutput() CacheFromEntryOutput
-	ToCacheFromEntryOutputWithContext(context.Context) CacheFromEntryOutput
-}
-
-type CacheFromEntryArgs struct {
-	// Upload build caches to Azure's blob storage service.
-	Azblob CacheFromAzureBlobPtrInput `pulumi:"azblob"`
-	// When `true` this entry will be excluded. Defaults to `false`.
-	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
-	// Recommended for use with GitHub Actions workflows.
-	//
-	// An action like `crazy-max/ghaction-github-runtime` is recommended to
-	// expose appropriate credentials to your GitHub workflow.
-	Gha CacheFromGitHubActionsPtrInput `pulumi:"gha"`
-	// A simple backend which caches images on your local filesystem.
-	Local CacheFromLocalPtrInput `pulumi:"local"`
-	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// `type=inline`).
-	Raw pulumi.StringPtrInput `pulumi:"raw"`
-	// Upload build caches to remote registries.
-	Registry CacheFromRegistryPtrInput `pulumi:"registry"`
-	// Upload build caches to AWS S3 or an S3-compatible services such as
-	// MinIO.
-	S3 CacheFromS3PtrInput `pulumi:"s3"`
-}
-
-// Defaults sets the appropriate defaults for CacheFromEntryArgs
-func (val *CacheFromEntryArgs) Defaults() *CacheFromEntryArgs {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-
-	return &tmp
-}
-func (CacheFromEntryArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*CacheFromEntry)(nil)).Elem()
-}
-
-func (i CacheFromEntryArgs) ToCacheFromEntryOutput() CacheFromEntryOutput {
-	return i.ToCacheFromEntryOutputWithContext(context.Background())
-}
-
-func (i CacheFromEntryArgs) ToCacheFromEntryOutputWithContext(ctx context.Context) CacheFromEntryOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(CacheFromEntryOutput)
-}
-
-// CacheFromEntryArrayInput is an input type that accepts CacheFromEntryArray and CacheFromEntryArrayOutput values.
-// You can construct a concrete instance of `CacheFromEntryArrayInput` via:
-//
-//	CacheFromEntryArray{ CacheFromEntryArgs{...} }
-type CacheFromEntryArrayInput interface {
-	pulumi.Input
-
-	ToCacheFromEntryArrayOutput() CacheFromEntryArrayOutput
-	ToCacheFromEntryArrayOutputWithContext(context.Context) CacheFromEntryArrayOutput
-}
-
-type CacheFromEntryArray []CacheFromEntryInput
-
-func (CacheFromEntryArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]CacheFromEntry)(nil)).Elem()
-}
-
-func (i CacheFromEntryArray) ToCacheFromEntryArrayOutput() CacheFromEntryArrayOutput {
-	return i.ToCacheFromEntryArrayOutputWithContext(context.Background())
-}
-
-func (i CacheFromEntryArray) ToCacheFromEntryArrayOutputWithContext(ctx context.Context) CacheFromEntryArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(CacheFromEntryArrayOutput)
-}
-
-type CacheFromEntryOutput struct{ *pulumi.OutputState }
-
-func (CacheFromEntryOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*CacheFromEntry)(nil)).Elem()
-}
-
-func (o CacheFromEntryOutput) ToCacheFromEntryOutput() CacheFromEntryOutput {
-	return o
-}
-
-func (o CacheFromEntryOutput) ToCacheFromEntryOutputWithContext(ctx context.Context) CacheFromEntryOutput {
-	return o
-}
-
-// Upload build caches to Azure's blob storage service.
-func (o CacheFromEntryOutput) Azblob() CacheFromAzureBlobPtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *CacheFromAzureBlob { return v.Azblob }).(CacheFromAzureBlobPtrOutput)
-}
-
-// When `true` this entry will be excluded. Defaults to `false`.
-func (o CacheFromEntryOutput) Disabled() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
-}
-
-// Recommended for use with GitHub Actions workflows.
-//
-// An action like `crazy-max/ghaction-github-runtime` is recommended to
-// expose appropriate credentials to your GitHub workflow.
-func (o CacheFromEntryOutput) Gha() CacheFromGitHubActionsPtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *CacheFromGitHubActions { return v.Gha }).(CacheFromGitHubActionsPtrOutput)
-}
-
-// A simple backend which caches images on your local filesystem.
-func (o CacheFromEntryOutput) Local() CacheFromLocalPtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *CacheFromLocal { return v.Local }).(CacheFromLocalPtrOutput)
-}
-
-// A raw string as you would provide it to the Docker CLI (e.g.,
-// `type=inline`).
-func (o CacheFromEntryOutput) Raw() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
-}
-
-// Upload build caches to remote registries.
-func (o CacheFromEntryOutput) Registry() CacheFromRegistryPtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *CacheFromRegistry { return v.Registry }).(CacheFromRegistryPtrOutput)
-}
-
-// Upload build caches to AWS S3 or an S3-compatible services such as
-// MinIO.
-func (o CacheFromEntryOutput) S3() CacheFromS3PtrOutput {
-	return o.ApplyT(func(v CacheFromEntry) *CacheFromS3 { return v.S3 }).(CacheFromS3PtrOutput)
-}
-
-type CacheFromEntryArrayOutput struct{ *pulumi.OutputState }
-
-func (CacheFromEntryArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]CacheFromEntry)(nil)).Elem()
-}
-
-func (o CacheFromEntryArrayOutput) ToCacheFromEntryArrayOutput() CacheFromEntryArrayOutput {
-	return o
-}
-
-func (o CacheFromEntryArrayOutput) ToCacheFromEntryArrayOutputWithContext(ctx context.Context) CacheFromEntryArrayOutput {
-	return o
-}
-
-func (o CacheFromEntryArrayOutput) Index(i pulumi.IntInput) CacheFromEntryOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) CacheFromEntry {
-		return vs[0].([]CacheFromEntry)[vs[1].(int)]
-	}).(CacheFromEntryOutput)
 }
 
 type CacheFromGitHubActions struct {
@@ -1671,6 +1671,215 @@ func (o CacheFromS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+type CacheTo struct {
+	// Push cache to Azure's blob storage service.
+	Azblob *CacheToAzureBlob `pulumi:"azblob"`
+	// When `true` this entry will be excluded. Defaults to `false`.
+	Disabled *bool `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha *CacheToGitHubActions `pulumi:"gha"`
+	// The inline cache storage backend is the simplest implementation to get
+	// started with, but it does not handle multi-stage builds. Consider the
+	// `registry` cache backend instead.
+	Inline *CacheToInline `pulumi:"inline"`
+	// A simple backend which caches imagines on your local filesystem.
+	Local *CacheToLocal `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// `type=inline`)
+	Raw *string `pulumi:"raw"`
+	// Push caches to remote registries. Incompatible with the `docker` build
+	// driver.
+	Registry *CacheToRegistry `pulumi:"registry"`
+	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	S3 *CacheToS3 `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheTo
+func (val *CacheTo) Defaults() *CacheTo {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Azblob = tmp.Azblob.Defaults()
+
+	tmp.Gha = tmp.Gha.Defaults()
+
+	tmp.Local = tmp.Local.Defaults()
+
+	tmp.Registry = tmp.Registry.Defaults()
+
+	tmp.S3 = tmp.S3.Defaults()
+
+	return &tmp
+}
+
+// CacheToInput is an input type that accepts CacheToArgs and CacheToOutput values.
+// You can construct a concrete instance of `CacheToInput` via:
+//
+//	CacheToArgs{...}
+type CacheToInput interface {
+	pulumi.Input
+
+	ToCacheToOutput() CacheToOutput
+	ToCacheToOutputWithContext(context.Context) CacheToOutput
+}
+
+type CacheToArgs struct {
+	// Push cache to Azure's blob storage service.
+	Azblob CacheToAzureBlobPtrInput `pulumi:"azblob"`
+	// When `true` this entry will be excluded. Defaults to `false`.
+	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha CacheToGitHubActionsPtrInput `pulumi:"gha"`
+	// The inline cache storage backend is the simplest implementation to get
+	// started with, but it does not handle multi-stage builds. Consider the
+	// `registry` cache backend instead.
+	Inline CacheToInlinePtrInput `pulumi:"inline"`
+	// A simple backend which caches imagines on your local filesystem.
+	Local CacheToLocalPtrInput `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// `type=inline`)
+	Raw pulumi.StringPtrInput `pulumi:"raw"`
+	// Push caches to remote registries. Incompatible with the `docker` build
+	// driver.
+	Registry CacheToRegistryPtrInput `pulumi:"registry"`
+	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	S3 CacheToS3PtrInput `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheToArgs
+func (val *CacheToArgs) Defaults() *CacheToArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+
+	return &tmp
+}
+func (CacheToArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheTo)(nil)).Elem()
+}
+
+func (i CacheToArgs) ToCacheToOutput() CacheToOutput {
+	return i.ToCacheToOutputWithContext(context.Background())
+}
+
+func (i CacheToArgs) ToCacheToOutputWithContext(ctx context.Context) CacheToOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToOutput)
+}
+
+// CacheToArrayInput is an input type that accepts CacheToArray and CacheToArrayOutput values.
+// You can construct a concrete instance of `CacheToArrayInput` via:
+//
+//	CacheToArray{ CacheToArgs{...} }
+type CacheToArrayInput interface {
+	pulumi.Input
+
+	ToCacheToArrayOutput() CacheToArrayOutput
+	ToCacheToArrayOutputWithContext(context.Context) CacheToArrayOutput
+}
+
+type CacheToArray []CacheToInput
+
+func (CacheToArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheTo)(nil)).Elem()
+}
+
+func (i CacheToArray) ToCacheToArrayOutput() CacheToArrayOutput {
+	return i.ToCacheToArrayOutputWithContext(context.Background())
+}
+
+func (i CacheToArray) ToCacheToArrayOutputWithContext(ctx context.Context) CacheToArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToArrayOutput)
+}
+
+type CacheToOutput struct{ *pulumi.OutputState }
+
+func (CacheToOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheTo)(nil)).Elem()
+}
+
+func (o CacheToOutput) ToCacheToOutput() CacheToOutput {
+	return o
+}
+
+func (o CacheToOutput) ToCacheToOutputWithContext(ctx context.Context) CacheToOutput {
+	return o
+}
+
+// Push cache to Azure's blob storage service.
+func (o CacheToOutput) Azblob() CacheToAzureBlobPtrOutput {
+	return o.ApplyT(func(v CacheTo) *CacheToAzureBlob { return v.Azblob }).(CacheToAzureBlobPtrOutput)
+}
+
+// When `true` this entry will be excluded. Defaults to `false`.
+func (o CacheToOutput) Disabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheTo) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
+}
+
+// Recommended for use with GitHub Actions workflows.
+//
+// An action like `crazy-max/ghaction-github-runtime` is recommended to
+// expose appropriate credentials to your GitHub workflow.
+func (o CacheToOutput) Gha() CacheToGitHubActionsPtrOutput {
+	return o.ApplyT(func(v CacheTo) *CacheToGitHubActions { return v.Gha }).(CacheToGitHubActionsPtrOutput)
+}
+
+// The inline cache storage backend is the simplest implementation to get
+// started with, but it does not handle multi-stage builds. Consider the
+// `registry` cache backend instead.
+func (o CacheToOutput) Inline() CacheToInlinePtrOutput {
+	return o.ApplyT(func(v CacheTo) *CacheToInline { return v.Inline }).(CacheToInlinePtrOutput)
+}
+
+// A simple backend which caches imagines on your local filesystem.
+func (o CacheToOutput) Local() CacheToLocalPtrOutput {
+	return o.ApplyT(func(v CacheTo) *CacheToLocal { return v.Local }).(CacheToLocalPtrOutput)
+}
+
+// A raw string as you would provide it to the Docker CLI (e.g.,
+// `type=inline`)
+func (o CacheToOutput) Raw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheTo) *string { return v.Raw }).(pulumi.StringPtrOutput)
+}
+
+// Push caches to remote registries. Incompatible with the `docker` build
+// driver.
+func (o CacheToOutput) Registry() CacheToRegistryPtrOutput {
+	return o.ApplyT(func(v CacheTo) *CacheToRegistry { return v.Registry }).(CacheToRegistryPtrOutput)
+}
+
+// Push cache to AWS S3 or S3-compatible services such as MinIO.
+func (o CacheToOutput) S3() CacheToS3PtrOutput {
+	return o.ApplyT(func(v CacheTo) *CacheToS3 { return v.S3 }).(CacheToS3PtrOutput)
+}
+
+type CacheToArrayOutput struct{ *pulumi.OutputState }
+
+func (CacheToArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheTo)(nil)).Elem()
+}
+
+func (o CacheToArrayOutput) ToCacheToArrayOutput() CacheToArrayOutput {
+	return o
+}
+
+func (o CacheToArrayOutput) ToCacheToArrayOutputWithContext(ctx context.Context) CacheToArrayOutput {
+	return o
+}
+
+func (o CacheToArrayOutput) Index(i pulumi.IntInput) CacheToOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) CacheTo {
+		return vs[0].([]CacheTo)[vs[1].(int)]
+	}).(CacheToOutput)
+}
+
 type CacheToAzureBlob struct {
 	// Base URL of the storage account.
 	AccountUrl *string `pulumi:"accountUrl"`
@@ -1913,215 +2122,6 @@ func (o CacheToAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 		}
 		return v.SecretAccessKey
 	}).(pulumi.StringPtrOutput)
-}
-
-type CacheToEntry struct {
-	// Push cache to Azure's blob storage service.
-	Azblob *CacheToAzureBlob `pulumi:"azblob"`
-	// When `true` this entry will be excluded. Defaults to `false`.
-	Disabled *bool `pulumi:"disabled"`
-	// Recommended for use with GitHub Actions workflows.
-	//
-	// An action like `crazy-max/ghaction-github-runtime` is recommended to
-	// expose appropriate credentials to your GitHub workflow.
-	Gha *CacheToGitHubActions `pulumi:"gha"`
-	// The inline cache storage backend is the simplest implementation to get
-	// started with, but it does not handle multi-stage builds. Consider the
-	// `registry` cache backend instead.
-	Inline *CacheToInline `pulumi:"inline"`
-	// A simple backend which caches imagines on your local filesystem.
-	Local *CacheToLocal `pulumi:"local"`
-	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// `type=inline`)
-	Raw *string `pulumi:"raw"`
-	// Push caches to remote registries. Incompatible with the `docker` build
-	// driver.
-	Registry *CacheToRegistry `pulumi:"registry"`
-	// Push cache to AWS S3 or S3-compatible services such as MinIO.
-	S3 *CacheToS3 `pulumi:"s3"`
-}
-
-// Defaults sets the appropriate defaults for CacheToEntry
-func (val *CacheToEntry) Defaults() *CacheToEntry {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-	tmp.Azblob = tmp.Azblob.Defaults()
-
-	tmp.Gha = tmp.Gha.Defaults()
-
-	tmp.Local = tmp.Local.Defaults()
-
-	tmp.Registry = tmp.Registry.Defaults()
-
-	tmp.S3 = tmp.S3.Defaults()
-
-	return &tmp
-}
-
-// CacheToEntryInput is an input type that accepts CacheToEntryArgs and CacheToEntryOutput values.
-// You can construct a concrete instance of `CacheToEntryInput` via:
-//
-//	CacheToEntryArgs{...}
-type CacheToEntryInput interface {
-	pulumi.Input
-
-	ToCacheToEntryOutput() CacheToEntryOutput
-	ToCacheToEntryOutputWithContext(context.Context) CacheToEntryOutput
-}
-
-type CacheToEntryArgs struct {
-	// Push cache to Azure's blob storage service.
-	Azblob CacheToAzureBlobPtrInput `pulumi:"azblob"`
-	// When `true` this entry will be excluded. Defaults to `false`.
-	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
-	// Recommended for use with GitHub Actions workflows.
-	//
-	// An action like `crazy-max/ghaction-github-runtime` is recommended to
-	// expose appropriate credentials to your GitHub workflow.
-	Gha CacheToGitHubActionsPtrInput `pulumi:"gha"`
-	// The inline cache storage backend is the simplest implementation to get
-	// started with, but it does not handle multi-stage builds. Consider the
-	// `registry` cache backend instead.
-	Inline CacheToInlinePtrInput `pulumi:"inline"`
-	// A simple backend which caches imagines on your local filesystem.
-	Local CacheToLocalPtrInput `pulumi:"local"`
-	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// `type=inline`)
-	Raw pulumi.StringPtrInput `pulumi:"raw"`
-	// Push caches to remote registries. Incompatible with the `docker` build
-	// driver.
-	Registry CacheToRegistryPtrInput `pulumi:"registry"`
-	// Push cache to AWS S3 or S3-compatible services such as MinIO.
-	S3 CacheToS3PtrInput `pulumi:"s3"`
-}
-
-// Defaults sets the appropriate defaults for CacheToEntryArgs
-func (val *CacheToEntryArgs) Defaults() *CacheToEntryArgs {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-
-	return &tmp
-}
-func (CacheToEntryArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*CacheToEntry)(nil)).Elem()
-}
-
-func (i CacheToEntryArgs) ToCacheToEntryOutput() CacheToEntryOutput {
-	return i.ToCacheToEntryOutputWithContext(context.Background())
-}
-
-func (i CacheToEntryArgs) ToCacheToEntryOutputWithContext(ctx context.Context) CacheToEntryOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(CacheToEntryOutput)
-}
-
-// CacheToEntryArrayInput is an input type that accepts CacheToEntryArray and CacheToEntryArrayOutput values.
-// You can construct a concrete instance of `CacheToEntryArrayInput` via:
-//
-//	CacheToEntryArray{ CacheToEntryArgs{...} }
-type CacheToEntryArrayInput interface {
-	pulumi.Input
-
-	ToCacheToEntryArrayOutput() CacheToEntryArrayOutput
-	ToCacheToEntryArrayOutputWithContext(context.Context) CacheToEntryArrayOutput
-}
-
-type CacheToEntryArray []CacheToEntryInput
-
-func (CacheToEntryArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]CacheToEntry)(nil)).Elem()
-}
-
-func (i CacheToEntryArray) ToCacheToEntryArrayOutput() CacheToEntryArrayOutput {
-	return i.ToCacheToEntryArrayOutputWithContext(context.Background())
-}
-
-func (i CacheToEntryArray) ToCacheToEntryArrayOutputWithContext(ctx context.Context) CacheToEntryArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(CacheToEntryArrayOutput)
-}
-
-type CacheToEntryOutput struct{ *pulumi.OutputState }
-
-func (CacheToEntryOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*CacheToEntry)(nil)).Elem()
-}
-
-func (o CacheToEntryOutput) ToCacheToEntryOutput() CacheToEntryOutput {
-	return o
-}
-
-func (o CacheToEntryOutput) ToCacheToEntryOutputWithContext(ctx context.Context) CacheToEntryOutput {
-	return o
-}
-
-// Push cache to Azure's blob storage service.
-func (o CacheToEntryOutput) Azblob() CacheToAzureBlobPtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *CacheToAzureBlob { return v.Azblob }).(CacheToAzureBlobPtrOutput)
-}
-
-// When `true` this entry will be excluded. Defaults to `false`.
-func (o CacheToEntryOutput) Disabled() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
-}
-
-// Recommended for use with GitHub Actions workflows.
-//
-// An action like `crazy-max/ghaction-github-runtime` is recommended to
-// expose appropriate credentials to your GitHub workflow.
-func (o CacheToEntryOutput) Gha() CacheToGitHubActionsPtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *CacheToGitHubActions { return v.Gha }).(CacheToGitHubActionsPtrOutput)
-}
-
-// The inline cache storage backend is the simplest implementation to get
-// started with, but it does not handle multi-stage builds. Consider the
-// `registry` cache backend instead.
-func (o CacheToEntryOutput) Inline() CacheToInlinePtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *CacheToInline { return v.Inline }).(CacheToInlinePtrOutput)
-}
-
-// A simple backend which caches imagines on your local filesystem.
-func (o CacheToEntryOutput) Local() CacheToLocalPtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *CacheToLocal { return v.Local }).(CacheToLocalPtrOutput)
-}
-
-// A raw string as you would provide it to the Docker CLI (e.g.,
-// `type=inline`)
-func (o CacheToEntryOutput) Raw() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
-}
-
-// Push caches to remote registries. Incompatible with the `docker` build
-// driver.
-func (o CacheToEntryOutput) Registry() CacheToRegistryPtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *CacheToRegistry { return v.Registry }).(CacheToRegistryPtrOutput)
-}
-
-// Push cache to AWS S3 or S3-compatible services such as MinIO.
-func (o CacheToEntryOutput) S3() CacheToS3PtrOutput {
-	return o.ApplyT(func(v CacheToEntry) *CacheToS3 { return v.S3 }).(CacheToS3PtrOutput)
-}
-
-type CacheToEntryArrayOutput struct{ *pulumi.OutputState }
-
-func (CacheToEntryArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]CacheToEntry)(nil)).Elem()
-}
-
-func (o CacheToEntryArrayOutput) ToCacheToEntryArrayOutput() CacheToEntryArrayOutput {
-	return o
-}
-
-func (o CacheToEntryArrayOutput) ToCacheToEntryArrayOutputWithContext(ctx context.Context) CacheToEntryArrayOutput {
-	return o
-}
-
-func (o CacheToEntryArrayOutput) Index(i pulumi.IntInput) CacheToEntryOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) CacheToEntry {
-		return vs[0].([]CacheToEntry)[vs[1].(int)]
-	}).(CacheToEntryOutput)
 }
 
 type CacheToGitHubActions struct {
@@ -2449,6 +2449,7 @@ func (o CacheToGitHubActionsPtrOutput) Url() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Include an inline cache with the exported image.
 type CacheToInline struct {
 }
 
@@ -2463,6 +2464,7 @@ type CacheToInlineInput interface {
 	ToCacheToInlineOutputWithContext(context.Context) CacheToInlineOutput
 }
 
+// Include an inline cache with the exported image.
 type CacheToInlineArgs struct {
 }
 
@@ -2519,6 +2521,7 @@ func (i *cacheToInlinePtrType) ToCacheToInlinePtrOutputWithContext(ctx context.C
 	return pulumi.ToOutputWithContext(ctx, i).(CacheToInlinePtrOutput)
 }
 
+// Include an inline cache with the exported image.
 type CacheToInlineOutput struct{ *pulumi.OutputState }
 
 func (CacheToInlineOutput) ElementType() reflect.Type {
@@ -3937,6 +3940,325 @@ func (o DockerfilePtrOutput) Location() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+type Export struct {
+	// A no-op export. Helpful for silencing the 'no exports' warning if you
+	// just want to populate caches.
+	Cacheonly *ExportCacheOnly `pulumi:"cacheonly"`
+	// When `true` this entry will be excluded. Defaults to `false`.
+	Disabled *bool `pulumi:"disabled"`
+	// Export as a Docker image layout.
+	Docker *ExportDocker `pulumi:"docker"`
+	// Outputs the build result into a container image format.
+	Image *ExportImage `pulumi:"image"`
+	// Export to a local directory as files and directories.
+	Local *ExportLocal `pulumi:"local"`
+	// Identical to the Docker exporter but uses OCI media types by default.
+	Oci *ExportOCI `pulumi:"oci"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// `type=docker`)
+	Raw *string `pulumi:"raw"`
+	// Identical to the Image exporter, but pushes by default.
+	Registry *ExportRegistry `pulumi:"registry"`
+	// Export to a local directory as a tarball.
+	Tar *ExportTar `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for Export
+func (val *Export) Defaults() *Export {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Docker = tmp.Docker.Defaults()
+
+	tmp.Image = tmp.Image.Defaults()
+
+	tmp.Oci = tmp.Oci.Defaults()
+
+	tmp.Registry = tmp.Registry.Defaults()
+
+	return &tmp
+}
+
+// ExportInput is an input type that accepts ExportArgs and ExportOutput values.
+// You can construct a concrete instance of `ExportInput` via:
+//
+//	ExportArgs{...}
+type ExportInput interface {
+	pulumi.Input
+
+	ToExportOutput() ExportOutput
+	ToExportOutputWithContext(context.Context) ExportOutput
+}
+
+type ExportArgs struct {
+	// A no-op export. Helpful for silencing the 'no exports' warning if you
+	// just want to populate caches.
+	Cacheonly ExportCacheOnlyPtrInput `pulumi:"cacheonly"`
+	// When `true` this entry will be excluded. Defaults to `false`.
+	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
+	// Export as a Docker image layout.
+	Docker ExportDockerPtrInput `pulumi:"docker"`
+	// Outputs the build result into a container image format.
+	Image ExportImagePtrInput `pulumi:"image"`
+	// Export to a local directory as files and directories.
+	Local ExportLocalPtrInput `pulumi:"local"`
+	// Identical to the Docker exporter but uses OCI media types by default.
+	Oci ExportOCIPtrInput `pulumi:"oci"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// `type=docker`)
+	Raw pulumi.StringPtrInput `pulumi:"raw"`
+	// Identical to the Image exporter, but pushes by default.
+	Registry ExportRegistryPtrInput `pulumi:"registry"`
+	// Export to a local directory as a tarball.
+	Tar ExportTarPtrInput `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportArgs
+func (val *ExportArgs) Defaults() *ExportArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+
+	return &tmp
+}
+func (ExportArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Export)(nil)).Elem()
+}
+
+func (i ExportArgs) ToExportOutput() ExportOutput {
+	return i.ToExportOutputWithContext(context.Background())
+}
+
+func (i ExportArgs) ToExportOutputWithContext(ctx context.Context) ExportOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportOutput)
+}
+
+// ExportArrayInput is an input type that accepts ExportArray and ExportArrayOutput values.
+// You can construct a concrete instance of `ExportArrayInput` via:
+//
+//	ExportArray{ ExportArgs{...} }
+type ExportArrayInput interface {
+	pulumi.Input
+
+	ToExportArrayOutput() ExportArrayOutput
+	ToExportArrayOutputWithContext(context.Context) ExportArrayOutput
+}
+
+type ExportArray []ExportInput
+
+func (ExportArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]Export)(nil)).Elem()
+}
+
+func (i ExportArray) ToExportArrayOutput() ExportArrayOutput {
+	return i.ToExportArrayOutputWithContext(context.Background())
+}
+
+func (i ExportArray) ToExportArrayOutputWithContext(ctx context.Context) ExportArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportArrayOutput)
+}
+
+type ExportOutput struct{ *pulumi.OutputState }
+
+func (ExportOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Export)(nil)).Elem()
+}
+
+func (o ExportOutput) ToExportOutput() ExportOutput {
+	return o
+}
+
+func (o ExportOutput) ToExportOutputWithContext(ctx context.Context) ExportOutput {
+	return o
+}
+
+// A no-op export. Helpful for silencing the 'no exports' warning if you
+// just want to populate caches.
+func (o ExportOutput) Cacheonly() ExportCacheOnlyPtrOutput {
+	return o.ApplyT(func(v Export) *ExportCacheOnly { return v.Cacheonly }).(ExportCacheOnlyPtrOutput)
+}
+
+// When `true` this entry will be excluded. Defaults to `false`.
+func (o ExportOutput) Disabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v Export) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
+}
+
+// Export as a Docker image layout.
+func (o ExportOutput) Docker() ExportDockerPtrOutput {
+	return o.ApplyT(func(v Export) *ExportDocker { return v.Docker }).(ExportDockerPtrOutput)
+}
+
+// Outputs the build result into a container image format.
+func (o ExportOutput) Image() ExportImagePtrOutput {
+	return o.ApplyT(func(v Export) *ExportImage { return v.Image }).(ExportImagePtrOutput)
+}
+
+// Export to a local directory as files and directories.
+func (o ExportOutput) Local() ExportLocalPtrOutput {
+	return o.ApplyT(func(v Export) *ExportLocal { return v.Local }).(ExportLocalPtrOutput)
+}
+
+// Identical to the Docker exporter but uses OCI media types by default.
+func (o ExportOutput) Oci() ExportOCIPtrOutput {
+	return o.ApplyT(func(v Export) *ExportOCI { return v.Oci }).(ExportOCIPtrOutput)
+}
+
+// A raw string as you would provide it to the Docker CLI (e.g.,
+// `type=docker`)
+func (o ExportOutput) Raw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Export) *string { return v.Raw }).(pulumi.StringPtrOutput)
+}
+
+// Identical to the Image exporter, but pushes by default.
+func (o ExportOutput) Registry() ExportRegistryPtrOutput {
+	return o.ApplyT(func(v Export) *ExportRegistry { return v.Registry }).(ExportRegistryPtrOutput)
+}
+
+// Export to a local directory as a tarball.
+func (o ExportOutput) Tar() ExportTarPtrOutput {
+	return o.ApplyT(func(v Export) *ExportTar { return v.Tar }).(ExportTarPtrOutput)
+}
+
+type ExportArrayOutput struct{ *pulumi.OutputState }
+
+func (ExportArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]Export)(nil)).Elem()
+}
+
+func (o ExportArrayOutput) ToExportArrayOutput() ExportArrayOutput {
+	return o
+}
+
+func (o ExportArrayOutput) ToExportArrayOutputWithContext(ctx context.Context) ExportArrayOutput {
+	return o
+}
+
+func (o ExportArrayOutput) Index(i pulumi.IntInput) ExportOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Export {
+		return vs[0].([]Export)[vs[1].(int)]
+	}).(ExportOutput)
+}
+
+type ExportCacheOnly struct {
+}
+
+// ExportCacheOnlyInput is an input type that accepts ExportCacheOnlyArgs and ExportCacheOnlyOutput values.
+// You can construct a concrete instance of `ExportCacheOnlyInput` via:
+//
+//	ExportCacheOnlyArgs{...}
+type ExportCacheOnlyInput interface {
+	pulumi.Input
+
+	ToExportCacheOnlyOutput() ExportCacheOnlyOutput
+	ToExportCacheOnlyOutputWithContext(context.Context) ExportCacheOnlyOutput
+}
+
+type ExportCacheOnlyArgs struct {
+}
+
+func (ExportCacheOnlyArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportCacheOnly)(nil)).Elem()
+}
+
+func (i ExportCacheOnlyArgs) ToExportCacheOnlyOutput() ExportCacheOnlyOutput {
+	return i.ToExportCacheOnlyOutputWithContext(context.Background())
+}
+
+func (i ExportCacheOnlyArgs) ToExportCacheOnlyOutputWithContext(ctx context.Context) ExportCacheOnlyOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportCacheOnlyOutput)
+}
+
+func (i ExportCacheOnlyArgs) ToExportCacheOnlyPtrOutput() ExportCacheOnlyPtrOutput {
+	return i.ToExportCacheOnlyPtrOutputWithContext(context.Background())
+}
+
+func (i ExportCacheOnlyArgs) ToExportCacheOnlyPtrOutputWithContext(ctx context.Context) ExportCacheOnlyPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportCacheOnlyOutput).ToExportCacheOnlyPtrOutputWithContext(ctx)
+}
+
+// ExportCacheOnlyPtrInput is an input type that accepts ExportCacheOnlyArgs, ExportCacheOnlyPtr and ExportCacheOnlyPtrOutput values.
+// You can construct a concrete instance of `ExportCacheOnlyPtrInput` via:
+//
+//	        ExportCacheOnlyArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportCacheOnlyPtrInput interface {
+	pulumi.Input
+
+	ToExportCacheOnlyPtrOutput() ExportCacheOnlyPtrOutput
+	ToExportCacheOnlyPtrOutputWithContext(context.Context) ExportCacheOnlyPtrOutput
+}
+
+type exportCacheOnlyPtrType ExportCacheOnlyArgs
+
+func ExportCacheOnlyPtr(v *ExportCacheOnlyArgs) ExportCacheOnlyPtrInput {
+	return (*exportCacheOnlyPtrType)(v)
+}
+
+func (*exportCacheOnlyPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportCacheOnly)(nil)).Elem()
+}
+
+func (i *exportCacheOnlyPtrType) ToExportCacheOnlyPtrOutput() ExportCacheOnlyPtrOutput {
+	return i.ToExportCacheOnlyPtrOutputWithContext(context.Background())
+}
+
+func (i *exportCacheOnlyPtrType) ToExportCacheOnlyPtrOutputWithContext(ctx context.Context) ExportCacheOnlyPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportCacheOnlyPtrOutput)
+}
+
+type ExportCacheOnlyOutput struct{ *pulumi.OutputState }
+
+func (ExportCacheOnlyOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportCacheOnly)(nil)).Elem()
+}
+
+func (o ExportCacheOnlyOutput) ToExportCacheOnlyOutput() ExportCacheOnlyOutput {
+	return o
+}
+
+func (o ExportCacheOnlyOutput) ToExportCacheOnlyOutputWithContext(ctx context.Context) ExportCacheOnlyOutput {
+	return o
+}
+
+func (o ExportCacheOnlyOutput) ToExportCacheOnlyPtrOutput() ExportCacheOnlyPtrOutput {
+	return o.ToExportCacheOnlyPtrOutputWithContext(context.Background())
+}
+
+func (o ExportCacheOnlyOutput) ToExportCacheOnlyPtrOutputWithContext(ctx context.Context) ExportCacheOnlyPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportCacheOnly) *ExportCacheOnly {
+		return &v
+	}).(ExportCacheOnlyPtrOutput)
+}
+
+type ExportCacheOnlyPtrOutput struct{ *pulumi.OutputState }
+
+func (ExportCacheOnlyPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportCacheOnly)(nil)).Elem()
+}
+
+func (o ExportCacheOnlyPtrOutput) ToExportCacheOnlyPtrOutput() ExportCacheOnlyPtrOutput {
+	return o
+}
+
+func (o ExportCacheOnlyPtrOutput) ToExportCacheOnlyPtrOutputWithContext(ctx context.Context) ExportCacheOnlyPtrOutput {
+	return o
+}
+
+func (o ExportCacheOnlyPtrOutput) Elem() ExportCacheOnlyOutput {
+	return o.ApplyT(func(v *ExportCacheOnly) ExportCacheOnly {
+		if v != nil {
+			return *v
+		}
+		var ret ExportCacheOnly
+		return ret
+	}).(ExportCacheOnlyOutput)
+}
+
 type ExportDocker struct {
 	// Attach an arbitrary key/value annotation to the image.
 	Annotations map[string]string `pulumi:"annotations"`
@@ -4257,195 +4579,6 @@ func (o ExportDockerPtrOutput) Tar() pulumi.BoolPtrOutput {
 		}
 		return v.Tar
 	}).(pulumi.BoolPtrOutput)
-}
-
-type ExportEntry struct {
-	// When `true` this entry will be excluded. Defaults to `false`.
-	Disabled *bool `pulumi:"disabled"`
-	// Export as a Docker image layout.
-	Docker *ExportDocker `pulumi:"docker"`
-	// Outputs the build result into a container image format.
-	Image *ExportImage `pulumi:"image"`
-	// Export to a local directory as files and directories.
-	Local *ExportLocal `pulumi:"local"`
-	// Identical to the Docker exporter but uses OCI media types by default.
-	Oci *ExportOCI `pulumi:"oci"`
-	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// `type=docker`)
-	Raw *string `pulumi:"raw"`
-	// Identical to the Image exporter, but pushes by default.
-	Registry *ExportRegistry `pulumi:"registry"`
-	// Export to a local directory as a tarball.
-	Tar *ExportTar `pulumi:"tar"`
-}
-
-// Defaults sets the appropriate defaults for ExportEntry
-func (val *ExportEntry) Defaults() *ExportEntry {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-	tmp.Docker = tmp.Docker.Defaults()
-
-	tmp.Image = tmp.Image.Defaults()
-
-	tmp.Oci = tmp.Oci.Defaults()
-
-	tmp.Registry = tmp.Registry.Defaults()
-
-	return &tmp
-}
-
-// ExportEntryInput is an input type that accepts ExportEntryArgs and ExportEntryOutput values.
-// You can construct a concrete instance of `ExportEntryInput` via:
-//
-//	ExportEntryArgs{...}
-type ExportEntryInput interface {
-	pulumi.Input
-
-	ToExportEntryOutput() ExportEntryOutput
-	ToExportEntryOutputWithContext(context.Context) ExportEntryOutput
-}
-
-type ExportEntryArgs struct {
-	// When `true` this entry will be excluded. Defaults to `false`.
-	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
-	// Export as a Docker image layout.
-	Docker ExportDockerPtrInput `pulumi:"docker"`
-	// Outputs the build result into a container image format.
-	Image ExportImagePtrInput `pulumi:"image"`
-	// Export to a local directory as files and directories.
-	Local ExportLocalPtrInput `pulumi:"local"`
-	// Identical to the Docker exporter but uses OCI media types by default.
-	Oci ExportOCIPtrInput `pulumi:"oci"`
-	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// `type=docker`)
-	Raw pulumi.StringPtrInput `pulumi:"raw"`
-	// Identical to the Image exporter, but pushes by default.
-	Registry ExportRegistryPtrInput `pulumi:"registry"`
-	// Export to a local directory as a tarball.
-	Tar ExportTarPtrInput `pulumi:"tar"`
-}
-
-// Defaults sets the appropriate defaults for ExportEntryArgs
-func (val *ExportEntryArgs) Defaults() *ExportEntryArgs {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-
-	return &tmp
-}
-func (ExportEntryArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*ExportEntry)(nil)).Elem()
-}
-
-func (i ExportEntryArgs) ToExportEntryOutput() ExportEntryOutput {
-	return i.ToExportEntryOutputWithContext(context.Background())
-}
-
-func (i ExportEntryArgs) ToExportEntryOutputWithContext(ctx context.Context) ExportEntryOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ExportEntryOutput)
-}
-
-// ExportEntryArrayInput is an input type that accepts ExportEntryArray and ExportEntryArrayOutput values.
-// You can construct a concrete instance of `ExportEntryArrayInput` via:
-//
-//	ExportEntryArray{ ExportEntryArgs{...} }
-type ExportEntryArrayInput interface {
-	pulumi.Input
-
-	ToExportEntryArrayOutput() ExportEntryArrayOutput
-	ToExportEntryArrayOutputWithContext(context.Context) ExportEntryArrayOutput
-}
-
-type ExportEntryArray []ExportEntryInput
-
-func (ExportEntryArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]ExportEntry)(nil)).Elem()
-}
-
-func (i ExportEntryArray) ToExportEntryArrayOutput() ExportEntryArrayOutput {
-	return i.ToExportEntryArrayOutputWithContext(context.Background())
-}
-
-func (i ExportEntryArray) ToExportEntryArrayOutputWithContext(ctx context.Context) ExportEntryArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ExportEntryArrayOutput)
-}
-
-type ExportEntryOutput struct{ *pulumi.OutputState }
-
-func (ExportEntryOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ExportEntry)(nil)).Elem()
-}
-
-func (o ExportEntryOutput) ToExportEntryOutput() ExportEntryOutput {
-	return o
-}
-
-func (o ExportEntryOutput) ToExportEntryOutputWithContext(ctx context.Context) ExportEntryOutput {
-	return o
-}
-
-// When `true` this entry will be excluded. Defaults to `false`.
-func (o ExportEntryOutput) Disabled() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
-}
-
-// Export as a Docker image layout.
-func (o ExportEntryOutput) Docker() ExportDockerPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *ExportDocker { return v.Docker }).(ExportDockerPtrOutput)
-}
-
-// Outputs the build result into a container image format.
-func (o ExportEntryOutput) Image() ExportImagePtrOutput {
-	return o.ApplyT(func(v ExportEntry) *ExportImage { return v.Image }).(ExportImagePtrOutput)
-}
-
-// Export to a local directory as files and directories.
-func (o ExportEntryOutput) Local() ExportLocalPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *ExportLocal { return v.Local }).(ExportLocalPtrOutput)
-}
-
-// Identical to the Docker exporter but uses OCI media types by default.
-func (o ExportEntryOutput) Oci() ExportOCIPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *ExportOCI { return v.Oci }).(ExportOCIPtrOutput)
-}
-
-// A raw string as you would provide it to the Docker CLI (e.g.,
-// `type=docker`)
-func (o ExportEntryOutput) Raw() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
-}
-
-// Identical to the Image exporter, but pushes by default.
-func (o ExportEntryOutput) Registry() ExportRegistryPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *ExportRegistry { return v.Registry }).(ExportRegistryPtrOutput)
-}
-
-// Export to a local directory as a tarball.
-func (o ExportEntryOutput) Tar() ExportTarPtrOutput {
-	return o.ApplyT(func(v ExportEntry) *ExportTar { return v.Tar }).(ExportTarPtrOutput)
-}
-
-type ExportEntryArrayOutput struct{ *pulumi.OutputState }
-
-func (ExportEntryArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]ExportEntry)(nil)).Elem()
-}
-
-func (o ExportEntryArrayOutput) ToExportEntryArrayOutput() ExportEntryArrayOutput {
-	return o
-}
-
-func (o ExportEntryArrayOutput) ToExportEntryArrayOutputWithContext(ctx context.Context) ExportEntryArrayOutput {
-	return o
-}
-
-func (o ExportEntryArrayOutput) Index(i pulumi.IntInput) ExportEntryOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ExportEntry {
-		return vs[0].([]ExportEntry)[vs[1].(int)]
-	}).(ExportEntryOutput)
 }
 
 type ExportImage struct {
@@ -5982,6 +6115,47 @@ func (i RegistryAuthArgs) ToRegistryAuthOutputWithContext(ctx context.Context) R
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthOutput)
 }
 
+func (i RegistryAuthArgs) ToRegistryAuthPtrOutput() RegistryAuthPtrOutput {
+	return i.ToRegistryAuthPtrOutputWithContext(context.Background())
+}
+
+func (i RegistryAuthArgs) ToRegistryAuthPtrOutputWithContext(ctx context.Context) RegistryAuthPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthOutput).ToRegistryAuthPtrOutputWithContext(ctx)
+}
+
+// RegistryAuthPtrInput is an input type that accepts RegistryAuthArgs, RegistryAuthPtr and RegistryAuthPtrOutput values.
+// You can construct a concrete instance of `RegistryAuthPtrInput` via:
+//
+//	        RegistryAuthArgs{...}
+//
+//	or:
+//
+//	        nil
+type RegistryAuthPtrInput interface {
+	pulumi.Input
+
+	ToRegistryAuthPtrOutput() RegistryAuthPtrOutput
+	ToRegistryAuthPtrOutputWithContext(context.Context) RegistryAuthPtrOutput
+}
+
+type registryAuthPtrType RegistryAuthArgs
+
+func RegistryAuthPtr(v *RegistryAuthArgs) RegistryAuthPtrInput {
+	return (*registryAuthPtrType)(v)
+}
+
+func (*registryAuthPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryAuth)(nil)).Elem()
+}
+
+func (i *registryAuthPtrType) ToRegistryAuthPtrOutput() RegistryAuthPtrOutput {
+	return i.ToRegistryAuthPtrOutputWithContext(context.Background())
+}
+
+func (i *registryAuthPtrType) ToRegistryAuthPtrOutputWithContext(ctx context.Context) RegistryAuthPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthPtrOutput)
+}
+
 // RegistryAuthArrayInput is an input type that accepts RegistryAuthArray and RegistryAuthArrayOutput values.
 // You can construct a concrete instance of `RegistryAuthArrayInput` via:
 //
@@ -6021,6 +6195,16 @@ func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context)
 	return o
 }
 
+func (o RegistryAuthOutput) ToRegistryAuthPtrOutput() RegistryAuthPtrOutput {
+	return o.ToRegistryAuthPtrOutputWithContext(context.Background())
+}
+
+func (o RegistryAuthOutput) ToRegistryAuthPtrOutputWithContext(ctx context.Context) RegistryAuthPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v RegistryAuth) *RegistryAuth {
+		return &v
+	}).(RegistryAuthPtrOutput)
+}
+
 // The registry's address (e.g. "docker.io").
 func (o RegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
@@ -6034,6 +6218,60 @@ func (o RegistryAuthOutput) Password() pulumi.StringPtrOutput {
 // Username for the registry.
 func (o RegistryAuthOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+}
+
+type RegistryAuthPtrOutput struct{ *pulumi.OutputState }
+
+func (RegistryAuthPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryAuth)(nil)).Elem()
+}
+
+func (o RegistryAuthPtrOutput) ToRegistryAuthPtrOutput() RegistryAuthPtrOutput {
+	return o
+}
+
+func (o RegistryAuthPtrOutput) ToRegistryAuthPtrOutputWithContext(ctx context.Context) RegistryAuthPtrOutput {
+	return o
+}
+
+func (o RegistryAuthPtrOutput) Elem() RegistryAuthOutput {
+	return o.ApplyT(func(v *RegistryAuth) RegistryAuth {
+		if v != nil {
+			return *v
+		}
+		var ret RegistryAuth
+		return ret
+	}).(RegistryAuthOutput)
+}
+
+// The registry's address (e.g. "docker.io").
+func (o RegistryAuthPtrOutput) Address() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryAuth) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Address
+	}).(pulumi.StringPtrOutput)
+}
+
+// Password or token for the registry.
+func (o RegistryAuthPtrOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryAuth) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Password
+	}).(pulumi.StringPtrOutput)
+}
+
+// Username for the registry.
+func (o RegistryAuthPtrOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryAuth) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Username
+	}).(pulumi.StringPtrOutput)
 }
 
 type RegistryAuthArrayOutput struct{ *pulumi.OutputState }
@@ -6197,10 +6435,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*BuildContextPtrInput)(nil)).Elem(), BuildContextArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*BuilderConfigInput)(nil)).Elem(), BuilderConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*BuilderConfigPtrInput)(nil)).Elem(), BuilderConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromInput)(nil)).Elem(), CacheFromArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromArrayInput)(nil)).Elem(), CacheFromArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromAzureBlobInput)(nil)).Elem(), CacheFromAzureBlobArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromAzureBlobPtrInput)(nil)).Elem(), CacheFromAzureBlobArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromEntryInput)(nil)).Elem(), CacheFromEntryArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromEntryArrayInput)(nil)).Elem(), CacheFromEntryArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromGitHubActionsInput)(nil)).Elem(), CacheFromGitHubActionsArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromGitHubActionsPtrInput)(nil)).Elem(), CacheFromGitHubActionsArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromLocalInput)(nil)).Elem(), CacheFromLocalArgs{})
@@ -6209,10 +6447,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromRegistryPtrInput)(nil)).Elem(), CacheFromRegistryArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromS3Input)(nil)).Elem(), CacheFromS3Args{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromS3PtrInput)(nil)).Elem(), CacheFromS3Args{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToInput)(nil)).Elem(), CacheToArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToArrayInput)(nil)).Elem(), CacheToArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToAzureBlobInput)(nil)).Elem(), CacheToAzureBlobArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToAzureBlobPtrInput)(nil)).Elem(), CacheToAzureBlobArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*CacheToEntryInput)(nil)).Elem(), CacheToEntryArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*CacheToEntryArrayInput)(nil)).Elem(), CacheToEntryArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToGitHubActionsInput)(nil)).Elem(), CacheToGitHubActionsArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToGitHubActionsPtrInput)(nil)).Elem(), CacheToGitHubActionsArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToInlineInput)(nil)).Elem(), CacheToInlineArgs{})
@@ -6227,10 +6465,12 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ContextMapInput)(nil)).Elem(), ContextMap{})
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerfileInput)(nil)).Elem(), DockerfileArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerfilePtrInput)(nil)).Elem(), DockerfileArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportInput)(nil)).Elem(), ExportArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportArrayInput)(nil)).Elem(), ExportArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportCacheOnlyInput)(nil)).Elem(), ExportCacheOnlyArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportCacheOnlyPtrInput)(nil)).Elem(), ExportCacheOnlyArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportDockerInput)(nil)).Elem(), ExportDockerArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportDockerPtrInput)(nil)).Elem(), ExportDockerArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*ExportEntryInput)(nil)).Elem(), ExportEntryArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*ExportEntryArrayInput)(nil)).Elem(), ExportEntryArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportImageInput)(nil)).Elem(), ExportImageArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportImagePtrInput)(nil)).Elem(), ExportImageArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportLocalInput)(nil)).Elem(), ExportLocalArgs{})
@@ -6242,6 +6482,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarInput)(nil)).Elem(), ExportTarArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarPtrInput)(nil)).Elem(), ExportTarArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthInput)(nil)).Elem(), RegistryAuthArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthPtrInput)(nil)).Elem(), RegistryAuthArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthArrayInput)(nil)).Elem(), RegistryAuthArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*SSHInput)(nil)).Elem(), SSHArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*SSHArrayInput)(nil)).Elem(), SSHArray{})
@@ -6249,10 +6490,10 @@ func init() {
 	pulumi.RegisterOutputType(BuildContextPtrOutput{})
 	pulumi.RegisterOutputType(BuilderConfigOutput{})
 	pulumi.RegisterOutputType(BuilderConfigPtrOutput{})
+	pulumi.RegisterOutputType(CacheFromOutput{})
+	pulumi.RegisterOutputType(CacheFromArrayOutput{})
 	pulumi.RegisterOutputType(CacheFromAzureBlobOutput{})
 	pulumi.RegisterOutputType(CacheFromAzureBlobPtrOutput{})
-	pulumi.RegisterOutputType(CacheFromEntryOutput{})
-	pulumi.RegisterOutputType(CacheFromEntryArrayOutput{})
 	pulumi.RegisterOutputType(CacheFromGitHubActionsOutput{})
 	pulumi.RegisterOutputType(CacheFromGitHubActionsPtrOutput{})
 	pulumi.RegisterOutputType(CacheFromLocalOutput{})
@@ -6261,10 +6502,10 @@ func init() {
 	pulumi.RegisterOutputType(CacheFromRegistryPtrOutput{})
 	pulumi.RegisterOutputType(CacheFromS3Output{})
 	pulumi.RegisterOutputType(CacheFromS3PtrOutput{})
+	pulumi.RegisterOutputType(CacheToOutput{})
+	pulumi.RegisterOutputType(CacheToArrayOutput{})
 	pulumi.RegisterOutputType(CacheToAzureBlobOutput{})
 	pulumi.RegisterOutputType(CacheToAzureBlobPtrOutput{})
-	pulumi.RegisterOutputType(CacheToEntryOutput{})
-	pulumi.RegisterOutputType(CacheToEntryArrayOutput{})
 	pulumi.RegisterOutputType(CacheToGitHubActionsOutput{})
 	pulumi.RegisterOutputType(CacheToGitHubActionsPtrOutput{})
 	pulumi.RegisterOutputType(CacheToInlineOutput{})
@@ -6279,10 +6520,12 @@ func init() {
 	pulumi.RegisterOutputType(ContextMapOutput{})
 	pulumi.RegisterOutputType(DockerfileOutput{})
 	pulumi.RegisterOutputType(DockerfilePtrOutput{})
+	pulumi.RegisterOutputType(ExportOutput{})
+	pulumi.RegisterOutputType(ExportArrayOutput{})
+	pulumi.RegisterOutputType(ExportCacheOnlyOutput{})
+	pulumi.RegisterOutputType(ExportCacheOnlyPtrOutput{})
 	pulumi.RegisterOutputType(ExportDockerOutput{})
 	pulumi.RegisterOutputType(ExportDockerPtrOutput{})
-	pulumi.RegisterOutputType(ExportEntryOutput{})
-	pulumi.RegisterOutputType(ExportEntryArrayOutput{})
 	pulumi.RegisterOutputType(ExportImageOutput{})
 	pulumi.RegisterOutputType(ExportImagePtrOutput{})
 	pulumi.RegisterOutputType(ExportLocalOutput{})
@@ -6294,6 +6537,7 @@ func init() {
 	pulumi.RegisterOutputType(ExportTarOutput{})
 	pulumi.RegisterOutputType(ExportTarPtrOutput{})
 	pulumi.RegisterOutputType(RegistryAuthOutput{})
+	pulumi.RegisterOutputType(RegistryAuthPtrOutput{})
 	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
 	pulumi.RegisterOutputType(SSHOutput{})
 	pulumi.RegisterOutputType(SSHArrayOutput{})

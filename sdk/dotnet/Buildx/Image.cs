@@ -514,7 +514,7 @@ namespace Pulumi.Docker.Buildx
         /// Equivalent to Docker's `--cache-from` flag.
         /// </summary>
         [Output("cacheFrom")]
-        public Output<ImmutableArray<Outputs.CacheFromEntry>> CacheFrom { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.CacheFrom>> CacheFrom { get; private set; } = null!;
 
         /// <summary>
         /// Cache import configuration.
@@ -522,7 +522,7 @@ namespace Pulumi.Docker.Buildx
         /// Equivalent to Docker's `--cache-to` flag.
         /// </summary>
         [Output("cacheTo")]
-        public Output<ImmutableArray<Outputs.CacheToEntry>> CacheTo { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.CacheTo>> CacheTo { get; private set; } = null!;
 
         /// <summary>
         /// Build context settings.
@@ -541,14 +541,16 @@ namespace Pulumi.Docker.Buildx
         public Output<string> ContextHash { get; private set; } = null!;
 
         /// <summary>
-        /// A mapping of target names to the SHA256 digest of their pushed manifest.
+        /// A SHA256 digest of the image if it was exported to a registry or
+        /// elsewhere.
         /// 
-        /// If no target was specified 'default' is used as the target name.
+        /// Empty if the image was not exported.
         /// 
-        /// Pushed manifests can be referenced as `&lt;tag&gt;@&lt;digest&gt;`.
+        /// Registry images can be referenced precisely as `&lt;tag&gt;@&lt;digest&gt;`. The
+        /// `ref` output provides one such reference as a convenience.
         /// </summary>
-        [Output("digests")]
-        public Output<ImmutableDictionary<string, string>> Digests { get; private set; } = null!;
+        [Output("digest")]
+        public Output<string> Digest { get; private set; } = null!;
 
         /// <summary>
         /// Dockerfile settings.
@@ -559,15 +561,43 @@ namespace Pulumi.Docker.Buildx
         public Output<Outputs.Dockerfile?> Dockerfile { get; private set; } = null!;
 
         /// <summary>
+        /// Use `exec` mode to build this image.
+        /// 
+        /// By default the provider embeds a v25 Docker client with v0.12 buildx
+        /// support. This helps ensure consistent behavior across environments and
+        /// enables Docker-free builds (i.e. against `buildkitd`), but it may not
+        /// be desirable if you require a specific version of buildx. For example
+        /// you may want to run a custom `docker-buildx` binary with support for
+        /// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+        /// 
+        /// When this is set to `true` the provider will instead execute the
+        /// `docker-buildx` binary directly to perform its operations. The user is
+        /// responsible for ensuring this binary exists, with correct permissions
+        /// and pre-configured builders, at a path Docker expects (e.g.
+        /// `~/.docker/cli-plugins`).
+        /// 
+        /// `exec` mode replicates Docker's exact behavior but has some
+        /// disadvantages. Debugging may be more difficult as Pulumi will not be
+        /// able to surface fine-grained errors and warnings. Additionally
+        /// credentials are temporarily written to disk in order to provide them to
+        /// the `docker-buildx` binary.
+        /// </summary>
+        [Output("exec")]
+        public Output<bool?> Exec { get; private set; } = null!;
+
+        /// <summary>
         /// Controls where images are persisted after building.
         /// 
         /// Images are only stored in the local cache unless `exports` are
         /// explicitly configured.
         /// 
+        /// Exporting to multiple destinations requires a daemon running BuildKit
+        /// 0.13 or later.
+        /// 
         /// Equivalent to Docker's `--output` flag.
         /// </summary>
         [Output("exports")]
-        public Output<ImmutableArray<Outputs.ExportEntry>> Exports { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.Export>> Exports { get; private set; } = null!;
 
         /// <summary>
         /// Attach arbitrary key/value metadata to the image.
@@ -635,12 +665,17 @@ namespace Pulumi.Docker.Buildx
         /// If the image was pushed to any registries then this will contain a
         /// single fully-qualified tag including the build's digest.
         /// 
+        /// If the image had tags but was not exported, this will take on a value
+        /// of one of those tags.
+        /// 
+        /// This will be empty if the image had no exports and no tags.
+        /// 
         /// This is only for convenience and may not be appropriate for situations
         /// where multiple tags or registries are involved. In those cases this
         /// output is not guaranteed to be stable.
         /// 
         /// For more control over tags consumed by downstream resources you should
-        /// use the `Digests` output.
+        /// use the `digest` output.
         /// </summary>
         [Output("ref")]
         public Output<string> Ref { get; private set; } = null!;
@@ -697,8 +732,8 @@ namespace Pulumi.Docker.Buildx
         /// 
         /// Equivalent to Docker's `--target` flag.
         /// </summary>
-        [Output("targets")]
-        public Output<ImmutableArray<string>> Targets { get; private set; } = null!;
+        [Output("target")]
+        public Output<string?> Target { get; private set; } = null!;
 
 
         /// <summary>
@@ -805,30 +840,30 @@ namespace Pulumi.Docker.Buildx
         public Input<Inputs.BuilderConfigArgs>? Builder { get; set; }
 
         [Input("cacheFrom")]
-        private InputList<Inputs.CacheFromEntryArgs>? _cacheFrom;
+        private InputList<Inputs.CacheFromArgs>? _cacheFrom;
 
         /// <summary>
         /// Cache export configuration.
         /// 
         /// Equivalent to Docker's `--cache-from` flag.
         /// </summary>
-        public InputList<Inputs.CacheFromEntryArgs> CacheFrom
+        public InputList<Inputs.CacheFromArgs> CacheFrom
         {
-            get => _cacheFrom ?? (_cacheFrom = new InputList<Inputs.CacheFromEntryArgs>());
+            get => _cacheFrom ?? (_cacheFrom = new InputList<Inputs.CacheFromArgs>());
             set => _cacheFrom = value;
         }
 
         [Input("cacheTo")]
-        private InputList<Inputs.CacheToEntryArgs>? _cacheTo;
+        private InputList<Inputs.CacheToArgs>? _cacheTo;
 
         /// <summary>
         /// Cache import configuration.
         /// 
         /// Equivalent to Docker's `--cache-to` flag.
         /// </summary>
-        public InputList<Inputs.CacheToEntryArgs> CacheTo
+        public InputList<Inputs.CacheToArgs> CacheTo
         {
-            get => _cacheTo ?? (_cacheTo = new InputList<Inputs.CacheToEntryArgs>());
+            get => _cacheTo ?? (_cacheTo = new InputList<Inputs.CacheToArgs>());
             set => _cacheTo = value;
         }
 
@@ -848,8 +883,33 @@ namespace Pulumi.Docker.Buildx
         [Input("dockerfile")]
         public Input<Inputs.DockerfileArgs>? Dockerfile { get; set; }
 
+        /// <summary>
+        /// Use `exec` mode to build this image.
+        /// 
+        /// By default the provider embeds a v25 Docker client with v0.12 buildx
+        /// support. This helps ensure consistent behavior across environments and
+        /// enables Docker-free builds (i.e. against `buildkitd`), but it may not
+        /// be desirable if you require a specific version of buildx. For example
+        /// you may want to run a custom `docker-buildx` binary with support for
+        /// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+        /// 
+        /// When this is set to `true` the provider will instead execute the
+        /// `docker-buildx` binary directly to perform its operations. The user is
+        /// responsible for ensuring this binary exists, with correct permissions
+        /// and pre-configured builders, at a path Docker expects (e.g.
+        /// `~/.docker/cli-plugins`).
+        /// 
+        /// `exec` mode replicates Docker's exact behavior but has some
+        /// disadvantages. Debugging may be more difficult as Pulumi will not be
+        /// able to surface fine-grained errors and warnings. Additionally
+        /// credentials are temporarily written to disk in order to provide them to
+        /// the `docker-buildx` binary.
+        /// </summary>
+        [Input("exec")]
+        public Input<bool>? Exec { get; set; }
+
         [Input("exports")]
-        private InputList<Inputs.ExportEntryArgs>? _exports;
+        private InputList<Inputs.ExportArgs>? _exports;
 
         /// <summary>
         /// Controls where images are persisted after building.
@@ -857,11 +917,14 @@ namespace Pulumi.Docker.Buildx
         /// Images are only stored in the local cache unless `exports` are
         /// explicitly configured.
         /// 
+        /// Exporting to multiple destinations requires a daemon running BuildKit
+        /// 0.13 or later.
+        /// 
         /// Equivalent to Docker's `--output` flag.
         /// </summary>
-        public InputList<Inputs.ExportEntryArgs> Exports
+        public InputList<Inputs.ExportArgs> Exports
         {
-            get => _exports ?? (_exports = new InputList<Inputs.ExportEntryArgs>());
+            get => _exports ?? (_exports = new InputList<Inputs.ExportArgs>());
             set => _exports = value;
         }
 
@@ -1008,9 +1071,6 @@ namespace Pulumi.Docker.Buildx
             set => _tags = value;
         }
 
-        [Input("targets")]
-        private InputList<string>? _targets;
-
         /// <summary>
         /// Set the target build stage(s) to build.
         /// 
@@ -1018,11 +1078,8 @@ namespace Pulumi.Docker.Buildx
         /// 
         /// Equivalent to Docker's `--target` flag.
         /// </summary>
-        public InputList<string> Targets
-        {
-            get => _targets ?? (_targets = new InputList<string>());
-            set => _targets = value;
-        }
+        [Input("target")]
+        public Input<string>? Target { get; set; }
 
         public ImageArgs()
         {

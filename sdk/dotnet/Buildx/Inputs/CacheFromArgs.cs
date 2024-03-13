@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Buildx.Inputs
 {
 
-    public sealed class CacheFromEntryArgs : global::Pulumi.ResourceArgs
+    public sealed class CacheFromArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Upload build caches to Azure's blob storage service.
@@ -59,9 +59,9 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("s3")]
         public Input<Inputs.CacheFromS3Args>? S3 { get; set; }
 
-        public CacheFromEntryArgs()
+        public CacheFromArgs()
         {
         }
-        public static new CacheFromEntryArgs Empty => new CacheFromEntryArgs();
+        public static new CacheFromArgs Empty => new CacheFromArgs();
     }
 }

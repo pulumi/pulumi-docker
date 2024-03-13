@@ -1307,22 +1307,7 @@ export namespace buildx {
         name?: pulumi.Input<string>;
     }
 
-    export interface CacheFromAzureBlob {
-        /**
-         * Base URL of the storage account.
-         */
-        accountUrl?: pulumi.Input<string>;
-        /**
-         * The name of the cache image.
-         */
-        name: pulumi.Input<string>;
-        /**
-         * Blob storage account key.
-         */
-        secretAccessKey?: pulumi.Input<string>;
-    }
-
-    export interface CacheFromEntry {
+    export interface CacheFrom {
         /**
          * Upload build caches to Azure's blob storage service.
          */
@@ -1358,14 +1343,29 @@ export namespace buildx {
         s3?: pulumi.Input<inputs.buildx.CacheFromS3>;
     }
     /**
-     * cacheFromEntryProvideDefaults sets the appropriate defaults for CacheFromEntry
+     * cacheFromProvideDefaults sets the appropriate defaults for CacheFrom
      */
-    export function cacheFromEntryProvideDefaults(val: CacheFromEntry): CacheFromEntry {
+    export function cacheFromProvideDefaults(val: CacheFrom): CacheFrom {
         return {
             ...val,
             gha: (val.gha ? pulumi.output(val.gha).apply(inputs.buildx.cacheFromGitHubActionsProvideDefaults) : undefined),
             s3: (val.s3 ? pulumi.output(val.s3).apply(inputs.buildx.cacheFromS3ProvideDefaults) : undefined),
         };
+    }
+
+    export interface CacheFromAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
+        accountUrl?: pulumi.Input<string>;
+        /**
+         * The name of the cache image.
+         */
+        name: pulumi.Input<string>;
+        /**
+         * Blob storage account key.
+         */
+        secretAccessKey?: pulumi.Input<string>;
     }
 
     export interface CacheFromGitHubActions {
@@ -1479,40 +1479,7 @@ export namespace buildx {
         };
     }
 
-    export interface CacheToAzureBlob {
-        /**
-         * Base URL of the storage account.
-         */
-        accountUrl?: pulumi.Input<string>;
-        /**
-         * Ignore errors caused by failed cache exports.
-         */
-        ignoreError?: pulumi.Input<boolean>;
-        /**
-         * The cache mode to use. Defaults to `min`.
-         */
-        mode?: pulumi.Input<enums.buildx.CacheMode>;
-        /**
-         * The name of the cache image.
-         */
-        name: pulumi.Input<string>;
-        /**
-         * Blob storage account key.
-         */
-        secretAccessKey?: pulumi.Input<string>;
-    }
-    /**
-     * cacheToAzureBlobProvideDefaults sets the appropriate defaults for CacheToAzureBlob
-     */
-    export function cacheToAzureBlobProvideDefaults(val: CacheToAzureBlob): CacheToAzureBlob {
-        return {
-            ...val,
-            ignoreError: (val.ignoreError) ?? false,
-            mode: (val.mode) ?? "min",
-        };
-    }
-
-    export interface CacheToEntry {
+    export interface CacheTo {
         /**
          * Push cache to Azure's blob storage service.
          */
@@ -1554,9 +1521,9 @@ export namespace buildx {
         s3?: pulumi.Input<inputs.buildx.CacheToS3>;
     }
     /**
-     * cacheToEntryProvideDefaults sets the appropriate defaults for CacheToEntry
+     * cacheToProvideDefaults sets the appropriate defaults for CacheTo
      */
-    export function cacheToEntryProvideDefaults(val: CacheToEntry): CacheToEntry {
+    export function cacheToProvideDefaults(val: CacheTo): CacheTo {
         return {
             ...val,
             azblob: (val.azblob ? pulumi.output(val.azblob).apply(inputs.buildx.cacheToAzureBlobProvideDefaults) : undefined),
@@ -1564,6 +1531,39 @@ export namespace buildx {
             local: (val.local ? pulumi.output(val.local).apply(inputs.buildx.cacheToLocalProvideDefaults) : undefined),
             registry: (val.registry ? pulumi.output(val.registry).apply(inputs.buildx.cacheToRegistryProvideDefaults) : undefined),
             s3: (val.s3 ? pulumi.output(val.s3).apply(inputs.buildx.cacheToS3ProvideDefaults) : undefined),
+        };
+    }
+
+    export interface CacheToAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
+        accountUrl?: pulumi.Input<string>;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: pulumi.Input<boolean>;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
+        mode?: pulumi.Input<enums.buildx.CacheMode>;
+        /**
+         * The name of the cache image.
+         */
+        name: pulumi.Input<string>;
+        /**
+         * Blob storage account key.
+         */
+        secretAccessKey?: pulumi.Input<string>;
+    }
+    /**
+     * cacheToAzureBlobProvideDefaults sets the appropriate defaults for CacheToAzureBlob
+     */
+    export function cacheToAzureBlobProvideDefaults(val: CacheToAzureBlob): CacheToAzureBlob {
+        return {
+            ...val,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
         };
     }
 
@@ -1615,6 +1615,9 @@ export namespace buildx {
         };
     }
 
+    /**
+     * Include an inline cache with the exported image.
+     */
     export interface CacheToInline {
     }
 
@@ -1812,6 +1815,62 @@ export namespace buildx {
         location?: pulumi.Input<string>;
     }
 
+    export interface Export {
+        /**
+         * A no-op export. Helpful for silencing the 'no exports' warning if you
+         * just want to populate caches.
+         */
+        cacheonly?: pulumi.Input<inputs.buildx.ExportCacheOnly>;
+        /**
+         * When `true` this entry will be excluded. Defaults to `false`.
+         */
+        disabled?: pulumi.Input<boolean>;
+        /**
+         * Export as a Docker image layout.
+         */
+        docker?: pulumi.Input<inputs.buildx.ExportDocker>;
+        /**
+         * Outputs the build result into a container image format.
+         */
+        image?: pulumi.Input<inputs.buildx.ExportImage>;
+        /**
+         * Export to a local directory as files and directories.
+         */
+        local?: pulumi.Input<inputs.buildx.ExportLocal>;
+        /**
+         * Identical to the Docker exporter but uses OCI media types by default.
+         */
+        oci?: pulumi.Input<inputs.buildx.ExportOCI>;
+        /**
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * `type=docker`)
+         */
+        raw?: pulumi.Input<string>;
+        /**
+         * Identical to the Image exporter, but pushes by default.
+         */
+        registry?: pulumi.Input<inputs.buildx.ExportRegistry>;
+        /**
+         * Export to a local directory as a tarball.
+         */
+        tar?: pulumi.Input<inputs.buildx.ExportTar>;
+    }
+    /**
+     * exportProvideDefaults sets the appropriate defaults for Export
+     */
+    export function exportProvideDefaults(val: Export): Export {
+        return {
+            ...val,
+            docker: (val.docker ? pulumi.output(val.docker).apply(inputs.buildx.exportDockerProvideDefaults) : undefined),
+            image: (val.image ? pulumi.output(val.image).apply(inputs.buildx.exportImageProvideDefaults) : undefined),
+            oci: (val.oci ? pulumi.output(val.oci).apply(inputs.buildx.exportOCIProvideDefaults) : undefined),
+            registry: (val.registry ? pulumi.output(val.registry).apply(inputs.buildx.exportRegistryProvideDefaults) : undefined),
+        };
+    }
+
+    export interface ExportCacheOnly {
+    }
+
     export interface ExportDocker {
         /**
          * Attach an arbitrary key/value annotation to the image.
@@ -1857,54 +1916,6 @@ export namespace buildx {
             forceCompression: (val.forceCompression) ?? false,
             ociMediaTypes: (val.ociMediaTypes) ?? false,
             tar: (val.tar) ?? true,
-        };
-    }
-
-    export interface ExportEntry {
-        /**
-         * When `true` this entry will be excluded. Defaults to `false`.
-         */
-        disabled?: pulumi.Input<boolean>;
-        /**
-         * Export as a Docker image layout.
-         */
-        docker?: pulumi.Input<inputs.buildx.ExportDocker>;
-        /**
-         * Outputs the build result into a container image format.
-         */
-        image?: pulumi.Input<inputs.buildx.ExportImage>;
-        /**
-         * Export to a local directory as files and directories.
-         */
-        local?: pulumi.Input<inputs.buildx.ExportLocal>;
-        /**
-         * Identical to the Docker exporter but uses OCI media types by default.
-         */
-        oci?: pulumi.Input<inputs.buildx.ExportOCI>;
-        /**
-         * A raw string as you would provide it to the Docker CLI (e.g.,
-         * `type=docker`)
-         */
-        raw?: pulumi.Input<string>;
-        /**
-         * Identical to the Image exporter, but pushes by default.
-         */
-        registry?: pulumi.Input<inputs.buildx.ExportRegistry>;
-        /**
-         * Export to a local directory as a tarball.
-         */
-        tar?: pulumi.Input<inputs.buildx.ExportTar>;
-    }
-    /**
-     * exportEntryProvideDefaults sets the appropriate defaults for ExportEntry
-     */
-    export function exportEntryProvideDefaults(val: ExportEntry): ExportEntry {
-        return {
-            ...val,
-            docker: (val.docker ? pulumi.output(val.docker).apply(inputs.buildx.exportDockerProvideDefaults) : undefined),
-            image: (val.image ? pulumi.output(val.image).apply(inputs.buildx.exportImageProvideDefaults) : undefined),
-            oci: (val.oci ? pulumi.output(val.oci).apply(inputs.buildx.exportOCIProvideDefaults) : undefined),
-            registry: (val.registry ? pulumi.output(val.registry).apply(inputs.buildx.exportRegistryProvideDefaults) : undefined),
         };
     }
 

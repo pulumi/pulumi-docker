@@ -10,14 +10,11 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Buildx.Inputs
 {
 
-    /// <summary>
-    /// Include an inline cache with the exported image.
-    /// </summary>
-    public sealed class CacheToInlineArgs : global::Pulumi.ResourceArgs
+    public sealed class ExportCacheOnlyArgs : global::Pulumi.ResourceArgs
     {
-        public CacheToInlineArgs()
+        public ExportCacheOnlyArgs()
         {
         }
-        public static new CacheToInlineArgs Empty => new CacheToInlineArgs();
+        public static new ExportCacheOnlyArgs Empty => new ExportCacheOnlyArgs();
     }
 }

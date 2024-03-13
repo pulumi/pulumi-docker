@@ -6,25 +6,21 @@ package com.pulumi.docker.buildx.inputs;
 
 
 
-/**
- * Include an inline cache with the exported image.
- * 
- */
-public final class CacheToInlineArgs extends com.pulumi.resources.ResourceArgs {
+public final class ExportCacheOnlyArgs extends com.pulumi.resources.ResourceArgs {
 
-    public static final CacheToInlineArgs Empty = new CacheToInlineArgs();
+    public static final ExportCacheOnlyArgs Empty = new ExportCacheOnlyArgs();
 
     public static Builder builder() {
         return new Builder();
     }
 
     public static final class Builder {
-        private CacheToInlineArgs $;
+        private ExportCacheOnlyArgs $;
 
         public Builder() {
-            $ = new CacheToInlineArgs();
+            $ = new ExportCacheOnlyArgs();
         }
-        public CacheToInlineArgs build() {
+        public ExportCacheOnlyArgs build() {
             return $;
         }
     }

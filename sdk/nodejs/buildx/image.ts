@@ -514,13 +514,13 @@ export class Image extends pulumi.CustomResource {
      *
      * Equivalent to Docker's `--cache-from` flag.
      */
-    public readonly cacheFrom!: pulumi.Output<outputs.buildx.CacheFromEntry[] | undefined>;
+    public readonly cacheFrom!: pulumi.Output<outputs.buildx.CacheFrom[] | undefined>;
     /**
      * Cache import configuration.
      *
      * Equivalent to Docker's `--cache-to` flag.
      */
-    public readonly cacheTo!: pulumi.Output<outputs.buildx.CacheToEntry[] | undefined>;
+    public readonly cacheTo!: pulumi.Output<outputs.buildx.CacheTo[] | undefined>;
     /**
      * Build context settings.
      *
@@ -534,13 +534,15 @@ export class Image extends pulumi.CustomResource {
      */
     public /*out*/ readonly contextHash!: pulumi.Output<string>;
     /**
-     * A mapping of target names to the SHA256 digest of their pushed manifest.
+     * A SHA256 digest of the image if it was exported to a registry or
+     * elsewhere.
      *
-     * If no target was specified 'default' is used as the target name.
+     * Empty if the image was not exported.
      *
-     * Pushed manifests can be referenced as `<tag>@<digest>`.
+     * Registry images can be referenced precisely as `<tag>@<digest>`. The
+     * `ref` output provides one such reference as a convenience.
      */
-    public /*out*/ readonly digests!: pulumi.Output<{[key: string]: string}>;
+    public /*out*/ readonly digest!: pulumi.Output<string>;
     /**
      * Dockerfile settings.
      *
@@ -548,14 +550,40 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly dockerfile!: pulumi.Output<outputs.buildx.Dockerfile | undefined>;
     /**
+     * Use `exec` mode to build this image.
+     *
+     * By default the provider embeds a v25 Docker client with v0.12 buildx
+     * support. This helps ensure consistent behavior across environments and
+     * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+     * be desirable if you require a specific version of buildx. For example
+     * you may want to run a custom `docker-buildx` binary with support for
+     * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+     *
+     * When this is set to `true` the provider will instead execute the
+     * `docker-buildx` binary directly to perform its operations. The user is
+     * responsible for ensuring this binary exists, with correct permissions
+     * and pre-configured builders, at a path Docker expects (e.g.
+     * `~/.docker/cli-plugins`).
+     *
+     * `exec` mode replicates Docker's exact behavior but has some
+     * disadvantages. Debugging may be more difficult as Pulumi will not be
+     * able to surface fine-grained errors and warnings. Additionally
+     * credentials are temporarily written to disk in order to provide them to
+     * the `docker-buildx` binary.
+     */
+    public readonly exec!: pulumi.Output<boolean | undefined>;
+    /**
      * Controls where images are persisted after building.
      *
      * Images are only stored in the local cache unless `exports` are
      * explicitly configured.
      *
+     * Exporting to multiple destinations requires a daemon running BuildKit
+     * 0.13 or later.
+     *
      * Equivalent to Docker's `--output` flag.
      */
-    public readonly exports!: pulumi.Output<outputs.buildx.ExportEntry[] | undefined>;
+    public readonly exports!: pulumi.Output<outputs.buildx.Export[] | undefined>;
     /**
      * Attach arbitrary key/value metadata to the image.
      *
@@ -608,12 +636,17 @@ export class Image extends pulumi.CustomResource {
      * If the image was pushed to any registries then this will contain a
      * single fully-qualified tag including the build's digest.
      *
+     * If the image had tags but was not exported, this will take on a value
+     * of one of those tags.
+     *
+     * This will be empty if the image had no exports and no tags.
+     *
      * This is only for convenience and may not be appropriate for situations
      * where multiple tags or registries are involved. In those cases this
      * output is not guaranteed to be stable.
      *
      * For more control over tags consumed by downstream resources you should
-     * use the `Digests` output.
+     * use the `digest` output.
      */
     public /*out*/ readonly ref!: pulumi.Output<string>;
     /**
@@ -660,7 +693,7 @@ export class Image extends pulumi.CustomResource {
      *
      * Equivalent to Docker's `--target` flag.
      */
-    public readonly targets!: pulumi.Output<string[] | undefined>;
+    public readonly target!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -681,6 +714,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["cacheTo"] = args ? args.cacheTo : undefined;
             resourceInputs["context"] = args ? args.context : undefined;
             resourceInputs["dockerfile"] = args ? args.dockerfile : undefined;
+            resourceInputs["exec"] = args ? args.exec : undefined;
             resourceInputs["exports"] = args ? args.exports : undefined;
             resourceInputs["labels"] = args ? args.labels : undefined;
             resourceInputs["load"] = args ? args.load : undefined;
@@ -693,9 +727,9 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["secrets"] = args ? args.secrets : undefined;
             resourceInputs["ssh"] = args ? args.ssh : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
-            resourceInputs["targets"] = args ? args.targets : undefined;
+            resourceInputs["target"] = args ? args.target : undefined;
             resourceInputs["contextHash"] = undefined /*out*/;
-            resourceInputs["digests"] = undefined /*out*/;
+            resourceInputs["digest"] = undefined /*out*/;
             resourceInputs["ref"] = undefined /*out*/;
         } else {
             resourceInputs["addHosts"] = undefined /*out*/;
@@ -706,8 +740,9 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["cacheTo"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["contextHash"] = undefined /*out*/;
-            resourceInputs["digests"] = undefined /*out*/;
+            resourceInputs["digest"] = undefined /*out*/;
             resourceInputs["dockerfile"] = undefined /*out*/;
+            resourceInputs["exec"] = undefined /*out*/;
             resourceInputs["exports"] = undefined /*out*/;
             resourceInputs["labels"] = undefined /*out*/;
             resourceInputs["load"] = undefined /*out*/;
@@ -721,7 +756,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["secrets"] = undefined /*out*/;
             resourceInputs["ssh"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
-            resourceInputs["targets"] = undefined /*out*/;
+            resourceInputs["target"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Image.__pulumiType, name, resourceInputs, opts);
@@ -776,13 +811,13 @@ export interface ImageArgs {
      *
      * Equivalent to Docker's `--cache-from` flag.
      */
-    cacheFrom?: pulumi.Input<pulumi.Input<inputs.buildx.CacheFromEntry>[]>;
+    cacheFrom?: pulumi.Input<pulumi.Input<inputs.buildx.CacheFrom>[]>;
     /**
      * Cache import configuration.
      *
      * Equivalent to Docker's `--cache-to` flag.
      */
-    cacheTo?: pulumi.Input<pulumi.Input<inputs.buildx.CacheToEntry>[]>;
+    cacheTo?: pulumi.Input<pulumi.Input<inputs.buildx.CacheTo>[]>;
     /**
      * Build context settings.
      *
@@ -796,14 +831,40 @@ export interface ImageArgs {
      */
     dockerfile?: pulumi.Input<inputs.buildx.Dockerfile>;
     /**
+     * Use `exec` mode to build this image.
+     *
+     * By default the provider embeds a v25 Docker client with v0.12 buildx
+     * support. This helps ensure consistent behavior across environments and
+     * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+     * be desirable if you require a specific version of buildx. For example
+     * you may want to run a custom `docker-buildx` binary with support for
+     * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+     *
+     * When this is set to `true` the provider will instead execute the
+     * `docker-buildx` binary directly to perform its operations. The user is
+     * responsible for ensuring this binary exists, with correct permissions
+     * and pre-configured builders, at a path Docker expects (e.g.
+     * `~/.docker/cli-plugins`).
+     *
+     * `exec` mode replicates Docker's exact behavior but has some
+     * disadvantages. Debugging may be more difficult as Pulumi will not be
+     * able to surface fine-grained errors and warnings. Additionally
+     * credentials are temporarily written to disk in order to provide them to
+     * the `docker-buildx` binary.
+     */
+    exec?: pulumi.Input<boolean>;
+    /**
      * Controls where images are persisted after building.
      *
      * Images are only stored in the local cache unless `exports` are
      * explicitly configured.
      *
+     * Exporting to multiple destinations requires a daemon running BuildKit
+     * 0.13 or later.
+     *
      * Equivalent to Docker's `--output` flag.
      */
-    exports?: pulumi.Input<pulumi.Input<inputs.buildx.ExportEntry>[]>;
+    exports?: pulumi.Input<pulumi.Input<inputs.buildx.Export>[]>;
     /**
      * Attach arbitrary key/value metadata to the image.
      *
@@ -896,5 +957,5 @@ export interface ImageArgs {
      *
      * Equivalent to Docker's `--target` flag.
      */
-    targets?: pulumi.Input<pulumi.Input<string>[]>;
+    target?: pulumi.Input<string>;
 }

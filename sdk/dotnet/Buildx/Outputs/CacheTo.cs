@@ -11,12 +11,12 @@ namespace Pulumi.Docker.Buildx.Outputs
 {
 
     [OutputType]
-    public sealed class CacheFromEntry
+    public sealed class CacheTo
     {
         /// <summary>
-        /// Upload build caches to Azure's blob storage service.
+        /// Push cache to Azure's blob storage service.
         /// </summary>
-        public readonly Outputs.CacheFromAzureBlob? Azblob;
+        public readonly Outputs.CacheToAzureBlob? Azblob;
         /// <summary>
         /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
@@ -27,45 +27,54 @@ namespace Pulumi.Docker.Buildx.Outputs
         /// An action like `crazy-max/ghaction-github-runtime` is recommended to
         /// expose appropriate credentials to your GitHub workflow.
         /// </summary>
-        public readonly Outputs.CacheFromGitHubActions? Gha;
+        public readonly Outputs.CacheToGitHubActions? Gha;
         /// <summary>
-        /// A simple backend which caches images on your local filesystem.
+        /// The inline cache storage backend is the simplest implementation to get
+        /// started with, but it does not handle multi-stage builds. Consider the
+        /// `registry` cache backend instead.
         /// </summary>
-        public readonly Outputs.CacheFromLocal? Local;
+        public readonly Outputs.CacheToInline? Inline;
+        /// <summary>
+        /// A simple backend which caches imagines on your local filesystem.
+        /// </summary>
+        public readonly Outputs.CacheToLocal? Local;
         /// <summary>
         /// A raw string as you would provide it to the Docker CLI (e.g.,
-        /// `type=inline`).
+        /// `type=inline`)
         /// </summary>
         public readonly string? Raw;
         /// <summary>
-        /// Upload build caches to remote registries.
+        /// Push caches to remote registries. Incompatible with the `docker` build
+        /// driver.
         /// </summary>
-        public readonly Outputs.CacheFromRegistry? Registry;
+        public readonly Outputs.CacheToRegistry? Registry;
         /// <summary>
-        /// Upload build caches to AWS S3 or an S3-compatible services such as
-        /// MinIO.
+        /// Push cache to AWS S3 or S3-compatible services such as MinIO.
         /// </summary>
-        public readonly Outputs.CacheFromS3? S3;
+        public readonly Outputs.CacheToS3? S3;
 
         [OutputConstructor]
-        private CacheFromEntry(
-            Outputs.CacheFromAzureBlob? azblob,
+        private CacheTo(
+            Outputs.CacheToAzureBlob? azblob,
 
             bool? disabled,
 
-            Outputs.CacheFromGitHubActions? gha,
+            Outputs.CacheToGitHubActions? gha,
 
-            Outputs.CacheFromLocal? local,
+            Outputs.CacheToInline? inline,
+
+            Outputs.CacheToLocal? local,
 
             string? raw,
 
-            Outputs.CacheFromRegistry? registry,
+            Outputs.CacheToRegistry? registry,
 
-            Outputs.CacheFromS3? s3)
+            Outputs.CacheToS3? s3)
         {
             Azblob = azblob;
             Disabled = disabled;
             Gha = gha;
+            Inline = inline;
             Local = local;
             Raw = raw;
             Registry = registry;

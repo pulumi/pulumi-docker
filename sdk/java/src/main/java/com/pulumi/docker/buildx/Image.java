@@ -13,10 +13,9 @@ import com.pulumi.docker.buildx.enums.NetworkMode;
 import com.pulumi.docker.buildx.enums.Platform;
 import com.pulumi.docker.buildx.outputs.BuildContext;
 import com.pulumi.docker.buildx.outputs.BuilderConfig;
-import com.pulumi.docker.buildx.outputs.CacheFromEntry;
-import com.pulumi.docker.buildx.outputs.CacheToEntry;
+import com.pulumi.docker.buildx.outputs.CacheFrom;
+import com.pulumi.docker.buildx.outputs.CacheTo;
 import com.pulumi.docker.buildx.outputs.Dockerfile;
-import com.pulumi.docker.buildx.outputs.ExportEntry;
 import com.pulumi.docker.buildx.outputs.RegistryAuth;
 import com.pulumi.docker.buildx.outputs.SSH;
 import java.lang.Boolean;
@@ -680,8 +679,8 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
-    @Export(name="cacheFrom", refs={List.class,CacheFromEntry.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<CacheFromEntry>> cacheFrom;
+    @Export(name="cacheFrom", refs={List.class,CacheFrom.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<CacheFrom>> cacheFrom;
 
     /**
      * @return Cache export configuration.
@@ -689,7 +688,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
-    public Output<Optional<List<CacheFromEntry>>> cacheFrom() {
+    public Output<Optional<List<CacheFrom>>> cacheFrom() {
         return Codegen.optional(this.cacheFrom);
     }
     /**
@@ -698,8 +697,8 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
-    @Export(name="cacheTo", refs={List.class,CacheToEntry.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<CacheToEntry>> cacheTo;
+    @Export(name="cacheTo", refs={List.class,CacheTo.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<CacheTo>> cacheTo;
 
     /**
      * @return Cache import configuration.
@@ -707,7 +706,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
-    public Output<Optional<List<CacheToEntry>>> cacheTo() {
+    public Output<Optional<List<CacheTo>>> cacheTo() {
         return Codegen.optional(this.cacheTo);
     }
     /**
@@ -747,26 +746,30 @@ public class Image extends com.pulumi.resources.CustomResource {
         return this.contextHash;
     }
     /**
-     * A mapping of target names to the SHA256 digest of their pushed manifest.
+     * A SHA256 digest of the image if it was exported to a registry or
+     * elsewhere.
      * 
-     * If no target was specified &#39;default&#39; is used as the target name.
+     * Empty if the image was not exported.
      * 
-     * Pushed manifests can be referenced as `&lt;tag&gt;@&lt;digest&gt;`.
+     * Registry images can be referenced precisely as `&lt;tag&gt;@&lt;digest&gt;`. The
+     * `ref` output provides one such reference as a convenience.
      * 
      */
-    @Export(name="digests", refs={Map.class,String.class}, tree="[0,1,1]")
-    private Output<Map<String,String>> digests;
+    @Export(name="digest", refs={String.class}, tree="[0]")
+    private Output<String> digest;
 
     /**
-     * @return A mapping of target names to the SHA256 digest of their pushed manifest.
+     * @return A SHA256 digest of the image if it was exported to a registry or
+     * elsewhere.
      * 
-     * If no target was specified &#39;default&#39; is used as the target name.
+     * Empty if the image was not exported.
      * 
-     * Pushed manifests can be referenced as `&lt;tag&gt;@&lt;digest&gt;`.
+     * Registry images can be referenced precisely as `&lt;tag&gt;@&lt;digest&gt;`. The
+     * `ref` output provides one such reference as a convenience.
      * 
      */
-    public Output<Map<String,String>> digests() {
-        return this.digests;
+    public Output<String> digest() {
+        return this.digest;
     }
     /**
      * Dockerfile settings.
@@ -787,16 +790,71 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.dockerfile);
     }
     /**
+     * Use `exec` mode to build this image.
+     * 
+     * By default the provider embeds a v25 Docker client with v0.12 buildx
+     * support. This helps ensure consistent behavior across environments and
+     * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+     * be desirable if you require a specific version of buildx. For example
+     * you may want to run a custom `docker-buildx` binary with support for
+     * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+     * 
+     * When this is set to `true` the provider will instead execute the
+     * `docker-buildx` binary directly to perform its operations. The user is
+     * responsible for ensuring this binary exists, with correct permissions
+     * and pre-configured builders, at a path Docker expects (e.g.
+     * `~/.docker/cli-plugins`).
+     * 
+     * `exec` mode replicates Docker&#39;s exact behavior but has some
+     * disadvantages. Debugging may be more difficult as Pulumi will not be
+     * able to surface fine-grained errors and warnings. Additionally
+     * credentials are temporarily written to disk in order to provide them to
+     * the `docker-buildx` binary.
+     * 
+     */
+    @Export(name="exec", refs={Boolean.class}, tree="[0]")
+    private Output</* @Nullable */ Boolean> exec;
+
+    /**
+     * @return Use `exec` mode to build this image.
+     * 
+     * By default the provider embeds a v25 Docker client with v0.12 buildx
+     * support. This helps ensure consistent behavior across environments and
+     * enables Docker-free builds (i.e. against `buildkitd`), but it may not
+     * be desirable if you require a specific version of buildx. For example
+     * you may want to run a custom `docker-buildx` binary with support for
+     * [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+     * 
+     * When this is set to `true` the provider will instead execute the
+     * `docker-buildx` binary directly to perform its operations. The user is
+     * responsible for ensuring this binary exists, with correct permissions
+     * and pre-configured builders, at a path Docker expects (e.g.
+     * `~/.docker/cli-plugins`).
+     * 
+     * `exec` mode replicates Docker&#39;s exact behavior but has some
+     * disadvantages. Debugging may be more difficult as Pulumi will not be
+     * able to surface fine-grained errors and warnings. Additionally
+     * credentials are temporarily written to disk in order to provide them to
+     * the `docker-buildx` binary.
+     * 
+     */
+    public Output<Optional<Boolean>> exec() {
+        return Codegen.optional(this.exec);
+    }
+    /**
      * Controls where images are persisted after building.
      * 
      * Images are only stored in the local cache unless `exports` are
      * explicitly configured.
      * 
+     * Exporting to multiple destinations requires a daemon running BuildKit
+     * 0.13 or later.
+     * 
      * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
-    @Export(name="exports", refs={List.class,ExportEntry.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<ExportEntry>> exports;
+    @Export(name="exports", refs={List.class,com.pulumi.docker.buildx.outputs.Export.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<com.pulumi.docker.buildx.outputs.Export>> exports;
 
     /**
      * @return Controls where images are persisted after building.
@@ -804,10 +862,13 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Images are only stored in the local cache unless `exports` are
      * explicitly configured.
      * 
+     * Exporting to multiple destinations requires a daemon running BuildKit
+     * 0.13 or later.
+     * 
      * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
-    public Output<Optional<List<ExportEntry>>> exports() {
+    public Output<Optional<List<com.pulumi.docker.buildx.outputs.Export>>> exports() {
         return Codegen.optional(this.exports);
     }
     /**
@@ -952,12 +1013,17 @@ public class Image extends com.pulumi.resources.CustomResource {
      * If the image was pushed to any registries then this will contain a
      * single fully-qualified tag including the build&#39;s digest.
      * 
+     * If the image had tags but was not exported, this will take on a value
+     * of one of those tags.
+     * 
+     * This will be empty if the image had no exports and no tags.
+     * 
      * This is only for convenience and may not be appropriate for situations
      * where multiple tags or registries are involved. In those cases this
      * output is not guaranteed to be stable.
      * 
      * For more control over tags consumed by downstream resources you should
-     * use the `Digests` output.
+     * use the `digest` output.
      * 
      */
     @Export(name="ref", refs={String.class}, tree="[0]")
@@ -967,12 +1033,17 @@ public class Image extends com.pulumi.resources.CustomResource {
      * @return If the image was pushed to any registries then this will contain a
      * single fully-qualified tag including the build&#39;s digest.
      * 
+     * If the image had tags but was not exported, this will take on a value
+     * of one of those tags.
+     * 
+     * This will be empty if the image had no exports and no tags.
+     * 
      * This is only for convenience and may not be appropriate for situations
      * where multiple tags or registries are involved. In those cases this
      * output is not guaranteed to be stable.
      * 
      * For more control over tags consumed by downstream resources you should
-     * use the `Digests` output.
+     * use the `digest` output.
      * 
      */
     public Output<String> ref() {
@@ -1084,8 +1155,8 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Equivalent to Docker&#39;s `--target` flag.
      * 
      */
-    @Export(name="targets", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> targets;
+    @Export(name="target", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> target;
 
     /**
      * @return Set the target build stage(s) to build.
@@ -1095,8 +1166,8 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Equivalent to Docker&#39;s `--target` flag.
      * 
      */
-    public Output<Optional<List<String>>> targets() {
-        return Codegen.optional(this.targets);
+    public Output<Optional<String>> target() {
+        return Codegen.optional(this.target);
     }
 
     /**
