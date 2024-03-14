@@ -311,13 +311,9 @@ func TestInspect(t *testing.T) {
 	cli, err := wrap(h)
 	require.NoError(t, err)
 
-	v2, err := cli.Inspect(context.Background(), "pulumibot/myapp:buildx")
+	descriptors, err := cli.Inspect(context.Background(), "pulumibot/myapp:buildx")
 	assert.NoError(t, err)
-	assert.Equal(t, 2, v2[0].OCIManifest.SchemaVersion)
-
-	v1, err := cli.Inspect(context.Background(), "pulumi/pulumi")
-	assert.NoError(t, err)
-	assert.Nil(t, v1[0].OCIManifest)
+	assert.Equal(t, "application/vnd.docker.distribution.manifest.v2+json", descriptors[0].MediaType)
 }
 
 func TestNormalizatReference(t *testing.T) {

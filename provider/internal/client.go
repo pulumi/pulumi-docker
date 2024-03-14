@@ -20,17 +20,15 @@ import (
 	"github.com/docker/buildx/util/progress"
 	"github.com/docker/cli/cli/command"
 	"github.com/docker/cli/cli/flags"
-	manifesttypes "github.com/docker/cli/cli/manifest/types"
-	registryclient "github.com/docker/cli/cli/registry/client"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/api/types/registry"
-	registryconst "github.com/docker/docker/registry"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/buildkit/util/progress/progressui"
+	"github.com/regclient/regclient/types/descriptor"
 	"github.com/regclient/regclient/types/errs"
+	"github.com/regclient/regclient/types/manifest"
 	"github.com/regclient/regclient/types/ref"
 	"github.com/sirupsen/logrus"
 
@@ -42,7 +40,7 @@ import (
 type Client interface {
 	Build(ctx provider.Context, b Build) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
-	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
+	Inspect(ctx context.Context, id string) ([]descriptor.Descriptor, error)
 	Delete(ctx context.Context, id string) ([]image.DeleteResponse, error)
 
 	ManifestCreate(ctx provider.Context, push bool, target string, refs ...string) error
@@ -366,34 +364,23 @@ func (c *cli) ManifestDelete(ctx provider.Context, target string) error {
 }
 
 // Inspect inspects an image.
-func (c *cli) Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error) {
-	ref, err := normalizeReference(id)
+func (c *cli) Inspect(ctx context.Context, r string) ([]descriptor.Descriptor, error) {
+	ref, err := ref.New(r)
 	if err != nil {
-		return []manifesttypes.ImageManifest{}, err
+		return nil, err
+	}
+	rc := c.rc()
+
+	m, err := rc.ManifestGet(ctx, ref)
+	if err != nil {
+		return nil, err
 	}
 
-	// Constructed a RegistryClient which can use our in-memory auth.
-	insecure := c.DockerEndpoint().SkipTLSVerify
-	resolver := func(_ context.Context, index *registry.IndexInfo) registry.AuthConfig {
-		configKey := index.Name
-		if index.Official {
-			configKey = registryconst.IndexServer
-		}
-		return registry.AuthConfig(c.auths[configKey])
-	}
-	rc := registryclient.NewRegistryClient(resolver, command.UserAgent(), insecure)
-
-	manifests, err := rc.GetManifestList(ctx, ref)
-
-	// If the registry doesn't support manifest lists, attempt to fetch an
-	// individual one.
-	if err != nil && strings.Contains(err.Error(), "unsupported manifest format") {
-		manifest, err := rc.GetManifest(ctx, ref)
-		manifests = append(manifests, manifest)
-		return manifests, err
+	if mi, ok := m.(manifest.Indexer); ok {
+		return mi.GetManifestList()
 	}
 
-	return manifests, err
+	return []descriptor.Descriptor{m.GetDescriptor()}, nil
 }
 
 // Delete deletes an image with the given ID.

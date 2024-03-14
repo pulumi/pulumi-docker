@@ -9,12 +9,12 @@ import (
 
 	_ "github.com/docker/buildx/driver/docker-container"
 
-	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/exporter/containerimage/exptypes"
-	v1 "github.com/opencontainers/image-spec/specs-go/v1"
+	"github.com/regclient/regclient/types/descriptor"
+	"github.com/regclient/regclient/types/platform"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
@@ -297,28 +297,21 @@ func TestDelete(t *testing.T) {
 func TestRead(t *testing.T) {
 	tag := "docker.io/pulumi/pulumitest"
 	digest := "sha256:3be99cafdcd80a8e620da56bdc215acab6213bb608d3d492c0ba1807128786a1"
-	ref, err := reference.ParseNamed(tag)
-	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
 	client := NewMockClient(ctrl)
 	client.EXPECT().Inspect(gomock.Any(), fmt.Sprintf("%s:latest@%s", tag, digest)).Return(
-		[]manifesttypes.ImageManifest{
+		[]descriptor.Descriptor{
 			{
-				Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
-				Ref:        &manifesttypes.SerializableNamed{Named: ref},
+				Platform: &platform.Platform{Architecture: "arm64"},
 			},
 			{
-				Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "unknown"}},
-				Ref:        &manifesttypes.SerializableNamed{Named: ref},
-			},
-			{
-				Descriptor: v1.Descriptor{},
+				Platform: &platform.Platform{Architecture: "unknown"},
 			},
 		}, nil)
 
 	s := newServer(client)
-	err = s.Configure(provider.ConfigureRequest{})
+	err := s.Configure(provider.ConfigureRequest{})
 	require.NoError(t, err)
 
 	resp, err := s.Read(provider.ReadRequest{

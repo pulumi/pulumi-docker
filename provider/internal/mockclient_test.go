@@ -13,11 +13,11 @@ import (
 	reflect "reflect"
 
 	pb "github.com/docker/buildx/controller/pb"
-	types "github.com/docker/cli/cli/manifest/types"
 	image "github.com/docker/docker/api/types/image"
 	client "github.com/moby/buildkit/client"
 	session "github.com/moby/buildkit/session"
 	provider "github.com/pulumi/pulumi-go-provider"
+	descriptor "github.com/regclient/regclient/types/descriptor"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -162,10 +162,10 @@ func (c *ClientDeleteCall) DoAndReturn(f func(context.Context, string) ([]image.
 }
 
 // Inspect mocks base method.
-func (m *MockClient) Inspect(ctx context.Context, id string) ([]types.ImageManifest, error) {
+func (m *MockClient) Inspect(ctx context.Context, id string) ([]descriptor.Descriptor, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Inspect", ctx, id)
-	ret0, _ := ret[0].([]types.ImageManifest)
+	ret0, _ := ret[0].([]descriptor.Descriptor)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -183,19 +183,19 @@ type ClientInspectCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *ClientInspectCall) Return(arg0 []types.ImageManifest, arg1 error) *ClientInspectCall {
+func (c *ClientInspectCall) Return(arg0 []descriptor.Descriptor, arg1 error) *ClientInspectCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *ClientInspectCall) Do(f func(context.Context, string) ([]types.ImageManifest, error)) *ClientInspectCall {
+func (c *ClientInspectCall) Do(f func(context.Context, string) ([]descriptor.Descriptor, error)) *ClientInspectCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientInspectCall) DoAndReturn(f func(context.Context, string) ([]types.ImageManifest, error)) *ClientInspectCall {
+func (c *ClientInspectCall) DoAndReturn(f func(context.Context, string) ([]descriptor.Descriptor, error)) *ClientInspectCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

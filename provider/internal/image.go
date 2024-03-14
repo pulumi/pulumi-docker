@@ -856,19 +856,15 @@ func (i *Image) Read(
 		}
 
 		// Does a tag with this digest exist?
-		infos, err := cli.Inspect(ctx, ref)
+		descriptors, err := cli.Inspect(ctx, ref)
 		if err != nil {
 			ctx.Log(diag.Warning, err.Error())
 			continue
 		}
 
-		for _, m := range infos {
-			if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
+		for _, d := range descriptors {
+			if d.Platform != nil && d.Platform.Architecture == "unknown" {
 				// Ignore cache manifests.
-				continue
-			}
-			if m.Ref == nil {
-				// Shouldn't happen, but just in case.
 				continue
 			}
 
