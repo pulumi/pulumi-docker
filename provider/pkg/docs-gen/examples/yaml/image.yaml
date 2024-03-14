@@ -12,8 +12,7 @@ resources:
       build:
         dockerfile: Dockerfile
         context: .
-        args:
-          platform: linux/amd64
+        platform: linux/amd64
     options:
       version: v4.4.0
 outputs:
@@ -66,8 +65,7 @@ resources:
       registry:
         server: ${ecr-repository.repositoryUrl}
         password:
-          fn::secret:
-            ${authToken.password}
+          fn::secret: ${authToken.password}
     options:
       version: v4.1.2
 outputs:

@@ -54,11 +54,9 @@ import (
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
 //				Build: &docker.DockerBuildArgs{
-//					Args: pulumi.StringMap{
-//						"platform": pulumi.String("linux/amd64"),
-//					},
 //					Context:    pulumi.String("."),
 //					Dockerfile: pulumi.String("Dockerfile"),
+//					Platform:   pulumi.String("linux/amd64"),
 //				},
 //				ImageName: pulumi.String("username/image:tag1"),
 //				SkipPush:  pulumi.Bool(true),
