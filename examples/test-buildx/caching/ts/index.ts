@@ -7,26 +7,22 @@ const start = new Date().getTime();
 
 // docker buildx build \
 //  -f Dockerfile \
-//  --cache-to type=local,dest=tmp,mode=max,oci-mediatypes=true \
+//  --cache-to type=local,dest=tmp-arm64,mode=max,oci-mediatypes=true \
 //  --cache-from type=local,src=tmp \
 //  --build-arg SLEEP-MS=$SLEEP_MS \
-//  -t not-pushed \
-//  -f Dockerfile \
+//  -t cached \
 //  --platform linux/arm64 \
-//  --platform linux/amd64 \
-//  .
-const img = new docker.buildx.Image(`buildx-${config.require("name")}`, {
-  tags: ["not-pushed"],
-  dockerfile: {
-    location: "Dockerfile",
-  },
+
+const image = new docker.buildx.Image(`buildx-${config.require("name")}`, {
+  tags: [config.require("name")],
   context: {
     location: ".",
   },
-  platforms: ["linux/arm64", "linux/amd64"],
+  platforms: ["linux/arm64"],
   buildArgs: {
     SLEEP_SECONDS: config.require("SLEEP_SECONDS"),
   },
+  push: false,
   cacheTo: [{ raw: config.require("cacheTo") }],
   cacheFrom: [{ raw: config.require("cacheFrom") }],
   // Set registry auth if it was provided.
@@ -43,6 +39,6 @@ const img = new docker.buildx.Image(`buildx-${config.require("name")}`, {
   ),
 });
 
-export const durationSeconds = img.tags.apply(
+export const durationSeconds = image.ref.apply(
   (_) => (new Date().getTime() - start) / 1000.0
 );

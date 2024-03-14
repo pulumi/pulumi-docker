@@ -367,6 +367,29 @@ func TestBuildxCaching(t *testing.T) {
 	}
 }
 
+func TestBuildxIndex(t *testing.T) {
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	if password == "" {
+		t.Skip("missing DOCKER_HUB_PASSWORD")
+	}
+
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-buildx", "index", "ts"),
+			Config: map[string]string{
+				"tag":      "docker.io/pulumibot/buildkit-e2e:manifest",
+				"address":  "docker.io",
+				"username": "pulumibot",
+			},
+			Secrets: map[string]string{
+				"password": password,
+			},
+			Verbose: true,
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{
