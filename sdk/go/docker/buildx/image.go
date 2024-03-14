@@ -144,9 +144,9 @@ import (
 //			authToken := ecr.GetAuthorizationTokenOutput(ctx, ecr.GetAuthorizationTokenOutputArgs{
 //				RegistryId: ecrRepository.RegistryId,
 //			}, nil)
-//			_, err = buildx.NewImage(ctx, "my-image", &buildx.ImageArgs{
-//				CacheFrom: buildx.CacheFromEntryArray{
-//					&buildx.CacheFromEntryArgs{
+//			myImage, err := buildx.NewImage(ctx, "my-image", &buildx.ImageArgs{
+//				CacheFrom: buildx.CacheFromArray{
+//					&buildx.CacheFromArgs{
 //						Registry: &buildx.CacheFromRegistryArgs{
 //							Ref: ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
 //								return fmt.Sprintf("%v:cache", repositoryUrl), nil
@@ -154,8 +154,8 @@ import (
 //						},
 //					},
 //				},
-//				CacheTo: buildx.CacheToEntryArray{
-//					&buildx.CacheToEntryArgs{
+//				CacheTo: buildx.CacheToArray{
+//					&buildx.CacheToArgs{
 //						Registry: &buildx.CacheToRegistryArgs{
 //							ImageManifest: pulumi.Bool(true),
 //							OciMediaTypes: pulumi.Bool(true),
@@ -167,9 +167,6 @@ import (
 //				},
 //				Context: &buildx.BuildContextArgs{
 //					Location: pulumi.String("./app"),
-//				},
-//				Dockerfile: &buildx.DockerfileArgs{
-//					Location: pulumi.String("./Dockerfile"),
 //				},
 //				Push: pulumi.Bool(true),
 //				Registries: buildx.RegistryAuthArray{
@@ -192,6 +189,7 @@ import (
 //			if err != nil {
 //				return err
 //			}
+//			ctx.Export("ref", myImage.Ref)
 //			return nil
 //		})
 //	}
@@ -259,6 +257,7 @@ import (
 //			if err != nil {
 //				return err
 //			}
+//			ctx.Export("ref", myImage.Ref)
 //			return nil
 //		})
 //	}
@@ -278,15 +277,15 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
-//				CacheFrom: buildx.CacheFromEntryArray{
-//					&buildx.CacheFromEntryArgs{
+//				CacheFrom: buildx.CacheFromArray{
+//					&buildx.CacheFromArgs{
 //						Local: &buildx.CacheFromLocalArgs{
 //							Src: pulumi.String("tmp/cache"),
 //						},
 //					},
 //				},
-//				CacheTo: buildx.CacheToEntryArray{
-//					&buildx.CacheToEntryArgs{
+//				CacheTo: buildx.CacheToArray{
+//					&buildx.CacheToArgs{
 //						Local: &buildx.CacheToLocalArgs{
 //							Dest: pulumi.String("tmp/cache"),
 //							Mode: buildx.CacheModeMax,
@@ -334,7 +333,7 @@ import (
 //	}
 //
 // ```
-// ### Build targets
+// ### Build target
 // ```go
 // package main
 //
@@ -351,10 +350,7 @@ import (
 //				Context: &buildx.BuildContextArgs{
 //					Location: pulumi.String("app"),
 //				},
-//				Targets: pulumi.StringArray{
-//					pulumi.String("build-me"),
-//					pulumi.String("also-build-me"),
-//				},
+//				Target: pulumi.String("build-me"),
 //			})
 //			if err != nil {
 //				return err
@@ -496,8 +492,8 @@ import (
 //				Context: &buildx.BuildContextArgs{
 //					Location: pulumi.String("app"),
 //				},
-//				Exports: buildx.ExportEntryArray{
-//					&buildx.ExportEntryArgs{
+//				Exports: buildx.ExportArray{
+//					&buildx.ExportArgs{
 //						Docker: &buildx.ExportDockerArgs{
 //							Tar: pulumi.Bool(true),
 //						},

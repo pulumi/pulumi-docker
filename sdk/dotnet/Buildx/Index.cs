@@ -17,6 +17,108 @@ namespace Pulumi.Docker.Buildx
     /// 
     /// This creates an OCI image index or a Docker manifest list depending on
     /// the media types of the source images.
+    /// 
+    /// ## Example Usage
+    /// ### Multi-platform registry caching
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var amd64 = new Docker.Buildx.Image("amd64", new()
+    ///     {
+    ///         CacheFrom = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheFromArgs
+    ///             {
+    ///                 Registry = new Docker.Buildx.Inputs.CacheFromRegistryArgs
+    ///                 {
+    ///                     Ref = "docker.io/pulumi/pulumi:cache-amd64",
+    ///                 },
+    ///             },
+    ///         },
+    ///         CacheTo = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheToArgs
+    ///             {
+    ///                 Registry = new Docker.Buildx.Inputs.CacheToRegistryArgs
+    ///                 {
+    ///                     Mode = Docker.Buildx.Image.CacheMode.Max,
+    ///                     Ref = "docker.io/pulumi/pulumi:cache-amd64",
+    ///                 },
+    ///             },
+    ///         },
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Platforms = new[]
+    ///         {
+    ///             Docker.Buildx.Image.Platform.Linux_amd64,
+    ///         },
+    ///         Tags = new[]
+    ///         {
+    ///             "docker.io/pulumi/pulumi:3.107.0-amd64",
+    ///         },
+    ///     });
+    /// 
+    ///     var arm64 = new Docker.Buildx.Image("arm64", new()
+    ///     {
+    ///         CacheFrom = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheFromArgs
+    ///             {
+    ///                 Registry = new Docker.Buildx.Inputs.CacheFromRegistryArgs
+    ///                 {
+    ///                     Ref = "docker.io/pulumi/pulumi:cache-arm64",
+    ///                 },
+    ///             },
+    ///         },
+    ///         CacheTo = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheToArgs
+    ///             {
+    ///                 Registry = new Docker.Buildx.Inputs.CacheToRegistryArgs
+    ///                 {
+    ///                     Mode = Docker.Buildx.Image.CacheMode.Max,
+    ///                     Ref = "docker.io/pulumi/pulumi:cache-arm64",
+    ///                 },
+    ///             },
+    ///         },
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Platforms = new[]
+    ///         {
+    ///             Docker.Buildx.Image.Platform.Linux_arm64,
+    ///         },
+    ///         Tags = new[]
+    ///         {
+    ///             "docker.io/pulumi/pulumi:3.107.0-arm64",
+    ///         },
+    ///     });
+    /// 
+    ///     var index = new Docker.Buildx.Index("index", new()
+    ///     {
+    ///         Sources = new[]
+    ///         {
+    ///             amd64.Ref,
+    ///             arm64.Ref,
+    ///         },
+    ///         Tag = "docker.io/pulumi/pulumi:3.107.0",
+    ///     });
+    /// 
+    ///     return new Dictionary&lt;string, object?&gt;
+    ///     {
+    ///         ["ref"] = index.Ref,
+    ///     };
+    /// });
+    /// 
+    /// ```
     /// </summary>
     [DockerResourceType("docker:buildx/image:Index")]
     public partial class Index : global::Pulumi.CustomResource

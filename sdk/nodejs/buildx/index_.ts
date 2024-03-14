@@ -15,6 +15,59 @@ import * as utilities from "../utilities";
  *
  * This creates an OCI image index or a Docker manifest list depending on
  * the media types of the source images.
+ *
+ * ## Example Usage
+ * ### Multi-platform registry caching
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const amd64 = new docker.buildx.Image("amd64", {
+ *     cacheFrom: [{
+ *         registry: {
+ *             ref: "docker.io/pulumi/pulumi:cache-amd64",
+ *         },
+ *     }],
+ *     cacheTo: [{
+ *         registry: {
+ *             mode: docker.buildx.image.CacheMode.Max,
+ *             ref: "docker.io/pulumi/pulumi:cache-amd64",
+ *         },
+ *     }],
+ *     context: {
+ *         location: "app",
+ *     },
+ *     platforms: [docker.buildx.image.Platform.Linux_amd64],
+ *     tags: ["docker.io/pulumi/pulumi:3.107.0-amd64"],
+ * });
+ * const arm64 = new docker.buildx.Image("arm64", {
+ *     cacheFrom: [{
+ *         registry: {
+ *             ref: "docker.io/pulumi/pulumi:cache-arm64",
+ *         },
+ *     }],
+ *     cacheTo: [{
+ *         registry: {
+ *             mode: docker.buildx.image.CacheMode.Max,
+ *             ref: "docker.io/pulumi/pulumi:cache-arm64",
+ *         },
+ *     }],
+ *     context: {
+ *         location: "app",
+ *     },
+ *     platforms: [docker.buildx.image.Platform.Linux_arm64],
+ *     tags: ["docker.io/pulumi/pulumi:3.107.0-arm64"],
+ * });
+ * const index = new docker.buildx.Index("index", {
+ *     sources: [
+ *         amd64.ref,
+ *         arm64.ref,
+ *     ],
+ *     tag: "docker.io/pulumi/pulumi:3.107.0",
+ * });
+ * export const ref = index.ref;
+ * ```
  */
 export class Index extends pulumi.CustomResource {
     /**

@@ -28,9 +28,6 @@ const myImage = new docker.buildx.Image("my-image", {
     context: {
         location: "./app",
     },
-    dockerfile: {
-        location: "./Dockerfile",
-    },
     push: true,
     registries: [{
         address: ecrRepository.repositoryUrl,
@@ -39,6 +36,7 @@ const myImage = new docker.buildx.Image("my-image", {
     }],
     tags: [pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`],
 });
+export const ref = myImage.ref;
 ```
 ```python
 import pulumi
@@ -48,12 +46,12 @@ import pulumi_docker as docker
 ecr_repository = aws.ecr.Repository("ecr-repository")
 auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
 my_image = docker.buildx.Image("my-image",
-    cache_from=[docker.buildx.CacheFromEntryArgs(
+    cache_from=[docker.buildx.CacheFromArgs(
         registry=docker.buildx.CacheFromRegistryArgs(
             ref=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:cache"),
         ),
     )],
-    cache_to=[docker.buildx.CacheToEntryArgs(
+    cache_to=[docker.buildx.CacheToArgs(
         registry=docker.buildx.CacheToRegistryArgs(
             image_manifest=True,
             oci_media_types=True,
@@ -63,9 +61,6 @@ my_image = docker.buildx.Image("my-image",
     context=docker.buildx.BuildContextArgs(
         location="./app",
     ),
-    dockerfile=docker.buildx.DockerfileArgs(
-        location="./Dockerfile",
-    ),
     push=True,
     registries=[docker.buildx.RegistryAuthArgs(
         address=ecr_repository.repository_url,
@@ -73,6 +68,7 @@ my_image = docker.buildx.Image("my-image",
         username=auth_token.user_name,
     )],
     tags=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")])
+pulumi.export("ref", my_image.ref)
 ```
 ```csharp
 using System.Collections.Generic;
@@ -94,7 +90,7 @@ return await Deployment.RunAsync(() =>
     {
         CacheFrom = new[]
         {
-            new Docker.Buildx.Inputs.CacheFromEntryArgs
+            new Docker.Buildx.Inputs.CacheFromArgs
             {
                 Registry = new Docker.Buildx.Inputs.CacheFromRegistryArgs
                 {
@@ -104,7 +100,7 @@ return await Deployment.RunAsync(() =>
         },
         CacheTo = new[]
         {
-            new Docker.Buildx.Inputs.CacheToEntryArgs
+            new Docker.Buildx.Inputs.CacheToArgs
             {
                 Registry = new Docker.Buildx.Inputs.CacheToRegistryArgs
                 {
@@ -117,10 +113,6 @@ return await Deployment.RunAsync(() =>
         Context = new Docker.Buildx.Inputs.BuildContextArgs
         {
             Location = "./app",
-        },
-        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
-        {
-            Location = "./Dockerfile",
         },
         Push = true,
         Registries = new[]
@@ -138,6 +130,10 @@ return await Deployment.RunAsync(() =>
         },
     });
 
+    return new Dictionary<string, object?>
+    {
+        ["ref"] = myImage.Ref,
+    };
 });
 
 ```
@@ -161,9 +157,9 @@ func main() {
 		authToken := ecr.GetAuthorizationTokenOutput(ctx, ecr.GetAuthorizationTokenOutputArgs{
 			RegistryId: ecrRepository.RegistryId,
 		}, nil)
-		_, err = buildx.NewImage(ctx, "my-image", &buildx.ImageArgs{
-			CacheFrom: buildx.CacheFromEntryArray{
-				&buildx.CacheFromEntryArgs{
+		myImage, err := buildx.NewImage(ctx, "my-image", &buildx.ImageArgs{
+			CacheFrom: buildx.CacheFromArray{
+				&buildx.CacheFromArgs{
 					Registry: &buildx.CacheFromRegistryArgs{
 						Ref: ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
 							return fmt.Sprintf("%v:cache", repositoryUrl), nil
@@ -171,8 +167,8 @@ func main() {
 					},
 				},
 			},
-			CacheTo: buildx.CacheToEntryArray{
-				&buildx.CacheToEntryArgs{
+			CacheTo: buildx.CacheToArray{
+				&buildx.CacheToArgs{
 					Registry: &buildx.CacheToRegistryArgs{
 						ImageManifest: pulumi.Bool(true),
 						OciMediaTypes: pulumi.Bool(true),
@@ -184,9 +180,6 @@ func main() {
 			},
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("./app"),
-			},
-			Dockerfile: &buildx.DockerfileArgs{
-				Location: pulumi.String("./Dockerfile"),
 			},
 			Push: pulumi.Bool(true),
 			Registries: buildx.RegistryAuthArray{
@@ -209,6 +202,7 @@ func main() {
 		if err != nil {
 			return err
 		}
+		ctx.Export("ref", myImage.Ref)
 		return nil
 	})
 }
@@ -216,6 +210,8 @@ func main() {
 ```yaml
 description: Push to AWS ECR with caching
 name: ecr
+outputs:
+    ref: ${my-image.ref}
 resources:
     ecr-repository:
         type: aws:ecr:Repository
@@ -231,8 +227,6 @@ resources:
                     ref: ${ecr-repository.repositoryUrl}:cache
             context:
                 location: ./app
-            dockerfile:
-                location: ./Dockerfile
             push: true
             registries:
                 - address: ${ecr-repository.repositoryUrl}
@@ -258,12 +252,11 @@ import com.pulumi.aws.ecr.EcrFunctions;
 import com.pulumi.aws.ecr.inputs.GetAuthorizationTokenArgs;
 import com.pulumi.docker.buildx.Image;
 import com.pulumi.docker.buildx.ImageArgs;
-import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromArgs;
 import com.pulumi.docker.buildx.inputs.CacheFromRegistryArgs;
-import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+import com.pulumi.docker.buildx.inputs.CacheToArgs;
 import com.pulumi.docker.buildx.inputs.CacheToRegistryArgs;
 import com.pulumi.docker.buildx.inputs.BuildContextArgs;
-import com.pulumi.docker.buildx.inputs.DockerfileArgs;
 import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
 import java.util.List;
 import java.util.ArrayList;
@@ -285,12 +278,12 @@ public class App {
             .build());
 
         var myImage = new Image("myImage", ImageArgs.builder()        
-            .cacheFrom(CacheFromEntryArgs.builder()
+            .cacheFrom(CacheFromArgs.builder()
                 .registry(CacheFromRegistryArgs.builder()
                     .ref(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:cache", repositoryUrl)))
                     .build())
                 .build())
-            .cacheTo(CacheToEntryArgs.builder()
+            .cacheTo(CacheToArgs.builder()
                 .registry(CacheToRegistryArgs.builder()
                     .imageManifest(true)
                     .ociMediaTypes(true)
@@ -299,9 +292,6 @@ public class App {
                 .build())
             .context(BuildContextArgs.builder()
                 .location("./app")
-                .build())
-            .dockerfile(DockerfileArgs.builder()
-                .location("./Dockerfile")
                 .build())
             .push(true)
             .registries(RegistryAuthArgs.builder()
@@ -312,6 +302,7 @@ public class App {
             .tags(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
             .build());
 
+        ctx.export("ref", myImage.ref());
     }
 }
 ```
@@ -464,6 +455,7 @@ const image = new docker.buildx.Image("image", {
     }],
     tags: ["docker.io/pulumi/pulumi:3.107.0"],
 });
+export const ref = myImage.ref;
 ```
 ```python
 import pulumi
@@ -480,6 +472,7 @@ image = docker.buildx.Image("image",
         username="pulumibot",
     )],
     tags=["docker.io/pulumi/pulumi:3.107.0"])
+pulumi.export("ref", my_image["ref"])
 ```
 ```csharp
 using System.Collections.Generic;
@@ -511,6 +504,10 @@ return await Deployment.RunAsync(() =>
         },
     });
 
+    return new Dictionary<string, object?>
+    {
+        ["ref"] = myImage.Ref,
+    };
 });
 
 ```
@@ -543,6 +540,7 @@ func main() {
 		if err != nil {
 			return err
 		}
+		ctx.Export("ref", myImage.Ref)
 		return nil
 	})
 }
@@ -550,6 +548,8 @@ func main() {
 ```yaml
 description: Registry export
 name: registry
+outputs:
+    ref: ${my-image.ref}
 resources:
     image:
         properties:
@@ -601,6 +601,7 @@ public class App {
             .tags("docker.io/pulumi/pulumi:3.107.0")
             .build());
 
+        ctx.export("ref", myImage.ref());
     }
 }
 ```
@@ -634,12 +635,12 @@ import pulumi
 import pulumi_docker as docker
 
 image = docker.buildx.Image("image",
-    cache_from=[docker.buildx.CacheFromEntryArgs(
+    cache_from=[docker.buildx.CacheFromArgs(
         local=docker.buildx.CacheFromLocalArgs(
             src="tmp/cache",
         ),
     )],
-    cache_to=[docker.buildx.CacheToEntryArgs(
+    cache_to=[docker.buildx.CacheToArgs(
         local=docker.buildx.CacheToLocalArgs(
             dest="tmp/cache",
             mode=docker.buildx/image.CacheMode.MAX,
@@ -661,7 +662,7 @@ return await Deployment.RunAsync(() =>
     {
         CacheFrom = new[]
         {
-            new Docker.Buildx.Inputs.CacheFromEntryArgs
+            new Docker.Buildx.Inputs.CacheFromArgs
             {
                 Local = new Docker.Buildx.Inputs.CacheFromLocalArgs
                 {
@@ -671,7 +672,7 @@ return await Deployment.RunAsync(() =>
         },
         CacheTo = new[]
         {
-            new Docker.Buildx.Inputs.CacheToEntryArgs
+            new Docker.Buildx.Inputs.CacheToArgs
             {
                 Local = new Docker.Buildx.Inputs.CacheToLocalArgs
                 {
@@ -700,15 +701,15 @@ import (
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
-			CacheFrom: buildx.CacheFromEntryArray{
-				&buildx.CacheFromEntryArgs{
+			CacheFrom: buildx.CacheFromArray{
+				&buildx.CacheFromArgs{
 					Local: &buildx.CacheFromLocalArgs{
 						Src: pulumi.String("tmp/cache"),
 					},
 				},
 			},
-			CacheTo: buildx.CacheToEntryArray{
-				&buildx.CacheToEntryArgs{
+			CacheTo: buildx.CacheToArray{
+				&buildx.CacheToArgs{
 					Local: &buildx.CacheToLocalArgs{
 						Dest: pulumi.String("tmp/cache"),
 						Mode: buildx.CacheModeMax,
@@ -752,9 +753,9 @@ import com.pulumi.Pulumi;
 import com.pulumi.core.Output;
 import com.pulumi.docker.buildx.Image;
 import com.pulumi.docker.buildx.ImageArgs;
-import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromArgs;
 import com.pulumi.docker.buildx.inputs.CacheFromLocalArgs;
-import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+import com.pulumi.docker.buildx.inputs.CacheToArgs;
 import com.pulumi.docker.buildx.inputs.CacheToLocalArgs;
 import com.pulumi.docker.buildx.inputs.BuildContextArgs;
 import java.util.List;
@@ -771,12 +772,12 @@ public class App {
 
     public static void stack(Context ctx) {
         var image = new Image("image", ImageArgs.builder()        
-            .cacheFrom(CacheFromEntryArgs.builder()
+            .cacheFrom(CacheFromArgs.builder()
                 .local(CacheFromLocalArgs.builder()
                     .src("tmp/cache")
                     .build())
                 .build())
-            .cacheTo(CacheToEntryArgs.builder()
+            .cacheTo(CacheToArgs.builder()
                 .local(CacheToLocalArgs.builder()
                     .dest("tmp/cache")
                     .mode("max")
@@ -914,7 +915,7 @@ public class App {
 ```
 {{% /example %}}
 {{% example %}}
-### Build targets
+### Build target
 
 ```typescript
 import * as pulumi from "@pulumi/pulumi";
@@ -924,10 +925,7 @@ const image = new docker.buildx.Image("image", {
     context: {
         location: "app",
     },
-    targets: [
-        "build-me",
-        "also-build-me",
-    ],
+    target: "build-me",
 });
 ```
 ```python
@@ -938,10 +936,7 @@ image = docker.buildx.Image("image",
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
-    targets=[
-        "build-me",
-        "also-build-me",
-    ])
+    target="build-me")
 ```
 ```csharp
 using System.Collections.Generic;
@@ -957,11 +952,7 @@ return await Deployment.RunAsync(() =>
         {
             Location = "app",
         },
-        Targets = new[]
-        {
-            "build-me",
-            "also-build-me",
-        },
+        Target = "build-me",
     });
 
 });
@@ -981,10 +972,7 @@ func main() {
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
-			Targets: pulumi.StringArray{
-				pulumi.String("build-me"),
-				pulumi.String("also-build-me"),
-			},
+			Target: pulumi.String("build-me"),
 		})
 		if err != nil {
 			return err
@@ -994,16 +982,14 @@ func main() {
 }
 ```
 ```yaml
-description: Build targets
-name: build-targets
+description: Build target
+name: build-target
 resources:
     image:
         properties:
             context:
                 location: app
-            targets:
-                - build-me
-                - also-build-me
+            target: build-me
         type: docker:buildx/image:Image
 runtime: yaml
 ```
@@ -1033,9 +1019,7 @@ public class App {
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
-            .targets(            
-                "build-me",
-                "also-build-me")
+            .target("build-me")
             .build());
 
     }
@@ -1561,7 +1545,7 @@ image = docker.buildx.Image("image",
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
-    exports=[docker.buildx.ExportEntryArgs(
+    exports=[docker.buildx.ExportArgs(
         docker=docker.buildx.ExportDockerArgs(
             tar=True,
         ),
@@ -1583,7 +1567,7 @@ return await Deployment.RunAsync(() =>
         },
         Exports = new[]
         {
-            new Docker.Buildx.Inputs.ExportEntryArgs
+            new Docker.Buildx.Inputs.ExportArgs
             {
                 Docker = new Docker.Buildx.Inputs.ExportDockerArgs
                 {
@@ -1610,8 +1594,8 @@ func main() {
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
-			Exports: buildx.ExportEntryArray{
-				&buildx.ExportEntryArgs{
+			Exports: buildx.ExportArray{
+				&buildx.ExportArgs{
 					Docker: &buildx.ExportDockerArgs{
 						Tar: pulumi.Bool(true),
 					},
@@ -1648,7 +1632,7 @@ import com.pulumi.core.Output;
 import com.pulumi.docker.buildx.Image;
 import com.pulumi.docker.buildx.ImageArgs;
 import com.pulumi.docker.buildx.inputs.BuildContextArgs;
-import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
+import com.pulumi.docker.buildx.inputs.ExportArgs;
 import com.pulumi.docker.buildx.inputs.ExportDockerArgs;
 import java.util.List;
 import java.util.ArrayList;
@@ -1667,7 +1651,7 @@ public class App {
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
-            .exports(ExportEntryArgs.builder()
+            .exports(ExportArgs.builder()
                 .docker(ExportDockerArgs.builder()
                     .tar(true)
                     .build())

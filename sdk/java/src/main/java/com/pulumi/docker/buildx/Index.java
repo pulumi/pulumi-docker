@@ -25,6 +25,86 @@ import javax.annotation.Nullable;
  * This creates an OCI image index or a Docker manifest list depending on
  * the media types of the source images.
  * 
+ * ## Example Usage
+ * ### Multi-platform registry caching
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromRegistryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToRegistryArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import com.pulumi.docker.buildx.Index;
+ * import com.pulumi.docker.buildx.IndexArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var amd64 = new Image(&#34;amd64&#34;, ImageArgs.builder()        
+ *             .cacheFrom(CacheFromArgs.builder()
+ *                 .registry(CacheFromRegistryArgs.builder()
+ *                     .ref(&#34;docker.io/pulumi/pulumi:cache-amd64&#34;)
+ *                     .build())
+ *                 .build())
+ *             .cacheTo(CacheToArgs.builder()
+ *                 .registry(CacheToRegistryArgs.builder()
+ *                     .mode(&#34;max&#34;)
+ *                     .ref(&#34;docker.io/pulumi/pulumi:cache-amd64&#34;)
+ *                     .build())
+ *                 .build())
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .platforms(&#34;linux/amd64&#34;)
+ *             .tags(&#34;docker.io/pulumi/pulumi:3.107.0-amd64&#34;)
+ *             .build());
+ * 
+ *         var arm64 = new Image(&#34;arm64&#34;, ImageArgs.builder()        
+ *             .cacheFrom(CacheFromArgs.builder()
+ *                 .registry(CacheFromRegistryArgs.builder()
+ *                     .ref(&#34;docker.io/pulumi/pulumi:cache-arm64&#34;)
+ *                     .build())
+ *                 .build())
+ *             .cacheTo(CacheToArgs.builder()
+ *                 .registry(CacheToRegistryArgs.builder()
+ *                     .mode(&#34;max&#34;)
+ *                     .ref(&#34;docker.io/pulumi/pulumi:cache-arm64&#34;)
+ *                     .build())
+ *                 .build())
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .platforms(&#34;linux/arm64&#34;)
+ *             .tags(&#34;docker.io/pulumi/pulumi:3.107.0-arm64&#34;)
+ *             .build());
+ * 
+ *         var index = new Index(&#34;index&#34;, IndexArgs.builder()        
+ *             .sources(            
+ *                 amd64.ref(),
+ *                 arm64.ref())
+ *             .tag(&#34;docker.io/pulumi/pulumi:3.107.0&#34;)
+ *             .build());
+ * 
+ *         ctx.export(&#34;ref&#34;, index.ref());
+ *     }
+ * }
+ * ```
+ * 
  */
 @ResourceType(type="docker:buildx/image:Index")
 public class Index extends com.pulumi.resources.CustomResource {

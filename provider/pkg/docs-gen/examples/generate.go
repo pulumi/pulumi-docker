@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -46,8 +47,7 @@ func main() {
 	}
 	for _, yamlFile := range yamlFiles {
 		if err := processYaml(filepath.Join(yamlPath, yamlFile.Name()), mdPath); err != nil {
-			fmt.Fprintf(os.Stderr, "%+v", err)
-			os.Exit(1)
+			log.Fatal(fmt.Errorf("processing %q: %w", yamlFile.Name(), err))
 		}
 	}
 }
@@ -96,11 +96,11 @@ func convert(language, tempDir, programFile string) (string, error) {
 	cmd.Stdout = os.Stdout
 	cmd.Dir = tempDir
 	if err := cmd.Run(); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "convert %s failed, ignoring: %+v", language, err)
+		return "", fmt.Errorf("converting: %w", err)
 	}
 	content, err := os.ReadFile(filepath.Join(tempDir, exampleDir, programFile))
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("reading: %w", err)
 	}
 
 	return string(content), nil
@@ -125,20 +125,27 @@ func processYaml(path string, mdDir string) error {
 			break
 		}
 
-		description := example["description"].(string)
+		description, ok := example["description"].(string)
+		if !ok {
+			description = "TODO: Description"
+		}
 		dir, err := os.MkdirTemp("", "")
 		if err != nil {
 			return err
 		}
 
-		defer func() {
-			contract.IgnoreError(os.RemoveAll(dir))
-		}()
+		/*
+			defer func() {
+				contract.IgnoreError(os.RemoveAll(dir))
+			}()
+		*/
 
 		src, err := os.OpenFile(filepath.Join(dir, "Pulumi.yaml"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 		if err != nil {
 			return err
 		}
+
+		fmt.Println("ENCODING EXAMPLE", example)
 
 		if err = yaml.NewEncoder(src).Encode(example); err != nil {
 			return err

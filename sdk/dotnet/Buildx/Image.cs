@@ -141,7 +141,7 @@ namespace Pulumi.Docker.Buildx
     ///     {
     ///         CacheFrom = new[]
     ///         {
-    ///             new Docker.Buildx.Inputs.CacheFromEntryArgs
+    ///             new Docker.Buildx.Inputs.CacheFromArgs
     ///             {
     ///                 Registry = new Docker.Buildx.Inputs.CacheFromRegistryArgs
     ///                 {
@@ -151,7 +151,7 @@ namespace Pulumi.Docker.Buildx
     ///         },
     ///         CacheTo = new[]
     ///         {
-    ///             new Docker.Buildx.Inputs.CacheToEntryArgs
+    ///             new Docker.Buildx.Inputs.CacheToArgs
     ///             {
     ///                 Registry = new Docker.Buildx.Inputs.CacheToRegistryArgs
     ///                 {
@@ -164,10 +164,6 @@ namespace Pulumi.Docker.Buildx
     ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
     ///         {
     ///             Location = "./app",
-    ///         },
-    ///         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
-    ///         {
-    ///             Location = "./Dockerfile",
     ///         },
     ///         Push = true,
     ///         Registries = new[]
@@ -185,6 +181,10 @@ namespace Pulumi.Docker.Buildx
     ///         },
     ///     });
     /// 
+    ///     return new Dictionary&lt;string, object?&gt;
+    ///     {
+    ///         ["ref"] = myImage.Ref,
+    ///     };
     /// });
     /// 
     /// ```
@@ -244,6 +244,10 @@ namespace Pulumi.Docker.Buildx
     ///         },
     ///     });
     /// 
+    ///     return new Dictionary&lt;string, object?&gt;
+    ///     {
+    ///         ["ref"] = myImage.Ref,
+    ///     };
     /// });
     /// 
     /// ```
@@ -260,7 +264,7 @@ namespace Pulumi.Docker.Buildx
     ///     {
     ///         CacheFrom = new[]
     ///         {
-    ///             new Docker.Buildx.Inputs.CacheFromEntryArgs
+    ///             new Docker.Buildx.Inputs.CacheFromArgs
     ///             {
     ///                 Local = new Docker.Buildx.Inputs.CacheFromLocalArgs
     ///                 {
@@ -270,7 +274,7 @@ namespace Pulumi.Docker.Buildx
     ///         },
     ///         CacheTo = new[]
     ///         {
-    ///             new Docker.Buildx.Inputs.CacheToEntryArgs
+    ///             new Docker.Buildx.Inputs.CacheToArgs
     ///             {
     ///                 Local = new Docker.Buildx.Inputs.CacheToLocalArgs
     ///                 {
@@ -312,7 +316,7 @@ namespace Pulumi.Docker.Buildx
     /// });
     /// 
     /// ```
-    /// ### Build targets
+    /// ### Build target
     /// ```csharp
     /// using System.Collections.Generic;
     /// using System.Linq;
@@ -327,11 +331,7 @@ namespace Pulumi.Docker.Buildx
     ///         {
     ///             Location = "app",
     ///         },
-    ///         Targets = new[]
-    ///         {
-    ///             "build-me",
-    ///             "also-build-me",
-    ///         },
+    ///         Target = "build-me",
     ///     });
     /// 
     /// });
@@ -451,7 +451,7 @@ namespace Pulumi.Docker.Buildx
     ///         },
     ///         Exports = new[]
     ///         {
-    ///             new Docker.Buildx.Inputs.ExportEntryArgs
+    ///             new Docker.Buildx.Inputs.ExportArgs
     ///             {
     ///                 Docker = new Docker.Buildx.Inputs.ExportDockerArgs
     ///                 {

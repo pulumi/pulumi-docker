@@ -148,12 +148,11 @@ import javax.annotation.Nullable;
  * import com.pulumi.aws.ecr.inputs.GetAuthorizationTokenArgs;
  * import com.pulumi.docker.buildx.Image;
  * import com.pulumi.docker.buildx.ImageArgs;
- * import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromArgs;
  * import com.pulumi.docker.buildx.inputs.CacheFromRegistryArgs;
- * import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToArgs;
  * import com.pulumi.docker.buildx.inputs.CacheToRegistryArgs;
  * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
- * import com.pulumi.docker.buildx.inputs.DockerfileArgs;
  * import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
  * import java.util.List;
  * import java.util.ArrayList;
@@ -175,12 +174,12 @@ import javax.annotation.Nullable;
  *             .build());
  * 
  *         var myImage = new Image(&#34;myImage&#34;, ImageArgs.builder()        
- *             .cacheFrom(CacheFromEntryArgs.builder()
+ *             .cacheFrom(CacheFromArgs.builder()
  *                 .registry(CacheFromRegistryArgs.builder()
  *                     .ref(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:cache&#34;, repositoryUrl)))
  *                     .build())
  *                 .build())
- *             .cacheTo(CacheToEntryArgs.builder()
+ *             .cacheTo(CacheToArgs.builder()
  *                 .registry(CacheToRegistryArgs.builder()
  *                     .imageManifest(true)
  *                     .ociMediaTypes(true)
@@ -189,9 +188,6 @@ import javax.annotation.Nullable;
  *                 .build())
  *             .context(BuildContextArgs.builder()
  *                 .location(&#34;./app&#34;)
- *                 .build())
- *             .dockerfile(DockerfileArgs.builder()
- *                 .location(&#34;./Dockerfile&#34;)
  *                 .build())
  *             .push(true)
  *             .registries(RegistryAuthArgs.builder()
@@ -202,6 +198,7 @@ import javax.annotation.Nullable;
  *             .tags(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:latest&#34;, repositoryUrl)))
  *             .build());
  * 
+ *         ctx.export(&#34;ref&#34;, myImage.ref());
  *     }
  * }
  * ```
@@ -277,6 +274,7 @@ import javax.annotation.Nullable;
  *             .tags(&#34;docker.io/pulumi/pulumi:3.107.0&#34;)
  *             .build());
  * 
+ *         ctx.export(&#34;ref&#34;, myImage.ref());
  *     }
  * }
  * ```
@@ -289,9 +287,9 @@ import javax.annotation.Nullable;
  * import com.pulumi.core.Output;
  * import com.pulumi.docker.buildx.Image;
  * import com.pulumi.docker.buildx.ImageArgs;
- * import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromArgs;
  * import com.pulumi.docker.buildx.inputs.CacheFromLocalArgs;
- * import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToArgs;
  * import com.pulumi.docker.buildx.inputs.CacheToLocalArgs;
  * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
  * import java.util.List;
@@ -308,12 +306,12 @@ import javax.annotation.Nullable;
  * 
  *     public static void stack(Context ctx) {
  *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
- *             .cacheFrom(CacheFromEntryArgs.builder()
+ *             .cacheFrom(CacheFromArgs.builder()
  *                 .local(CacheFromLocalArgs.builder()
  *                     .src(&#34;tmp/cache&#34;)
  *                     .build())
  *                 .build())
- *             .cacheTo(CacheToEntryArgs.builder()
+ *             .cacheTo(CacheToArgs.builder()
  *                 .local(CacheToLocalArgs.builder()
  *                     .dest(&#34;tmp/cache&#34;)
  *                     .mode(&#34;max&#34;)
@@ -360,7 +358,7 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
- * ### Build targets
+ * ### Build target
  * ```java
  * package generated_program;
  * 
@@ -387,9 +385,7 @@ import javax.annotation.Nullable;
  *             .context(BuildContextArgs.builder()
  *                 .location(&#34;app&#34;)
  *                 .build())
- *             .targets(            
- *                 &#34;build-me&#34;,
- *                 &#34;also-build-me&#34;)
+ *             .target(&#34;build-me&#34;)
  *             .build());
  * 
  *     }
@@ -545,7 +541,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.buildx.Image;
  * import com.pulumi.docker.buildx.ImageArgs;
  * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
- * import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.ExportArgs;
  * import com.pulumi.docker.buildx.inputs.ExportDockerArgs;
  * import java.util.List;
  * import java.util.ArrayList;
@@ -564,7 +560,7 @@ import javax.annotation.Nullable;
  *             .context(BuildContextArgs.builder()
  *                 .location(&#34;app&#34;)
  *                 .build())
- *             .exports(ExportEntryArgs.builder()
+ *             .exports(ExportArgs.builder()
  *                 .docker(ExportDockerArgs.builder()
  *                     .tar(true)
  *                     .build())

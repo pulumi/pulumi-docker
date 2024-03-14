@@ -274,9 +274,6 @@ import * as utilities from "../utilities";
  *     context: {
  *         location: "./app",
  *     },
- *     dockerfile: {
- *         location: "./Dockerfile",
- *     },
  *     push: true,
  *     registries: [{
  *         address: ecrRepository.repositoryUrl,
@@ -285,6 +282,7 @@ import * as utilities from "../utilities";
  *     }],
  *     tags: [pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`],
  * });
+ * export const ref = myImage.ref;
  * ```
  * ### Multi-platform image
  *
@@ -320,6 +318,7 @@ import * as utilities from "../utilities";
  *     }],
  *     tags: ["docker.io/pulumi/pulumi:3.107.0"],
  * });
+ * export const ref = myImage.ref;
  * ```
  * ### Caching
  *
@@ -359,7 +358,7 @@ import * as utilities from "../utilities";
  *     },
  * });
  * ```
- * ### Build targets
+ * ### Build target
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
@@ -369,10 +368,7 @@ import * as utilities from "../utilities";
  *     context: {
  *         location: "app",
  *     },
- *     targets: [
- *         "build-me",
- *         "also-build-me",
- *     ],
+ *     target: "build-me",
  * });
  * ```
  * ### Named contexts

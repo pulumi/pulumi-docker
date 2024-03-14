@@ -5,6 +5,9 @@ import (
 	"reflect"
 	"strings"
 
+	// For examples/docs.
+	_ "embed"
+
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -21,6 +24,9 @@ var (
 	_ infer.CustomRead[IndexArgs, IndexState]     = (*Index)(nil)
 	_ infer.CustomUpdate[IndexArgs, IndexState]   = (*Index)(nil)
 )
+
+//go:embed doc/index.md
+var _indexExamples string
 
 type Index struct{}
 
@@ -46,7 +52,9 @@ func (i *Index) Annotate(a infer.Annotator) {
 
 		This creates an OCI image index or a Docker manifest list depending on
 		the media types of the source images.
-	`))
+	`)+
+		"\n\n"+_indexExamples,
+	)
 }
 
 func (i *IndexArgs) Annotate(a infer.Annotator) {

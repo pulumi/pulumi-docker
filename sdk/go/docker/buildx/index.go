@@ -19,6 +19,95 @@ import (
 //
 // This creates an OCI image index or a Docker manifest list depending on
 // the media types of the source images.
+//
+// ## Example Usage
+// ### Multi-platform registry caching
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			amd64, err := buildx.NewImage(ctx, "amd64", &buildx.ImageArgs{
+//				CacheFrom: buildx.CacheFromArray{
+//					&buildx.CacheFromArgs{
+//						Registry: &buildx.CacheFromRegistryArgs{
+//							Ref: pulumi.String("docker.io/pulumi/pulumi:cache-amd64"),
+//						},
+//					},
+//				},
+//				CacheTo: buildx.CacheToArray{
+//					&buildx.CacheToArgs{
+//						Registry: &buildx.CacheToRegistryArgs{
+//							Mode: buildx.CacheModeMax,
+//							Ref:  pulumi.String("docker.io/pulumi/pulumi:cache-amd64"),
+//						},
+//					},
+//				},
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Platforms: buildx.PlatformArray{
+//					buildx.Platform_Linux_amd64,
+//				},
+//				Tags: pulumi.StringArray{
+//					pulumi.String("docker.io/pulumi/pulumi:3.107.0-amd64"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			arm64, err := buildx.NewImage(ctx, "arm64", &buildx.ImageArgs{
+//				CacheFrom: buildx.CacheFromArray{
+//					&buildx.CacheFromArgs{
+//						Registry: &buildx.CacheFromRegistryArgs{
+//							Ref: pulumi.String("docker.io/pulumi/pulumi:cache-arm64"),
+//						},
+//					},
+//				},
+//				CacheTo: buildx.CacheToArray{
+//					&buildx.CacheToArgs{
+//						Registry: &buildx.CacheToRegistryArgs{
+//							Mode: buildx.CacheModeMax,
+//							Ref:  pulumi.String("docker.io/pulumi/pulumi:cache-arm64"),
+//						},
+//					},
+//				},
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Platforms: buildx.PlatformArray{
+//					buildx.Platform_Linux_arm64,
+//				},
+//				Tags: pulumi.StringArray{
+//					pulumi.String("docker.io/pulumi/pulumi:3.107.0-arm64"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			index, err := buildx.NewIndex(ctx, "index", &buildx.IndexArgs{
+//				Sources: pulumi.StringArray{
+//					amd64.Ref,
+//					arm64.Ref,
+//				},
+//				Tag: pulumi.String("docker.io/pulumi/pulumi:3.107.0"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			ctx.Export("ref", index.Ref)
+//			return nil
+//		})
+//	}
+//
+// ```
 type Index struct {
 	pulumi.CustomResourceState
 

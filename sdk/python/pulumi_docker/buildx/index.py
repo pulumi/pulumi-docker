@@ -112,6 +112,55 @@ class Index(pulumi.CustomResource):
         This creates an OCI image index or a Docker manifest list depending on
         the media types of the source images.
 
+        ## Example Usage
+        ### Multi-platform registry caching
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        amd64 = docker.buildx.Image("amd64",
+            cache_from=[docker.buildx.CacheFromArgs(
+                registry=docker.buildx.CacheFromRegistryArgs(
+                    ref="docker.io/pulumi/pulumi:cache-amd64",
+                ),
+            )],
+            cache_to=[docker.buildx.CacheToArgs(
+                registry=docker.buildx.CacheToRegistryArgs(
+                    mode=docker.buildx/image.CacheMode.MAX,
+                    ref="docker.io/pulumi/pulumi:cache-amd64",
+                ),
+            )],
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            platforms=[docker.buildx/image.Platform.LINUX_AMD64],
+            tags=["docker.io/pulumi/pulumi:3.107.0-amd64"])
+        arm64 = docker.buildx.Image("arm64",
+            cache_from=[docker.buildx.CacheFromArgs(
+                registry=docker.buildx.CacheFromRegistryArgs(
+                    ref="docker.io/pulumi/pulumi:cache-arm64",
+                ),
+            )],
+            cache_to=[docker.buildx.CacheToArgs(
+                registry=docker.buildx.CacheToRegistryArgs(
+                    mode=docker.buildx/image.CacheMode.MAX,
+                    ref="docker.io/pulumi/pulumi:cache-arm64",
+                ),
+            )],
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            platforms=[docker.buildx/image.Platform.LINUX_ARM64],
+            tags=["docker.io/pulumi/pulumi:3.107.0-arm64"])
+        index = docker.buildx.Index("index",
+            sources=[
+                amd64.ref,
+                arm64.ref,
+            ],
+            tag="docker.io/pulumi/pulumi:3.107.0")
+        pulumi.export("ref", index.ref)
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] push: If true, push the index to the target registry.
@@ -137,6 +186,55 @@ class Index(pulumi.CustomResource):
 
         This creates an OCI image index or a Docker manifest list depending on
         the media types of the source images.
+
+        ## Example Usage
+        ### Multi-platform registry caching
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        amd64 = docker.buildx.Image("amd64",
+            cache_from=[docker.buildx.CacheFromArgs(
+                registry=docker.buildx.CacheFromRegistryArgs(
+                    ref="docker.io/pulumi/pulumi:cache-amd64",
+                ),
+            )],
+            cache_to=[docker.buildx.CacheToArgs(
+                registry=docker.buildx.CacheToRegistryArgs(
+                    mode=docker.buildx/image.CacheMode.MAX,
+                    ref="docker.io/pulumi/pulumi:cache-amd64",
+                ),
+            )],
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            platforms=[docker.buildx/image.Platform.LINUX_AMD64],
+            tags=["docker.io/pulumi/pulumi:3.107.0-amd64"])
+        arm64 = docker.buildx.Image("arm64",
+            cache_from=[docker.buildx.CacheFromArgs(
+                registry=docker.buildx.CacheFromRegistryArgs(
+                    ref="docker.io/pulumi/pulumi:cache-arm64",
+                ),
+            )],
+            cache_to=[docker.buildx.CacheToArgs(
+                registry=docker.buildx.CacheToRegistryArgs(
+                    mode=docker.buildx/image.CacheMode.MAX,
+                    ref="docker.io/pulumi/pulumi:cache-arm64",
+                ),
+            )],
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            platforms=[docker.buildx/image.Platform.LINUX_ARM64],
+            tags=["docker.io/pulumi/pulumi:3.107.0-arm64"])
+        index = docker.buildx.Index("index",
+            sources=[
+                amd64.ref,
+                arm64.ref,
+            ],
+            tag="docker.io/pulumi/pulumi:3.107.0")
+        pulumi.export("ref", index.ref)
+        ```
 
         :param str resource_name: The name of the resource.
         :param IndexArgs args: The arguments to use to populate this resource's properties.

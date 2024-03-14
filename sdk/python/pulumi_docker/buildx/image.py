@@ -730,12 +730,12 @@ class Image(pulumi.CustomResource):
         ecr_repository = aws.ecr.Repository("ecr-repository")
         auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
         my_image = docker.buildx.Image("my-image",
-            cache_from=[docker.buildx.CacheFromEntryArgs(
+            cache_from=[docker.buildx.CacheFromArgs(
                 registry=docker.buildx.CacheFromRegistryArgs(
                     ref=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:cache"),
                 ),
             )],
-            cache_to=[docker.buildx.CacheToEntryArgs(
+            cache_to=[docker.buildx.CacheToArgs(
                 registry=docker.buildx.CacheToRegistryArgs(
                     image_manifest=True,
                     oci_media_types=True,
@@ -745,9 +745,6 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="./app",
             ),
-            dockerfile=docker.buildx.DockerfileArgs(
-                location="./Dockerfile",
-            ),
             push=True,
             registries=[docker.buildx.RegistryAuthArgs(
                 address=ecr_repository.repository_url,
@@ -755,6 +752,7 @@ class Image(pulumi.CustomResource):
                 username=auth_token.user_name,
             )],
             tags=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")])
+        pulumi.export("ref", my_image.ref)
         ```
         ### Multi-platform image
         ```python
@@ -786,6 +784,7 @@ class Image(pulumi.CustomResource):
                 username="pulumibot",
             )],
             tags=["docker.io/pulumi/pulumi:3.107.0"])
+        pulumi.export("ref", my_image["ref"])
         ```
         ### Caching
         ```python
@@ -793,12 +792,12 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         image = docker.buildx.Image("image",
-            cache_from=[docker.buildx.CacheFromEntryArgs(
+            cache_from=[docker.buildx.CacheFromArgs(
                 local=docker.buildx.CacheFromLocalArgs(
                     src="tmp/cache",
                 ),
             )],
-            cache_to=[docker.buildx.CacheToEntryArgs(
+            cache_to=[docker.buildx.CacheToArgs(
                 local=docker.buildx.CacheToLocalArgs(
                     dest="tmp/cache",
                     mode=docker.buildx/image.CacheMode.MAX,
@@ -821,7 +820,7 @@ class Image(pulumi.CustomResource):
                 location="app",
             ))
         ```
-        ### Build targets
+        ### Build target
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -830,10 +829,7 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="app",
             ),
-            targets=[
-                "build-me",
-                "also-build-me",
-            ])
+            target="build-me")
         ```
         ### Named contexts
         ```python
@@ -895,7 +891,7 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="app",
             ),
-            exports=[docker.buildx.ExportEntryArgs(
+            exports=[docker.buildx.ExportArgs(
                 docker=docker.buildx.ExportDockerArgs(
                     tar=True,
                 ),
@@ -1156,12 +1152,12 @@ class Image(pulumi.CustomResource):
         ecr_repository = aws.ecr.Repository("ecr-repository")
         auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
         my_image = docker.buildx.Image("my-image",
-            cache_from=[docker.buildx.CacheFromEntryArgs(
+            cache_from=[docker.buildx.CacheFromArgs(
                 registry=docker.buildx.CacheFromRegistryArgs(
                     ref=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:cache"),
                 ),
             )],
-            cache_to=[docker.buildx.CacheToEntryArgs(
+            cache_to=[docker.buildx.CacheToArgs(
                 registry=docker.buildx.CacheToRegistryArgs(
                     image_manifest=True,
                     oci_media_types=True,
@@ -1171,9 +1167,6 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="./app",
             ),
-            dockerfile=docker.buildx.DockerfileArgs(
-                location="./Dockerfile",
-            ),
             push=True,
             registries=[docker.buildx.RegistryAuthArgs(
                 address=ecr_repository.repository_url,
@@ -1181,6 +1174,7 @@ class Image(pulumi.CustomResource):
                 username=auth_token.user_name,
             )],
             tags=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")])
+        pulumi.export("ref", my_image.ref)
         ```
         ### Multi-platform image
         ```python
@@ -1212,6 +1206,7 @@ class Image(pulumi.CustomResource):
                 username="pulumibot",
             )],
             tags=["docker.io/pulumi/pulumi:3.107.0"])
+        pulumi.export("ref", my_image["ref"])
         ```
         ### Caching
         ```python
@@ -1219,12 +1214,12 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         image = docker.buildx.Image("image",
-            cache_from=[docker.buildx.CacheFromEntryArgs(
+            cache_from=[docker.buildx.CacheFromArgs(
                 local=docker.buildx.CacheFromLocalArgs(
                     src="tmp/cache",
                 ),
             )],
-            cache_to=[docker.buildx.CacheToEntryArgs(
+            cache_to=[docker.buildx.CacheToArgs(
                 local=docker.buildx.CacheToLocalArgs(
                     dest="tmp/cache",
                     mode=docker.buildx/image.CacheMode.MAX,
@@ -1247,7 +1242,7 @@ class Image(pulumi.CustomResource):
                 location="app",
             ))
         ```
-        ### Build targets
+        ### Build target
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -1256,10 +1251,7 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="app",
             ),
-            targets=[
-                "build-me",
-                "also-build-me",
-            ])
+            target="build-me")
         ```
         ### Named contexts
         ```python
@@ -1321,7 +1313,7 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="app",
             ),
-            exports=[docker.buildx.ExportEntryArgs(
+            exports=[docker.buildx.ExportArgs(
                 docker=docker.buildx.ExportDockerArgs(
                     tar=True,
                 ),

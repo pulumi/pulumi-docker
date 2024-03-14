@@ -50,7 +50,7 @@ var (
 )
 
 //go:embed doc/buildx.md
-var _examples string
+var _imageExamples string
 
 //go:embed doc/migration.md
 var _migration string
@@ -78,7 +78,7 @@ func (i *Image) Annotate(a infer.Annotator) {
 		Only use this resource if you understand and accept the risks.
 	`)+
 		"\n\n"+_migration+
-		"\n\n"+_examples,
+		"\n\n"+_imageExamples,
 	)
 }
 

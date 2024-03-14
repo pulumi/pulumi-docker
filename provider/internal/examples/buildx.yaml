@@ -1,8 +1,7 @@
 name: ecr
 description: Push to AWS ECR with caching
-#outputs:
-#  {}
-#    ref: ${my-image.ref}
+outputs:
+  ref: ${my-image.ref}
 resources:
   ecr-repository:
     type: aws:ecr:Repository
@@ -14,8 +13,6 @@ resources:
       push: true
       context:
         location: ./app
-      dockerfile:
-        location: ./Dockerfile
       cacheFrom:
         - registry:
             ref: ${ecr-repository.repositoryUrl}:cache
@@ -63,6 +60,8 @@ resources:
         - address: docker.io
           username: pulumibot
           password: ${dockerHubPassword}
+outputs:
+  ref: ${my-image.ref}
 ---
 name: caching
 runtime: yaml
@@ -92,20 +91,17 @@ resources:
         location: "app"
       buildArgs:
         SET_ME_TO_TRUE: "true"
-
 ---
-name: build-targets
+name: build-target
 runtime: yaml
-description: Build targets
+description: Build target
 resources:
   image:
     type: docker:buildx/image:Image
     properties:
       context:
         location: "app"
-      targets:
-        - "build-me"
-        - "also-build-me"
+      target: "build-me"
 ---
 name: named-contexts
 runtime: yaml
