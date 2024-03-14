@@ -165,15 +165,12 @@ func (c *cli) execBuild(b Build) (*client.SolveResponse, error) {
 
 	// Docker expects a "$DOCKER_CONFIG/contexts" directory in addition to
 	// "$DOCKER_CONFIG/config.json", so we attempt to copy this from the host
-	// to our temporary directory.
+	// to our temporary directory. This doesn't always exist, so we ignore errors.
 	hostConfigDir := filepath.Dir(c.ConfigFile().Filename)
-	err = cp.Copy(
+	_ = cp.Copy(
 		filepath.Join(hostConfigDir, "contexts"),
 		filepath.Join(tmp, "contexts"),
 	)
-	if err != nil {
-		return nil, err
-	}
 
 	// Save our temporary credentials to $tmp/config.json.
 	tmpCfg := filepath.Join(tmp, filepath.Base(c.ConfigFile().Filename))
