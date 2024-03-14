@@ -141,6 +141,7 @@ func TestBuild(t *testing.T) {
 		},
 		{
 			name: "sshMount",
+			skip: os.Getenv("SSH_AUTH_SOCK") == "",
 			args: ImageArgs{
 				Context: exampleContext,
 				Dockerfile: Dockerfile{
