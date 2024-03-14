@@ -112,10 +112,15 @@ func TestBuild(t *testing.T) {
 		{
 			name: "cached",
 			args: ImageArgs{
-				Context:   exampleContext,
-				Tags:      []string{"cached"},
-				CacheTo:   []CacheTo{{Local: &CacheToLocal{Dest: filepath.Join(tmpdir, "cache"), CacheWithMode: CacheWithMode{Mode: "max"}}}},
-				CacheFrom: []CacheFrom{{Local: &CacheFromLocal{Src: filepath.Join(tmpdir, "cache")}}},
+				Context: exampleContext,
+				Tags:    []string{"cached"},
+				CacheTo: []CacheTo{{Local: &CacheToLocal{
+					Dest:          filepath.Join(tmpdir, "cache"),
+					CacheWithMode: CacheWithMode{Mode: "max"},
+				}}},
+				CacheFrom: []CacheFrom{{Local: &CacheFromLocal{
+					Src: filepath.Join(tmpdir, "cache"),
+				}}},
 			},
 		},
 		{
