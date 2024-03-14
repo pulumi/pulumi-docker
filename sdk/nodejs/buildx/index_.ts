@@ -50,8 +50,9 @@ export class Index extends pulumi.CustomResource {
      */
     public readonly push!: pulumi.Output<boolean | undefined>;
     /**
-     * The pushed tag with digest. If the index was not pushed this is just
-     * the tag.
+     * The pushed tag with digest.
+     *
+     * Identical to the tag if the index was not pushed.
      */
     public /*out*/ readonly ref!: pulumi.Output<string>;
     /**
@@ -64,6 +65,9 @@ export class Index extends pulumi.CustomResource {
      * Existing images to include in the index.
      */
     public readonly sources!: pulumi.Output<string[]>;
+    /**
+     * The tag to apply to the index.
+     */
     public readonly tag!: pulumi.Output<string>;
 
     /**
@@ -120,5 +124,8 @@ export interface IndexArgs {
      * Existing images to include in the index.
      */
     sources: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The tag to apply to the index.
+     */
     tag: pulumi.Input<string>;
 }

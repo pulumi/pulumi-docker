@@ -26,8 +26,9 @@ type Index struct {
 	//
 	// Defaults to `true`.
 	Push pulumi.BoolPtrOutput `pulumi:"push"`
-	// The pushed tag with digest. If the index was not pushed this is just
-	// the tag.
+	// The pushed tag with digest.
+	//
+	// Identical to the tag if the index was not pushed.
 	Ref pulumi.StringOutput `pulumi:"ref"`
 	// Authentication for the registry where the tagged index will be pushed.
 	//
@@ -35,7 +36,8 @@ type Index struct {
 	Registry RegistryAuthPtrOutput `pulumi:"registry"`
 	// Existing images to include in the index.
 	Sources pulumi.StringArrayOutput `pulumi:"sources"`
-	Tag     pulumi.StringOutput      `pulumi:"tag"`
+	// The tag to apply to the index.
+	Tag pulumi.StringOutput `pulumi:"tag"`
 }
 
 // NewIndex registers a new resource with the given unique name, arguments, and options.
@@ -97,7 +99,8 @@ type indexArgs struct {
 	Registry *RegistryAuth `pulumi:"registry"`
 	// Existing images to include in the index.
 	Sources []string `pulumi:"sources"`
-	Tag     string   `pulumi:"tag"`
+	// The tag to apply to the index.
+	Tag string `pulumi:"tag"`
 }
 
 // The set of arguments for constructing a Index resource.
@@ -112,7 +115,8 @@ type IndexArgs struct {
 	Registry RegistryAuthPtrInput
 	// Existing images to include in the index.
 	Sources pulumi.StringArrayInput
-	Tag     pulumi.StringInput
+	// The tag to apply to the index.
+	Tag pulumi.StringInput
 }
 
 func (IndexArgs) ElementType() reflect.Type {
@@ -209,8 +213,9 @@ func (o IndexOutput) Push() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Index) pulumi.BoolPtrOutput { return v.Push }).(pulumi.BoolPtrOutput)
 }
 
-// The pushed tag with digest. If the index was not pushed this is just
-// the tag.
+// The pushed tag with digest.
+//
+// Identical to the tag if the index was not pushed.
 func (o IndexOutput) Ref() pulumi.StringOutput {
 	return o.ApplyT(func(v *Index) pulumi.StringOutput { return v.Ref }).(pulumi.StringOutput)
 }
@@ -227,6 +232,7 @@ func (o IndexOutput) Sources() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Index) pulumi.StringArrayOutput { return v.Sources }).(pulumi.StringArrayOutput)
 }
 
+// The tag to apply to the index.
 func (o IndexOutput) Tag() pulumi.StringOutput {
 	return o.ApplyT(func(v *Index) pulumi.StringOutput { return v.Tag }).(pulumi.StringOutput)
 }

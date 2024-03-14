@@ -58,9 +58,12 @@ func (i *IndexArgs) Annotate(a infer.Annotator) {
 	a.Describe(&i.Sources, dedent(`
 		Existing images to include in the index.
 	`))
+	a.Describe(&i.Tag, dedent(`
+		The tag to apply to the index.
+	`))
 	a.Describe(&i.Push, dedent(`
 		If true, push the index to the target registry.
-		
+
 		Defaults to "true".
 	`))
 
@@ -69,8 +72,9 @@ func (i *IndexArgs) Annotate(a infer.Annotator) {
 
 func (i *IndexState) Annotate(a infer.Annotator) {
 	a.Describe(&i.Ref, dedent(`
-		The pushed tag with digest. If the index was not pushed this is just
-		the tag.
+		The pushed tag with digest.
+
+		Identical to the tag if the index was not pushed.
 	`))
 }
 

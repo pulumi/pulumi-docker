@@ -30,8 +30,9 @@ namespace Pulumi.Docker.Buildx
         public Output<bool?> Push { get; private set; } = null!;
 
         /// <summary>
-        /// The pushed tag with digest. If the index was not pushed this is just
-        /// the tag.
+        /// The pushed tag with digest.
+        /// 
+        /// Identical to the tag if the index was not pushed.
         /// </summary>
         [Output("ref")]
         public Output<string> Ref { get; private set; } = null!;
@@ -50,6 +51,9 @@ namespace Pulumi.Docker.Buildx
         [Output("sources")]
         public Output<ImmutableArray<string>> Sources { get; private set; } = null!;
 
+        /// <summary>
+        /// The tag to apply to the index.
+        /// </summary>
         [Output("tag")]
         public Output<string> Tag { get; private set; } = null!;
 
@@ -126,6 +130,9 @@ namespace Pulumi.Docker.Buildx
             set => _sources = value;
         }
 
+        /// <summary>
+        /// The tag to apply to the index.
+        /// </summary>
         [Input("tag", required: true)]
         public Input<string> Tag { get; set; } = null!;
 

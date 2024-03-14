@@ -23,6 +23,7 @@ class IndexArgs:
         """
         The set of arguments for constructing a Index resource.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] sources: Existing images to include in the index.
+        :param pulumi.Input[str] tag: The tag to apply to the index.
         :param pulumi.Input[bool] push: If true, push the index to the target registry.
                
                Defaults to `true`.
@@ -54,6 +55,9 @@ class IndexArgs:
     @property
     @pulumi.getter
     def tag(self) -> pulumi.Input[str]:
+        """
+        The tag to apply to the index.
+        """
         return pulumi.get(self, "tag")
 
     @tag.setter
@@ -117,6 +121,7 @@ class Index(pulumi.CustomResource):
                
                Credentials can also be included with the provider's configuration.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] sources: Existing images to include in the index.
+        :param pulumi.Input[str] tag: The tag to apply to the index.
         """
         ...
     @overload
@@ -215,8 +220,9 @@ class Index(pulumi.CustomResource):
     @pulumi.getter
     def ref(self) -> pulumi.Output[str]:
         """
-        The pushed tag with digest. If the index was not pushed this is just
-        the tag.
+        The pushed tag with digest.
+
+        Identical to the tag if the index was not pushed.
         """
         return pulumi.get(self, "ref")
 
@@ -241,5 +247,8 @@ class Index(pulumi.CustomResource):
     @property
     @pulumi.getter
     def tag(self) -> pulumi.Output[str]:
+        """
+        The tag to apply to the index.
+        """
         return pulumi.get(self, "tag")
 

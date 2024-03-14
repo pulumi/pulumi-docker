@@ -263,10 +263,11 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		By default the provider embeds a v25 Docker client with v0.12 buildx
 		support. This helps ensure consistent behavior across environments and
-		enables Docker-free builds (i.e. against "buildkitd"), but it may not
-		be desirable if you require a specific version of buildx. For example
-		you may want to run a custom "docker-buildx" binary with support for
-		[Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+		is compatible with alternative build backends (e.g. "buildkitd"), but
+		it may not be desirable if you require a specific version of buildx.
+		For example you may want to run a custom "docker-buildx" binary with
+		support for [Docker Build
+		Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
 
 		When this is set to "true" the provider will instead execute the
 		"docker-buildx" binary directly to perform its operations. The user is
@@ -274,11 +275,10 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		and pre-configured builders, at a path Docker expects (e.g.
 		"~/.docker/cli-plugins").
 
-		"exec" mode replicates Docker's exact behavior but has some
-		disadvantages. Debugging may be more difficult as Pulumi will not be
-		able to surface fine-grained errors and warnings. Additionally
-		credentials are temporarily written to disk in order to provide them to
-		the "docker-buildx" binary.
+		Debugging "exec" mode may be more difficult as Pulumi will not be able
+		to surface fine-grained errors and warnings. Additionally credentials
+		are temporarily written to disk in order to provide them to the
+		"docker-buildx" binary.
 	`))
 
 	a.SetDefault(&ia.Network, NetworkModeDefault)

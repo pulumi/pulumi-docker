@@ -47,16 +47,18 @@ public class Index extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.push);
     }
     /**
-     * The pushed tag with digest. If the index was not pushed this is just
-     * the tag.
+     * The pushed tag with digest.
+     * 
+     * Identical to the tag if the index was not pushed.
      * 
      */
     @Export(name="ref", refs={String.class}, tree="[0]")
     private Output<String> ref;
 
     /**
-     * @return The pushed tag with digest. If the index was not pushed this is just
-     * the tag.
+     * @return The pushed tag with digest.
+     * 
+     * Identical to the tag if the index was not pushed.
      * 
      */
     public Output<String> ref() {
@@ -94,9 +96,17 @@ public class Index extends com.pulumi.resources.CustomResource {
     public Output<List<String>> sources() {
         return this.sources;
     }
+    /**
+     * The tag to apply to the index.
+     * 
+     */
     @Export(name="tag", refs={String.class}, tree="[0]")
     private Output<String> tag;
 
+    /**
+     * @return The tag to apply to the index.
+     * 
+     */
     public Output<String> tag() {
         return this.tag;
     }

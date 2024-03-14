@@ -73,9 +73,17 @@ public final class IndexArgs extends com.pulumi.resources.ResourceArgs {
         return this.sources;
     }
 
+    /**
+     * The tag to apply to the index.
+     * 
+     */
     @Import(name="tag", required=true)
     private Output<String> tag;
 
+    /**
+     * @return The tag to apply to the index.
+     * 
+     */
     public Output<String> tag() {
         return this.tag;
     }
@@ -188,11 +196,23 @@ public final class IndexArgs extends com.pulumi.resources.ResourceArgs {
             return sources(List.of(sources));
         }
 
+        /**
+         * @param tag The tag to apply to the index.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tag(Output<String> tag) {
             $.tag = tag;
             return this;
         }
 
+        /**
+         * @param tag The tag to apply to the index.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tag(String tag) {
             return tag(Output.of(tag));
         }

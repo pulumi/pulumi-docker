@@ -85,7 +85,14 @@ namespace Pulumi.Docker.Buildx
     /// 
     /// #### Outputs
     /// 
-    /// TODO:
+    /// Versions `3.x` and `4.x` of the provider exposed a `repoDigest` output which was a fully qualified tag with digest.
+    /// In `4.x` this could also be a single sha256 hash if the image wasn't pushed.
+    /// 
+    /// Unlike earlier providers the `buildx.Image` resource can push multiple tags.
+    /// As a convenience, it exposes a `ref` output consisting of a tag with digest as long as the image was pushed.
+    /// If multiple tags were pushed this uses one at random.
+    /// 
+    /// If you need more control over tag references you can use the `digest` output, which is always a single sha256 hash as long as the image was exported somewhere.
     /// 
     /// #### Tag deletion and refreshes
     /// 
@@ -565,10 +572,11 @@ namespace Pulumi.Docker.Buildx
         /// 
         /// By default the provider embeds a v25 Docker client with v0.12 buildx
         /// support. This helps ensure consistent behavior across environments and
-        /// enables Docker-free builds (i.e. against `buildkitd`), but it may not
-        /// be desirable if you require a specific version of buildx. For example
-        /// you may want to run a custom `docker-buildx` binary with support for
-        /// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+        /// is compatible with alternative build backends (e.g. `buildkitd`), but
+        /// it may not be desirable if you require a specific version of buildx.
+        /// For example you may want to run a custom `docker-buildx` binary with
+        /// support for [Docker Build
+        /// Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
         /// 
         /// When this is set to `true` the provider will instead execute the
         /// `docker-buildx` binary directly to perform its operations. The user is
@@ -576,11 +584,10 @@ namespace Pulumi.Docker.Buildx
         /// and pre-configured builders, at a path Docker expects (e.g.
         /// `~/.docker/cli-plugins`).
         /// 
-        /// `exec` mode replicates Docker's exact behavior but has some
-        /// disadvantages. Debugging may be more difficult as Pulumi will not be
-        /// able to surface fine-grained errors and warnings. Additionally
-        /// credentials are temporarily written to disk in order to provide them to
-        /// the `docker-buildx` binary.
+        /// Debugging `exec` mode may be more difficult as Pulumi will not be able
+        /// to surface fine-grained errors and warnings. Additionally credentials
+        /// are temporarily written to disk in order to provide them to the
+        /// `docker-buildx` binary.
         /// </summary>
         [Output("exec")]
         public Output<bool?> Exec { get; private set; } = null!;
@@ -888,10 +895,11 @@ namespace Pulumi.Docker.Buildx
         /// 
         /// By default the provider embeds a v25 Docker client with v0.12 buildx
         /// support. This helps ensure consistent behavior across environments and
-        /// enables Docker-free builds (i.e. against `buildkitd`), but it may not
-        /// be desirable if you require a specific version of buildx. For example
-        /// you may want to run a custom `docker-buildx` binary with support for
-        /// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+        /// is compatible with alternative build backends (e.g. `buildkitd`), but
+        /// it may not be desirable if you require a specific version of buildx.
+        /// For example you may want to run a custom `docker-buildx` binary with
+        /// support for [Docker Build
+        /// Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
         /// 
         /// When this is set to `true` the provider will instead execute the
         /// `docker-buildx` binary directly to perform its operations. The user is
@@ -899,11 +907,10 @@ namespace Pulumi.Docker.Buildx
         /// and pre-configured builders, at a path Docker expects (e.g.
         /// `~/.docker/cli-plugins`).
         /// 
-        /// `exec` mode replicates Docker's exact behavior but has some
-        /// disadvantages. Debugging may be more difficult as Pulumi will not be
-        /// able to surface fine-grained errors and warnings. Additionally
-        /// credentials are temporarily written to disk in order to provide them to
-        /// the `docker-buildx` binary.
+        /// Debugging `exec` mode may be more difficult as Pulumi will not be able
+        /// to surface fine-grained errors and warnings. Additionally credentials
+        /// are temporarily written to disk in order to provide them to the
+        /// `docker-buildx` binary.
         /// </summary>
         [Input("exec")]
         public Input<bool>? Exec { get; set; }

@@ -86,7 +86,14 @@ import (
 //
 // #### Outputs
 //
-// TODO:
+// Versions `3.x` and `4.x` of the provider exposed a `repoDigest` output which was a fully qualified tag with digest.
+// In `4.x` this could also be a single sha256 hash if the image wasn't pushed.
+//
+// Unlike earlier providers the `buildx.Image` resource can push multiple tags.
+// As a convenience, it exposes a `ref` output consisting of a tag with digest as long as the image was pushed.
+// If multiple tags were pushed this uses one at random.
+//
+// If you need more control over tag references you can use the `digest` output, which is always a single sha256 hash as long as the image was exported somewhere.
 //
 // #### Tag deletion and refreshes
 //
@@ -571,10 +578,11 @@ type Image struct {
 	//
 	// By default the provider embeds a v25 Docker client with v0.12 buildx
 	// support. This helps ensure consistent behavior across environments and
-	// enables Docker-free builds (i.e. against `buildkitd`), but it may not
-	// be desirable if you require a specific version of buildx. For example
-	// you may want to run a custom `docker-buildx` binary with support for
-	// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+	// is compatible with alternative build backends (e.g. `buildkitd`), but
+	// it may not be desirable if you require a specific version of buildx.
+	// For example you may want to run a custom `docker-buildx` binary with
+	// support for [Docker Build
+	// Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
 	//
 	// When this is set to `true` the provider will instead execute the
 	// `docker-buildx` binary directly to perform its operations. The user is
@@ -582,11 +590,10 @@ type Image struct {
 	// and pre-configured builders, at a path Docker expects (e.g.
 	// `~/.docker/cli-plugins`).
 	//
-	// `exec` mode replicates Docker's exact behavior but has some
-	// disadvantages. Debugging may be more difficult as Pulumi will not be
-	// able to surface fine-grained errors and warnings. Additionally
-	// credentials are temporarily written to disk in order to provide them to
-	// the `docker-buildx` binary.
+	// Debugging `exec` mode may be more difficult as Pulumi will not be able
+	// to surface fine-grained errors and warnings. Additionally credentials
+	// are temporarily written to disk in order to provide them to the
+	// `docker-buildx` binary.
 	Exec pulumi.BoolPtrOutput `pulumi:"exec"`
 	// Controls where images are persisted after building.
 	//
@@ -778,10 +785,11 @@ type imageArgs struct {
 	//
 	// By default the provider embeds a v25 Docker client with v0.12 buildx
 	// support. This helps ensure consistent behavior across environments and
-	// enables Docker-free builds (i.e. against `buildkitd`), but it may not
-	// be desirable if you require a specific version of buildx. For example
-	// you may want to run a custom `docker-buildx` binary with support for
-	// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+	// is compatible with alternative build backends (e.g. `buildkitd`), but
+	// it may not be desirable if you require a specific version of buildx.
+	// For example you may want to run a custom `docker-buildx` binary with
+	// support for [Docker Build
+	// Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
 	//
 	// When this is set to `true` the provider will instead execute the
 	// `docker-buildx` binary directly to perform its operations. The user is
@@ -789,11 +797,10 @@ type imageArgs struct {
 	// and pre-configured builders, at a path Docker expects (e.g.
 	// `~/.docker/cli-plugins`).
 	//
-	// `exec` mode replicates Docker's exact behavior but has some
-	// disadvantages. Debugging may be more difficult as Pulumi will not be
-	// able to surface fine-grained errors and warnings. Additionally
-	// credentials are temporarily written to disk in order to provide them to
-	// the `docker-buildx` binary.
+	// Debugging `exec` mode may be more difficult as Pulumi will not be able
+	// to surface fine-grained errors and warnings. Additionally credentials
+	// are temporarily written to disk in order to provide them to the
+	// `docker-buildx` binary.
 	Exec *bool `pulumi:"exec"`
 	// Controls where images are persisted after building.
 	//
@@ -929,10 +936,11 @@ type ImageArgs struct {
 	//
 	// By default the provider embeds a v25 Docker client with v0.12 buildx
 	// support. This helps ensure consistent behavior across environments and
-	// enables Docker-free builds (i.e. against `buildkitd`), but it may not
-	// be desirable if you require a specific version of buildx. For example
-	// you may want to run a custom `docker-buildx` binary with support for
-	// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+	// is compatible with alternative build backends (e.g. `buildkitd`), but
+	// it may not be desirable if you require a specific version of buildx.
+	// For example you may want to run a custom `docker-buildx` binary with
+	// support for [Docker Build
+	// Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
 	//
 	// When this is set to `true` the provider will instead execute the
 	// `docker-buildx` binary directly to perform its operations. The user is
@@ -940,11 +948,10 @@ type ImageArgs struct {
 	// and pre-configured builders, at a path Docker expects (e.g.
 	// `~/.docker/cli-plugins`).
 	//
-	// `exec` mode replicates Docker's exact behavior but has some
-	// disadvantages. Debugging may be more difficult as Pulumi will not be
-	// able to surface fine-grained errors and warnings. Additionally
-	// credentials are temporarily written to disk in order to provide them to
-	// the `docker-buildx` binary.
+	// Debugging `exec` mode may be more difficult as Pulumi will not be able
+	// to surface fine-grained errors and warnings. Additionally credentials
+	// are temporarily written to disk in order to provide them to the
+	// `docker-buildx` binary.
 	Exec pulumi.BoolPtrInput
 	// Controls where images are persisted after building.
 	//
@@ -1207,10 +1214,11 @@ func (o ImageOutput) Dockerfile() DockerfilePtrOutput {
 //
 // By default the provider embeds a v25 Docker client with v0.12 buildx
 // support. This helps ensure consistent behavior across environments and
-// enables Docker-free builds (i.e. against `buildkitd`), but it may not
-// be desirable if you require a specific version of buildx. For example
-// you may want to run a custom `docker-buildx` binary with support for
-// [Docker Build Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
+// is compatible with alternative build backends (e.g. `buildkitd`), but
+// it may not be desirable if you require a specific version of buildx.
+// For example you may want to run a custom `docker-buildx` binary with
+// support for [Docker Build
+// Cloud](https://docs.docker.com/build/cloud/setup/) (DBC).
 //
 // When this is set to `true` the provider will instead execute the
 // `docker-buildx` binary directly to perform its operations. The user is
@@ -1218,11 +1226,10 @@ func (o ImageOutput) Dockerfile() DockerfilePtrOutput {
 // and pre-configured builders, at a path Docker expects (e.g.
 // `~/.docker/cli-plugins`).
 //
-// `exec` mode replicates Docker's exact behavior but has some
-// disadvantages. Debugging may be more difficult as Pulumi will not be
-// able to surface fine-grained errors and warnings. Additionally
-// credentials are temporarily written to disk in order to provide them to
-// the `docker-buildx` binary.
+// Debugging `exec` mode may be more difficult as Pulumi will not be able
+// to surface fine-grained errors and warnings. Additionally credentials
+// are temporarily written to disk in order to provide them to the
+// `docker-buildx` binary.
 func (o ImageOutput) Exec() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Exec }).(pulumi.BoolPtrOutput)
 }
