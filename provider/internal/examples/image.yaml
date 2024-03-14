@@ -80,6 +80,19 @@ resources:
         - local:
             src: tmp/cache
 ---
+name: dbc
+runtime: yaml
+description: Docker Build Cloud
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      exec: true
+      builder:
+        name: cloud-builder-name
+---
 name: build-args
 runtime: yaml
 description: Build arguments

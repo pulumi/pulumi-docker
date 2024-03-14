@@ -793,6 +793,137 @@ public class App {
 ```
 {{% /example %}}
 {{% example %}}
+### Docker Build Cloud
+
+```typescript
+import * as pulumi from "@pulumi/pulumi";
+import * as docker from "@pulumi/docker";
+
+const image = new docker.buildx.Image("image", {
+    builder: {
+        name: "cloud-builder-name",
+    },
+    context: {
+        location: "app",
+    },
+    exec: true,
+});
+```
+```python
+import pulumi
+import pulumi_docker as docker
+
+image = docker.buildx.Image("image",
+    builder=docker.buildx.BuilderConfigArgs(
+        name="cloud-builder-name",
+    ),
+    context=docker.buildx.BuildContextArgs(
+        location="app",
+    ),
+    exec_=True)
+```
+```csharp
+using System.Collections.Generic;
+using System.Linq;
+using Pulumi;
+using Docker = Pulumi.Docker;
+
+return await Deployment.RunAsync(() => 
+{
+    var image = new Docker.Buildx.Image("image", new()
+    {
+        Builder = new Docker.Buildx.Inputs.BuilderConfigArgs
+        {
+            Name = "cloud-builder-name",
+        },
+        Context = new Docker.Buildx.Inputs.BuildContextArgs
+        {
+            Location = "app",
+        },
+        Exec = true,
+    });
+
+});
+
+```
+```go
+package main
+
+import (
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func main() {
+	pulumi.Run(func(ctx *pulumi.Context) error {
+		_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+			Builder: &buildx.BuilderConfigArgs{
+				Name: pulumi.String("cloud-builder-name"),
+			},
+			Context: &buildx.BuildContextArgs{
+				Location: pulumi.String("app"),
+			},
+			Exec: pulumi.Bool(true),
+		})
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+}
+```
+```yaml
+description: Docker Build Cloud
+name: dbc
+resources:
+    image:
+        properties:
+            builder:
+                name: cloud-builder-name
+            context:
+                location: app
+            exec: true
+        type: docker:buildx/image:Image
+runtime: yaml
+```
+```java
+package generated_program;
+
+import com.pulumi.Context;
+import com.pulumi.Pulumi;
+import com.pulumi.core.Output;
+import com.pulumi.docker.buildx.Image;
+import com.pulumi.docker.buildx.ImageArgs;
+import com.pulumi.docker.buildx.inputs.BuilderConfigArgs;
+import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class App {
+    public static void main(String[] args) {
+        Pulumi.run(App::stack);
+    }
+
+    public static void stack(Context ctx) {
+        var image = new Image("image", ImageArgs.builder()        
+            .builder(BuilderConfigArgs.builder()
+                .name("cloud-builder-name")
+                .build())
+            .context(BuildContextArgs.builder()
+                .location("app")
+                .build())
+            .exec(true)
+            .build());
+
+    }
+}
+```
+{{% /example %}}
+{{% example %}}
 ### Build arguments
 
 ```typescript

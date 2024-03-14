@@ -343,6 +343,22 @@ import * as utilities from "../utilities";
  *     },
  * });
  * ```
+ * ### Docker Build Cloud
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const image = new docker.buildx.Image("image", {
+ *     builder: {
+ *         name: "cloud-builder-name",
+ *     },
+ *     context: {
+ *         location: "app",
+ *     },
+ *     exec: true,
+ * });
+ * ```
  * ### Build arguments
  *
  * ```typescript

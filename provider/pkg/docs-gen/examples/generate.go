@@ -134,18 +134,16 @@ func processYaml(path string, mdDir string) error {
 			return err
 		}
 
-		/*
-			defer func() {
-				contract.IgnoreError(os.RemoveAll(dir))
-			}()
-		*/
+		defer func() {
+			contract.IgnoreError(os.RemoveAll(dir))
+		}()
 
 		src, err := os.OpenFile(filepath.Join(dir, "Pulumi.yaml"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 		if err != nil {
 			return err
 		}
 
-		fmt.Println("ENCODING EXAMPLE", example)
+		fmt.Println("Converting:", example)
 
 		if err = yaml.NewEncoder(src).Encode(example); err != nil {
 			return err

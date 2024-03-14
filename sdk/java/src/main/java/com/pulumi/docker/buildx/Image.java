@@ -325,6 +325,43 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
+ * ### Docker Build Cloud
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuilderConfigArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .builder(BuilderConfigArgs.builder()
+ *                 .name(&#34;cloud-builder-name&#34;)
+ *                 .build())
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .exec(true)
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
  * ### Build arguments
  * ```java
  * package generated_program;

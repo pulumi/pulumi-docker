@@ -807,6 +807,20 @@ class Image(pulumi.CustomResource):
                 location="app",
             ))
         ```
+        ### Docker Build Cloud
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            builder=docker.buildx.BuilderConfigArgs(
+                name="cloud-builder-name",
+            ),
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            exec_=True)
+        ```
         ### Build arguments
         ```python
         import pulumi
@@ -1228,6 +1242,20 @@ class Image(pulumi.CustomResource):
             context=docker.buildx.BuildContextArgs(
                 location="app",
             ))
+        ```
+        ### Docker Build Cloud
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            builder=docker.buildx.BuilderConfigArgs(
+                name="cloud-builder-name",
+            ),
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            exec_=True)
         ```
         ### Build arguments
         ```python

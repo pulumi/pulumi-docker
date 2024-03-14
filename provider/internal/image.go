@@ -49,7 +49,7 @@ var (
 	_ infer.CustomUpdate[ImageArgs, ImageState]   = (*Image)(nil)
 )
 
-//go:embed doc/buildx.md
+//go:embed doc/image.md
 var _imageExamples string
 
 //go:embed doc/migration.md

@@ -292,6 +292,31 @@ namespace Pulumi.Docker.Buildx
     /// });
     /// 
     /// ```
+    /// ### Docker Build Cloud
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Builder = new Docker.Buildx.Inputs.BuilderConfigArgs
+    ///         {
+    ///             Name = "cloud-builder-name",
+    ///         },
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Exec = true,
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
     /// ### Build arguments
     /// ```csharp
     /// using System.Collections.Generic;

@@ -304,6 +304,36 @@ import (
 //	}
 //
 // ```
+// ### Docker Build Cloud
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Builder: &buildx.BuilderConfigArgs{
+//					Name: pulumi.String("cloud-builder-name"),
+//				},
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Exec: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 // ### Build arguments
 // ```go
 // package main
