@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/docker/docker/api/types/registry"
@@ -70,6 +71,8 @@ func TestBuild(t *testing.T) {
 	pctx.EXPECT().Err().Return(ctx.Err()).AnyTimes()
 	pctx.EXPECT().Deadline().Return(ctx.Deadline()).AnyTimes()
 
+	tmpdir := t.TempDir()
+
 	context := func(path string) BuildContext {
 		return BuildContext{Context: Context{Location: path}}
 	}
@@ -111,8 +114,8 @@ func TestBuild(t *testing.T) {
 			args: ImageArgs{
 				Context:   exampleContext,
 				Tags:      []string{"cached"},
-				CacheTo:   []CacheTo{{Local: &CacheToLocal{Dest: "tmp/cache", CacheWithMode: CacheWithMode{Mode: "max"}}}},
-				CacheFrom: []CacheFrom{{Local: &CacheFromLocal{Src: "tmp/cache"}}},
+				CacheTo:   []CacheTo{{Local: &CacheToLocal{Dest: filepath.Join(tmpdir, "cache"), CacheWithMode: CacheWithMode{Mode: "max"}}}},
+				CacheFrom: []CacheFrom{{Local: &CacheFromLocal{Src: filepath.Join(tmpdir, "cache")}}},
 			},
 		},
 		{
@@ -252,6 +255,16 @@ func TestBuild(t *testing.T) {
 		tt := tt
 		tt.name = "exec-" + tt.name
 		tt.args.Exec = true
+		for _, c := range tt.args.CacheTo {
+			if c.Local != nil {
+				c.Local.Dest += "-exec"
+			}
+		}
+		for _, c := range tt.args.CacheFrom {
+			if c.Local != nil {
+				c.Local.Src += "-exec"
+			}
+		}
 		tests = append(tests, tt)
 	}
 

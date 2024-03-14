@@ -56,6 +56,12 @@ func (h *host) builderFor(build Build) (*cachedBuilder, error) {
 		return b, nil
 	}
 
+	txn, release, err := storeutil.GetStore(h.cli)
+	if err != nil {
+		return nil, err
+	}
+	defer release()
+
 	contextPathHash := opts.ContextPath
 	if absContextPath, err := filepath.Abs(contextPathHash); err == nil {
 		contextPathHash = absContextPath
@@ -63,6 +69,7 @@ func (h *host) builderFor(build Build) (*cachedBuilder, error) {
 	b, err := builder.New(h.cli,
 		builder.WithName(opts.Builder),
 		builder.WithContextPathHash(contextPathHash),
+		builder.WithStore(txn),
 	)
 	if err != nil {
 		return nil, err
@@ -72,12 +79,6 @@ func (h *host) builderFor(build Build) (*cachedBuilder, error) {
 	// builder with an unsupported (docker) driver, then look for a builder we
 	// do support.
 	if b.Driver == "" && opts.Builder == "" {
-		txn, closer, err := storeutil.GetStore(h.cli)
-		if err != nil {
-			return nil, err
-		}
-		defer closer()
-
 		builders, err := builder.GetBuilders(h.cli, txn)
 		if err != nil {
 			return nil, err
@@ -108,6 +109,14 @@ func (h *host) builderFor(build Build) (*cachedBuilder, error) {
 			}
 			b = bb
 			break
+		}
+	}
+
+	if b.Driver == "" && opts.Builder == "" {
+		// If we STILL don't have a builder, create a docker-container instance.
+		b, err = builder.Create(context.Background(), txn, h.cli, builder.CreateOpts{Driver: "docker-container"})
+		if err != nil {
+			return nil, err
 		}
 	}
 
