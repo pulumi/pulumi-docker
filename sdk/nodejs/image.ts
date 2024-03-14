@@ -43,11 +43,9 @@ import * as utilities from "./utilities";
  *
  * const demoImage = new docker.Image("demo-image", {
  *     build: {
- *         args: {
- *             platform: "linux/amd64",
- *         },
  *         context: ".",
  *         dockerfile: "Dockerfile",
+ *         platform: "linux/amd64",
  *     },
  *     imageName: "username/image:tag1",
  *     skipPush: true,

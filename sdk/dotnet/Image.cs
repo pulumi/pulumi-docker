@@ -50,12 +50,9 @@ namespace Pulumi.Docker
     ///     {
     ///         Build = new Docker.Inputs.DockerBuildArgs
     ///         {
-    ///             Args = 
-    ///             {
-    ///                 { "platform", "linux/amd64" },
-    ///             },
     ///             Context = ".",
     ///             Dockerfile = "Dockerfile",
+    ///             Platform = "linux/amd64",
     ///         },
     ///         ImageName = "username/image:tag1",
     ///         SkipPush = true,

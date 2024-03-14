@@ -152,11 +152,9 @@ class Image(pulumi.CustomResource):
 
         demo_image = docker.Image("demo-image",
             build=docker.DockerBuildArgs(
-                args={
-                    "platform": "linux/amd64",
-                },
                 context=".",
                 dockerfile="Dockerfile",
+                platform="linux/amd64",
             ),
             image_name="username/image:tag1",
             skip_push=True)
@@ -253,11 +251,9 @@ class Image(pulumi.CustomResource):
 
         demo_image = docker.Image("demo-image",
             build=docker.DockerBuildArgs(
-                args={
-                    "platform": "linux/amd64",
-                },
                 context=".",
                 dockerfile="Dockerfile",
+                platform="linux/amd64",
             ),
             image_name="username/image:tag1",
             skip_push=True)

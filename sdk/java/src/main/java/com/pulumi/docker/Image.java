@@ -68,9 +68,9 @@ import javax.annotation.Nullable;
  *     public static void stack(Context ctx) {
  *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()        
  *             .build(DockerBuildArgs.builder()
- *                 .args(Map.of(&#34;platform&#34;, &#34;linux/amd64&#34;))
  *                 .context(&#34;.&#34;)
  *                 .dockerfile(&#34;Dockerfile&#34;)
+ *                 .platform(&#34;linux/amd64&#34;)
  *                 .build())
  *             .imageName(&#34;username/image:tag1&#34;)
  *             .skipPush(true)

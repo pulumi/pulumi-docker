@@ -9,11 +9,9 @@ import * as docker from "@pulumi/docker";
 
 const demoImage = new docker.Image("demo-image", {
     build: {
-        args: {
-            platform: "linux/amd64",
-        },
         context: ".",
         dockerfile: "Dockerfile",
+        platform: "linux/amd64",
     },
     imageName: "username/image:tag1",
     skipPush: true,
@@ -26,11 +24,9 @@ import pulumi_docker as docker
 
 demo_image = docker.Image("demo-image",
     build=docker.DockerBuildArgs(
-        args={
-            "platform": "linux/amd64",
-        },
         context=".",
         dockerfile="Dockerfile",
+        platform="linux/amd64",
     ),
     image_name="username/image:tag1",
     skip_push=True)
@@ -48,12 +44,9 @@ return await Deployment.RunAsync(() =>
     {
         Build = new Docker.Inputs.DockerBuildArgs
         {
-            Args = 
-            {
-                { "platform", "linux/amd64" },
-            },
             Context = ".",
             Dockerfile = "Dockerfile",
+            Platform = "linux/amd64",
         },
         ImageName = "username/image:tag1",
         SkipPush = true,
@@ -78,11 +71,9 @@ func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
 			Build: &docker.DockerBuildArgs{
-				Args: pulumi.StringMap{
-					"platform": pulumi.String("linux/amd64"),
-				},
 				Context:    pulumi.String("."),
 				Dockerfile: pulumi.String("Dockerfile"),
+				Platform:   pulumi.String("linux/amd64"),
 			},
 			ImageName: pulumi.String("username/image:tag1"),
 			SkipPush:  pulumi.Bool(true),
@@ -107,10 +98,9 @@ resources:
             version: v4.4.0
         properties:
             build:
-                args:
-                    platform: linux/amd64
                 context: .
                 dockerfile: Dockerfile
+                platform: linux/amd64
             imageName: username/image:tag1
             skipPush: true
         type: docker:Image
@@ -141,9 +131,9 @@ public class App {
     public static void stack(Context ctx) {
         var demoImage = new Image("demoImage", ImageArgs.builder()        
             .build(DockerBuildArgs.builder()
-                .args(Map.of("platform", "linux/amd64"))
                 .context(".")
                 .dockerfile("Dockerfile")
+                .platform("linux/amd64")
                 .build())
             .imageName("username/image:tag1")
             .skipPush(true)
