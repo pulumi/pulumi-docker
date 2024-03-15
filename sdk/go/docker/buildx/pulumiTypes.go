@@ -2864,9 +2864,12 @@ type CacheToRegistry struct {
 	// Ignore errors caused by failed cache exports.
 	IgnoreError *bool `pulumi:"ignoreError"`
 	// Export cache manifest as an OCI-compatible image manifest instead of a
-	// manifest list (requires OCI media types).
+	// manifest list. Requires `ociMediaTypes` to also be `true`.
 	//
-	// Defaults to `false`.
+	// Some registries like AWS ECR will not work with caching if this is
+	// `false`.
+	//
+	// Defaults to `false` to match Docker's default behavior.
 	ImageManifest *bool `pulumi:"imageManifest"`
 	// The cache mode to use. Defaults to `min`.
 	Mode *CacheMode `pulumi:"mode"`
@@ -2935,9 +2938,12 @@ type CacheToRegistryArgs struct {
 	// Ignore errors caused by failed cache exports.
 	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
 	// Export cache manifest as an OCI-compatible image manifest instead of a
-	// manifest list (requires OCI media types).
+	// manifest list. Requires `ociMediaTypes` to also be `true`.
 	//
-	// Defaults to `false`.
+	// Some registries like AWS ECR will not work with caching if this is
+	// `false`.
+	//
+	// Defaults to `false` to match Docker's default behavior.
 	ImageManifest pulumi.BoolPtrInput `pulumi:"imageManifest"`
 	// The cache mode to use. Defaults to `min`.
 	Mode CacheModePtrInput `pulumi:"mode"`
@@ -3075,9 +3081,12 @@ func (o CacheToRegistryOutput) IgnoreError() pulumi.BoolPtrOutput {
 }
 
 // Export cache manifest as an OCI-compatible image manifest instead of a
-// manifest list (requires OCI media types).
+// manifest list. Requires `ociMediaTypes` to also be `true`.
 //
-// Defaults to `false`.
+// Some registries like AWS ECR will not work with caching if this is
+// `false`.
+//
+// Defaults to `false` to match Docker's default behavior.
 func (o CacheToRegistryOutput) ImageManifest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToRegistry) *bool { return v.ImageManifest }).(pulumi.BoolPtrOutput)
 }
@@ -3163,9 +3172,12 @@ func (o CacheToRegistryPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
 }
 
 // Export cache manifest as an OCI-compatible image manifest instead of a
-// manifest list (requires OCI media types).
+// manifest list. Requires `ociMediaTypes` to also be `true`.
 //
-// Defaults to `false`.
+// Some registries like AWS ECR will not work with caching if this is
+// `false`.
+//
+// Defaults to `false` to match Docker's default behavior.
 func (o CacheToRegistryPtrOutput) ImageManifest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *CacheToRegistry) *bool {
 		if v == nil {

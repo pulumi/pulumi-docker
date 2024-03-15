@@ -21,7 +21,6 @@ import (
 	"github.com/docker/cli/cli/command"
 	"github.com/docker/cli/cli/flags"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
@@ -41,7 +40,7 @@ type Client interface {
 	Build(ctx provider.Context, b Build) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, id string) ([]descriptor.Descriptor, error)
-	Delete(ctx context.Context, id string) ([]image.DeleteResponse, error)
+	Delete(ctx context.Context, id string) error
 
 	ManifestCreate(ctx provider.Context, push bool, target string, refs ...string) error
 	ManifestInspect(ctx provider.Context, target string) (string, error)
@@ -334,7 +333,7 @@ func (c *cli) ManifestDelete(ctx provider.Context, target string) error {
 		return nil
 	}
 	if err != nil {
-		return fmt.Errorf("fetching head: %w", err)
+		return err
 	}
 
 	return nil
@@ -383,11 +382,47 @@ func (c *cli) Inspect(ctx context.Context, r string) ([]descriptor.Descriptor, e
 	return []descriptor.Descriptor{m.GetDescriptor()}, nil
 }
 
-// Delete deletes an image with the given ID.
-func (c *cli) Delete(ctx context.Context, id string) ([]image.DeleteResponse, error) {
-	return c.Client().ImageRemove(ctx, id, types.ImageRemoveOptions{
+// Delete attempts to delete an image with the given ref. Many registries don't
+// support the DELETE API yet, so this operation is not guaranteed to work.
+func (c *cli) Delete(ctx context.Context, r string) error {
+	// Attempt to delete the ref locally if it exists.
+	_, _ = c.Client().ImageRemove(ctx, r, types.ImageRemoveOptions{
 		Force: true, // Needed in case the image has multiple tags.
 	})
+
+	// Attempt to delete the ref remotely if it was pushed -- requires a
+	// digest.
+	ref, err := ref.New(r)
+	if err != nil || ref.Digest == "" {
+		return nil
+	}
+
+	rc := c.rc()
+
+	// TODO: Multi-platform manifests are left dangling on ECR.
+	// m, err := rc.ManifestGet(ctx, ref)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// if mi, ok := m.(manifest.Indexer); ok {
+	// 	ml, err := mi.GetManifestList()
+	// 	if err != nil {
+	//      return err
+	// 	}
+
+	// 	for _, mm := range ml {
+	// 		rr := ref.SetDigest(mm.Digest.String())
+	// 		err = rc.ManifestDelete(ctx, rr, regclient.WithManifestCheckReferrers())
+	// 		if err != nil {
+	//          return err
+	// 		}
+	// 	}
+	// }
+
+	_ = rc.ManifestDelete(ctx, ref)
+
+	return nil
 }
 
 func normalizeReference(ref string) (reference.Named, error) {

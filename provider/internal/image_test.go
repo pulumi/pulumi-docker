@@ -10,7 +10,6 @@ import (
 	_ "github.com/docker/buildx/driver/docker-container"
 
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/regclient/regclient/types/descriptor"
@@ -60,10 +59,9 @@ func TestImageLifecycle(t *testing.T) {
 						}, nil
 					},
 				).AnyTimes()
-				c.EXPECT().Delete(gomock.Any(), "docker.io/pulumibot/buildkit-e2e").Return(
-					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
-				c.EXPECT().Delete(gomock.Any(), "docker.io/pulumibot/buildkit-e2e:main").Return(
-					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
+				c.EXPECT().Delete(gomock.Any(),
+					"docker.io/pulumibot/buildkit-e2e@sha256:98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4",
+				).Return(nil)
 				return c
 			},
 			op: func(t *testing.T) integration.Operation {
@@ -219,6 +217,7 @@ func TestImageLifecycle(t *testing.T) {
 						}, nil
 					},
 				).AnyTimes()
+				c.EXPECT().Delete(gomock.Any(), "default-dockerfile").Return(nil)
 				return c
 			},
 			op: func(t *testing.T) integration.Operation {
@@ -271,7 +270,7 @@ func TestDelete(t *testing.T) {
 	t.Run("image was already deleted", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		client := NewMockClient(ctrl)
-		client.EXPECT().Delete(gomock.Any(), "docker.io/pulumi/test:foo").Return(nil, errNotFound{})
+		client.EXPECT().Delete(gomock.Any(), "docker.io/pulumi/test@sha256:foo").Return(errNotFound{})
 
 		s := newServer(client)
 		err := s.Configure(provider.ConfigureRequest{})

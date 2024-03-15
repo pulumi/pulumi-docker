@@ -1059,9 +1059,12 @@ class CacheToRegistry(dict):
         :param bool force_compression: Forcefully apply compression.
         :param bool ignore_error: Ignore errors caused by failed cache exports.
         :param bool image_manifest: Export cache manifest as an OCI-compatible image manifest instead of a
-               manifest list (requires OCI media types).
+               manifest list. Requires `ociMediaTypes` to also be `true`.
                
-               Defaults to `false`.
+               Some registries like AWS ECR will not work with caching if this is
+               `false`.
+               
+               Defaults to `false` to match Docker's default behavior.
         :param 'CacheMode' mode: The cache mode to use. Defaults to `min`.
         :param bool oci_media_types: Whether to use OCI media types in exported manifests. Defaults to
                `true`.
@@ -1141,9 +1144,12 @@ class CacheToRegistry(dict):
     def image_manifest(self) -> Optional[bool]:
         """
         Export cache manifest as an OCI-compatible image manifest instead of a
-        manifest list (requires OCI media types).
+        manifest list. Requires `ociMediaTypes` to also be `true`.
 
-        Defaults to `false`.
+        Some registries like AWS ECR will not work with caching if this is
+        `false`.
+
+        Defaults to `false` to match Docker's default behavior.
         """
         return pulumi.get(self, "image_manifest")
 

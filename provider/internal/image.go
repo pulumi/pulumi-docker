@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"strings"
 
 	// For examples/docs.
@@ -28,6 +29,7 @@ import (
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/secrets/secretsprovider"
+	"github.com/regclient/regclient/types/ref"
 	"github.com/spf13/afero"
 
 	provider "github.com/pulumi/pulumi-go-provider"
@@ -117,10 +119,10 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	`))
 	a.Describe(&ia.BuildArgs, dedent(`
 		"ARG" names and values to set during the build.
-		
+
 		These variables are accessed like environment variables inside "RUN"
 		instructions.
-		
+
 		Build arguments are persisted in the image, so you should use "secrets"
 		if these arguments are sensitive.
 
@@ -170,7 +172,7 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Images are only stored in the local cache unless "exports" are
 		explicitly configured.
-		
+
 		Exporting to multiple destinations requires a daemon running BuildKit
 		0.13 or later.
 
@@ -202,7 +204,7 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	`))
 	a.Describe(&ia.Platforms, dedent(`
 		Set target platform(s) for the build. Defaults to the host's platform.
-		
+
 		Equivalent to Docker's "--platform" flag.
 	`))
 	a.Describe(&ia.Pull, dedent(`
@@ -475,7 +477,7 @@ func (ia ImageArgs) toBuild(
 		return nil, err
 	}
 
-	if len(ia.Exports) == 0 {
+	if len(ia.Exports) == 0 && !ia.Push && !ia.Load {
 		ctx.Log(diag.Warning,
 			"No exports were specified so the build will only remain in the local build cache. "+
 				"Use `push` to upload the image to a registry, or silence this warning with a `cacheonly` export.",
@@ -727,15 +729,16 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	return opts, multierr
 }
 
-// Update builds the image using buildkit.
-func (i *Image) Update(
+// Create builds an image using buildkit.
+func (i *Image) Create(
 	ctx provider.Context,
-	_ string,
-	state ImageState,
+	name string,
 	input ImageArgs,
 	preview bool,
-) (ImageState, error) {
-	state.ImageArgs = input
+) (string, ImageState, error) {
+	state := ImageState{ImageArgs: input}
+	id := name
+
 	// Default our ref to one of our tags.
 	for _, tag := range state.Tags {
 		if _, err := normalizeReference(tag); err != nil {
@@ -747,20 +750,20 @@ func (i *Image) Update(
 
 	cli, err := i.client(ctx, state, input)
 	if err != nil {
-		return state, err
+		return id, state, err
 	}
 
 	ok, err := cli.BuildKitEnabled()
 	if err != nil {
-		return state, fmt.Errorf("checking buildkit compatibility: %w", err)
+		return id, state, fmt.Errorf("checking buildkit compatibility: %w", err)
 	}
 	if !ok {
-		return state, fmt.Errorf("buildkit is not supported on this host")
+		return id, state, fmt.Errorf("buildkit is not supported on this host")
 	}
 
 	build, err := input.toBuild(ctx, preview)
 	if err != nil {
-		return state, fmt.Errorf("preparing: %w", err)
+		return id, state, fmt.Errorf("preparing: %w", err)
 	}
 
 	hash, err := BuildxContext(
@@ -769,30 +772,31 @@ func (i *Image) Update(
 		input.Context.Named.Map(),
 	)
 	if err != nil {
-		return state, fmt.Errorf("hashing build context: %w", err)
+		return id, state, fmt.Errorf("hashing build context: %w", err)
 	}
 	state.ContextHash = hash
 
 	if preview && !input.shouldBuildOnPreview() {
-		return state, nil
+		return id, state, nil
 	}
 	if preview && !input.buildable() {
 		ctx.Log(diag.Warning, "Skipping preview build because some inputs are unknown.")
-		return state, nil
+		return id, state, nil
 	}
 
 	result, err := cli.Build(ctx, build)
 	if err != nil {
-		return state, err
+		return id, state, err
 	}
 
 	if d, ok := result.ExporterResponse[exptypes.ExporterImageDigestKey]; ok {
 		state.Digest = d
+		id = d
 	}
 
 	if state.Digest == "" {
 		// Can't construct a ref, nothing else to do.
-		return state, nil
+		return id, state, nil
 	}
 
 	// Take the first registry tag we find and add a digest to it. That becomes
@@ -807,18 +811,21 @@ func (i *Image) Update(
 		break
 	}
 
-	return state, nil
+	return id, state, nil
 }
 
-// Create initializes a new resource and performs an Update on it.
-func (i *Image) Create(
+// Update builds a new image. Normally we create-replace resources, but for
+// images built locally there is nothing to delete. We treat those cases as
+// updates and simply re-build the image without deleting anything.
+func (i *Image) Update(
 	ctx provider.Context,
 	name string,
+	_ ImageState,
 	input ImageArgs,
 	preview bool,
-) (string, ImageState, error) {
-	state, err := i.Update(ctx, name, ImageState{}, input, preview)
-	return name, state, err
+) (ImageState, error) {
+	_, state, err := i.Create(ctx, name, input, preview)
+	return state, err
 }
 
 // Read attempts to read manifests from an image's exports. An image without
@@ -884,9 +891,8 @@ func (i *Image) Read(
 	return name, input, state, nil
 }
 
-// Delete deletes an Image. If the Image was already deleted out-of-band it is treated as a success.
-//
-// Any tags previously pushed to registries will not be deleted.
+// Delete deletes an Image. If the Image was already deleted out-of-band it is
+// treated as a success.
 func (i *Image) Delete(
 	ctx provider.Context,
 	_ string,
@@ -897,30 +903,35 @@ func (i *Image) Delete(
 		return err
 	}
 
-	var multierr error
+	if state.Digest == "" {
+		// Nothing was exported. Just try to delete the local image.
+		return cli.Delete(ctx, state.Ref)
+	}
 
+	digests := []string{}
+
+	// Construct a ref with digest for each repository we pushed to.
 	for _, tag := range state.Tags {
-		ref, err := reference.ParseNamed(tag)
+		ref, err := ref.New(tag)
 		if err != nil {
 			continue
 		}
-		deletions, err := cli.Delete(context.Context(ctx), ref.String())
+		digested := ref.SetDigest(state.Digest)
+		digests = append(digests, digested.CommonName())
+	}
+
+	slices.Sort(digests)
+	digests = slices.Compact(digests)
+
+	var multierr error
+	for _, digested := range digests {
+		err = cli.Delete(context.Context(ctx), digested)
 		if errdefs.IsNotFound(err) {
+			ctx.Log(diag.Warning, digested+" not found")
 			continue // Nothing to do.
 		}
 		multierr = errors.Join(multierr, err)
-
-		for _, d := range deletions {
-			if d.Deleted != "" {
-				ctx.Log(diag.Info, d.Deleted)
-			}
-			if d.Untagged != "" {
-				ctx.Log(diag.Info, d.Untagged)
-			}
-		}
 	}
-
-	// TODO: Delete tags from registries?
 
 	return multierr
 }
@@ -1001,7 +1012,7 @@ func (*Image) Diff(
 		diff["tags"] = update
 	}
 	if !reflect.DeepEqual(olds.Target, news.Target) {
-		diff["targets"] = update
+		diff["target"] = update
 	}
 
 	// pull=true indicates that we want to keep base layers up-to-date. In this

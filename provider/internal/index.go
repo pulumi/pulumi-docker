@@ -227,15 +227,19 @@ func (i *Index) Diff(
 ) (provider.DiffResponse, error) {
 	diff := map[string]provider.PropertyDiff{}
 	update := provider.PropertyDiff{Kind: provider.Update}
+	replace := provider.PropertyDiff{Kind: provider.UpdateReplace}
 
 	if olds.Tag != news.Tag {
-		diff["tag"] = update
+		diff["tag"] = replace
 	}
 	if !reflect.DeepEqual(olds.Sources, news.Sources) {
 		diff["sources"] = update
 	}
 	if olds.Registry.Address != news.Registry.Address {
 		diff["registry.address"] = update
+		if olds.Registry.Address != "" {
+			diff["registry.address"] = replace
+		}
 	}
 	if olds.Registry.Username != news.Registry.Username {
 		diff["registry.username"] = update

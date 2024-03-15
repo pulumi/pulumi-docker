@@ -31,9 +31,12 @@ namespace Pulumi.Docker.Buildx.Outputs
         public readonly bool? IgnoreError;
         /// <summary>
         /// Export cache manifest as an OCI-compatible image manifest instead of a
-        /// manifest list (requires OCI media types).
+        /// manifest list. Requires `ociMediaTypes` to also be `true`.
         /// 
-        /// Defaults to `false`.
+        /// Some registries like AWS ECR will not work with caching if this is
+        /// `false`.
+        /// 
+        /// Defaults to `false` to match Docker's default behavior.
         /// </summary>
         public readonly bool? ImageManifest;
         /// <summary>

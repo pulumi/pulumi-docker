@@ -1,6 +1,5 @@
 import * as aws from "@pulumi/aws";
 import * as docker from "@pulumi/docker";
-import * as pulumi from "@pulumi/pulumi";
 import * as random from "@pulumi/random";
 
 // Create a private ECR registry.
@@ -43,38 +42,3 @@ const image = new docker.Image("my-image", {
 // Export the resulting image name
 export const imageName = image.baseImageName;
 export const repoDigest = image.repoDigest;
-
-// buildx
-
-const buildxImage = new docker.buildx.Image("buildx", {
-  tags: [pulumi.interpolate`${repo.repositoryUrl}:buildx`],
-  platforms: ["linux/arm64", "linux/amd64"],
-  push: true,
-  cacheTo: [
-    {
-      registry: {
-        mode: "max",
-        imageManifest: true,
-        ociMediaTypes: true,
-        ref: pulumi.interpolate`${repo.repositoryUrl}:cache`,
-      },
-    },
-  ],
-  cacheFrom: [
-    {
-      registry: {
-        ref: pulumi.interpolate`${repo.repositoryUrl}:cache`,
-      },
-    },
-  ],
-  context: {
-    location: "app",
-  },
-  registries: [
-    {
-      address: registryInfo.server,
-      username: registryInfo.username,
-      password: registryInfo.password,
-    },
-  ],
-});

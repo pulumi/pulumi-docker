@@ -118,7 +118,8 @@ import javax.annotation.Nullable;
  * If any are missing a subsequent `update` will push them.
  * 
  * When a `buildx.Image` is deleted, it will _attempt_ to also delete any pushed tags.
- * Deletion of remote tags is not guaranteed, because not all registries currently support this operation (`docker.io` in particular).
+ * Deletion of remote tags is not guaranteed because not all registries support the manifest `DELETE` API (`docker.io` in particular).
+ * Manifests are _not_ deleted in the same way during updates -- to do so safely would require a full build to determine whether a Pulumi operation should be an update or update-replace.
  * 
  * Use the [`retainOnDelete: true`](https://www.pulumi.com/docs/concepts/options/retainondelete/) option if you do not want tags deleted.
  * 
