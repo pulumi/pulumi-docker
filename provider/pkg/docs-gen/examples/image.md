@@ -433,7 +433,7 @@ func main() {
 			Registry: &docker.RegistryArgs{
 				Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
 					return &authToken.Password, nil
-				}).(pulumi.StringPtrOutput)).(*pulumi.StringOutput),
+				}).(pulumi.StringPtrOutput)).(pulumi.StringOutput),
 				Server: ecrRepository.RepositoryUrl,
 			},
 		})
