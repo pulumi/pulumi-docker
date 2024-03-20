@@ -75,9 +75,9 @@ import (
 //				return err
 //			}
 //			_, err = docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
-//				Name: *pulumi.String(ubuntuRegistryImage.Name),
+//				Name: pulumi.String(ubuntuRegistryImage.Name),
 //				PullTriggers: pulumi.StringArray{
-//					*pulumi.String(ubuntuRegistryImage.Sha256Digest),
+//					pulumi.String(ubuntuRegistryImage.Sha256Digest),
 //				},
 //			})
 //			if err != nil {
