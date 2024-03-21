@@ -1,0 +1,48 @@
+name: registry-caching
+description: Multi-platform registry caching
+runtime: yaml
+resources:
+  arm64:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      platforms:
+        - linux/arm64
+      tags:
+        - "docker.io/pulumi/pulumi:3.107.0-arm64"
+      cacheTo:
+        - registry:
+            ref: "docker.io/pulumi/pulumi:cache-arm64"
+            mode: max
+      cacheFrom:
+        - registry:
+            ref: "docker.io/pulumi/pulumi:cache-arm64"
+
+  amd64:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      platforms:
+        - linux/amd64
+      tags:
+        - "docker.io/pulumi/pulumi:3.107.0-amd64"
+      cacheTo:
+        - registry:
+            ref: "docker.io/pulumi/pulumi:cache-amd64"
+            mode: max
+      cacheFrom:
+        - registry:
+            ref: "docker.io/pulumi/pulumi:cache-amd64"
+
+  index:
+    type: docker:buildx/image:Index
+    properties:
+      tag: "docker.io/pulumi/pulumi:3.107.0"
+      sources:
+        - ${amd64.ref}
+        - ${arm64.ref}
+
+outputs:
+  ref: ${index.ref}

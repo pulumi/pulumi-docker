@@ -30,7 +30,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecr"
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/regclient/regclient/types/ref"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestBuildxTs(t *testing.T) {
@@ -103,6 +105,30 @@ func TestAwsContainerRegistryNode(t *testing.T) {
 				"aws:region": region,
 			},
 			ExtraRuntimeValidation: assertHasRepoDigest,
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
+func TestAwsContainerRegistryBuildxNode(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-buildx/ecr/ts"),
+			Config: map[string]string{
+				"aws:region": region,
+			},
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				r, ok := stack.Outputs["ref"].(string)
+				require.True(t, ok)
+				assert.NotEmpty(t, r)
+				ref, err := ref.New(r)
+				require.NoError(t, err)
+				assert.NotEmpty(t, ref.Digest)
+			},
 		})
 
 	integration.ProgramTest(t, &test)
@@ -365,6 +391,29 @@ func TestBuildxCaching(t *testing.T) {
 			integration.ProgramTest(t, &test)
 		})
 	}
+}
+
+func TestBuildxIndex(t *testing.T) {
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	if password == "" {
+		t.Skip("missing DOCKER_HUB_PASSWORD")
+	}
+
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-buildx", "index", "ts"),
+			Config: map[string]string{
+				"tag":      "docker.io/pulumibot/buildkit-e2e:manifest",
+				"address":  "docker.io",
+				"username": "pulumibot",
+			},
+			Secrets: map[string]string{
+				"password": password,
+			},
+			Verbose: true,
+		})
+
+	integration.ProgramTest(t, &test)
 }
 
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {

@@ -4,6 +4,7 @@
 package com.pulumi.docker.buildx.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.docker.buildx.outputs.ExportCacheOnly;
 import com.pulumi.docker.buildx.outputs.ExportDocker;
 import com.pulumi.docker.buildx.outputs.ExportImage;
 import com.pulumi.docker.buildx.outputs.ExportLocal;
@@ -17,7 +18,13 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 @CustomType
-public final class ExportEntry {
+public final class Export {
+    /**
+     * @return A no-op export. Helpful for silencing the &#39;no exports&#39; warning if you
+     * just want to populate caches.
+     * 
+     */
+    private @Nullable ExportCacheOnly cacheonly;
     /**
      * @return When `true` this entry will be excluded. Defaults to `false`.
      * 
@@ -60,7 +67,15 @@ public final class ExportEntry {
      */
     private @Nullable ExportTar tar;
 
-    private ExportEntry() {}
+    private Export() {}
+    /**
+     * @return A no-op export. Helpful for silencing the &#39;no exports&#39; warning if you
+     * just want to populate caches.
+     * 
+     */
+    public Optional<ExportCacheOnly> cacheonly() {
+        return Optional.ofNullable(this.cacheonly);
+    }
     /**
      * @return When `true` this entry will be excluded. Defaults to `false`.
      * 
@@ -123,11 +138,12 @@ public final class ExportEntry {
         return new Builder();
     }
 
-    public static Builder builder(ExportEntry defaults) {
+    public static Builder builder(Export defaults) {
         return new Builder(defaults);
     }
     @CustomType.Builder
     public static final class Builder {
+        private @Nullable ExportCacheOnly cacheonly;
         private @Nullable Boolean disabled;
         private @Nullable ExportDocker docker;
         private @Nullable ExportImage image;
@@ -137,8 +153,9 @@ public final class ExportEntry {
         private @Nullable ExportRegistry registry;
         private @Nullable ExportTar tar;
         public Builder() {}
-        public Builder(ExportEntry defaults) {
+        public Builder(Export defaults) {
     	      Objects.requireNonNull(defaults);
+    	      this.cacheonly = defaults.cacheonly;
     	      this.disabled = defaults.disabled;
     	      this.docker = defaults.docker;
     	      this.image = defaults.image;
@@ -149,6 +166,12 @@ public final class ExportEntry {
     	      this.tar = defaults.tar;
         }
 
+        @CustomType.Setter
+        public Builder cacheonly(@Nullable ExportCacheOnly cacheonly) {
+
+            this.cacheonly = cacheonly;
+            return this;
+        }
         @CustomType.Setter
         public Builder disabled(@Nullable Boolean disabled) {
 
@@ -197,8 +220,9 @@ public final class ExportEntry {
             this.tar = tar;
             return this;
         }
-        public ExportEntry build() {
-            final var _resultValue = new ExportEntry();
+        public Export build() {
+            final var _resultValue = new Export();
+            _resultValue.cacheonly = cacheonly;
             _resultValue.disabled = disabled;
             _resultValue.docker = docker;
             _resultValue.image = image;

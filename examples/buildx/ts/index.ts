@@ -98,17 +98,14 @@ const labels = new docker.buildx.Image("labels", {
         description: "This image will get a descriptive label 👍",
     },
 });
-const targets = new docker.buildx.Image("targets", {
+const target = new docker.buildx.Image("target", {
     dockerfile: {
-        location: "app/Dockerfile.targets",
+        location: "app/Dockerfile.target",
     },
     context: {
         location: "app",
     },
-    targets: [
-        "build-me",
-        "also-build-me",
-    ],
+    target: "build-me",
 });
 const namedContexts = new docker.buildx.Image("namedContexts", {
     dockerfile: {

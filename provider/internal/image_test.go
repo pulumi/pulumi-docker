@@ -9,13 +9,11 @@ import (
 
 	_ "github.com/docker/buildx/driver/docker-container"
 
-	"github.com/docker/buildx/util/buildflags"
-	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/exporter/containerimage/exptypes"
-	v1 "github.com/opencontainers/image-spec/specs-go/v1"
+	"github.com/regclient/regclient/types/descriptor"
+	"github.com/regclient/regclient/types/platform"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
@@ -29,7 +27,7 @@ import (
 
 var _fakeURN = resource.NewURN("test", "provider", "a", "docker:buildx/image:Image", "test")
 
-func TestLifecycle(t *testing.T) {
+func TestImageLifecycle(t *testing.T) {
 	// realClient := func(t *testing.T) Client { return nil }
 	noClient := func(t *testing.T) Client {
 		ctrl := gomock.NewController(t)
@@ -50,24 +48,20 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := NewMockClient(ctrl)
-				c.EXPECT().Auth(gomock.Any(), "test", gomock.Any()).Return(nil).AnyTimes()
 				c.EXPECT().BuildKitEnabled().Return(true, nil).AnyTimes()
-				c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
-					func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
+				c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(build{})).DoAndReturn(
+					func(_ provider.Context, b Build) (*client.SolveResponse, error) {
 						assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
-						return map[string]*client.SolveResponse{
-							b.Targets()[0]: {
-								ExporterResponse: map[string]string{
-									exptypes.ExporterImageDigestKey: "sha256:98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4",
-								},
+						return &client.SolveResponse{
+							ExporterResponse: map[string]string{
+								exptypes.ExporterImageDigestKey: "sha256:98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4",
 							},
 						}, nil
 					},
 				).AnyTimes()
-				c.EXPECT().Delete(gomock.Any(), "docker.io/pulumibot/buildkit-e2e").Return(
-					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
-				c.EXPECT().Delete(gomock.Any(), "docker.io/pulumibot/buildkit-e2e:main").Return(
-					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
+				c.EXPECT().Delete(gomock.Any(),
+					"docker.io/pulumibot/buildkit-e2e@sha256:98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4",
+				).Return(nil)
 				return c
 			},
 			op: func(t *testing.T) integration.Operation {
@@ -215,14 +209,15 @@ func TestLifecycle(t *testing.T) {
 				ctrl := gomock.NewController(t)
 				c := NewMockClient(ctrl)
 				c.EXPECT().BuildKitEnabled().Return(true, nil).AnyTimes()
-				c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
-					func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
+				c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(build{})).DoAndReturn(
+					func(_ provider.Context, b Build) (*client.SolveResponse, error) {
 						assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
-						return map[string]*client.SolveResponse{
-							b.Targets()[0]: {ExporterResponse: map[string]string{"image.name": "test:latest"}},
+						return &client.SolveResponse{
+							ExporterResponse: map[string]string{"image.name": "test:latest"},
 						}, nil
 					},
 				).AnyTimes()
+				c.EXPECT().Delete(gomock.Any(), "default-dockerfile").Return(nil)
 				return c
 			},
 			op: func(t *testing.T) integration.Operation {
@@ -275,7 +270,7 @@ func TestDelete(t *testing.T) {
 	t.Run("image was already deleted", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		client := NewMockClient(ctrl)
-		client.EXPECT().Delete(gomock.Any(), "docker.io/pulumi/test:foo").Return(nil, errNotFound{})
+		client.EXPECT().Delete(gomock.Any(), "docker.io/pulumi/test@sha256:foo").Return(errNotFound{})
 
 		s := newServer(client)
 		err := s.Configure(provider.ConfigureRequest{})
@@ -288,10 +283,8 @@ func TestDelete(t *testing.T) {
 				"tags": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewStringProperty("docker.io/pulumi/test:foo"),
 				}),
-				"push": resource.NewBoolProperty(true),
-				"digests": resource.NewObjectProperty(resource.PropertyMap{
-					"default": resource.NewStringProperty("sha256:foo"),
-				}),
+				"push":        resource.NewBoolProperty(true),
+				"digest":      resource.NewStringProperty("sha256:foo"),
 				"contextHash": resource.NewStringProperty(""),
 				"ref":         resource.NewStringProperty(""),
 			},
@@ -303,28 +296,21 @@ func TestDelete(t *testing.T) {
 func TestRead(t *testing.T) {
 	tag := "docker.io/pulumi/pulumitest"
 	digest := "sha256:3be99cafdcd80a8e620da56bdc215acab6213bb608d3d492c0ba1807128786a1"
-	ref, err := reference.ParseNamed(tag)
-	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
 	client := NewMockClient(ctrl)
-	client.EXPECT().Inspect(gomock.Any(), "my-image", fmt.Sprintf("%s:latest@%s", tag, digest)).Return(
-		[]manifesttypes.ImageManifest{
+	client.EXPECT().Inspect(gomock.Any(), fmt.Sprintf("%s:latest@%s", tag, digest)).Return(
+		[]descriptor.Descriptor{
 			{
-				Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
-				Ref:        &manifesttypes.SerializableNamed{Named: ref},
+				Platform: &platform.Platform{Architecture: "arm64"},
 			},
 			{
-				Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "unknown"}},
-				Ref:        &manifesttypes.SerializableNamed{Named: ref},
-			},
-			{
-				Descriptor: v1.Descriptor{},
+				Platform: &platform.Platform{Architecture: "unknown"},
 			},
 		}, nil)
 
 	s := newServer(client)
-	err = s.Configure(provider.ConfigureRequest{})
+	err := s.Configure(provider.ConfigureRequest{})
 	require.NoError(t, err)
 
 	resp, err := s.Read(provider.ReadRequest{
@@ -339,16 +325,14 @@ func TestRead(t *testing.T) {
 			"tags": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewStringProperty(tag),
 			}),
-			"digests": resource.NewObjectProperty(resource.PropertyMap{
-				"default": resource.NewStringProperty(digest),
-			}),
+			"digest": resource.NewStringProperty(digest),
 		},
 	})
 	require.NoError(t, err)
 	assert.NotNil(t, resp.Properties["exports"].ArrayValue()[0].ObjectValue()["manifest"])
 }
 
-func TestDiff(t *testing.T) {
+func TestImageDiff(t *testing.T) {
 	emptyDir := t.TempDir()
 
 	baseArgs := ImageArgs{
@@ -359,7 +343,6 @@ func TestDiff(t *testing.T) {
 	baseState := ImageState{
 		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
 		ImageArgs:   baseArgs,
-		Digests:     map[string]string{},
 	}
 
 	tests := []struct {
@@ -451,7 +434,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if cacheFrom changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.CacheFrom = []CacheFromEntry{{Raw: "a"}}
+				a.CacheFrom = []CacheFrom{{Raw: "a"}}
 				return a
 			},
 			wantChanges: true,
@@ -460,7 +443,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if cacheTo changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.CacheTo = []CacheToEntry{{Raw: "a"}}
+				a.CacheTo = []CacheTo{{Raw: "a"}}
 				return a
 			},
 			wantChanges: true,
@@ -541,16 +524,16 @@ func TestDiff(t *testing.T) {
 			name: "diff if exports change",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Exports = []ExportEntry{{Raw: "foo"}}
+				a.Exports = []Export{{Raw: "foo"}}
 				return a
 			},
 			wantChanges: true,
 		},
 		{
-			name: "diff if targets change",
+			name: "diff if target changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Targets = []string{"foo"}
+				a.Target = "foo"
 				return a
 			},
 			wantChanges: true,
@@ -618,11 +601,11 @@ func TestBuildOptions(t *testing.T) {
 	t.Run("invalid inputs", func(t *testing.T) {
 		args := ImageArgs{
 			Tags:      []string{"a/bad:tag:format"},
-			Exports:   []ExportEntry{{Raw: "badexport,-"}},
+			Exports:   []Export{{Raw: "badexport,-"}},
 			Context:   BuildContext{Context: Context{Location: "./testdata"}},
 			Platforms: []Platform{","},
-			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
-			CacheTo:   []CacheToEntry{{Raw: "=badcacheto"}},
+			CacheFrom: []CacheFrom{{Raw: "=badcachefrom"}},
+			CacheTo:   []CacheTo{{Raw: "=badcacheto"}},
 		}
 
 		_, err := args.toBuildOptions(false)
@@ -637,7 +620,7 @@ func TestBuildOptions(t *testing.T) {
 	t.Run("buildOnPreview", func(t *testing.T) {
 		args := ImageArgs{
 			Tags:    []string{"my-tag"},
-			Exports: []ExportEntry{{Registry: &ExportRegistry{ExportImage{Push: pulumi.BoolRef(true)}}}},
+			Exports: []Export{{Registry: &ExportRegistry{ExportImage{Push: pulumi.BoolRef(true)}}}},
 		}
 		actual, err := args.toBuildOptions(true)
 		assert.NoError(t, err)
@@ -663,10 +646,10 @@ func TestBuildOptions(t *testing.T) {
 				"":      "",
 			},
 			Builder:    BuilderConfig{},
-			CacheFrom:  []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
-			CacheTo:    []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
+			CacheFrom:  []CacheFrom{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
+			CacheTo:    []CacheTo{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
 			Context:    BuildContext{},
-			Exports:    []ExportEntry{{Raw: ""}},
+			Exports:    []Export{{Raw: ""}},
 			Dockerfile: Dockerfile{},
 			Platforms:  []Platform{"linux/amd64", ""},
 			Registries: []RegistryAuth{
@@ -687,9 +670,29 @@ func TestBuildOptions(t *testing.T) {
 		assert.Error(t, err)
 	})
 
+	t.Run("disabled caches", func(t *testing.T) {
+		args := ImageArgs{
+			CacheFrom: []CacheFrom{{Raw: "type=registry", Disabled: true}},
+			CacheTo:   []CacheTo{{Raw: "type=registry", Disabled: true}},
+			Exports:   []Export{{Raw: "type=registry", Disabled: true}},
+		}
+
+		opts, err := args.toBuildOptions(true)
+		assert.NoError(t, err)
+		assert.Len(t, opts.CacheTo, 0)
+		assert.Len(t, opts.CacheFrom, 0)
+		assert.Len(t, opts.Exports, 0)
+
+		opts, err = args.toBuildOptions(false)
+		assert.NoError(t, err)
+		assert.Len(t, opts.CacheTo, 0)
+		assert.Len(t, opts.CacheFrom, 0)
+		assert.Len(t, opts.Exports, 0)
+	})
+
 	t.Run("multiple exports aren't allowed yet", func(t *testing.T) {
 		args := ImageArgs{
-			Exports: []ExportEntry{{Raw: "type=local"}, {Raw: "type=tar"}},
+			Exports: []Export{{Raw: "type=local"}, {Raw: "type=tar"}},
 		}
 		_, err := args.toBuildOptions(false)
 		assert.ErrorContains(t, err, "multiple exports are currently unsupported")
@@ -697,9 +700,9 @@ func TestBuildOptions(t *testing.T) {
 
 	t.Run("cache and export entries are union-ish", func(t *testing.T) {
 		args := ImageArgs{
-			Exports:   []ExportEntry{{Tar: &ExportTar{}, Local: &ExportLocal{}}},
-			CacheTo:   []CacheToEntry{{Raw: "type=tar", Local: &CacheToLocal{Dest: "/foo"}}},
-			CacheFrom: []CacheFromEntry{{Raw: "type=tar", Registry: &CacheFromRegistry{}}},
+			Exports:   []Export{{Tar: &ExportTar{}, Local: &ExportLocal{}}},
+			CacheTo:   []CacheTo{{Raw: "type=tar", Local: &CacheToLocal{Dest: "/foo"}}},
+			CacheFrom: []CacheFrom{{Raw: "type=tar", Registry: &CacheFromRegistry{}}},
 		}
 		_, err := args.toBuildOptions(false)
 		assert.ErrorContains(t, err, "exports should only specify one export type")
@@ -738,7 +741,7 @@ func TestBuildable(t *testing.T) {
 			name: "unknown exports",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []ExportEntry{{Raw: ""}},
+				Exports: []Export{{Raw: ""}},
 			},
 			want: false,
 		},
@@ -746,7 +749,7 @@ func TestBuildable(t *testing.T) {
 			name: "unknown registry",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []ExportEntry{{Docker: &ExportDocker{}}},
+				Exports: []Export{{Docker: &ExportDocker{}}},
 				Registries: []RegistryAuth{
 					{
 						Address:  "docker.io",
@@ -768,7 +771,7 @@ func TestBuildable(t *testing.T) {
 			name: "known exports",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
+				Exports: []Export{{Registry: &ExportRegistry{}}},
 			},
 			want: true,
 		},
@@ -776,7 +779,7 @@ func TestBuildable(t *testing.T) {
 			name: "known registry",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
+				Exports: []Export{{Registry: &ExportRegistry{}}},
 				Registries: []RegistryAuth{
 					{
 						Address:  "docker.io",
@@ -796,156 +799,34 @@ func TestBuildable(t *testing.T) {
 	}
 }
 
-func TestToBuilds(t *testing.T) {
+func TestToBuild(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	pctx := NewMockProviderContext(ctrl)
 	pctx.EXPECT().Log(gomock.Any(), gomock.Any()).AnyTimes()
 
-	t.Run("single-platform caching", func(t *testing.T) {
-		ia := ImageArgs{
-			Tags:      []string{"foo", "bar"},
-			Platforms: []Platform{"linux/amd64"},
-			CacheTo: []CacheToEntry{
-				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
-				{
-					Registry: &CacheToRegistry{
-						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
-					},
-				},
-				{
-					Registry: &CacheToRegistry{
-						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
-					},
+	ia := ImageArgs{
+		Tags:      []string{"foo", "bar"},
+		Platforms: []Platform{"linux/amd64"},
+		CacheTo: []CacheTo{
+			{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
+			{
+				Registry: &CacheToRegistry{
+					CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
 				},
 			},
-			CacheFrom: []CacheFromEntry{
-				{S3: &CacheFromS3{Name: "bar"}},
-				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
-				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
-			},
-		}
-
-		builds, err := ia.toBuilds(pctx, false)
-		assert.NoError(t, err)
-		assert.Len(t, builds, 1)
-	})
-
-	t.Run("multi-platform caching", func(t *testing.T) {
-		t.Setenv("ACTIONS_CACHE_URL", "fake-url")
-		t.Setenv("ACTIONS_RUNTIME_TOKEN", "fake-token")
-
-		ia := ImageArgs{
-			Tags:      []string{"foo", "bar"},
-			Platforms: []Platform{"linux/amd64", "linux/arm64"},
-			CacheTo: []CacheToEntry{
-				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
-				{
-					Registry: &CacheToRegistry{
-						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
-					},
+			{
+				Registry: &CacheToRegistry{
+					CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
 				},
-				{
-					Registry: &CacheToRegistry{
-						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
-					},
-				},
-			},
-			CacheFrom: []CacheFromEntry{
-				{S3: &CacheFromS3{Name: "bar"}},
-				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
-				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
-			},
-		}
-
-		builds, err := ia.toBuilds(pctx, false)
-		assert.NoError(t, err)
-
-		assert.Len(t, builds, 3)
-
-		// Build 0
-		b0 := builds[0].BuildOptions()
-		assert.Nil(t, b0.CacheTo)
-		assert.Len(t, b0.CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
-		assert.Len(t, b0.Platforms, len(ia.Platforms))
-
-		// Build 1
-		b1 := builds[1].BuildOptions()
-		assert.Len(t, b1.Platforms, 1)
-		assert.Equal(t, "linux/amd64", b1.Platforms[0])
-		assert.Len(t, b1.Exports, 1)
-		assert.Equal(t, "cacheonly", b1.Exports[0].Type)
-		assert.Len(t, b1.CacheTo, len(ia.CacheTo))
-
-		// Build 2
-		b2 := builds[2].BuildOptions()
-		assert.Len(t, b2.Platforms, 1)
-		assert.Equal(t, "linux/arm64", b2.Platforms[0])
-		assert.Len(t, b2.Exports, 1)
-		assert.Equal(t, "cacheonly", b2.Exports[0].Type)
-		assert.Len(t, b2.CacheTo, len(ia.CacheTo))
-	})
-}
-
-func TestToCaches(t *testing.T) {
-	tests := []struct {
-		name      string
-		platforms []string
-		caches    []string
-
-		want []string
-	}{
-		{
-			name:      "single-platform",
-			platforms: []string{"linux/amd64"},
-			caches: []string{
-				"type=registry,ref=docker.io/foo/bar:baz",
-				"type=inline",
-				"type=local,src=/foo",
-				"type=s3",
-			},
-			want: []string{
-				"type=registry,ref=docker.io/foo/bar:baz",
-				"type=inline",
-				"type=local,src=/foo",
-				"type=s3",
 			},
 		},
-		{
-			name:      "multi-platform",
-			platforms: []string{"linux/amd64", "linux/arm64", "linux/amd64"},
-			caches: []string{
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
-				"type=inline",
-				"type=local,src=/foo",
-				"type=s3",
-				"type=gha",
-			},
-			want: []string{
-				"type=registry,ref=docker.io/foo/bar:linux-amd64",
-				"type=registry,ref=docker.io/foo/bar:linux-arm64",
-				"type=registry,ref=docker.io/foo/bar:baz-linux-amd64",
-				"type=registry,ref=docker.io/foo/bar:baz-linux-arm64",
-				"type=inline",
-				"type=local,src=/foo-linux-amd64",
-				"type=local,src=/foo-linux-arm64",
-				"type=s3,name=linux-amd64",
-				"type=s3,name=linux-arm64",
-				"type=gha,scope=linux-amd64",
-				"type=gha,scope=linux-arm64",
-			},
+		CacheFrom: []CacheFrom{
+			{S3: &CacheFromS3{Name: "bar"}},
+			{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
+			{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			caches, err := buildflags.ParseCacheEntry(tt.caches)
-			require.NoError(t, err)
-			want, err := buildflags.ParseCacheEntry(tt.want)
-			require.NoError(t, err)
-
-			actual := cachesFor(nil, caches, tt.platforms...)
-			assert.Equal(t, want, actual)
-		})
-	}
+	_, err := ia.toBuild(pctx, false)
+	assert.NoError(t, err)
 }

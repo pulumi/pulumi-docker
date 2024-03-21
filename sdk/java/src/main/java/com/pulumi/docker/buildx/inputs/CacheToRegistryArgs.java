@@ -83,9 +83,12 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
 
     /**
      * Export cache manifest as an OCI-compatible image manifest instead of a
-     * manifest list (requires OCI media types).
+     * manifest list. Requires `ociMediaTypes` to also be `true`.
      * 
-     * Defaults to `false`.
+     * Some registries like AWS ECR will not work with caching if this is
+     * `false`.
+     * 
+     * Defaults to `false` to match Docker&#39;s default behavior.
      * 
      */
     @Import(name="imageManifest")
@@ -93,9 +96,12 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
 
     /**
      * @return Export cache manifest as an OCI-compatible image manifest instead of a
-     * manifest list (requires OCI media types).
+     * manifest list. Requires `ociMediaTypes` to also be `true`.
      * 
-     * Defaults to `false`.
+     * Some registries like AWS ECR will not work with caching if this is
+     * `false`.
+     * 
+     * Defaults to `false` to match Docker&#39;s default behavior.
      * 
      */
     public Optional<Output<Boolean>> imageManifest() {
@@ -266,9 +272,12 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
 
         /**
          * @param imageManifest Export cache manifest as an OCI-compatible image manifest instead of a
-         * manifest list (requires OCI media types).
+         * manifest list. Requires `ociMediaTypes` to also be `true`.
          * 
-         * Defaults to `false`.
+         * Some registries like AWS ECR will not work with caching if this is
+         * `false`.
+         * 
+         * Defaults to `false` to match Docker&#39;s default behavior.
          * 
          * @return builder
          * 
@@ -280,9 +289,12 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
 
         /**
          * @param imageManifest Export cache manifest as an OCI-compatible image manifest instead of a
-         * manifest list (requires OCI media types).
+         * manifest list. Requires `ociMediaTypes` to also be `true`.
          * 
-         * Defaults to `false`.
+         * Some registries like AWS ECR will not work with caching if this is
+         * `false`.
+         * 
+         * Defaults to `false` to match Docker&#39;s default behavior.
          * 
          * @return builder
          * 

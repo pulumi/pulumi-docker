@@ -8,21 +8,32 @@ import (
 )
 
 var (
-	_ = (fmt.Stringer)((*CacheFromEntry)(nil))
+	_ = (fmt.Stringer)((*CacheFrom)(nil))
+	_ = (fmt.Stringer)((*CacheFromAzureBlob)(nil))
 	_ = (fmt.Stringer)((*CacheFromGitHubActions)(nil))
+	_ = (fmt.Stringer)((*CacheFromLocal)(nil))
 	_ = (fmt.Stringer)((*CacheFromRegistry)(nil))
-	_ = (fmt.Stringer)((*CacheToInline)(nil))
-	_ = (fmt.Stringer)((*CacheToEntry)(nil))
+	_ = (fmt.Stringer)((*CacheFromS3)(nil))
+	_ = (fmt.Stringer)((*CacheTo)(nil))
+	_ = (fmt.Stringer)((*CacheToAzureBlob)(nil))
 	_ = (fmt.Stringer)((*CacheToGitHubActions)(nil))
+	_ = (fmt.Stringer)((*CacheToInline)(nil))
+	_ = (fmt.Stringer)((*CacheToLocal)(nil))
 	_ = (fmt.Stringer)((*CacheToRegistry)(nil))
+	_ = (fmt.Stringer)((*CacheToS3)(nil))
 	_ = (fmt.Stringer)(CacheWithCompression{})
 	_ = (fmt.Stringer)(CacheWithIgnoreError{})
 	_ = (fmt.Stringer)(CacheWithMode{})
 	_ = (fmt.Stringer)(CacheWithOCI{})
-	_ = (infer.Annotated)((*CacheFromEntry)(nil))
+	_ = (infer.Annotated)((*CacheFrom)(nil))
+	_ = (infer.Annotated)((*CacheFromAzureBlob)(nil))
 	_ = (infer.Annotated)((*CacheFromGitHubActions)(nil))
+	_ = (infer.Annotated)((*CacheFromLocal)(nil))
 	_ = (infer.Annotated)((*CacheFromRegistry)(nil))
-	_ = (infer.Annotated)((*CacheToEntry)(nil))
+	_ = (infer.Annotated)((*CacheFromS3)(nil))
+	_ = (infer.Annotated)((*CacheTo)(nil))
+	_ = (infer.Annotated)((*CacheToInline)(nil))
+	_ = (infer.Annotated)((*CacheToLocal)(nil))
 	_ = (infer.Annotated)((*CacheWithCompression)(nil))
 	_ = (infer.Annotated)((*CacheWithIgnoreError)(nil))
 	_ = (infer.Annotated)((*CacheWithMode)(nil))
@@ -82,9 +93,12 @@ func (c *CacheWithOCI) Annotate(a infer.Annotator) {
 	`))
 	a.Describe(&c.ImageManifest, dedent(`
 		Export cache manifest as an OCI-compatible image manifest instead of a
-		manifest list (requires OCI media types).
+		manifest list. Requires "ociMediaTypes" to also be "true".
 
-		Defaults to "false".
+		Some registries like AWS ECR will not work with caching if this is
+		"false".
+
+		Defaults to "false" to match Docker's default behavior.
 	`))
 
 	a.SetDefault(&c.OCI, true)
@@ -338,7 +352,7 @@ func (c Raw) String() string {
 	return string(c)
 }
 
-type CacheFromEntry struct {
+type CacheFrom struct {
 	Local    *CacheFromLocal         `pulumi:"local,optional"`
 	Registry *CacheFromRegistry      `pulumi:"registry,optional"`
 	GHA      *CacheFromGitHubActions `pulumi:"gha,optional"`
@@ -349,7 +363,7 @@ type CacheFromEntry struct {
 	Disabled bool `pulumi:"disabled,optional"`
 }
 
-func (c *CacheFromEntry) Annotate(a infer.Annotator) {
+func (c *CacheFrom) Annotate(a infer.Annotator) {
 	a.Describe(&c.Local, dedent(`
 		A simple backend which caches images on your local filesystem.
 	`))
@@ -379,7 +393,7 @@ func (c *CacheFromEntry) Annotate(a infer.Annotator) {
 	`))
 }
 
-func (c CacheFromEntry) String() string {
+func (c CacheFrom) String() string {
 	if c.Disabled {
 		return ""
 	}
@@ -393,6 +407,12 @@ func (c *CacheToInline) String() string {
 		return ""
 	}
 	return "type=inline"
+}
+
+func (c *CacheToInline) Annotate(a infer.Annotator) {
+	a.Describe(&c, dedent(`
+	Include an inline cache with the exported image.
+	`))
 }
 
 type CacheToLocal struct {
@@ -493,7 +513,7 @@ func (c *CacheToGitHubActions) String() string {
 	return join(&c.CacheFromGitHubActions, c.CacheWithMode, c.CacheWithIgnoreError)
 }
 
-type CacheToEntry struct {
+type CacheTo struct {
 	Inline   *CacheToInline        `pulumi:"inline,optional"`
 	Local    *CacheToLocal         `pulumi:"local,optional"`
 	Registry *CacheToRegistry      `pulumi:"registry,optional"`
@@ -505,7 +525,7 @@ type CacheToEntry struct {
 	Disabled bool `pulumi:"disabled,optional"`
 }
 
-func (c *CacheToEntry) Annotate(a infer.Annotator) {
+func (c *CacheTo) Annotate(a infer.Annotator) {
 	a.Describe(&c.Inline, dedent(`
 		The inline cache storage backend is the simplest implementation to get
 		started with, but it does not handle multi-stage builds. Consider the
@@ -540,7 +560,7 @@ func (c *CacheToEntry) Annotate(a infer.Annotator) {
 	`))
 }
 
-func (c CacheToEntry) String() string {
+func (c CacheTo) String() string {
 	if c.Disabled {
 		return ""
 	}

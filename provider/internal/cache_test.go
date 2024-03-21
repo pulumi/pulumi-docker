@@ -18,7 +18,7 @@ func TestCacheString(t *testing.T) {
 	}{
 		{
 			name: "s3",
-			given: CacheToEntry{S3: &CacheToS3{
+			given: CacheTo{S3: &CacheToS3{
 				CacheFromS3: CacheFromS3{
 					Region:          "us-west-2",
 					Bucket:          "bucket-foo",
@@ -37,32 +37,32 @@ func TestCacheString(t *testing.T) {
 		},
 		{
 			name:  "gha",
-			given: CacheToEntry{GHA: &CacheToGitHubActions{}},
+			given: CacheTo{GHA: &CacheToGitHubActions{}},
 			want:  "type=gha",
 		},
 		{
 			name:  "from-local",
-			given: CacheFromEntry{Local: &CacheFromLocal{Src: "/foo/bar"}},
+			given: CacheFrom{Local: &CacheFromLocal{Src: "/foo/bar"}},
 			want:  "type=local,src=/foo/bar",
 		},
 		{
 			name:  "to-local",
-			given: CacheToEntry{Local: &CacheToLocal{Dest: "/foo/bar"}},
+			given: CacheTo{Local: &CacheToLocal{Dest: "/foo/bar"}},
 			want:  "type=local,dest=/foo/bar",
 		},
 		{
 			name:  "inline",
-			given: CacheToEntry{Inline: &CacheToInline{}},
+			given: CacheTo{Inline: &CacheToInline{}},
 			want:  "type=inline",
 		},
 		{
 			name:  "raw",
-			given: CacheToEntry{Raw: Raw("type=gha")},
+			given: CacheTo{Raw: Raw("type=gha")},
 			want:  "type=gha",
 		},
 		{
 			name: "compression",
-			given: CacheToEntry{Local: &CacheToLocal{
+			given: CacheTo{Local: &CacheToLocal{
 				Dest: "/foo",
 				CacheWithCompression: CacheWithCompression{
 					Compression:      "gz2",
@@ -74,14 +74,14 @@ func TestCacheString(t *testing.T) {
 		},
 		{
 			name: "ignore-error",
-			given: CacheToEntry{
+			given: CacheTo{
 				AZBlob: &CacheToAzureBlob{CacheWithIgnoreError: CacheWithIgnoreError{pulumi.BoolRef(true)}},
 			},
 			want: "type=azblob,ignore-error=true",
 		},
 		{
 			name: "oci",
-			given: CacheToEntry{
+			given: CacheTo{
 				Registry: &CacheToRegistry{
 					CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
 					CacheWithOCI:      CacheWithOCI{OCI: pulumi.BoolRef(true), ImageManifest: pulumi.BoolRef(true)},
@@ -91,7 +91,7 @@ func TestCacheString(t *testing.T) {
 		},
 		{
 			name: "disabled-to",
-			given: CacheToEntry{
+			given: CacheTo{
 				Raw:      Raw("type=gha"),
 				Disabled: true,
 			},

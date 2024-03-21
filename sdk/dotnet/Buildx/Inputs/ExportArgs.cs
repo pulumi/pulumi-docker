@@ -7,72 +7,70 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Docker.Buildx.Outputs
+namespace Pulumi.Docker.Buildx.Inputs
 {
 
-    [OutputType]
-    public sealed class ExportEntry
+    public sealed class ExportArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// A no-op export. Helpful for silencing the 'no exports' warning if you
+        /// just want to populate caches.
+        /// </summary>
+        [Input("cacheonly")]
+        public Input<Inputs.ExportCacheOnlyArgs>? Cacheonly { get; set; }
+
         /// <summary>
         /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
-        public readonly bool? Disabled;
+        [Input("disabled")]
+        public Input<bool>? Disabled { get; set; }
+
         /// <summary>
         /// Export as a Docker image layout.
         /// </summary>
-        public readonly Outputs.ExportDocker? Docker;
+        [Input("docker")]
+        public Input<Inputs.ExportDockerArgs>? Docker { get; set; }
+
         /// <summary>
         /// Outputs the build result into a container image format.
         /// </summary>
-        public readonly Outputs.ExportImage? Image;
+        [Input("image")]
+        public Input<Inputs.ExportImageArgs>? Image { get; set; }
+
         /// <summary>
         /// Export to a local directory as files and directories.
         /// </summary>
-        public readonly Outputs.ExportLocal? Local;
+        [Input("local")]
+        public Input<Inputs.ExportLocalArgs>? Local { get; set; }
+
         /// <summary>
         /// Identical to the Docker exporter but uses OCI media types by default.
         /// </summary>
-        public readonly Outputs.ExportOCI? Oci;
+        [Input("oci")]
+        public Input<Inputs.ExportOCIArgs>? Oci { get; set; }
+
         /// <summary>
         /// A raw string as you would provide it to the Docker CLI (e.g.,
         /// `type=docker`)
         /// </summary>
-        public readonly string? Raw;
+        [Input("raw")]
+        public Input<string>? Raw { get; set; }
+
         /// <summary>
         /// Identical to the Image exporter, but pushes by default.
         /// </summary>
-        public readonly Outputs.ExportRegistry? Registry;
+        [Input("registry")]
+        public Input<Inputs.ExportRegistryArgs>? Registry { get; set; }
+
         /// <summary>
         /// Export to a local directory as a tarball.
         /// </summary>
-        public readonly Outputs.ExportTar? Tar;
+        [Input("tar")]
+        public Input<Inputs.ExportTarArgs>? Tar { get; set; }
 
-        [OutputConstructor]
-        private ExportEntry(
-            bool? disabled,
-
-            Outputs.ExportDocker? docker,
-
-            Outputs.ExportImage? image,
-
-            Outputs.ExportLocal? local,
-
-            Outputs.ExportOCI? oci,
-
-            string? raw,
-
-            Outputs.ExportRegistry? registry,
-
-            Outputs.ExportTar? tar)
+        public ExportArgs()
         {
-            Disabled = disabled;
-            Docker = docker;
-            Image = image;
-            Local = local;
-            Oci = oci;
-            Raw = raw;
-            Registry = registry;
-            Tar = tar;
         }
+        public static new ExportArgs Empty => new ExportArgs();
     }
 }

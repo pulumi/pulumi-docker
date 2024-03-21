@@ -5,16 +5,17 @@ import com.pulumi.Pulumi;
 import com.pulumi.core.Output;
 import com.pulumi.docker.buildx.Image;
 import com.pulumi.docker.buildx.ImageArgs;
-import com.pulumi.docker.buildx.DockerfileArgs;
-import com.pulumi.docker.buildx.BuildContextArgs;
-import com.pulumi.docker.buildx.ExportEntryArgs;
-import com.pulumi.docker.buildx.ExportRegistryArgs;
-import com.pulumi.docker.buildx.RegistryAuthArgs;
-import com.pulumi.docker.buildx.CacheToEntryArgs;
-import com.pulumi.docker.buildx.CacheToLocalArgs;
-import com.pulumi.docker.buildx.CacheFromEntryArgs;
-import com.pulumi.docker.buildx.CacheFromLocalArgs;
-import com.pulumi.docker.buildx.ExportDockerArgs;
+import com.pulumi.docker.buildx.inputs.DockerfileArgs;
+import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+import com.pulumi.docker.buildx.inputs.ExportArgs;
+import com.pulumi.docker.buildx.inputs.ExportRegistryArgs;
+import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
+import com.pulumi.docker.buildx.inputs.CacheToArgs;
+import com.pulumi.docker.buildx.inputs.CacheToLocalArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromArgs;
+import com.pulumi.docker.buildx.inputs.CacheFromLocalArgs;
+import com.pulumi.docker.buildx.inputs.SSHArgs;
+import com.pulumi.docker.buildx.inputs.ExportDockerArgs;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class App {
                 .location("app")
                 .build())
             .tags("docker.io/pulumibot/buildkit-e2e:example")
-            .exports(ExportEntryArgs.builder()
+            .exports(ExportArgs.builder()
                 .registry(ExportRegistryArgs.builder()
                     .ociMediaTypes(true)
                     .push(false)
@@ -64,13 +65,13 @@ public class App {
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
-            .cacheTo(CacheToEntryArgs.builder()
+            .cacheTo(CacheToArgs.builder()
                 .local(CacheToLocalArgs.builder()
                     .dest("tmp/cache")
                     .mode("max")
                     .build())
                 .build())
-            .cacheFrom(CacheFromEntryArgs.builder()
+            .cacheFrom(CacheFromArgs.builder()
                 .local(CacheFromLocalArgs.builder()
                     .src("tmp/cache")
                     .build())
@@ -126,16 +127,14 @@ public class App {
             .labels(Map.of("description", "This image will get a descriptive label 👍"))
             .build());
 
-        var targets = new Image("targets", ImageArgs.builder()        
+        var target = new Image("target", ImageArgs.builder()        
             .dockerfile(DockerfileArgs.builder()
-                .location("app/Dockerfile.targets")
+                .location("app/Dockerfile.target")
                 .build())
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
-            .targets(            
-                "build-me",
-                "also-build-me")
+            .target("build-me")
             .build());
 
         var namedContexts = new Image("namedContexts", ImageArgs.builder()        
@@ -180,7 +179,7 @@ public class App {
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
-            .exports(ExportEntryArgs.builder()
+            .exports(ExportArgs.builder()
                 .docker(ExportDockerArgs.builder()
                     .tar(true)
                     .build())

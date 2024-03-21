@@ -57,7 +57,14 @@ The `buildx.Image` resource delegates all caching behavior to Docker.
 
 #### Outputs
 
-TODO:
+Versions `3.x` and `4.x` of the provider exposed a `repoDigest` output which was a fully qualified tag with digest.
+In `4.x` this could also be a single sha256 hash if the image wasn't pushed.
+
+Unlike earlier providers the `buildx.Image` resource can push multiple tags.
+As a convenience, it exposes a `ref` output consisting of a tag with digest as long as the image was pushed.
+If multiple tags were pushed this uses one at random.
+
+If you need more control over tag references you can use the `digest` output, which is always a single sha256 hash as long as the image was exported somewhere.
 
 #### Tag deletion and refreshes
 
@@ -67,7 +74,8 @@ The `buidx.Image` will query your registries during `refresh` to ensure the expe
 If any are missing a subsequent `update` will push them.
 
 When a `buildx.Image` is deleted, it will _attempt_ to also delete any pushed tags.
-Deletion of remote tags is not guaranteed, because not all registries currently support this operation (`docker.io` in particular).
+Deletion of remote tags is not guaranteed because not all registries support the manifest `DELETE` API (`docker.io` in particular).
+Manifests are _not_ deleted in the same way during updates -- to do so safely would require a full build to determine whether a Pulumi operation should be an update or update-replace.
 
 Use the [`retainOnDelete: true`](https://www.pulumi.com/docs/concepts/options/retainondelete/) option if you do not want tags deleted.
 

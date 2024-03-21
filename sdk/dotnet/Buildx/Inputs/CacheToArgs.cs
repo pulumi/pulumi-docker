@@ -7,78 +7,69 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Docker.Buildx.Outputs
+namespace Pulumi.Docker.Buildx.Inputs
 {
 
-    [OutputType]
-    public sealed class CacheToEntry
+    public sealed class CacheToArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Push cache to Azure's blob storage service.
         /// </summary>
-        public readonly Outputs.CacheToAzureBlob? Azblob;
+        [Input("azblob")]
+        public Input<Inputs.CacheToAzureBlobArgs>? Azblob { get; set; }
+
         /// <summary>
         /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
-        public readonly bool? Disabled;
+        [Input("disabled")]
+        public Input<bool>? Disabled { get; set; }
+
         /// <summary>
         /// Recommended for use with GitHub Actions workflows.
         /// 
         /// An action like `crazy-max/ghaction-github-runtime` is recommended to
         /// expose appropriate credentials to your GitHub workflow.
         /// </summary>
-        public readonly Outputs.CacheToGitHubActions? Gha;
+        [Input("gha")]
+        public Input<Inputs.CacheToGitHubActionsArgs>? Gha { get; set; }
+
         /// <summary>
         /// The inline cache storage backend is the simplest implementation to get
         /// started with, but it does not handle multi-stage builds. Consider the
         /// `registry` cache backend instead.
         /// </summary>
-        public readonly Outputs.CacheToInline? Inline;
+        [Input("inline")]
+        public Input<Inputs.CacheToInlineArgs>? Inline { get; set; }
+
         /// <summary>
         /// A simple backend which caches imagines on your local filesystem.
         /// </summary>
-        public readonly Outputs.CacheToLocal? Local;
+        [Input("local")]
+        public Input<Inputs.CacheToLocalArgs>? Local { get; set; }
+
         /// <summary>
         /// A raw string as you would provide it to the Docker CLI (e.g.,
         /// `type=inline`)
         /// </summary>
-        public readonly string? Raw;
+        [Input("raw")]
+        public Input<string>? Raw { get; set; }
+
         /// <summary>
         /// Push caches to remote registries. Incompatible with the `docker` build
         /// driver.
         /// </summary>
-        public readonly Outputs.CacheToRegistry? Registry;
+        [Input("registry")]
+        public Input<Inputs.CacheToRegistryArgs>? Registry { get; set; }
+
         /// <summary>
         /// Push cache to AWS S3 or S3-compatible services such as MinIO.
         /// </summary>
-        public readonly Outputs.CacheToS3? S3;
+        [Input("s3")]
+        public Input<Inputs.CacheToS3Args>? S3 { get; set; }
 
-        [OutputConstructor]
-        private CacheToEntry(
-            Outputs.CacheToAzureBlob? azblob,
-
-            bool? disabled,
-
-            Outputs.CacheToGitHubActions? gha,
-
-            Outputs.CacheToInline? inline,
-
-            Outputs.CacheToLocal? local,
-
-            string? raw,
-
-            Outputs.CacheToRegistry? registry,
-
-            Outputs.CacheToS3? s3)
+        public CacheToArgs()
         {
-            Azblob = azblob;
-            Disabled = disabled;
-            Gha = gha;
-            Inline = inline;
-            Local = local;
-            Raw = raw;
-            Registry = registry;
-            S3 = s3;
         }
+        public static new CacheToArgs Empty => new CacheToArgs();
     }
 }

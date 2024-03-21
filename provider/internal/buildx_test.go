@@ -29,6 +29,9 @@ func TestAnnotate(_ *testing.T) {
 		&Image{},
 		&ImageArgs{},
 		&ImageState{},
+		&Index{},
+		&IndexArgs{},
+		&IndexState{},
 	} {
 		tt.Annotate(annotator{})
 	}

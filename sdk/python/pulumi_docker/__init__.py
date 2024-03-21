@@ -44,7 +44,8 @@ _utilities.register(
   "mod": "buildx/image",
   "fqn": "pulumi_docker.buildx",
   "classes": {
-   "docker:buildx/image:Image": "Image"
+   "docker:buildx/image:Image": "Image",
+   "docker:buildx/image:Index": "Index"
   }
  },
  {

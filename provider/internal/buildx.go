@@ -7,6 +7,7 @@ import (
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	pschema "github.com/pulumi/pulumi-go-provider/middleware/schema"
+	gen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
@@ -23,7 +24,7 @@ type Config struct {
 	Host         string         `pulumi:"host,optional"`
 	RegistryAuth []RegistryAuth `pulumi:"registryAuth,optional"`
 
-	client Client // Docker CLI
+	host *host
 }
 
 // _mockClientKey is used by tests to inject a mock Docker client.
@@ -36,23 +37,12 @@ func (c *Config) Annotate(a infer.Annotator) {
 }
 
 // Configure validates and processes user-provided configuration values.
-func (c *Config) Configure(ctx provider.Context) error {
-	if client, ok := ctx.Value(_mockClientKey).(Client); ok {
-		c.client = client
-		return nil // Client has already been injected, nothing to do.
-	}
-
-	client, err := newDockerClient()
+func (c *Config) Configure(_ provider.Context) error {
+	h, err := newHost(c)
 	if err != nil {
-		return fmt.Errorf("getting client: %w", err)
+		return fmt.Errorf("getting host: %w", err)
 	}
-	c.client = client
-
-	for _, creds := range c.RegistryAuth {
-		if err := client.Auth(ctx, _baseAuth, creds); err != nil {
-			return err
-		}
-	}
+	c.host = h
 	return nil
 }
 
@@ -62,9 +52,15 @@ func NewBuildxProvider() provider.Provider {
 		infer.Options{
 			Metadata: pschema.Metadata{
 				Keywords: []string{"docker", "buildkit", "buildx"},
+				LanguageMap: map[string]any{
+					"go": gen.GoPackageInfo{
+						Generics: gen.GenericsSettingGenericsOnly,
+					},
+				},
 			},
 			Resources: []infer.InferredResource{
-				infer.Resource[*Image, ImageArgs, ImageState](),
+				infer.Resource[*Image](),
+				infer.Resource[*Index](),
 			},
 			ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 				"internal": "buildx/image",

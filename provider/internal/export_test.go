@@ -12,22 +12,22 @@ import (
 func TestExportString(t *testing.T) {
 	tests := []struct {
 		name  string
-		given ExportEntry
+		given Export
 		want  string
 	}{
 		{
 			name:  "tar",
-			given: ExportEntry{Tar: &ExportTar{ExportLocal: ExportLocal{Dest: "/foo"}}},
+			given: Export{Tar: &ExportTar{ExportLocal: ExportLocal{Dest: "/foo"}}},
 			want:  "type=tar,dest=/foo",
 		},
 		{
 			name:  "local",
-			given: ExportEntry{Local: &ExportLocal{Dest: "/bar"}},
+			given: Export{Local: &ExportLocal{Dest: "/bar"}},
 			want:  "type=local,dest=/bar",
 		},
 		{
 			name: "registry-with-compression",
-			given: ExportEntry{Registry: &ExportRegistry{
+			given: Export{Registry: &ExportRegistry{
 				ExportImage: ExportImage{
 					ExportWithCompression: ExportWithCompression{
 						Compression:      "gz2",
@@ -40,7 +40,7 @@ func TestExportString(t *testing.T) {
 		},
 		{
 			name: "registry-without-push",
-			given: ExportEntry{Registry: &ExportRegistry{
+			given: Export{Registry: &ExportRegistry{
 				ExportImage: ExportImage{
 					Push: pulumi.BoolRef(false),
 				},
@@ -49,7 +49,7 @@ func TestExportString(t *testing.T) {
 		},
 		{
 			name: "image",
-			given: ExportEntry{
+			given: Export{
 				Image: &ExportImage{
 					Push:               pulumi.BoolRef(true),
 					PushByDigest:       pulumi.BoolRef(true),
@@ -64,7 +64,7 @@ func TestExportString(t *testing.T) {
 		},
 		{
 			name: "oci-with-names",
-			given: ExportEntry{OCI: &ExportOCI{
+			given: Export{OCI: &ExportOCI{
 				ExportDocker: ExportDocker{
 					ExportWithNames: ExportWithNames{
 						Names: []string{"foo", "bar"},
@@ -75,7 +75,7 @@ func TestExportString(t *testing.T) {
 		},
 		{
 			name: "docker-with-annotations",
-			given: ExportEntry{Docker: &ExportDocker{
+			given: Export{Docker: &ExportDocker{
 				ExportWithAnnotations: ExportWithAnnotations{
 					Annotations: map[string]string{
 						"foo": "bar",
@@ -87,12 +87,12 @@ func TestExportString(t *testing.T) {
 		},
 		{
 			name:  "raw",
-			given: ExportEntry{Raw: Raw("type=docker")},
+			given: Export{Raw: Raw("type=docker")},
 			want:  "type=docker",
 		},
 		{
 			name:  "disabled",
-			given: ExportEntry{Raw: Raw("type=docker"), Disabled: true},
+			given: Export{Raw: Raw("type=docker"), Disabled: true},
 			want:  "",
 		},
 	}

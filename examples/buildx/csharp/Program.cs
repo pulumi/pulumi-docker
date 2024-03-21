@@ -36,7 +36,7 @@ return await Deployment.RunAsync(() =>
         },
         Exports = new[]
         {
-            new Docker.Buildx.Inputs.ExportEntryArgs
+            new Docker.Buildx.Inputs.ExportArgs
             {
                 Registry = new Docker.Buildx.Inputs.ExportRegistryArgs
                 {
@@ -64,7 +64,7 @@ return await Deployment.RunAsync(() =>
         },
         CacheTo = new[]
         {
-            new Docker.Buildx.Inputs.CacheToEntryArgs
+            new Docker.Buildx.Inputs.CacheToArgs
             {
                 Local = new Docker.Buildx.Inputs.CacheToLocalArgs
                 {
@@ -75,7 +75,7 @@ return await Deployment.RunAsync(() =>
         },
         CacheFrom = new[]
         {
-            new Docker.Buildx.Inputs.CacheFromEntryArgs
+            new Docker.Buildx.Inputs.CacheFromArgs
             {
                 Local = new Docker.Buildx.Inputs.CacheFromLocalArgs
                 {
@@ -164,21 +164,17 @@ return await Deployment.RunAsync(() =>
         },
     });
 
-    var targets = new Docker.Buildx.Image("targets", new()
+    var target = new Docker.Buildx.Image("target", new()
     {
         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
         {
-            Location = "app/Dockerfile.targets",
+            Location = "app/Dockerfile.target",
         },
         Context = new Docker.Buildx.Inputs.BuildContextArgs
         {
             Location = "app",
         },
-        Targets = new[]
-        {
-            "build-me",
-            "also-build-me",
-        },
+        Target = "build-me",
     });
 
     var namedContexts = new Docker.Buildx.Image("namedContexts", new()
@@ -244,7 +240,7 @@ RUN echo ""This uses an inline Dockerfile! 👍""
         },
         Exports = new[]
         {
-            new Docker.Buildx.Inputs.ExportEntryArgs
+            new Docker.Buildx.Inputs.ExportArgs
             {
                 Docker = new Docker.Buildx.Inputs.ExportDockerArgs
                 {
