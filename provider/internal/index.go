@@ -230,7 +230,7 @@ func (i *Index) Diff(
 	replace := provider.PropertyDiff{Kind: provider.UpdateReplace}
 
 	if olds.Tag != news.Tag {
-		diff["tag"] = replace
+		diff["tag"] = update
 	}
 	if !reflect.DeepEqual(olds.Sources, news.Sources) {
 		diff["sources"] = update
@@ -247,7 +247,7 @@ func (i *Index) Diff(
 	// Intentionally ignore changes to registry.password
 
 	return provider.DiffResponse{
-		DeleteBeforeReplace: true,
+		DeleteBeforeReplace: false,
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil
