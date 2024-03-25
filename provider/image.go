@@ -91,7 +91,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	props *structpb.Struct,
 	isPreview bool,
 ) (string, *structpb.Struct, error) {
-
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
 	if err != nil {
 		return "", nil, err
@@ -1108,8 +1107,9 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 				clientOpts = append(clientOpts,
 					client.FromEnv,
 					client.WithAPIVersionNegotiation(),
+					client.WithHost(helper.Host),
 					client.WithDialContext(helper.Dialer),
-					client.WithHost(helper.Host))
+				)
 			} else {
 				// if no helper is registered for the scheme, we return a non-SSH client using the supplied host.
 				clientOpts = append(clientOpts,

@@ -32,7 +32,14 @@ const provider = new docker.Provider("docker-provider", {
     ],
 });
 
-const remoteImage = new docker.RemoteImage("image", {
+const image = new docker.Image("image", {
+    imageName: "docker.io/pulumibot/foo",
+    skipPush: true,
+  },
+  { provider }
+);
+
+const remoteImage = new docker.RemoteImage("remote-image", {
     name: "nginx"
 }, { provider });
 
