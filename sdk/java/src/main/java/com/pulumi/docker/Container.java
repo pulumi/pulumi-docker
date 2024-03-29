@@ -61,10 +61,12 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
+ *         // Find the latest Ubuntu precise image.
  *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
  *             .name(&#34;ubuntu:precise&#34;)
  *             .build());
  * 
+ *         // Start a container
  *         var ubuntuContainer = new Container(&#34;ubuntuContainer&#34;, ContainerArgs.builder()        
  *             .image(ubuntuRemoteImage.imageId())
  *             .build());
