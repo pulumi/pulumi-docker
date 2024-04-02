@@ -6,14 +6,14 @@ require (
 	github.com/docker/cli v25.0.3+incompatible
 	github.com/docker/distribution v2.8.2+incompatible
 	github.com/docker/docker v25.0.2+incompatible
-	github.com/golang/protobuf v1.5.3
+	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
 	github.com/moby/buildkit v0.13.0-beta3.0.20240205165705-d6e142600ee5
 	github.com/moby/moby v25.0.4+incompatible
 	github.com/moby/patternmatcher v0.6.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.79.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.79.1-0.20240402191634-5e9b1ba84293
 	github.com/pulumi/pulumi/pkg/v3 v3.112.0
 	github.com/pulumi/pulumi/sdk/v3 v3.112.0
 	github.com/spf13/afero v1.9.5
