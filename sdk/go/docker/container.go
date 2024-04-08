@@ -106,7 +106,7 @@ type Container struct {
 	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 	Command pulumi.StringArrayOutput `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
-	ContainerLogs pulumi.StringOutput `pulumi:"containerLogs"`
+	ContainerLogs pulumi.StringPtrOutput `pulumi:"containerLogs"`
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrOutput `pulumi:"containerReadRefreshTimeoutMilliseconds"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -136,7 +136,7 @@ type Container struct {
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayOutput `pulumi:"groupAdds"`
 	// A test to perform to check that the container is healthy
-	Healthcheck ContainerHealthcheckOutput `pulumi:"healthcheck"`
+	Healthcheck ContainerHealthcheckPtrOutput `pulumi:"healthcheck"`
 	// Hostname of the container.
 	Hostname pulumi.StringOutput `pulumi:"hostname"`
 	// Hostname to add
@@ -908,8 +908,8 @@ func (o ContainerOutput) Command() pulumi.StringArrayOutput {
 }
 
 // The logs of the container if its execution is done (`attach` must be disabled).
-func (o ContainerOutput) ContainerLogs() pulumi.StringOutput {
-	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.ContainerLogs }).(pulumi.StringOutput)
+func (o ContainerOutput) ContainerLogs() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.ContainerLogs }).(pulumi.StringPtrOutput)
 }
 
 // The total number of milliseconds to wait for the container to reach status 'running'
@@ -983,8 +983,8 @@ func (o ContainerOutput) GroupAdds() pulumi.StringArrayOutput {
 }
 
 // A test to perform to check that the container is healthy
-func (o ContainerOutput) Healthcheck() ContainerHealthcheckOutput {
-	return o.ApplyT(func(v *Container) ContainerHealthcheckOutput { return v.Healthcheck }).(ContainerHealthcheckOutput)
+func (o ContainerOutput) Healthcheck() ContainerHealthcheckPtrOutput {
+	return o.ApplyT(func(v *Container) ContainerHealthcheckPtrOutput { return v.Healthcheck }).(ContainerHealthcheckPtrOutput)
 }
 
 // Hostname of the container.

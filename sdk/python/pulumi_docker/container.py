@@ -2759,7 +2759,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="containerLogs")
-    def container_logs(self) -> pulumi.Output[str]:
+    def container_logs(self) -> pulumi.Output[Optional[str]]:
         """
         The logs of the container if its execution is done (`attach` must be disabled).
         """
@@ -2879,7 +2879,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def healthcheck(self) -> pulumi.Output['outputs.ContainerHealthcheck']:
+    def healthcheck(self) -> pulumi.Output[Optional['outputs.ContainerHealthcheck']]:
         """
         A test to perform to check that the container is healthy
         """

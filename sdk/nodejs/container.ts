@@ -118,7 +118,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
-    public /*out*/ readonly containerLogs!: pulumi.Output<string>;
+    public /*out*/ readonly containerLogs!: pulumi.Output<string | undefined>;
     /**
      * The total number of milliseconds to wait for the container to reach status 'running'
      */
@@ -178,7 +178,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * A test to perform to check that the container is healthy
      */
-    public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck>;
+    public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck | undefined>;
     /**
      * Hostname of the container.
      */

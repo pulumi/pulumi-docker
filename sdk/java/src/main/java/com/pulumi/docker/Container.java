@@ -196,14 +196,14 @@ public class Container extends com.pulumi.resources.CustomResource {
      * 
      */
     @Export(name="containerLogs", refs={String.class}, tree="[0]")
-    private Output<String> containerLogs;
+    private Output</* @Nullable */ String> containerLogs;
 
     /**
      * @return The logs of the container if its execution is done (`attach` must be disabled).
      * 
      */
-    public Output<String> containerLogs() {
-        return this.containerLogs;
+    public Output<Optional<String>> containerLogs() {
+        return Codegen.optional(this.containerLogs);
     }
     /**
      * The total number of milliseconds to wait for the container to reach status &#39;running&#39;
@@ -406,14 +406,14 @@ public class Container extends com.pulumi.resources.CustomResource {
      * 
      */
     @Export(name="healthcheck", refs={ContainerHealthcheck.class}, tree="[0]")
-    private Output<ContainerHealthcheck> healthcheck;
+    private Output</* @Nullable */ ContainerHealthcheck> healthcheck;
 
     /**
      * @return A test to perform to check that the container is healthy
      * 
      */
-    public Output<ContainerHealthcheck> healthcheck() {
-        return this.healthcheck;
+    public Output<Optional<ContainerHealthcheck>> healthcheck() {
+        return Codegen.optional(this.healthcheck);
     }
     /**
      * Hostname of the container.
