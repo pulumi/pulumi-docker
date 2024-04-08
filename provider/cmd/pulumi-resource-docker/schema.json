@@ -2406,11 +2406,9 @@
             "required": [
                 "bridge",
                 "command",
-                "containerLogs",
                 "entrypoints",
                 "envs",
                 "exitCode",
-                "healthcheck",
                 "hostname",
                 "image",
                 "init",
