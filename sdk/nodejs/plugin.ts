@@ -11,25 +11,6 @@ import * as utilities from "./utilities";
  * <!-- Bug: Type and Name are switched -->
  * Manages the lifecycle of a Docker plugin.
  *
- * ## Example Usage
- *
- * <!--Start PulumiCodeChooser -->
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const sample_volume_plugin = new docker.Plugin("sample-volume-plugin", {
- *     alias: "sample-volume-plugin",
- *     enableTimeout: 60,
- *     enabled: false,
- *     envs: ["DEBUG=1"],
- *     forceDestroy: true,
- *     forceDisable: true,
- *     grantAllPermissions: true,
- * });
- * ```
- * <!--End PulumiCodeChooser -->
- *
  * ## Import
  *
  * #!/bin/bash

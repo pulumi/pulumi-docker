@@ -22,45 +22,6 @@ import javax.annotation.Nullable;
  * &lt;!-- Bug: Type and Name are switched --&gt;
  * Manages the lifecycle of a Docker plugin.
  * 
- * ## Example Usage
- * 
- * &lt;!--Start PulumiCodeChooser --&gt;
- * ```java
- * package generated_program;
- * 
- * import com.pulumi.Context;
- * import com.pulumi.Pulumi;
- * import com.pulumi.core.Output;
- * import com.pulumi.docker.Plugin;
- * import com.pulumi.docker.PluginArgs;
- * import java.util.List;
- * import java.util.ArrayList;
- * import java.util.Map;
- * import java.io.File;
- * import java.nio.file.Files;
- * import java.nio.file.Paths;
- * 
- * public class App {
- *     public static void main(String[] args) {
- *         Pulumi.run(App::stack);
- *     }
- * 
- *     public static void stack(Context ctx) {
- *         var sample_volume_plugin = new Plugin(&#34;sample-volume-plugin&#34;, PluginArgs.builder()        
- *             .alias(&#34;sample-volume-plugin&#34;)
- *             .enableTimeout(60)
- *             .enabled(false)
- *             .envs(&#34;DEBUG=1&#34;)
- *             .forceDestroy(true)
- *             .forceDisable(true)
- *             .grantAllPermissions(true)
- *             .build());
- * 
- *     }
- * }
- * ```
- * &lt;!--End PulumiCodeChooser --&gt;
- * 
  * ## Import
  * 
  * #!/bin/bash

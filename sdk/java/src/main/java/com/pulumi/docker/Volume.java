@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.Pulumi;
  * import com.pulumi.core.Output;
  * import com.pulumi.docker.Volume;
+ * import com.pulumi.docker.VolumeArgs;
  * import java.util.List;
  * import java.util.ArrayList;
  * import java.util.Map;
@@ -45,7 +46,9 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var sharedVolume = new Volume(&#34;sharedVolume&#34;);
+ *         var sharedVolume = new Volume(&#34;sharedVolume&#34;, VolumeArgs.builder()        
+ *             .name(&#34;shared_volume&#34;)
+ *             .build());
  * 
  *     }
  * }

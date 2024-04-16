@@ -21,51 +21,6 @@ import javax.annotation.Nullable;
  * &lt;!-- Bug: Type and Name are switched --&gt;
  * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
  * 
- * ## Example Usage
- * 
- * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
- * 
- * &lt;!--Start PulumiCodeChooser --&gt;
- * ```java
- * package generated_program;
- * 
- * import com.pulumi.Context;
- * import com.pulumi.Pulumi;
- * import com.pulumi.core.Output;
- * import com.pulumi.docker.RegistryImage;
- * import com.pulumi.docker.RegistryImageArgs;
- * import com.pulumi.docker.RemoteImage;
- * import com.pulumi.docker.RemoteImageArgs;
- * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
- * import java.util.List;
- * import java.util.ArrayList;
- * import java.util.Map;
- * import java.io.File;
- * import java.nio.file.Files;
- * import java.nio.file.Paths;
- * 
- * public class App {
- *     public static void main(String[] args) {
- *         Pulumi.run(App::stack);
- *     }
- * 
- *     public static void stack(Context ctx) {
- *         var helloworld = new RegistryImage(&#34;helloworld&#34;, RegistryImageArgs.builder()        
- *             .keepRemotely(true)
- *             .build());
- * 
- *         var image = new RemoteImage(&#34;image&#34;, RemoteImageArgs.builder()        
- *             .name(&#34;registry.com/somename:1.0&#34;)
- *             .build(RemoteImageBuildArgs.builder()
- *                 .context(String.format(&#34;%s/absolutePathToContextFolder&#34;, path.cwd()))
- *                 .build())
- *             .build());
- * 
- *     }
- * }
- * ```
- * &lt;!--End PulumiCodeChooser --&gt;
- * 
  */
 @ResourceType(type="docker:index/registryImage:RegistryImage")
 public class RegistryImage extends com.pulumi.resources.CustomResource {

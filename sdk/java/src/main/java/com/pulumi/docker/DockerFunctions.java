@@ -357,13 +357,13 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
      *             .build());
      * 
      *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
@@ -404,13 +404,13 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
      *             .build());
      * 
      *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
@@ -451,13 +451,13 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
      *             .build());
      * 
      *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
@@ -498,13 +498,13 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
      *             .build());
      * 
      *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
@@ -543,18 +543,22 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
+     *         // uses the &#39;latest&#39; tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
      *             .build());
      * 
+     *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
      *             .build());
      * 
+     *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
      * 
+     *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
@@ -595,18 +599,22 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
+     *         // uses the &#39;latest&#39; tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
      *             .build());
      * 
+     *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
      *             .build());
      * 
+     *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
      * 
+     *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
@@ -647,18 +655,22 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
+     *         // uses the &#39;latest&#39; tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
      *             .build());
      * 
+     *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
      *             .build());
      * 
+     *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
      * 
+     *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
@@ -699,18 +711,22 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
+     *         // uses the &#39;latest&#39; tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
      *             .build());
      * 
+     *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
      *             .build());
      * 
+     *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());
      * 
+     *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
      *             .build());

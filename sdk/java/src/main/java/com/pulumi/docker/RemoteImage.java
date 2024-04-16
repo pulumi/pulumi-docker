@@ -91,13 +91,13 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+ *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
  *             .name(&#34;ubuntu:precise&#34;)
  *             .build());
  * 
  *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
- *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
- *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+ *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+ *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
  *             .build());
  * 
  *     }

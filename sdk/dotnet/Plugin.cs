@@ -13,35 +13,6 @@ namespace Pulumi.Docker
     /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// Manages the lifecycle of a Docker plugin.
     /// 
-    /// ## Example Usage
-    /// 
-    /// &lt;!--Start PulumiCodeChooser --&gt;
-    /// ```csharp
-    /// using System.Collections.Generic;
-    /// using System.Linq;
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// return await Deployment.RunAsync(() =&gt; 
-    /// {
-    ///     var sample_volume_plugin = new Docker.Plugin("sample-volume-plugin", new()
-    ///     {
-    ///         Alias = "sample-volume-plugin",
-    ///         EnableTimeout = 60,
-    ///         Enabled = false,
-    ///         Envs = new[]
-    ///         {
-    ///             "DEBUG=1",
-    ///         },
-    ///         ForceDestroy = true,
-    ///         ForceDisable = true,
-    ///         GrantAllPermissions = true,
-    ///     });
-    /// 
-    /// });
-    /// ```
-    /// &lt;!--End PulumiCodeChooser --&gt;
-    /// 
     /// ## Import
     /// 
     /// #!/bin/bash

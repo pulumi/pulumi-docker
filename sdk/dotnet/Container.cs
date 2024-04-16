@@ -25,14 +25,15 @@ namespace Pulumi.Docker
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
     ///     // Find the latest Ubuntu precise image.
-    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntu", new()
     ///     {
     ///         Name = "ubuntu:precise",
     ///     });
     /// 
     ///     // Start a container
-    ///     var ubuntuContainer = new Docker.Container("ubuntuContainer", new()
+    ///     var ubuntu = new Docker.Container("ubuntu", new()
     ///     {
+    ///         Name = "foo",
     ///         Image = ubuntuRemoteImage.ImageId,
     ///     });
     /// 

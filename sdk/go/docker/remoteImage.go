@@ -68,16 +68,16 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
+//			ubuntu, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
 //				Name: "ubuntu:precise",
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
-//			_, err = docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
-//				Name: pulumi.String(ubuntuRegistryImage.Name),
+//			_, err = docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
+//				Name: pulumi.String(ubuntu.Name),
 //				PullTriggers: pulumi.StringArray{
-//					pulumi.String(ubuntuRegistryImage.Sha256Digest),
+//					pulumi.String(ubuntu.Sha256Digest),
 //				},
 //			})
 //			if err != nil {

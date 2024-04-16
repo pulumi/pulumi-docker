@@ -19,9 +19,12 @@ import * as utilities from "./utilities";
  * import * as docker from "@pulumi/docker";
  *
  * // Find the latest Ubuntu precise image.
- * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {name: "ubuntu:precise"});
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {name: "ubuntu:precise"});
  * // Start a container
- * const ubuntuContainer = new docker.Container("ubuntuContainer", {image: ubuntuRemoteImage.imageId});
+ * const ubuntu = new docker.Container("ubuntu", {
+ *     name: "foo",
+ *     image: ubuntuRemoteImage.imageId,
+ * });
  * ```
  * <!--End PulumiCodeChooser -->
  *

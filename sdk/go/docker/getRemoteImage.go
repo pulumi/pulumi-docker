@@ -28,24 +28,28 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// uses the 'latest' tag
 //			_, err := docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
 //				Name: "nginx",
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
+//			// uses a specific tag
 //			_, err = docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
 //				Name: "nginx:1.17.6",
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
+//			// use the image digest
 //			_, err = docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
 //				Name: "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
+//			// uses the tag and the image digest
 //			_, err = docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
 //				Name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
 //			}, nil)

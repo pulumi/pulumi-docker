@@ -24,7 +24,10 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var privateNetwork = new Docker.Network("privateNetwork");
+    ///     var privateNetwork = new Docker.Network("private_network", new()
+    ///     {
+    ///         Name = "my_network",
+    ///     });
     /// 
     /// });
     /// ```

@@ -25,21 +25,25 @@ namespace Pulumi.Docker
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // uses the 'latest' tag
         ///     var latest = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx",
         ///     });
         /// 
+        ///     // uses a specific tag
         ///     var specific = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx:1.17.6",
         ///     });
         /// 
+        ///     // use the image digest
         ///     var digest = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
         ///     });
         /// 
+        ///     // uses the tag and the image digest
         ///     var tagAndDigest = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
@@ -66,21 +70,25 @@ namespace Pulumi.Docker
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
+        ///     // uses the 'latest' tag
         ///     var latest = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx",
         ///     });
         /// 
+        ///     // uses a specific tag
         ///     var specific = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx:1.17.6",
         ///     });
         /// 
+        ///     // use the image digest
         ///     var digest = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
         ///     });
         /// 
+        ///     // uses the tag and the image digest
         ///     var tagAndDigest = Docker.GetRemoteImage.Invoke(new()
         ///     {
         ///         Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",

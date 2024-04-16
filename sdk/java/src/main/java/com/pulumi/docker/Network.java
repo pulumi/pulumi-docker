@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.Pulumi;
  * import com.pulumi.core.Output;
  * import com.pulumi.docker.Network;
+ * import com.pulumi.docker.NetworkArgs;
  * import java.util.List;
  * import java.util.ArrayList;
  * import java.util.Map;
@@ -47,7 +48,9 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var privateNetwork = new Network(&#34;privateNetwork&#34;);
+ *         var privateNetwork = new Network(&#34;privateNetwork&#34;, NetworkArgs.builder()        
+ *             .name(&#34;my_network&#34;)
+ *             .build());
  * 
  *     }
  * }

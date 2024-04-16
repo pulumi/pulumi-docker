@@ -93,10 +93,10 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
     import pulumi
     import pulumi_docker as docker
 
-    ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
-    ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
-        name=ubuntu_registry_image.name,
-        pull_triggers=[ubuntu_registry_image.sha256_digest])
+    ubuntu = docker.get_registry_image(name="ubuntu:precise")
+    ubuntu_remote_image = docker.RemoteImage("ubuntu",
+        name=ubuntu.name,
+        pull_triggers=[ubuntu.sha256_digest])
     ```
     <!--End PulumiCodeChooser -->
 
@@ -131,10 +131,10 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
     import pulumi
     import pulumi_docker as docker
 
-    ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
-    ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
-        name=ubuntu_registry_image.name,
-        pull_triggers=[ubuntu_registry_image.sha256_digest])
+    ubuntu = docker.get_registry_image(name="ubuntu:precise")
+    ubuntu_remote_image = docker.RemoteImage("ubuntu",
+        name=ubuntu.name,
+        pull_triggers=[ubuntu.sha256_digest])
     ```
     <!--End PulumiCodeChooser -->
 
