@@ -29,7 +29,9 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.NewNetwork(ctx, "privateNetwork", nil)
+//			_, err := docker.NewNetwork(ctx, "private_network", &docker.NetworkArgs{
+//				Name: pulumi.String("my_network"),
+//			})
 //			if err != nil {
 //				return err
 //			}

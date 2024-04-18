@@ -458,7 +458,7 @@ class Network(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        private_network = docker.Network("privateNetwork")
+        private_network = docker.Network("private_network", name="my_network")
         ```
         <!--End PulumiCodeChooser -->
 
@@ -526,7 +526,7 @@ class Network(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        private_network = docker.Network("privateNetwork")
+        private_network = docker.Network("private_network", name="my_network")
         ```
         <!--End PulumiCodeChooser -->
 

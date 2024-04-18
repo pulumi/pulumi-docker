@@ -352,24 +352,6 @@ class Plugin(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of a Docker plugin.
 
-        ## Example Usage
-
-        <!--Start PulumiCodeChooser -->
-        ```python
-        import pulumi
-        import pulumi_docker as docker
-
-        sample_volume_plugin = docker.Plugin("sample-volume-plugin",
-            alias="sample-volume-plugin",
-            enable_timeout=60,
-            enabled=False,
-            envs=["DEBUG=1"],
-            force_destroy=True,
-            force_disable=True,
-            grant_all_permissions=True)
-        ```
-        <!--End PulumiCodeChooser -->
-
         ## Import
 
         #!/bin/bash
@@ -399,24 +381,6 @@ class Plugin(pulumi.CustomResource):
         """
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of a Docker plugin.
-
-        ## Example Usage
-
-        <!--Start PulumiCodeChooser -->
-        ```python
-        import pulumi
-        import pulumi_docker as docker
-
-        sample_volume_plugin = docker.Plugin("sample-volume-plugin",
-            alias="sample-volume-plugin",
-            enable_timeout=60,
-            enabled=False,
-            envs=["DEBUG=1"],
-            force_destroy=True,
-            force_disable=True,
-            grant_all_permissions=True)
-        ```
-        <!--End PulumiCodeChooser -->
 
         ## Import
 

@@ -14,12 +14,12 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * const ubuntuRegistryImage = docker.getRegistryImage({
+ * const ubuntu = docker.getRegistryImage({
  *     name: "ubuntu:precise",
  * });
- * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {
- *     name: ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.name),
- *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
+ *     name: ubuntu.then(ubuntu => ubuntu.name),
+ *     pullTriggers: [ubuntu.then(ubuntu => ubuntu.sha256Digest)],
  * });
  * ```
  * <!--End PulumiCodeChooser -->
@@ -78,12 +78,12 @@ export interface GetRegistryImageResult {
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * const ubuntuRegistryImage = docker.getRegistryImage({
+ * const ubuntu = docker.getRegistryImage({
  *     name: "ubuntu:precise",
  * });
- * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {
- *     name: ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.name),
- *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
+ *     name: ubuntu.then(ubuntu => ubuntu.name),
+ *     pullTriggers: [ubuntu.then(ubuntu => ubuntu.sha256Digest)],
  * });
  * ```
  * <!--End PulumiCodeChooser -->

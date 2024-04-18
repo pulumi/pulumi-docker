@@ -14,15 +14,19 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
+ * // uses the 'latest' tag
  * const latest = docker.getRemoteImage({
  *     name: "nginx",
  * });
+ * // uses a specific tag
  * const specific = docker.getRemoteImage({
  *     name: "nginx:1.17.6",
  * });
+ * // use the image digest
  * const digest = docker.getRemoteImage({
  *     name: "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
  * });
+ * // uses the tag and the image digest
  * const tagAndDigest = docker.getRemoteImage({
  *     name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
  * });
@@ -74,15 +78,19 @@ export interface GetRemoteImageResult {
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
+ * // uses the 'latest' tag
  * const latest = docker.getRemoteImage({
  *     name: "nginx",
  * });
+ * // uses a specific tag
  * const specific = docker.getRemoteImage({
  *     name: "nginx:1.17.6",
  * });
+ * // use the image digest
  * const digest = docker.getRemoteImage({
  *     name: "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
  * });
+ * // uses the tag and the image digest
  * const tagAndDigest = docker.getRemoteImage({
  *     name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
  * });

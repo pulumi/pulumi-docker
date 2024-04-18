@@ -53,17 +53,17 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()
+    ///     var ubuntu = Docker.GetRegistryImage.Invoke(new()
     ///     {
     ///         Name = "ubuntu:precise",
     ///     });
     /// 
-    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntu", new()
     ///     {
-    ///         Name = ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+    ///         Name = ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
     ///         PullTriggers = new[]
     ///         {
-    ///             ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+    ///             ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
     ///         },
     ///     });
     /// 

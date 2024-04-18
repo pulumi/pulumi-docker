@@ -2160,9 +2160,11 @@ class Container(pulumi.CustomResource):
         import pulumi_docker as docker
 
         # Find the latest Ubuntu precise image.
-        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntu", name="ubuntu:precise")
         # Start a container
-        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.image_id)
+        ubuntu = docker.Container("ubuntu",
+            name="foo",
+            image=ubuntu_remote_image.image_id)
         ```
         <!--End PulumiCodeChooser -->
 
@@ -2292,9 +2294,11 @@ class Container(pulumi.CustomResource):
         import pulumi_docker as docker
 
         # Find the latest Ubuntu precise image.
-        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntu", name="ubuntu:precise")
         # Start a container
-        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.image_id)
+        ubuntu = docker.Container("ubuntu",
+            name="foo",
+            image=ubuntu_remote_image.image_id)
         ```
         <!--End PulumiCodeChooser -->
 

@@ -31,14 +31,15 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			// Find the latest Ubuntu precise image.
-//			ubuntuRemoteImage, err := docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
+//			ubuntuRemoteImage, err := docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
 //				Name: pulumi.String("ubuntu:precise"),
 //			})
 //			if err != nil {
 //				return err
 //			}
 //			// Start a container
-//			_, err = docker.NewContainer(ctx, "ubuntuContainer", &docker.ContainerArgs{
+//			_, err = docker.NewContainer(ctx, "ubuntu", &docker.ContainerArgs{
+//				Name:  pulumi.String("foo"),
 //				Image: ubuntuRemoteImage.ImageId,
 //			})
 //			if err != nil {
