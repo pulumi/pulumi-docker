@@ -3,7 +3,7 @@ module github.com/pulumi/pulumi-docker/examples
 go 1.21
 
 require (
-	github.com/docker/docker v24.0.9+incompatible
+	github.com/docker/docker v26.1.0+incompatible
 	github.com/pulumi/pulumi/pkg/v3 v3.112.0
 	github.com/stretchr/testify v1.8.4
 )
@@ -124,6 +124,7 @@ require (
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
+	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
@@ -174,7 +175,7 @@ require (
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/oauth2 v0.14.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
