@@ -37,14 +37,14 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Always remove intermediate containers
+     * If true, then the image is removed forcibly when the resource is destroyed.
      * 
      */
     @Import(name="forceRemove")
     private @Nullable Output<Boolean> forceRemove;
 
     /**
-     * @return Always remove intermediate containers
+     * @return If true, then the image is removed forcibly when the resource is destroyed.
      * 
      */
     public Optional<Output<Boolean>> forceRemove() {
@@ -67,14 +67,14 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * type of ulimit, e.g. `nofile`
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return type of ulimit, e.g. `nofile`
+     * @return The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     public Output<String> name() {
@@ -82,14 +82,14 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Set platform if server is multi-platform capable
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
     @Import(name="platform")
     private @Nullable Output<String> platform;
 
     /**
-     * @return Set platform if server is multi-platform capable
+     * @return The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
     public Optional<Output<String>> platform() {
@@ -178,7 +178,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param forceRemove Always remove intermediate containers
+         * @param forceRemove If true, then the image is removed forcibly when the resource is destroyed.
          * 
          * @return builder
          * 
@@ -189,7 +189,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param forceRemove Always remove intermediate containers
+         * @param forceRemove If true, then the image is removed forcibly when the resource is destroyed.
          * 
          * @return builder
          * 
@@ -220,7 +220,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name type of ulimit, e.g. `nofile`
+         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
          * 
          * @return builder
          * 
@@ -231,7 +231,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name type of ulimit, e.g. `nofile`
+         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
          * 
          * @return builder
          * 
@@ -241,7 +241,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param platform Set platform if server is multi-platform capable
+         * @param platform The platform to use when pulling the image. Defaults to the platform of the current machine.
          * 
          * @return builder
          * 
@@ -252,7 +252,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param platform Set platform if server is multi-platform capable
+         * @param platform The platform to use when pulling the image. Defaults to the platform of the current machine.
          * 
          * @return builder
          * 

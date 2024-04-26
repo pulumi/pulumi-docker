@@ -168,14 +168,14 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.build);
     }
     /**
-     * Always remove intermediate containers
+     * If true, then the image is removed forcibly when the resource is destroyed.
      * 
      */
     @Export(name="forceRemove", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> forceRemove;
 
     /**
-     * @return Always remove intermediate containers
+     * @return If true, then the image is removed forcibly when the resource is destroyed.
      * 
      */
     public Output<Optional<Boolean>> forceRemove() {
@@ -210,28 +210,28 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.keepLocally);
     }
     /**
-     * type of ulimit, e.g. `nofile`
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
-     * @return type of ulimit, e.g. `nofile`
+     * @return The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     public Output<String> name() {
         return this.name;
     }
     /**
-     * Set platform if server is multi-platform capable
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
     @Export(name="platform", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> platform;
 
     /**
-     * @return Set platform if server is multi-platform capable
+     * @return The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
     public Output<Optional<String>> platform() {

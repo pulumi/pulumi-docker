@@ -146,14 +146,14 @@ public class Plugin extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.grantPermissions);
     }
     /**
-     * The name of the permission
+     * Docker Plugin name
      * 
      */
     @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
-     * @return The name of the permission
+     * @return Docker Plugin name
      * 
      */
     public Output<String> name() {

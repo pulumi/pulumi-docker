@@ -318,14 +318,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Hostname to add
+     * Additional hosts to add to the container.
      * 
      */
     @Import(name="hosts")
     private @Nullable Output<List<ContainerHostArgs>> hosts;
 
     /**
-     * @return Hostname to add
+     * @return Additional hosts to add to the container.
      * 
      */
     public Optional<Output<List<ContainerHostArgs>>> hosts() {
@@ -378,14 +378,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * User-defined key/value metadata.
+     * User-defined key/value metadata
      * 
      */
     @Import(name="labels")
     private @Nullable Output<List<ContainerLabelArgs>> labels;
 
     /**
-     * @return User-defined key/value metadata.
+     * @return User-defined key/value metadata
      * 
      */
     public Optional<Output<List<ContainerLabelArgs>>> labels() {
@@ -515,14 +515,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * The name of the container.
      * 
      */
     @Import(name="name")
     private @Nullable Output<String> name;
 
     /**
-     * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * @return The name of the container.
      * 
      */
     public Optional<Output<String>> name() {
@@ -620,14 +620,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Whether the mount should be read-only.
+     * If `true`, the container will be started as readonly. Defaults to `false`.
      * 
      */
     @Import(name="readOnly")
     private @Nullable Output<Boolean> readOnly;
 
     /**
-     * @return Whether the mount should be read-only.
+     * @return If `true`, the container will be started as readonly. Defaults to `false`.
      * 
      */
     public Optional<Output<Boolean>> readOnly() {
@@ -1529,7 +1529,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param hosts Hostname to add
+         * @param hosts Additional hosts to add to the container.
          * 
          * @return builder
          * 
@@ -1540,7 +1540,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param hosts Hostname to add
+         * @param hosts Additional hosts to add to the container.
          * 
          * @return builder
          * 
@@ -1550,7 +1550,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param hosts Hostname to add
+         * @param hosts Additional hosts to add to the container.
          * 
          * @return builder
          * 
@@ -1623,7 +1623,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param labels User-defined key/value metadata.
+         * @param labels User-defined key/value metadata
          * 
          * @return builder
          * 
@@ -1634,7 +1634,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param labels User-defined key/value metadata.
+         * @param labels User-defined key/value metadata
          * 
          * @return builder
          * 
@@ -1644,7 +1644,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param labels User-defined key/value metadata.
+         * @param labels User-defined key/value metadata
          * 
          * @return builder
          * 
@@ -1834,7 +1834,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+         * @param name The name of the container.
          * 
          * @return builder
          * 
@@ -1845,7 +1845,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+         * @param name The name of the container.
          * 
          * @return builder
          * 
@@ -2001,7 +2001,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param readOnly Whether the mount should be read-only.
+         * @param readOnly If `true`, the container will be started as readonly. Defaults to `false`.
          * 
          * @return builder
          * 
@@ -2012,7 +2012,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param readOnly Whether the mount should be read-only.
+         * @param readOnly If `true`, the container will be started as readonly. Defaults to `false`.
          * 
          * @return builder
          * 

@@ -2189,7 +2189,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
-                    "description": "Hostname to add\n"
+                    "description": "Additional hosts to add to the container.\n"
                 },
                 "image": {
                     "type": "string",
@@ -2208,7 +2208,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
-                    "description": "User-defined key/value metadata.\n"
+                    "description": "User-defined key/value metadata\n"
                 },
                 "logDriver": {
                     "type": "string",
@@ -2250,7 +2250,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n"
+                    "description": "The name of the container.\n"
                 },
                 "networkDatas": {
                     "type": "array",
@@ -2291,7 +2291,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "Whether the mount should be read-only.\n"
+                    "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n"
                 },
                 "removeVolumes": {
                     "type": "boolean",
@@ -2544,7 +2544,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
-                    "description": "Hostname to add\n",
+                    "description": "Additional hosts to add to the container.\n",
                     "willReplaceOnChanges": true
                 },
                 "image": {
@@ -2566,7 +2566,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
-                    "description": "User-defined key/value metadata.\n",
+                    "description": "User-defined key/value metadata\n",
                     "willReplaceOnChanges": true
                 },
                 "logDriver": {
@@ -2612,7 +2612,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n",
+                    "description": "The name of the container.\n",
                     "willReplaceOnChanges": true
                 },
                 "networkMode": {
@@ -2653,7 +2653,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "Whether the mount should be read-only.\n",
+                    "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n",
                     "willReplaceOnChanges": true
                 },
                 "removeVolumes": {
@@ -2917,7 +2917,7 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                         },
-                        "description": "Hostname to add\n",
+                        "description": "Additional hosts to add to the container.\n",
                         "willReplaceOnChanges": true
                     },
                     "image": {
@@ -2939,7 +2939,7 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                         },
-                        "description": "User-defined key/value metadata.\n",
+                        "description": "User-defined key/value metadata\n",
                         "willReplaceOnChanges": true
                     },
                     "logDriver": {
@@ -2985,7 +2985,7 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n",
+                        "description": "The name of the container.\n",
                         "willReplaceOnChanges": true
                     },
                     "networkDatas": {
@@ -3033,7 +3033,7 @@
                     },
                     "readOnly": {
                         "type": "boolean",
-                        "description": "Whether the mount should be read-only.\n",
+                        "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n",
                         "willReplaceOnChanges": true
                     },
                     "removeVolumes": {
@@ -3514,7 +3514,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the permission\n"
+                    "description": "Docker Plugin name\n"
                 },
                 "pluginReference": {
                     "type": "string",
@@ -3569,7 +3569,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the permission\n",
+                    "description": "Docker Plugin name\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -3617,7 +3617,7 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the permission\n",
+                        "description": "Docker Plugin name\n",
                         "willReplaceOnChanges": true
                     },
                     "pluginReference": {
@@ -3723,7 +3723,7 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
-                    "description": "Always remove intermediate containers\n"
+                    "description": "If true, then the image is removed forcibly when the resource is destroyed.\n"
                 },
                 "imageId": {
                     "type": "string",
@@ -3735,11 +3735,11 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "type of ulimit, e.g. `nofile`\n"
+                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
                 },
                 "platform": {
                     "type": "string",
-                    "description": "Set platform if server is multi-platform capable\n"
+                    "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n"
                 },
                 "pullTriggers": {
                     "type": "array",
@@ -3772,7 +3772,7 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
-                    "description": "Always remove intermediate containers\n"
+                    "description": "If true, then the image is removed forcibly when the resource is destroyed.\n"
                 },
                 "keepLocally": {
                     "type": "boolean",
@@ -3780,12 +3780,12 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "type of ulimit, e.g. `nofile`\n",
+                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
                     "willReplaceOnChanges": true
                 },
                 "platform": {
                     "type": "string",
-                    "description": "Set platform if server is multi-platform capable\n",
+                    "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n",
                     "willReplaceOnChanges": true
                 },
                 "pullTriggers": {
@@ -3817,7 +3817,7 @@
                     },
                     "forceRemove": {
                         "type": "boolean",
-                        "description": "Always remove intermediate containers\n"
+                        "description": "If true, then the image is removed forcibly when the resource is destroyed.\n"
                     },
                     "imageId": {
                         "type": "string",
@@ -3829,12 +3829,12 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "type of ulimit, e.g. `nofile`\n",
+                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
                         "willReplaceOnChanges": true
                     },
                     "platform": {
                         "type": "string",
-                        "description": "Set platform if server is multi-platform capable\n",
+                        "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n",
                         "willReplaceOnChanges": true
                     },
                     "pullTriggers": {

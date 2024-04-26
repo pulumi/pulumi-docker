@@ -9,7 +9,6 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -22,7 +21,6 @@ import * as utilities from "./utilities";
  *     pullTriggers: [ubuntu.then(ubuntu => ubuntu.sha256Digest)],
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  */
 export function getRegistryImage(args: GetRegistryImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryImageResult> {
 
@@ -73,7 +71,6 @@ export interface GetRegistryImageResult {
  *
  * ## Example Usage
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -86,7 +83,6 @@ export interface GetRegistryImageResult {
  *     pullTriggers: [ubuntu.then(ubuntu => ubuntu.sha256Digest)],
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  */
 export function getRegistryImageOutput(args: GetRegistryImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRegistryImageResult> {
     return pulumi.output(args).apply((a: any) => getRegistryImage(a, opts))

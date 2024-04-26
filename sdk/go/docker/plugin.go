@@ -40,7 +40,7 @@ type Plugin struct {
 	GrantAllPermissions pulumi.BoolPtrOutput `pulumi:"grantAllPermissions"`
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayOutput `pulumi:"grantPermissions"`
-	// The name of the permission
+	// Docker Plugin name
 	Name pulumi.StringOutput `pulumi:"name"`
 	// Docker Plugin Reference
 	PluginReference pulumi.StringOutput `pulumi:"pluginReference"`
@@ -92,7 +92,7 @@ type pluginState struct {
 	GrantAllPermissions *bool `pulumi:"grantAllPermissions"`
 	// Grant specific permissions only
 	GrantPermissions []PluginGrantPermission `pulumi:"grantPermissions"`
-	// The name of the permission
+	// Docker Plugin name
 	Name *string `pulumi:"name"`
 	// Docker Plugin Reference
 	PluginReference *string `pulumi:"pluginReference"`
@@ -115,7 +115,7 @@ type PluginState struct {
 	GrantAllPermissions pulumi.BoolPtrInput
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayInput
-	// The name of the permission
+	// Docker Plugin name
 	Name pulumi.StringPtrInput
 	// Docker Plugin Reference
 	PluginReference pulumi.StringPtrInput
@@ -142,7 +142,7 @@ type pluginArgs struct {
 	GrantAllPermissions *bool `pulumi:"grantAllPermissions"`
 	// Grant specific permissions only
 	GrantPermissions []PluginGrantPermission `pulumi:"grantPermissions"`
-	// The name of the permission
+	// Docker Plugin name
 	Name *string `pulumi:"name"`
 }
 
@@ -164,7 +164,7 @@ type PluginArgs struct {
 	GrantAllPermissions pulumi.BoolPtrInput
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayInput
-	// The name of the permission
+	// Docker Plugin name
 	Name pulumi.StringPtrInput
 }
 
@@ -295,7 +295,7 @@ func (o PluginOutput) GrantPermissions() PluginGrantPermissionArrayOutput {
 	return o.ApplyT(func(v *Plugin) PluginGrantPermissionArrayOutput { return v.GrantPermissions }).(PluginGrantPermissionArrayOutput)
 }
 
-// The name of the permission
+// Docker Plugin name
 func (o PluginOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Plugin) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }

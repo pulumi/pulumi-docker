@@ -13,7 +13,6 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -26,7 +25,6 @@ import * as utilities from "./utilities";
  *     image: ubuntuRemoteImage.imageId,
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  *
  * ## Import
  *
@@ -187,7 +185,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly hostname!: pulumi.Output<string>;
     /**
-     * Hostname to add
+     * Additional hosts to add to the container.
      */
     public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
@@ -203,7 +201,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly ipcMode!: pulumi.Output<string>;
     /**
-     * User-defined key/value metadata.
+     * User-defined key/value metadata
      */
     public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
     /**
@@ -240,7 +238,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly mustRun!: pulumi.Output<boolean | undefined>;
     /**
-     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * The name of the container.
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -272,7 +270,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly publishAllPorts!: pulumi.Output<boolean | undefined>;
     /**
-     * Whether the mount should be read-only.
+     * If `true`, the container will be started as readonly. Defaults to `false`.
      */
     public readonly readOnly!: pulumi.Output<boolean | undefined>;
     /**
@@ -613,7 +611,7 @@ export interface ContainerState {
      */
     hostname?: pulumi.Input<string>;
     /**
-     * Hostname to add
+     * Additional hosts to add to the container.
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
@@ -629,7 +627,7 @@ export interface ContainerState {
      */
     ipcMode?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata.
+     * User-defined key/value metadata
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
@@ -666,7 +664,7 @@ export interface ContainerState {
      */
     mustRun?: pulumi.Input<boolean>;
     /**
-     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * The name of the container.
      */
     name?: pulumi.Input<string>;
     /**
@@ -698,7 +696,7 @@ export interface ContainerState {
      */
     publishAllPorts?: pulumi.Input<boolean>;
     /**
-     * Whether the mount should be read-only.
+     * If `true`, the container will be started as readonly. Defaults to `false`.
      */
     readOnly?: pulumi.Input<boolean>;
     /**
@@ -872,7 +870,7 @@ export interface ContainerArgs {
      */
     hostname?: pulumi.Input<string>;
     /**
-     * Hostname to add
+     * Additional hosts to add to the container.
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
@@ -888,7 +886,7 @@ export interface ContainerArgs {
      */
     ipcMode?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata.
+     * User-defined key/value metadata
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
@@ -925,7 +923,7 @@ export interface ContainerArgs {
      */
     mustRun?: pulumi.Input<boolean>;
     /**
-     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * The name of the container.
      */
     name?: pulumi.Input<string>;
     /**
@@ -953,7 +951,7 @@ export interface ContainerArgs {
      */
     publishAllPorts?: pulumi.Input<boolean>;
     /**
-     * Whether the mount should be read-only.
+     * If `true`, the container will be started as readonly. Defaults to `false`.
      */
     readOnly?: pulumi.Input<boolean>;
     /**
