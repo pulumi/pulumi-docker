@@ -75,7 +75,6 @@ def get_remote_image(name: Optional[str] = None,
 
     ## Example Usage
 
-    <!--Start PulumiCodeChooser -->
     ```python
     import pulumi
     import pulumi_docker as docker
@@ -89,7 +88,6 @@ def get_remote_image(name: Optional[str] = None,
     # uses the tag and the image digest
     tag_and_digest = docker.get_remote_image(name="nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
     ```
-    <!--End PulumiCodeChooser -->
 
 
     :param str name: The name of the Docker image, including any tags or SHA256 repo digests.
@@ -113,7 +111,6 @@ def get_remote_image_output(name: Optional[pulumi.Input[str]] = None,
 
     ## Example Usage
 
-    <!--Start PulumiCodeChooser -->
     ```python
     import pulumi
     import pulumi_docker as docker
@@ -127,7 +124,6 @@ def get_remote_image_output(name: Optional[pulumi.Input[str]] = None,
     # uses the tag and the image digest
     tag_and_digest = docker.get_remote_image(name="nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
     ```
-    <!--End PulumiCodeChooser -->
 
 
     :param str name: The name of the Docker image, including any tags or SHA256 repo digests.

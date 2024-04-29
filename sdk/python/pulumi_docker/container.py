@@ -100,10 +100,10 @@ class ContainerArgs:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Additional groups for the container user
         :param pulumi.Input['ContainerHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[str] hostname: Hostname of the container.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]] hosts: Hostname to add
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]] hosts: Additional hosts to add to the container.
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -113,14 +113,14 @@ class ContainerArgs:
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
-        :param pulumi.Input[str] name: The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        :param pulumi.Input[str] name: The name of the container.
         :param pulumi.Input[str] network_mode: Network mode of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[bool] publish_all_ports: Publish all ports of the container.
-        :param pulumi.Input[bool] read_only: Whether the mount should be read-only.
+        :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
@@ -512,7 +512,7 @@ class ContainerArgs:
     @pulumi.getter
     def hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]]]:
         """
-        Hostname to add
+        Additional hosts to add to the container.
         """
         return pulumi.get(self, "hosts")
 
@@ -548,7 +548,7 @@ class ContainerArgs:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]]]:
         """
-        User-defined key/value metadata.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -657,7 +657,7 @@ class ContainerArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        The name of the container.
         """
         return pulumi.get(self, "name")
 
@@ -741,7 +741,7 @@ class ContainerArgs:
     @pulumi.getter(name="readOnly")
     def read_only(self) -> Optional[pulumi.Input[bool]]:
         """
-        Whether the mount should be read-only.
+        If `true`, the container will be started as readonly. Defaults to `false`.
         """
         return pulumi.get(self, "read_only")
 
@@ -1107,11 +1107,11 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Additional groups for the container user
         :param pulumi.Input['ContainerHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[str] hostname: Hostname of the container.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]] hosts: Hostname to add
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]] hosts: Additional hosts to add to the container.
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -1121,7 +1121,7 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
-        :param pulumi.Input[str] name: The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        :param pulumi.Input[str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[str] network_mode: Network mode of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
@@ -1129,7 +1129,7 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[bool] publish_all_ports: Publish all ports of the container.
-        :param pulumi.Input[bool] read_only: Whether the mount should be read-only.
+        :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
@@ -1554,7 +1554,7 @@ class _ContainerState:
     @pulumi.getter
     def hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]]]:
         """
-        Hostname to add
+        Additional hosts to add to the container.
         """
         return pulumi.get(self, "hosts")
 
@@ -1602,7 +1602,7 @@ class _ContainerState:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]]]:
         """
-        User-defined key/value metadata.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -1711,7 +1711,7 @@ class _ContainerState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        The name of the container.
         """
         return pulumi.get(self, "name")
 
@@ -1807,7 +1807,7 @@ class _ContainerState:
     @pulumi.getter(name="readOnly")
     def read_only(self) -> Optional[pulumi.Input[bool]]:
         """
-        Whether the mount should be read-only.
+        If `true`, the container will be started as readonly. Defaults to `false`.
         """
         return pulumi.get(self, "read_only")
 
@@ -2154,7 +2154,6 @@ class Container(pulumi.CustomResource):
 
         ## Example Usage
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -2166,7 +2165,6 @@ class Container(pulumi.CustomResource):
             name="foo",
             image=ubuntu_remote_image.image_id)
         ```
-        <!--End PulumiCodeChooser -->
 
         ## Import
 
@@ -2231,11 +2229,11 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Additional groups for the container user
         :param pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[str] hostname: Hostname of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Hostname to add
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Additional hosts to add to the container.
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -2245,14 +2243,14 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
-        :param pulumi.Input[str] name: The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        :param pulumi.Input[str] name: The name of the container.
         :param pulumi.Input[str] network_mode: Network mode of the container.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[bool] publish_all_ports: Publish all ports of the container.
-        :param pulumi.Input[bool] read_only: Whether the mount should be read-only.
+        :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
@@ -2288,7 +2286,6 @@ class Container(pulumi.CustomResource):
 
         ## Example Usage
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -2300,7 +2297,6 @@ class Container(pulumi.CustomResource):
             name="foo",
             image=ubuntu_remote_image.image_id)
         ```
-        <!--End PulumiCodeChooser -->
 
         ## Import
 
@@ -2603,11 +2599,11 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Additional groups for the container user
         :param pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[str] hostname: Hostname of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Hostname to add
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Additional hosts to add to the container.
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -2617,7 +2613,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
-        :param pulumi.Input[str] name: The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        :param pulumi.Input[str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[str] network_mode: Network mode of the container.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: The networks the container is attached to
@@ -2625,7 +2621,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[bool] publish_all_ports: Publish all ports of the container.
-        :param pulumi.Input[bool] read_only: Whether the mount should be read-only.
+        :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
@@ -2901,7 +2897,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def hosts(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerHost']]]:
         """
-        Hostname to add
+        Additional hosts to add to the container.
         """
         return pulumi.get(self, "hosts")
 
@@ -2933,7 +2929,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def labels(self) -> pulumi.Output[Sequence['outputs.ContainerLabel']]:
         """
-        User-defined key/value metadata.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -3006,7 +3002,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        The name of the container.
         """
         return pulumi.get(self, "name")
 
@@ -3070,7 +3066,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="readOnly")
     def read_only(self) -> pulumi.Output[Optional[bool]]:
         """
-        Whether the mount should be read-only.
+        If `true`, the container will be started as readonly. Defaults to `false`.
         """
         return pulumi.get(self, "read_only")
 

@@ -25,11 +25,11 @@ class RemoteImageArgs:
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
         """
         The set of arguments for constructing a RemoteImage resource.
-        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
+        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
+        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
@@ -51,7 +51,7 @@ class RemoteImageArgs:
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
         """
-        type of ulimit, e.g. `nofile`
+        The name of the Docker image, including any tags or SHA256 repo digests.
         """
         return pulumi.get(self, "name")
 
@@ -75,7 +75,7 @@ class RemoteImageArgs:
     @pulumi.getter(name="forceRemove")
     def force_remove(self) -> Optional[pulumi.Input[bool]]:
         """
-        Always remove intermediate containers
+        If true, then the image is removed forcibly when the resource is destroyed.
         """
         return pulumi.get(self, "force_remove")
 
@@ -99,7 +99,7 @@ class RemoteImageArgs:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        Set platform if server is multi-platform capable
+        The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
         return pulumi.get(self, "platform")
 
@@ -147,11 +147,11 @@ class _RemoteImageState:
         """
         Input properties used for looking up and filtering RemoteImage resources.
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
+        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
-        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
+        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -191,7 +191,7 @@ class _RemoteImageState:
     @pulumi.getter(name="forceRemove")
     def force_remove(self) -> Optional[pulumi.Input[bool]]:
         """
-        Always remove intermediate containers
+        If true, then the image is removed forcibly when the resource is destroyed.
         """
         return pulumi.get(self, "force_remove")
 
@@ -227,7 +227,7 @@ class _RemoteImageState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        type of ulimit, e.g. `nofile`
+        The name of the Docker image, including any tags or SHA256 repo digests.
         """
         return pulumi.get(self, "name")
 
@@ -239,7 +239,7 @@ class _RemoteImageState:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        Set platform if server is multi-platform capable
+        The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
         return pulumi.get(self, "platform")
 
@@ -309,21 +309,18 @@ class RemoteImage(pulumi.CustomResource):
         Finds and downloads the latest `ubuntu:precise` image but does not check
         for further updates of the image
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
         ```
-        <!--End PulumiCodeChooser -->
 
         ### Dynamic updates
 
         To be able to update an image dynamically when the `sha256` sum changes,
         you need to use it in combination with `RegistryImage` as follows:
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -333,14 +330,12 @@ class RemoteImage(pulumi.CustomResource):
             name=ubuntu.name,
             pull_triggers=[ubuntu.sha256_digest])
         ```
-        <!--End PulumiCodeChooser -->
 
         ### Build
 
         You can also use the resource to build an image.
         In this case the image "zoo" and "zoo:develop" are built.
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -358,17 +353,16 @@ class RemoteImage(pulumi.CustomResource):
                 },
             ))
         ```
-        <!--End PulumiCodeChooser -->
 
         You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
+        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
-        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
+        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
@@ -390,21 +384,18 @@ class RemoteImage(pulumi.CustomResource):
         Finds and downloads the latest `ubuntu:precise` image but does not check
         for further updates of the image
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
         ```
-        <!--End PulumiCodeChooser -->
 
         ### Dynamic updates
 
         To be able to update an image dynamically when the `sha256` sum changes,
         you need to use it in combination with `RegistryImage` as follows:
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -414,14 +405,12 @@ class RemoteImage(pulumi.CustomResource):
             name=ubuntu.name,
             pull_triggers=[ubuntu.sha256_digest])
         ```
-        <!--End PulumiCodeChooser -->
 
         ### Build
 
         You can also use the resource to build an image.
         In this case the image "zoo" and "zoo:develop" are built.
 
-        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -439,7 +428,6 @@ class RemoteImage(pulumi.CustomResource):
                 },
             ))
         ```
-        <!--End PulumiCodeChooser -->
 
         You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 
@@ -512,11 +500,11 @@ class RemoteImage(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
+        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
-        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
+        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -548,7 +536,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter(name="forceRemove")
     def force_remove(self) -> pulumi.Output[Optional[bool]]:
         """
-        Always remove intermediate containers
+        If true, then the image is removed forcibly when the resource is destroyed.
         """
         return pulumi.get(self, "force_remove")
 
@@ -572,7 +560,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        type of ulimit, e.g. `nofile`
+        The name of the Docker image, including any tags or SHA256 repo digests.
         """
         return pulumi.get(self, "name")
 
@@ -580,7 +568,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter
     def platform(self) -> pulumi.Output[Optional[str]]:
         """
-        Set platform if server is multi-platform capable
+        The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
         return pulumi.get(self, "platform")
 
