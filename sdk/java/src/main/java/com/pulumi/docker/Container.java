@@ -598,19 +598,9 @@ public class Container extends com.pulumi.resources.CustomResource {
     public Output<Optional<List<ContainerMount>>> mounts() {
         return Codegen.optional(this.mounts);
     }
-    /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     * 
-     */
     @Export(name="mustRun", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> mustRun;
 
-    /**
-     * @return If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     * 
-     */
     public Output<Optional<Boolean>> mustRun() {
         return Codegen.optional(this.mustRun);
     }
