@@ -288,10 +288,6 @@ namespace Pulumi.Docker
         [Output("mounts")]
         public Output<ImmutableArray<Outputs.ContainerMount>> Mounts { get; private set; } = null!;
 
-        /// <summary>
-        /// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-        /// assumes it is successful. Defaults to `true`.
-        /// </summary>
         [Output("mustRun")]
         public Output<bool?> MustRun { get; private set; } = null!;
 
@@ -785,10 +781,6 @@ namespace Pulumi.Docker
             set => _mounts = value;
         }
 
-        /// <summary>
-        /// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-        /// assumes it is successful. Defaults to `true`.
-        /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
 
@@ -1310,10 +1302,6 @@ namespace Pulumi.Docker
             set => _mounts = value;
         }
 
-        /// <summary>
-        /// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-        /// assumes it is successful. Defaults to `true`.
-        /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
 
