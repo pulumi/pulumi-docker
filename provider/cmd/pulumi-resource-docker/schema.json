@@ -2245,8 +2245,7 @@
                     "description": "Specification for mounts to be added to containers created as part of the service.\n"
                 },
                 "mustRun": {
-                    "type": "boolean",
-                    "description": "If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform\nassumes it is successful. Defaults to `true`.\n"
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string",
@@ -2607,8 +2606,7 @@
                     "willReplaceOnChanges": true
                 },
                 "mustRun": {
-                    "type": "boolean",
-                    "description": "If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform\nassumes it is successful. Defaults to `true`.\n"
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string",
@@ -2980,8 +2978,7 @@
                         "willReplaceOnChanges": true
                     },
                     "mustRun": {
-                        "type": "boolean",
-                        "description": "If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform\nassumes it is successful. Defaults to `true`.\n"
+                        "type": "boolean"
                     },
                     "name": {
                         "type": "string",
