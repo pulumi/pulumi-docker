@@ -232,10 +232,6 @@ export class Container extends pulumi.CustomResource {
      * Specification for mounts to be added to containers created as part of the service.
      */
     public readonly mounts!: pulumi.Output<outputs.ContainerMount[] | undefined>;
-    /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     */
     public readonly mustRun!: pulumi.Output<boolean | undefined>;
     /**
      * The name of the container.
@@ -658,10 +654,6 @@ export interface ContainerState {
      * Specification for mounts to be added to containers created as part of the service.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
-    /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     */
     mustRun?: pulumi.Input<boolean>;
     /**
      * The name of the container.
@@ -917,10 +909,6 @@ export interface ContainerArgs {
      * Specification for mounts to be added to containers created as part of the service.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
-    /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     */
     mustRun?: pulumi.Input<boolean>;
     /**
      * The name of the container.
