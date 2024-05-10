@@ -38,7 +38,8 @@ import javax.annotation.Nullable;
  * ## Example Usage
  * 
  * &lt;!--Start PulumiCodeChooser --&gt;
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -62,19 +63,20 @@ import javax.annotation.Nullable;
  * 
  *     public static void stack(Context ctx) {
  *         // Find the latest Ubuntu precise image.
- *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
- *             .name(&#34;ubuntu:precise&#34;)
+ *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+ *             .name("ubuntu:precise")
  *             .build());
  * 
  *         // Start a container
- *         var ubuntu = new Container(&#34;ubuntu&#34;, ContainerArgs.builder()        
- *             .name(&#34;foo&#34;)
+ *         var ubuntu = new Container("ubuntu", ContainerArgs.builder()        
+ *             .name("foo")
  *             .image(ubuntuRemoteImage.imageId())
  *             .build());
  * 
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * &lt;!--End PulumiCodeChooser --&gt;
  * 
  * ## Import
@@ -598,19 +600,9 @@ public class Container extends com.pulumi.resources.CustomResource {
     public Output<Optional<List<ContainerMount>>> mounts() {
         return Codegen.optional(this.mounts);
     }
-    /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     * 
-     */
     @Export(name="mustRun", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> mustRun;
 
-    /**
-     * @return If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
-     * assumes it is successful. Defaults to `true`.
-     * 
-     */
     public Output<Optional<Boolean>> mustRun() {
         return Codegen.optional(this.mustRun);
     }

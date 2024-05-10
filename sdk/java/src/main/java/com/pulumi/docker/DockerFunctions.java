@@ -60,7 +60,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -82,12 +83,13 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
-     *             .name(&#34;main&#34;)
+     *             .name("main")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -100,7 +102,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -122,12 +125,13 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
-     *             .name(&#34;main&#34;)
+     *             .name("main")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -140,7 +144,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -162,12 +167,13 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
-     *             .name(&#34;main&#34;)
+     *             .name("main")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -180,7 +186,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -202,12 +209,13 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
-     *             .name(&#34;main&#34;)
+     *             .name("main")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -334,7 +342,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -358,17 +367,18 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
-     *             .name(&#34;ubuntu:precise&#34;)
+     *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -381,7 +391,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -405,17 +416,18 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
-     *             .name(&#34;ubuntu:precise&#34;)
+     *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -428,7 +440,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -452,17 +465,18 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
-     *             .name(&#34;ubuntu:precise&#34;)
+     *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -475,7 +489,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -499,17 +514,18 @@ public final class DockerFunctions {
      * 
      *     public static void stack(Context ctx) {
      *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
-     *             .name(&#34;ubuntu:precise&#34;)
+     *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
-     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -522,7 +538,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -543,29 +560,30 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         // uses the &#39;latest&#39; tag
+     *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx&#34;)
+     *             .name("nginx")
      *             .build());
      * 
      *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.17.6&#34;)
+     *             .name("nginx:1.17.6")
      *             .build());
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -578,7 +596,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -599,29 +618,30 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         // uses the &#39;latest&#39; tag
+     *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx&#34;)
+     *             .name("nginx")
      *             .build());
      * 
      *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.17.6&#34;)
+     *             .name("nginx:1.17.6")
      *             .build());
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -634,7 +654,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -655,29 +676,30 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         // uses the &#39;latest&#39; tag
+     *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx&#34;)
+     *             .name("nginx")
      *             .build());
      * 
      *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.17.6&#34;)
+     *             .name("nginx:1.17.6")
      *             .build());
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
@@ -690,7 +712,8 @@ public final class DockerFunctions {
      * ## Example Usage
      * 
      * &lt;!--Start PulumiCodeChooser --&gt;
-     * ```java
+     * <pre>
+     * {@code
      * package generated_program;
      * 
      * import com.pulumi.Context;
@@ -711,29 +734,30 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         // uses the &#39;latest&#39; tag
+     *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx&#34;)
+     *             .name("nginx")
      *             .build());
      * 
      *         // uses a specific tag
      *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.17.6&#34;)
+     *             .name("nginx:1.17.6")
      *             .build());
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
+     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *     }
      * }
-     * ```
+     * }
+     * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */

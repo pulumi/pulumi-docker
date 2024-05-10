@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
  * even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
  * and management resources, please use the `repoDigest` Output instead, which is of the format
- * `repository@&lt;algorithm&gt;:&lt;hash&gt;` and unique per build/push.
+ * `repository{@literal @}&lt;algorithm&gt;:&lt;hash&gt;` and unique per build/push.
  * As of Docker v4.4, `repoDigest` is now available for local Images.
  * 
  * ## Cross-platform builds
@@ -44,7 +44,8 @@ import javax.annotation.Nullable;
  * 
  * ## Example Usage
  * ### A Docker image build
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -66,22 +67,24 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()        
+ *         var demoImage = new Image("demoImage", ImageArgs.builder()        
  *             .build(DockerBuildArgs.builder()
- *                 .context(&#34;.&#34;)
- *                 .dockerfile(&#34;Dockerfile&#34;)
- *                 .platform(&#34;linux/amd64&#34;)
+ *                 .context(".")
+ *                 .dockerfile("Dockerfile")
+ *                 .platform("linux/amd64")
  *                 .build())
- *             .imageName(&#34;username/image:tag1&#34;)
+ *             .imageName("username/image:tag1")
  *             .skipPush(true)
  *             .build());
  * 
- *         ctx.export(&#34;imageName&#34;, demoImage.imageName());
+ *         ctx.export("imageName", demoImage.imageName());
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * ### A Docker image build and push
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -103,21 +106,23 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var demoPushImage = new Image(&#34;demoPushImage&#34;, ImageArgs.builder()        
+ *         var demoPushImage = new Image("demoPushImage", ImageArgs.builder()        
  *             .build(DockerBuildArgs.builder()
- *                 .context(&#34;.&#34;)
- *                 .dockerfile(&#34;Dockerfile&#34;)
+ *                 .context(".")
+ *                 .dockerfile("Dockerfile")
  *                 .build())
- *             .imageName(&#34;docker.io/username/push-image:tag1&#34;)
+ *             .imageName("docker.io/username/push-image:tag1")
  *             .build());
  * 
- *         ctx.export(&#34;imageName&#34;, demoPushImage.imageName());
- *         ctx.export(&#34;repoDigest&#34;, demoPushImage.repoDigest());
+ *         ctx.export("imageName", demoPushImage.imageName());
+ *         ctx.export("repoDigest", demoPushImage.repoDigest());
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * ### Docker image build using caching with AWS Elastic Container Registry
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -145,34 +150,35 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var ecrRepository = new Repository(&#34;ecrRepository&#34;, RepositoryArgs.builder()        
- *             .name(&#34;docker-repository&#34;)
+ *         var ecrRepository = new Repository("ecrRepository", RepositoryArgs.builder()        
+ *             .name("docker-repository")
  *             .build());
  * 
  *         final var authToken = EcrFunctions.getAuthorizationToken(GetAuthorizationTokenArgs.builder()
  *             .registryId(ecrRepository.registryId())
  *             .build());
  * 
- *         var myAppImage = new Image(&#34;myAppImage&#34;, ImageArgs.builder()        
+ *         var myAppImage = new Image("myAppImage", ImageArgs.builder()        
  *             .build(DockerBuildArgs.builder()
- *                 .args(Map.of(&#34;BUILDKIT_INLINE_CACHE&#34;, &#34;1&#34;))
+ *                 .args(Map.of("BUILDKIT_INLINE_CACHE", "1"))
  *                 .cacheFrom(CacheFromArgs.builder()
- *                     .images(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:latest&#34;, repositoryUrl)))
+ *                     .images(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
  *                     .build())
- *                 .context(&#34;app/&#34;)
- *                 .dockerfile(&#34;Dockerfile&#34;)
+ *                 .context("app/")
+ *                 .dockerfile("Dockerfile")
  *                 .build())
- *             .imageName(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:latest&#34;, repositoryUrl)))
+ *             .imageName(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
  *             .registry(RegistryArgs.builder()
- *                 .password(Output.ofSecret(authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult).applyValue(authToken -&gt; authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult.password()))))
+ *                 .password(Output.ofSecret(authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult).applyValue(authToken -> authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult.password()))))
  *                 .server(ecrRepository.repositoryUrl())
  *                 .build())
  *             .build());
  * 
- *         ctx.export(&#34;imageName&#34;, myAppImage.imageName());
+ *         ctx.export("imageName", myAppImage.imageName());
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * 
  */
 @ResourceType(type="docker:index/image:Image")
@@ -263,7 +269,7 @@ public class Image extends com.pulumi.resources.CustomResource {
     }
     /**
      * **For pushed images:**
-     * The manifest digest of an image pushed to a registry, of the format repository@&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+     * The manifest digest of an image pushed to a registry, of the format repository{@literal @}&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image{@literal @}sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
      * This reference is unique per image build and push.
      * Only available for images pushed to a registry.
      * Use when passing a reference to a pushed image to container management resources.
@@ -276,7 +282,7 @@ public class Image extends com.pulumi.resources.CustomResource {
 
     /**
      * @return **For pushed images:**
-     * The manifest digest of an image pushed to a registry, of the format repository@&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+     * The manifest digest of an image pushed to a registry, of the format repository{@literal @}&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image{@literal @}sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
      * This reference is unique per image build and push.
      * Only available for images pushed to a registry.
      * Use when passing a reference to a pushed image to container management resources.

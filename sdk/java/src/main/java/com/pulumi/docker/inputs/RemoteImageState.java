@@ -126,14 +126,14 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
+     * The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
      * 
      */
     @Import(name="repoDigest")
     private @Nullable Output<String> repoDigest;
 
     /**
-     * @return The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
+     * @return The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
      * 
      */
     public Optional<Output<String>> repoDigest() {
@@ -345,7 +345,7 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param repoDigest The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
+         * @param repoDigest The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
          * 
          * @return builder
          * 
@@ -356,7 +356,7 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param repoDigest The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
+         * @param repoDigest The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
          * 
          * @return builder
          * 
