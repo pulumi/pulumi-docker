@@ -32,7 +32,8 @@ import javax.annotation.Nullable;
  * for further updates of the image
  * 
  * &lt;!--Start PulumiCodeChooser --&gt;
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -53,13 +54,14 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var ubuntu = new RemoteImage(&#34;ubuntu&#34;, RemoteImageArgs.builder()        
- *             .name(&#34;ubuntu:precise&#34;)
+ *         var ubuntu = new RemoteImage("ubuntu", RemoteImageArgs.builder()        
+ *             .name("ubuntu:precise")
  *             .build());
  * 
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * &lt;!--End PulumiCodeChooser --&gt;
  * 
  * ### Dynamic updates
@@ -68,7 +70,8 @@ import javax.annotation.Nullable;
  * you need to use it in combination with `docker.RegistryImage` as follows:
  * 
  * &lt;!--Start PulumiCodeChooser --&gt;
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -92,17 +95,18 @@ import javax.annotation.Nullable;
  * 
  *     public static void stack(Context ctx) {
  *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
- *             .name(&#34;ubuntu:precise&#34;)
+ *             .name("ubuntu:precise")
  *             .build());
  * 
- *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
- *             .name(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
- *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+ *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+ *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
+ *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
  *             .build());
  * 
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * &lt;!--End PulumiCodeChooser --&gt;
  * 
  * ### Build
@@ -111,7 +115,8 @@ import javax.annotation.Nullable;
  * In this case the image &#34;zoo&#34; and &#34;zoo:develop&#34; are built.
  * 
  * &lt;!--Start PulumiCodeChooser --&gt;
- * ```java
+ * <pre>
+ * {@code
  * package generated_program;
  * 
  * import com.pulumi.Context;
@@ -133,19 +138,20 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var zoo = new RemoteImage(&#34;zoo&#34;, RemoteImageArgs.builder()        
- *             .name(&#34;zoo&#34;)
+ *         var zoo = new RemoteImage("zoo", RemoteImageArgs.builder()        
+ *             .name("zoo")
  *             .build(RemoteImageBuildArgs.builder()
- *                 .context(&#34;.&#34;)
- *                 .tags(&#34;zoo:develop&#34;)
- *                 .buildArg(Map.of(&#34;foo&#34;, &#34;zoo&#34;))
- *                 .label(Map.of(&#34;author&#34;, &#34;zoo&#34;))
+ *                 .context(".")
+ *                 .tags("zoo:develop")
+ *                 .buildArg(Map.of("foo", "zoo"))
+ *                 .label(Map.of("author", "zoo"))
  *                 .build())
  *             .build());
  * 
  *     }
  * }
- * ```
+ * }
+ * </pre>
  * &lt;!--End PulumiCodeChooser --&gt;
  * 
  * You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
@@ -252,14 +258,14 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.pullTriggers);
     }
     /**
-     * The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
+     * The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
      * 
      */
     @Export(name="repoDigest", refs={String.class}, tree="[0]")
     private Output<String> repoDigest;
 
     /**
-     * @return The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
+     * @return The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
      * 
      */
     public Output<String> repoDigest() {

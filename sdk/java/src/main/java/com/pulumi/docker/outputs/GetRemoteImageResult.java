@@ -21,7 +21,7 @@ public final class GetRemoteImageResult {
      */
     private String name;
     /**
-     * @return The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
+     * @return The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
      * 
      */
     private String repoDigest;
@@ -42,7 +42,7 @@ public final class GetRemoteImageResult {
         return this.name;
     }
     /**
-     * @return The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
+     * @return The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
      * 
      */
     public String repoDigest() {
