@@ -350,9 +350,11 @@ func Provider() tfbridge.ProviderInfo {
 				"@types/node":   "^10.0.0",
 				"@types/semver": "^5.4.0",
 			},
+			RespectSchemaVersion: true,
 		},
 		Python: (func() *tfbridge.PythonInfo {
 			i := &tfbridge.PythonInfo{
+				RespectSchemaVersion: true,
 				Requires: map[string]string{
 					"pulumi": ">=3.0.0,<4.0.0",
 				},
@@ -369,8 +371,10 @@ func Provider() tfbridge.ProviderInfo {
 				dockerPkg,
 			),
 			GenerateResourceContainerTypes: true,
+			RespectSchemaVersion:           true,
 		},
 		CSharp: &tfbridge.CSharpInfo{
+			RespectSchemaVersion: true,
 			PackageReferences: map[string]string{
 				"Pulumi": "3.*",
 			},
