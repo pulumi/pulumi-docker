@@ -67,7 +67,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var demoImage = new Image("demoImage", ImageArgs.builder()        
+ *         var demoImage = new Image("demoImage", ImageArgs.builder()
  *             .build(DockerBuildArgs.builder()
  *                 .context(".")
  *                 .dockerfile("Dockerfile")
@@ -106,7 +106,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var demoPushImage = new Image("demoPushImage", ImageArgs.builder()        
+ *         var demoPushImage = new Image("demoPushImage", ImageArgs.builder()
  *             .build(DockerBuildArgs.builder()
  *                 .context(".")
  *                 .dockerfile("Dockerfile")
@@ -150,7 +150,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var ecrRepository = new Repository("ecrRepository", RepositoryArgs.builder()        
+ *         var ecrRepository = new Repository("ecrRepository", RepositoryArgs.builder()
  *             .name("docker-repository")
  *             .build());
  * 
@@ -158,7 +158,7 @@ import javax.annotation.Nullable;
  *             .registryId(ecrRepository.registryId())
  *             .build());
  * 
- *         var myAppImage = new Image("myAppImage", ImageArgs.builder()        
+ *         var myAppImage = new Image("myAppImage", ImageArgs.builder()
  *             .build(DockerBuildArgs.builder()
  *                 .args(Map.of("BUILDKIT_INLINE_CACHE", "1"))
  *                 .cacheFrom(CacheFromArgs.builder()
