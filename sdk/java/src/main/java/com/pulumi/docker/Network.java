@@ -49,7 +49,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var privateNetwork = new Network("privateNetwork", NetworkArgs.builder()        
+ *         var privateNetwork = new Network("privateNetwork", NetworkArgs.builder()
  *             .name("my_network")
  *             .build());
  * 
