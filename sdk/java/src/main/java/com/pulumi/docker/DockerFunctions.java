@@ -370,7 +370,7 @@ public final class DockerFunctions {
      *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
      *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
      *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
@@ -419,7 +419,7 @@ public final class DockerFunctions {
      *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
      *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
      *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
@@ -468,7 +468,7 @@ public final class DockerFunctions {
      *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
      *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
      *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
@@ -517,7 +517,7 @@ public final class DockerFunctions {
      *             .name("ubuntu:precise")
      *             .build());
      * 
-     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+     *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
      *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
      *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
      *             .build());
