@@ -13,9 +13,9 @@ require (
 	github.com/moby/patternmatcher v0.6.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.82.0
-	github.com/pulumi/pulumi/pkg/v3 v3.114.0
-	github.com/pulumi/pulumi/sdk/v3 v3.114.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.83.0
+	github.com/pulumi/pulumi/pkg/v3 v3.116.1
+	github.com/pulumi/pulumi/sdk/v3 v3.116.1
 	github.com/spf13/afero v1.9.5
 	github.com/stretchr/testify v1.9.0
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
@@ -26,7 +26,7 @@ require (
 )
 
 replace (
-	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20240229143312-4f60ee4e2975
+	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20240520223432-0c0bf0d65f10
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
 )
 
@@ -224,9 +224,9 @@ require (
 	github.com/prometheus/procfs v0.10.1 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.6.2 // indirect
-	github.com/pulumi/pulumi-java/pkg v0.10.0 // indirect
+	github.com/pulumi/pulumi-java/pkg v0.11.0 // indirect
 	github.com/pulumi/pulumi-terraform-bridge/x/muxer v0.0.8 // indirect
-	github.com/pulumi/pulumi-yaml v1.6.0 // indirect
+	github.com/pulumi/pulumi-yaml v1.7.0 // indirect
 	github.com/pulumi/schema-tools v0.1.2 // indirect
 	github.com/pulumi/terraform-diff-reader v0.0.2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
