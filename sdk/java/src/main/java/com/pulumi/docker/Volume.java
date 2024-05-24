@@ -47,7 +47,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var sharedVolume = new Volume("sharedVolume", VolumeArgs.builder()        
+ *         var sharedVolume = new Volume("sharedVolume", VolumeArgs.builder()
  *             .name("shared_volume")
  *             .build());
  * 

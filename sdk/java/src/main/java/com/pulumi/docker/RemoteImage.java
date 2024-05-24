@@ -54,7 +54,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var ubuntu = new RemoteImage("ubuntu", RemoteImageArgs.builder()        
+ *         var ubuntu = new RemoteImage("ubuntu", RemoteImageArgs.builder()
  *             .name("ubuntu:precise")
  *             .build());
  * 
@@ -98,7 +98,7 @@ import javax.annotation.Nullable;
  *             .name("ubuntu:precise")
  *             .build());
  * 
- *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()        
+ *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
  *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
  *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
  *             .build());
@@ -138,7 +138,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var zoo = new RemoteImage("zoo", RemoteImageArgs.builder()        
+ *         var zoo = new RemoteImage("zoo", RemoteImageArgs.builder()
  *             .name("zoo")
  *             .build(RemoteImageBuildArgs.builder()
  *                 .context(".")
