@@ -11,6 +11,7 @@ JAVA_GEN := pulumi-java-gen
 TESTPARALLELISM := 10
 WORKING_DIR := $(shell pwd)
 PULUMI_CONVERT := 1
+PULUMI_MISSING_DOCS_ERROR := true
 
 # Override during CI using `make [TARGET] PROVIDER_VERSION=""` or by setting a PROVIDER_VERSION environment variable
 # Local & branch builds will just used this fixed default version unless specified
@@ -34,7 +35,6 @@ install_sdks: install_dotnet_sdk install_python_sdk install_nodejs_sdk install_j
 
 only_build: build
 
-build_dotnet: DOTNET_VERSION := $(shell pulumictl convert-version --language dotnet -v "$(VERSION_GENERIC)")
 build_dotnet: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
 build_dotnet: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 build_dotnet: export PULUMI_CONVERT_EXAMPLES_CACHE_DIR := $(WORKING_DIR)/.pulumi/examples-cache
@@ -43,7 +43,7 @@ build_dotnet: upstream
 	cd sdk/dotnet/ && \
 		printf "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		echo "$(VERSION_GENERIC)" >version.txt && \
-		dotnet build /p:Version=$(DOTNET_VERSION)
+		dotnet build
 
 build_go: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
 build_go: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
@@ -63,7 +63,6 @@ build_java: bin/pulumi-java-gen upstream
 		gradle --console=plain build && \
 		gradle --console=plain javadoc
 
-build_nodejs: NODE_VERSION := $(shell pulumictl convert-version --language javascript -v "$(VERSION_GENERIC)")
 build_nodejs: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
 build_nodejs: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 build_nodejs: export PULUMI_CONVERT_EXAMPLES_CACHE_DIR := $(WORKING_DIR)/.pulumi/examples-cache
@@ -73,10 +72,8 @@ build_nodejs: upstream
 		printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		yarn install && \
 		yarn run tsc && \
-		cp ../../README.md ../../LICENSE* package.json yarn.lock ./bin/ && \
-		sed -i.bak -e "s/\$${VERSION}/$(NODE_VERSION)/g" ./bin/package.json
+		cp ../../README.md ../../LICENSE* package.json yarn.lock ./bin/
 
-build_python: PYPI_VERSION := $(shell pulumictl convert-version --language python -v "$(VERSION_GENERIC)")
 build_python: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
 build_python: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 build_python: export PULUMI_CONVERT_EXAMPLES_CACHE_DIR := $(WORKING_DIR)/.pulumi/examples-cache
@@ -87,8 +84,7 @@ build_python: upstream
 		printf "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		cp ../../README.md . && \
 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
-		sed -i.bak -e 's/^  version = .*/  version = "$(PYPI_VERSION)"/g' ./bin/pyproject.toml && \
-		rm ./bin/pyproject.toml.bak && rm ./bin/go.mod && \
+		rm ./bin/go.mod && \
 		python3 -m venv venv && \
 		./venv/bin/python -m pip install build && \
 		cd ./bin && \
@@ -155,6 +151,7 @@ tfgen_no_deps: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 tfgen_no_deps: export PULUMI_CONVERT := $(PULUMI_CONVERT)
 tfgen_no_deps: export PULUMI_CONVERT_EXAMPLES_CACHE_DIR := $(WORKING_DIR)/.pulumi/examples-cache
 tfgen_no_deps: export PULUMI_DISABLE_AUTOMATIC_PLUGIN_ACQUISITION := $(PULUMI_CONVERT)
+tfgen_no_deps: export PULUMI_MISSING_DOCS_ERROR := $(PULUMI_MISSING_DOCS_ERROR)
 tfgen_no_deps: tfgen_build_only
 	$(WORKING_DIR)/bin/$(TFGEN) schema --out provider/cmd/$(PROVIDER)
 	(cd provider && VERSION=$(VERSION_GENERIC) go generate cmd/$(PROVIDER)/main.go)
