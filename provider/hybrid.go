@@ -2,7 +2,9 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"reflect"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
@@ -10,6 +12,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
@@ -66,7 +69,139 @@ func (dp dockerHybridProvider) CheckConfig(ctx context.Context, request *rpc.Che
 
 func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	// Delegate to the bridged provider, as native Provider does not implement it.
-	return dp.bridgedProvider.DiffConfig(ctx, request)
+
+	urn := resource.URN(request.GetUrn())
+	label := fmt.Sprintf("DiffConfig(%s)", urn)
+
+	olds, err := plugin.UnmarshalProperties(request.GetOlds(), plugin.MarshalOptions{
+		Label:        fmt.Sprintf("%s.olds", label),
+		KeepUnknowns: true,
+		SkipNulls:    true,
+	})
+	if err != nil {
+		return nil, err
+	}
+	news, err := plugin.UnmarshalProperties(request.GetNews(), plugin.MarshalOptions{
+		Label:        fmt.Sprintf("%s.news", label),
+		KeepUnknowns: true,
+		SkipNulls:    true,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("DiffConfig failed because of malformed resource inputs: %w", err)
+	}
+
+	// forcing this to true for the prototype. This needs to be configurable
+	var ignoreRegistryAuthChanges bool = true
+	if v := news["ignoreRegistryAuthChanges"]; v.HasValue() && v.IsBool() {
+		ignoreRegistryAuthChanges = v.BoolValue()
+	}
+
+	resp, err := dp.bridgedProvider.DiffConfig(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+
+	if hasDiff, err := hasVolatileRegistryAuthDiff(olds, news); err == nil && hasDiff && ignoreRegistryAuthChanges {
+		for idx, prop := range resp.Diffs {
+			if prop == "registryAuth" {
+				resp.Diffs = append(resp.Diffs[:idx], resp.Diffs[idx+1:]...)
+				break
+			}
+		}
+		delete(resp.DetailedDiff, "registryAuth")
+
+		// Set diff to none if there are no other diffs
+		if len(resp.DetailedDiff) == 0 && len(resp.Diffs) == 0 {
+			resp.Changes = rpc.DiffResponse_DIFF_NONE
+		}
+	} else if err != nil {
+		return nil, fmt.Errorf("DiffConfig failed because of malformed registryAuth inputs: %w", err)
+	}
+
+	return resp, err
+}
+
+// hasVolatileRegistryAuthDiff checks if the registryAuth field has a diff that is volatile and should be ignored.
+func hasVolatileRegistryAuthDiff(olds, news resource.PropertyMap) (bool, error) {
+	if !olds.HasValue("registryAuth") || !news.HasValue("registryAuth") {
+		// if old or new registryAuth is missing then there is a diff, no need to clean
+		return false, nil
+	} else if !olds["registryAuth"].IsString() || !news["registryAuth"].IsString() {
+		// if old or new registryAuth is not a string then there is no diff to be cleaned
+		return false, nil
+	} else if olds["registryAuth"].StringValue() == news["registryAuth"].StringValue() {
+		// if the strings are equal then there is no diff to be cleaned
+		return false, nil
+	}
+
+	var oldAuthData []map[string]interface{}
+	var newAuthData []map[string]interface{}
+	
+	err := json.Unmarshal([]byte(olds["registryAuth"].StringValue()), &oldAuthData)
+	if err != nil {
+		return false, err
+	}
+	err = json.Unmarshal([]byte(news["registryAuth"].StringValue()), &newAuthData)
+	if err != nil {
+		return false, err
+	}
+
+	if len(oldAuthData) != len(newAuthData) {
+		// an auth data was added/removed, no need to clean because there's an actual diff
+		return false, nil
+	}
+
+	newAuthMap, err := toAuthMapWithoutVolatileFields(newAuthData)
+	if err != nil {
+		return false, err
+	}
+	oldAuthMap, err := toAuthMapWithoutVolatileFields(oldAuthData)
+	if err != nil {
+		return false, err
+	}
+
+	if reflect.DeepEqual(newAuthMap, oldAuthMap) {
+		// if the maps are equal without the volatile then they need to be cleaned
+		return true, nil
+	}
+
+	// fall through, there is an actual diff. No need to clean
+	return false, nil
+}
+
+var volatileAuthFields = map[string]bool{
+	"password": true,
+	"username": true,
+}
+
+// toAuthMapWithoutVolatileFields converts a slice of auth data maps to a map of auth data maps without volatile fields.
+func toAuthMapWithoutVolatileFields(authDataSlice []map[string]interface{}) (map[string]map[string]interface{}, error) {
+	authMap := make(map[string]map[string]interface{})
+	for _, authData := range authDataSlice {
+		address, found := authData["address"]
+		if !found {
+			return nil, fmt.Errorf("required address field not found in new registryAuth data")
+		}
+		addressStr, ok := address.(string)
+		if !ok {
+			return nil, fmt.Errorf("address field in new registryAuth data is not a string")
+		}
+
+		authMap[addressStr] = copyMapIgnoringKeys(authData, volatileAuthFields)
+	}
+	
+	return authMap, nil
+}
+
+// copyMapIgnoringKeys creates a shallow copy of the given map without the specified keys that should be ignored.
+func copyMapIgnoringKeys(original map[string]interface{}, ignoreKeys map[string]bool) map[string]interface{} {
+    copy := make(map[string]interface{}, len(original))
+    for key, value := range original {
+		if ignore, found := ignoreKeys[key]; !found || !ignore {
+			copy[key] = value
+		}
+    }
+    return copy
 }
 
 func (dp dockerHybridProvider) Configure(
