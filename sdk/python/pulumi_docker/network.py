@@ -453,12 +453,14 @@ class Network(pulumi.CustomResource):
 
         ## Example Usage
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         private_network = docker.Network("private_network", name="my_network")
         ```
+        <!--End PulumiCodeChooser -->
 
         ## Import
 
@@ -519,12 +521,14 @@ class Network(pulumi.CustomResource):
 
         ## Example Usage
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         private_network = docker.Network("private_network", name="my_network")
         ```
+        <!--End PulumiCodeChooser -->
 
         ## Import
 

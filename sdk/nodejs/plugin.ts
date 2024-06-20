@@ -80,7 +80,7 @@ export class Plugin extends pulumi.CustomResource {
      */
     public readonly grantPermissions!: pulumi.Output<outputs.PluginGrantPermission[] | undefined>;
     /**
-     * Docker Plugin name
+     * The name of the permission
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -166,7 +166,7 @@ export interface PluginState {
      */
     grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
     /**
-     * Docker Plugin name
+     * The name of the permission
      */
     name?: pulumi.Input<string>;
     /**
@@ -212,7 +212,7 @@ export interface PluginArgs {
      */
     grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
     /**
-     * Docker Plugin name
+     * The name of the permission
      */
     name?: pulumi.Input<string>;
 }

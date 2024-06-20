@@ -124,12 +124,14 @@ def get_network(name: Optional[str] = None,
 
     ## Example Usage
 
+    <!--Start PulumiCodeChooser -->
     ```python
     import pulumi
     import pulumi_docker as docker
 
     main = docker.get_network(name="main")
     ```
+    <!--End PulumiCodeChooser -->
 
 
     :param str name: The name of the Docker network.
@@ -157,12 +159,14 @@ def get_network_output(name: Optional[pulumi.Input[str]] = None,
 
     ## Example Usage
 
+    <!--Start PulumiCodeChooser -->
     ```python
     import pulumi
     import pulumi_docker as docker
 
     main = docker.get_network(name="main")
     ```
+    <!--End PulumiCodeChooser -->
 
 
     :param str name: The name of the Docker network.

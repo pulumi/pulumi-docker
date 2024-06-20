@@ -13,6 +13,7 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
+ * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -25,6 +26,7 @@ import * as utilities from "./utilities";
  *     image: ubuntuRemoteImage.imageId,
  * });
  * ```
+ * <!--End PulumiCodeChooser -->
  *
  * ## Import
  *
@@ -185,7 +187,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly hostname!: pulumi.Output<string>;
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      */
     public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
@@ -201,7 +203,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly ipcMode!: pulumi.Output<string>;
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
     /**
@@ -232,9 +234,13 @@ export class Container extends pulumi.CustomResource {
      * Specification for mounts to be added to containers created as part of the service.
      */
     public readonly mounts!: pulumi.Output<outputs.ContainerMount[] | undefined>;
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+     * assumes it is successful. Defaults to `true`.
+     */
     public readonly mustRun!: pulumi.Output<boolean | undefined>;
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -266,7 +272,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly publishAllPorts!: pulumi.Output<boolean | undefined>;
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      */
     public readonly readOnly!: pulumi.Output<boolean | undefined>;
     /**
@@ -607,7 +613,7 @@ export interface ContainerState {
      */
     hostname?: pulumi.Input<string>;
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
@@ -623,7 +629,7 @@ export interface ContainerState {
      */
     ipcMode?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
@@ -654,9 +660,13 @@ export interface ContainerState {
      * Specification for mounts to be added to containers created as part of the service.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+     * assumes it is successful. Defaults to `true`.
+     */
     mustRun?: pulumi.Input<boolean>;
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     name?: pulumi.Input<string>;
     /**
@@ -688,7 +698,7 @@ export interface ContainerState {
      */
     publishAllPorts?: pulumi.Input<boolean>;
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      */
     readOnly?: pulumi.Input<boolean>;
     /**
@@ -862,7 +872,7 @@ export interface ContainerArgs {
      */
     hostname?: pulumi.Input<string>;
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
@@ -878,7 +888,7 @@ export interface ContainerArgs {
      */
     ipcMode?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
@@ -909,9 +919,13 @@ export interface ContainerArgs {
      * Specification for mounts to be added to containers created as part of the service.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+     * assumes it is successful. Defaults to `true`.
+     */
     mustRun?: pulumi.Input<boolean>;
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     name?: pulumi.Input<string>;
     /**
@@ -939,7 +953,7 @@ export interface ContainerArgs {
      */
     publishAllPorts?: pulumi.Input<boolean>;
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      */
     readOnly?: pulumi.Input<boolean>;
     /**

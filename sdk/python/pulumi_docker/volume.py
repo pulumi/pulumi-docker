@@ -189,12 +189,14 @@ class Volume(pulumi.CustomResource):
 
         ## Example Usage
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         shared_volume = docker.Volume("shared_volume", name="shared_volume")
         ```
+        <!--End PulumiCodeChooser -->
 
         ## Import
 
@@ -247,12 +249,14 @@ class Volume(pulumi.CustomResource):
 
         ## Example Usage
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         shared_volume = docker.Volume("shared_volume", name="shared_volume")
         ```
+        <!--End PulumiCodeChooser -->
 
         ## Import
 

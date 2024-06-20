@@ -17,6 +17,7 @@ import (
 //
 // ## Example Usage
 //
+// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -49,6 +50,7 @@ import (
 //	}
 //
 // ```
+// <!--End PulumiCodeChooser -->
 //
 // ## Import
 //
@@ -138,7 +140,7 @@ type Container struct {
 	Healthcheck ContainerHealthcheckOutput `pulumi:"healthcheck"`
 	// Hostname of the container.
 	Hostname pulumi.StringOutput `pulumi:"hostname"`
-	// Additional hosts to add to the container.
+	// Hostname to add
 	Hosts ContainerHostArrayOutput `pulumi:"hosts"`
 	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
 	Image pulumi.StringOutput `pulumi:"image"`
@@ -146,7 +148,7 @@ type Container struct {
 	Init pulumi.BoolOutput `pulumi:"init"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringOutput `pulumi:"ipcMode"`
-	// User-defined key/value metadata
+	// User-defined key/value metadata.
 	Labels ContainerLabelArrayOutput `pulumi:"labels"`
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringOutput `pulumi:"logDriver"`
@@ -161,9 +163,11 @@ type Container struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrOutput `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  ContainerMountArrayOutput `pulumi:"mounts"`
-	MustRun pulumi.BoolPtrOutput      `pulumi:"mustRun"`
-	// The name of the container.
+	Mounts ContainerMountArrayOutput `pulumi:"mounts"`
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+	// assumes it is successful. Defaults to `true`.
+	MustRun pulumi.BoolPtrOutput `pulumi:"mustRun"`
+	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayOutput `pulumi:"networkDatas"`
@@ -179,7 +183,7 @@ type Container struct {
 	Privileged pulumi.BoolPtrOutput `pulumi:"privileged"`
 	// Publish all ports of the container.
 	PublishAllPorts pulumi.BoolPtrOutput `pulumi:"publishAllPorts"`
-	// If `true`, the container will be started as readonly. Defaults to `false`.
+	// Whether the mount should be read-only.
 	ReadOnly pulumi.BoolPtrOutput `pulumi:"readOnly"`
 	// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
 	RemoveVolumes pulumi.BoolPtrOutput `pulumi:"removeVolumes"`
@@ -304,7 +308,7 @@ type containerState struct {
 	Healthcheck *ContainerHealthcheck `pulumi:"healthcheck"`
 	// Hostname of the container.
 	Hostname *string `pulumi:"hostname"`
-	// Additional hosts to add to the container.
+	// Hostname to add
 	Hosts []ContainerHost `pulumi:"hosts"`
 	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
 	Image *string `pulumi:"image"`
@@ -312,7 +316,7 @@ type containerState struct {
 	Init *bool `pulumi:"init"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
-	// User-defined key/value metadata
+	// User-defined key/value metadata.
 	Labels []ContainerLabel `pulumi:"labels"`
 	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
@@ -327,9 +331,11 @@ type containerState struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  []ContainerMount `pulumi:"mounts"`
-	MustRun *bool            `pulumi:"mustRun"`
-	// The name of the container.
+	Mounts []ContainerMount `pulumi:"mounts"`
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+	// assumes it is successful. Defaults to `true`.
+	MustRun *bool `pulumi:"mustRun"`
+	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name *string `pulumi:"name"`
 	// The data of the networks the container is connected to.
 	NetworkDatas []ContainerNetworkData `pulumi:"networkDatas"`
@@ -345,7 +351,7 @@ type containerState struct {
 	Privileged *bool `pulumi:"privileged"`
 	// Publish all ports of the container.
 	PublishAllPorts *bool `pulumi:"publishAllPorts"`
-	// If `true`, the container will be started as readonly. Defaults to `false`.
+	// Whether the mount should be read-only.
 	ReadOnly *bool `pulumi:"readOnly"`
 	// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
 	RemoveVolumes *bool `pulumi:"removeVolumes"`
@@ -438,7 +444,7 @@ type ContainerState struct {
 	Healthcheck ContainerHealthcheckPtrInput
 	// Hostname of the container.
 	Hostname pulumi.StringPtrInput
-	// Additional hosts to add to the container.
+	// Hostname to add
 	Hosts ContainerHostArrayInput
 	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
 	Image pulumi.StringPtrInput
@@ -446,7 +452,7 @@ type ContainerState struct {
 	Init pulumi.BoolPtrInput
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
-	// User-defined key/value metadata
+	// User-defined key/value metadata.
 	Labels ContainerLabelArrayInput
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
@@ -461,9 +467,11 @@ type ContainerState struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  ContainerMountArrayInput
+	Mounts ContainerMountArrayInput
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+	// assumes it is successful. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
-	// The name of the container.
+	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name pulumi.StringPtrInput
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayInput
@@ -479,7 +487,7 @@ type ContainerState struct {
 	Privileged pulumi.BoolPtrInput
 	// Publish all ports of the container.
 	PublishAllPorts pulumi.BoolPtrInput
-	// If `true`, the container will be started as readonly. Defaults to `false`.
+	// Whether the mount should be read-only.
 	ReadOnly pulumi.BoolPtrInput
 	// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
 	RemoveVolumes pulumi.BoolPtrInput
@@ -570,7 +578,7 @@ type containerArgs struct {
 	Healthcheck *ContainerHealthcheck `pulumi:"healthcheck"`
 	// Hostname of the container.
 	Hostname *string `pulumi:"hostname"`
-	// Additional hosts to add to the container.
+	// Hostname to add
 	Hosts []ContainerHost `pulumi:"hosts"`
 	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
 	Image string `pulumi:"image"`
@@ -578,7 +586,7 @@ type containerArgs struct {
 	Init *bool `pulumi:"init"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
-	// User-defined key/value metadata
+	// User-defined key/value metadata.
 	Labels []ContainerLabel `pulumi:"labels"`
 	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
@@ -593,9 +601,11 @@ type containerArgs struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  []ContainerMount `pulumi:"mounts"`
-	MustRun *bool            `pulumi:"mustRun"`
-	// The name of the container.
+	Mounts []ContainerMount `pulumi:"mounts"`
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+	// assumes it is successful. Defaults to `true`.
+	MustRun *bool `pulumi:"mustRun"`
+	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name *string `pulumi:"name"`
 	// Network mode of the container.
 	NetworkMode *string `pulumi:"networkMode"`
@@ -609,7 +619,7 @@ type containerArgs struct {
 	Privileged *bool `pulumi:"privileged"`
 	// Publish all ports of the container.
 	PublishAllPorts *bool `pulumi:"publishAllPorts"`
-	// If `true`, the container will be started as readonly. Defaults to `false`.
+	// Whether the mount should be read-only.
 	ReadOnly *bool `pulumi:"readOnly"`
 	// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
 	RemoveVolumes *bool `pulumi:"removeVolumes"`
@@ -697,7 +707,7 @@ type ContainerArgs struct {
 	Healthcheck ContainerHealthcheckPtrInput
 	// Hostname of the container.
 	Hostname pulumi.StringPtrInput
-	// Additional hosts to add to the container.
+	// Hostname to add
 	Hosts ContainerHostArrayInput
 	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
 	Image pulumi.StringInput
@@ -705,7 +715,7 @@ type ContainerArgs struct {
 	Init pulumi.BoolPtrInput
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
-	// User-defined key/value metadata
+	// User-defined key/value metadata.
 	Labels ContainerLabelArrayInput
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
@@ -720,9 +730,11 @@ type ContainerArgs struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  ContainerMountArrayInput
+	Mounts ContainerMountArrayInput
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+	// assumes it is successful. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
-	// The name of the container.
+	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name pulumi.StringPtrInput
 	// Network mode of the container.
 	NetworkMode pulumi.StringPtrInput
@@ -736,7 +748,7 @@ type ContainerArgs struct {
 	Privileged pulumi.BoolPtrInput
 	// Publish all ports of the container.
 	PublishAllPorts pulumi.BoolPtrInput
-	// If `true`, the container will be started as readonly. Defaults to `false`.
+	// Whether the mount should be read-only.
 	ReadOnly pulumi.BoolPtrInput
 	// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
 	RemoveVolumes pulumi.BoolPtrInput
@@ -981,7 +993,7 @@ func (o ContainerOutput) Hostname() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Hostname }).(pulumi.StringOutput)
 }
 
-// Additional hosts to add to the container.
+// Hostname to add
 func (o ContainerOutput) Hosts() ContainerHostArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerHostArrayOutput { return v.Hosts }).(ContainerHostArrayOutput)
 }
@@ -1001,7 +1013,7 @@ func (o ContainerOutput) IpcMode() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.IpcMode }).(pulumi.StringOutput)
 }
 
-// User-defined key/value metadata
+// User-defined key/value metadata.
 func (o ContainerOutput) Labels() ContainerLabelArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerLabelArrayOutput { return v.Labels }).(ContainerLabelArrayOutput)
 }
@@ -1041,11 +1053,13 @@ func (o ContainerOutput) Mounts() ContainerMountArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerMountArrayOutput { return v.Mounts }).(ContainerMountArrayOutput)
 }
 
+// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+// assumes it is successful. Defaults to `true`.
 func (o ContainerOutput) MustRun() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.MustRun }).(pulumi.BoolPtrOutput)
 }
 
-// The name of the container.
+// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 func (o ContainerOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
@@ -1085,7 +1099,7 @@ func (o ContainerOutput) PublishAllPorts() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.PublishAllPorts }).(pulumi.BoolPtrOutput)
 }
 
-// If `true`, the container will be started as readonly. Defaults to `false`.
+// Whether the mount should be read-only.
 func (o ContainerOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }

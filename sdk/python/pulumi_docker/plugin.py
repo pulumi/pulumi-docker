@@ -35,7 +35,7 @@ class PluginArgs:
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         """
         if alias is not None:
             pulumi.set(__self__, "alias", alias)
@@ -156,7 +156,7 @@ class PluginArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Docker Plugin name
+        The name of the permission
         """
         return pulumi.get(self, "name")
 
@@ -188,7 +188,7 @@ class _PluginState:
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         :param pulumi.Input[str] plugin_reference: Docker Plugin Reference
         """
         if alias is not None:
@@ -312,7 +312,7 @@ class _PluginState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Docker Plugin name
+        The name of the permission
         """
         return pulumi.get(self, "name")
 
@@ -370,7 +370,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         """
         ...
     @overload
@@ -468,7 +468,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         :param pulumi.Input[str] plugin_reference: Docker Plugin Reference
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -555,7 +555,7 @@ class Plugin(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        Docker Plugin name
+        The name of the permission
         """
         return pulumi.get(self, "name")
 
