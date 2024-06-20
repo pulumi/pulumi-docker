@@ -1,6 +1,10 @@
 `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
 This resource enables running Docker builds as part of a Pulumi deployment.
 
+Note: We recommend you migrate your images to the more modern [Docker
+Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+the best possible support, features, and performance.
+
 Note: This resource does not delete tags, locally or remotely, when destroyed.
 
 ## Image name

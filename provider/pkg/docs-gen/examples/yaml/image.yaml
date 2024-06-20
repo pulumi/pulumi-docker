@@ -55,7 +55,7 @@ resources:
     properties:
       imageName: ${ecr-repository.repositoryUrl}:latest
       build:
-        dockerfile: Dockerfile
+        dockerfile: app/Dockerfile
         context: app/
         args:
           BUILDKIT_INLINE_CACHE: "1"
@@ -63,6 +63,7 @@ resources:
           images:
             - ${ecr-repository.repositoryUrl}:latest
       registry:
+        username: ${authToken.userName}
         server: ${ecr-repository.repositoryUrl}
         password:
           fn::secret: ${authToken.password}

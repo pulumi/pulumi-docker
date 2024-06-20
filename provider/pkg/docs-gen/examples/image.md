@@ -303,12 +303,13 @@ const myAppImage = new docker.Image("my-app-image", {
             images: [pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`],
         },
         context: "app/",
-        dockerfile: "Dockerfile",
+        dockerfile: "app/Dockerfile",
     },
     imageName: pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`,
     registry: {
         password: pulumi.secret(authToken.apply(authToken => authToken.password)),
         server: ecrRepository.repositoryUrl,
+        username: authToken.apply(authToken => authToken.userName),
     },
 });
 export const imageName = myAppImage.imageName;
@@ -329,12 +330,13 @@ my_app_image = docker.Image("my-app-image",
             images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
         ),
         context="app/",
-        dockerfile="Dockerfile",
+        dockerfile="app/Dockerfile",
     ),
     image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
     registry=docker.RegistryArgs(
         password=pulumi.Output.secret(auth_token.password),
         server=ecr_repository.repository_url,
+        username=auth_token.user_name,
     ))
 pulumi.export("imageName", my_app_image.image_name)
 ```
@@ -373,13 +375,14 @@ return await Deployment.RunAsync(() =>
                 },
             },
             Context = "app/",
-            Dockerfile = "Dockerfile",
+            Dockerfile = "app/Dockerfile",
         },
         ImageName = ecrRepository.RepositoryUrl.Apply(repositoryUrl => $"{repositoryUrl}:latest"),
         Registry = new Docker.Inputs.RegistryArgs
         {
             Password = Output.CreateSecret(authToken.Apply(getAuthorizationTokenResult => getAuthorizationTokenResult.Password)),
             Server = ecrRepository.RepositoryUrl,
+            Username = authToken.Apply(getAuthorizationTokenResult => getAuthorizationTokenResult.UserName),
         },
     });
 
@@ -425,7 +428,7 @@ func main() {
 					},
 				},
 				Context:    pulumi.String("app/"),
-				Dockerfile: pulumi.String("Dockerfile"),
+				Dockerfile: pulumi.String("app/Dockerfile"),
 			},
 			ImageName: ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
 				return fmt.Sprintf("%v:latest", repositoryUrl), nil
@@ -435,6 +438,9 @@ func main() {
 					return &authToken.Password, nil
 				}).(pulumi.StringPtrOutput)).(pulumi.StringOutput),
 				Server: ecrRepository.RepositoryUrl,
+				Username: authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
+					return &authToken.UserName, nil
+				}).(pulumi.StringPtrOutput),
 			},
 		})
 		if err != nil {
@@ -467,12 +473,13 @@ resources:
                     images:
                         - ${ecr-repository.repositoryUrl}:latest
                 context: app/
-                dockerfile: Dockerfile
+                dockerfile: app/Dockerfile
             imageName: ${ecr-repository.repositoryUrl}:latest
             registry:
                 password:
                     fn::secret: ${authToken.password}
                 server: ${ecr-repository.repositoryUrl}
+                username: ${authToken.userName}
         type: docker:Image
 runtime: yaml
 variables:
@@ -523,12 +530,13 @@ public class App {
                     .images(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
                     .build())
                 .context("app/")
-                .dockerfile("Dockerfile")
+                .dockerfile("app/Dockerfile")
                 .build())
             .imageName(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
             .registry(RegistryArgs.builder()
                 .password(Output.ofSecret(authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult).applyValue(authToken -> authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult.password()))))
                 .server(ecrRepository.repositoryUrl())
+                .username(authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult).applyValue(authToken -> authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult.userName())))
                 .build())
             .build());
 
