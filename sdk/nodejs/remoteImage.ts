@@ -19,21 +19,18 @@ import * as utilities from "./utilities";
  * Finds and downloads the latest `ubuntu:precise` image but does not check
  * for further updates of the image
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
  * const ubuntu = new docker.RemoteImage("ubuntu", {name: "ubuntu:precise"});
  * ```
- * <!--End PulumiCodeChooser -->
  *
  * ### Dynamic updates
  *
  * To be able to update an image dynamically when the `sha256` sum changes,
  * you need to use it in combination with `docker.RegistryImage` as follows:
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -46,14 +43,12 @@ import * as utilities from "./utilities";
  *     pullTriggers: [ubuntu.then(ubuntu => ubuntu.sha256Digest)],
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  *
  * ### Build
  *
  * You can also use the resource to build an image.
  * In this case the image "zoo" and "zoo:develop" are built.
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -72,7 +67,6 @@ import * as utilities from "./utilities";
  *     },
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  *
  * You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
  */
@@ -109,7 +103,7 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
-     * Always remove intermediate containers
+     * If true, then the image is removed forcibly when the resource is destroyed.
      */
     public readonly forceRemove!: pulumi.Output<boolean | undefined>;
     /**
@@ -121,11 +115,11 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly keepLocally!: pulumi.Output<boolean | undefined>;
     /**
-     * type of ulimit, e.g. `nofile`
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * Set platform if server is multi-platform capable
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
     public readonly platform!: pulumi.Output<string | undefined>;
     /**
@@ -192,7 +186,7 @@ export interface RemoteImageState {
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
-     * Always remove intermediate containers
+     * If true, then the image is removed forcibly when the resource is destroyed.
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
@@ -204,11 +198,11 @@ export interface RemoteImageState {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * type of ulimit, e.g. `nofile`
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     name?: pulumi.Input<string>;
     /**
-     * Set platform if server is multi-platform capable
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
     platform?: pulumi.Input<string>;
     /**
@@ -234,7 +228,7 @@ export interface RemoteImageArgs {
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
-     * Always remove intermediate containers
+     * If true, then the image is removed forcibly when the resource is destroyed.
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
@@ -242,11 +236,11 @@ export interface RemoteImageArgs {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * type of ulimit, e.g. `nofile`
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     name: pulumi.Input<string>;
     /**
-     * Set platform if server is multi-platform capable
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
     platform?: pulumi.Input<string>;
     /**

@@ -13,14 +13,12 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
  * const sharedVolume = new docker.Volume("shared_volume", {name: "shared_volume"});
  * ```
- * <!--End PulumiCodeChooser -->
  *
  * ## Import
  *

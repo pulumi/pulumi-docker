@@ -13,6 +13,10 @@ namespace Pulumi.Docker
     /// `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
     /// This resource enables running Docker builds as part of a Pulumi deployment.
     /// 
+    /// Note: We recommend you migrate your images to the more modern [Docker
+    /// Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+    /// the best possible support, features, and performance.
+    /// 
     /// Note: This resource does not delete tags, locally or remotely, when destroyed.
     /// 
     /// ## Image name
@@ -128,13 +132,14 @@ namespace Pulumi.Docker
     ///                 },
     ///             },
     ///             Context = "app/",
-    ///             Dockerfile = "Dockerfile",
+    ///             Dockerfile = "app/Dockerfile",
     ///         },
     ///         ImageName = ecrRepository.RepositoryUrl.Apply(repositoryUrl =&gt; $"{repositoryUrl}:latest"),
     ///         Registry = new Docker.Inputs.RegistryArgs
     ///         {
     ///             Password = Output.CreateSecret(authToken.Apply(getAuthorizationTokenResult =&gt; getAuthorizationTokenResult.Password)),
     ///             Server = ecrRepository.RepositoryUrl,
+    ///             Username = authToken.Apply(getAuthorizationTokenResult =&gt; getAuthorizationTokenResult.UserName),
     ///         },
     ///     });
     /// 

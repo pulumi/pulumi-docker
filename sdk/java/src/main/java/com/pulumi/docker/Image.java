@@ -19,6 +19,10 @@ import javax.annotation.Nullable;
  * `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
  * This resource enables running Docker builds as part of a Pulumi deployment.
  * 
+ * Note: We recommend you migrate your images to the more modern [Docker
+ * Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+ * the best possible support, features, and performance.
+ * 
  * Note: This resource does not delete tags, locally or remotely, when destroyed.
  * 
  * ## Image name
@@ -165,12 +169,13 @@ import javax.annotation.Nullable;
  *                     .images(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
  *                     .build())
  *                 .context("app/")
- *                 .dockerfile("Dockerfile")
+ *                 .dockerfile("app/Dockerfile")
  *                 .build())
  *             .imageName(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
  *             .registry(RegistryArgs.builder()
  *                 .password(Output.ofSecret(authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult).applyValue(authToken -> authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult.password()))))
  *                 .server(ecrRepository.repositoryUrl())
+ *                 .username(authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult).applyValue(authToken -> authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult.userName())))
  *                 .build())
  *             .build());
  * 

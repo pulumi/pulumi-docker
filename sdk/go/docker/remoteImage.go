@@ -24,7 +24,6 @@ import (
 // Finds and downloads the latest `ubuntu:precise` image but does not check
 // for further updates of the image
 //
-// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -48,14 +47,12 @@ import (
 //	}
 //
 // ```
-// <!--End PulumiCodeChooser -->
 //
 // ### Dynamic updates
 //
 // To be able to update an image dynamically when the `sha256` sum changes,
 // you need to use it in combination with `RegistryImage` as follows:
 //
-// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -88,14 +85,12 @@ import (
 //	}
 //
 // ```
-// <!--End PulumiCodeChooser -->
 //
 // ### Build
 //
 // You can also use the resource to build an image.
 // In this case the image "zoo" and "zoo:develop" are built.
 //
-// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -131,7 +126,6 @@ import (
 //	}
 //
 // ```
-// <!--End PulumiCodeChooser -->
 //
 // You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 type RemoteImage struct {
@@ -139,15 +133,15 @@ type RemoteImage struct {
 
 	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrOutput `pulumi:"build"`
-	// Always remove intermediate containers
+	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrOutput `pulumi:"forceRemove"`
 	// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
 	ImageId pulumi.StringOutput `pulumi:"imageId"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrOutput `pulumi:"keepLocally"`
-	// type of ulimit, e.g. `nofile`
+	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// Set platform if server is multi-platform capable
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
 	Platform pulumi.StringPtrOutput `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayOutput `pulumi:"pullTriggers"`
@@ -192,15 +186,15 @@ func GetRemoteImage(ctx *pulumi.Context,
 type remoteImageState struct {
 	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
-	// Always remove intermediate containers
+	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
 	// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
 	ImageId *string `pulumi:"imageId"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally *bool `pulumi:"keepLocally"`
-	// type of ulimit, e.g. `nofile`
+	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name *string `pulumi:"name"`
-	// Set platform if server is multi-platform capable
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
 	Platform *string `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers []string `pulumi:"pullTriggers"`
@@ -213,15 +207,15 @@ type remoteImageState struct {
 type RemoteImageState struct {
 	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
-	// Always remove intermediate containers
+	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
 	// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
 	ImageId pulumi.StringPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
-	// type of ulimit, e.g. `nofile`
+	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringPtrInput
-	// Set platform if server is multi-platform capable
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
 	Platform pulumi.StringPtrInput
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayInput
@@ -238,13 +232,13 @@ func (RemoteImageState) ElementType() reflect.Type {
 type remoteImageArgs struct {
 	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
-	// Always remove intermediate containers
+	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally *bool `pulumi:"keepLocally"`
-	// type of ulimit, e.g. `nofile`
+	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name string `pulumi:"name"`
-	// Set platform if server is multi-platform capable
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
 	Platform *string `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers []string `pulumi:"pullTriggers"`
@@ -256,13 +250,13 @@ type remoteImageArgs struct {
 type RemoteImageArgs struct {
 	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
-	// Always remove intermediate containers
+	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
-	// type of ulimit, e.g. `nofile`
+	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringInput
-	// Set platform if server is multi-platform capable
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
 	Platform pulumi.StringPtrInput
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayInput
@@ -362,7 +356,7 @@ func (o RemoteImageOutput) Build() RemoteImageBuildPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) RemoteImageBuildPtrOutput { return v.Build }).(RemoteImageBuildPtrOutput)
 }
 
-// Always remove intermediate containers
+// If true, then the image is removed forcibly when the resource is destroyed.
 func (o RemoteImageOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.BoolPtrOutput { return v.ForceRemove }).(pulumi.BoolPtrOutput)
 }
@@ -377,12 +371,12 @@ func (o RemoteImageOutput) KeepLocally() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.BoolPtrOutput { return v.KeepLocally }).(pulumi.BoolPtrOutput)
 }
 
-// type of ulimit, e.g. `nofile`
+// The name of the Docker image, including any tags or SHA256 repo digests.
 func (o RemoteImageOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// Set platform if server is multi-platform capable
+// The platform to use when pulling the image. Defaults to the platform of the current machine.
 func (o RemoteImageOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringPtrOutput { return v.Platform }).(pulumi.StringPtrOutput)
 }

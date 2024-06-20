@@ -15,6 +15,10 @@ import (
 // `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
 // This resource enables running Docker builds as part of a Pulumi deployment.
 //
+// Note: We recommend you migrate your images to the more modern [Docker
+// Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+// the best possible support, features, and performance.
+//
 // Note: This resource does not delete tags, locally or remotely, when destroyed.
 //
 // ## Image name
@@ -138,7 +142,7 @@ import (
 //						},
 //					},
 //					Context:    pulumi.String("app/"),
-//					Dockerfile: pulumi.String("Dockerfile"),
+//					Dockerfile: pulumi.String("app/Dockerfile"),
 //				},
 //				ImageName: ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
 //					return fmt.Sprintf("%v:latest", repositoryUrl), nil
@@ -148,6 +152,9 @@ import (
 //						return &authToken.Password, nil
 //					}).(pulumi.StringPtrOutput)).(pulumi.StringOutput),
 //					Server: ecrRepository.RepositoryUrl,
+//					Username: authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
+//						return &authToken.UserName, nil
+//					}).(pulumi.StringPtrOutput),
 //				},
 //			})
 //			if err != nil {

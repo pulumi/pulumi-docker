@@ -12,7 +12,6 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -21,7 +20,6 @@ import * as utilities from "./utilities";
  *     name: "main",
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  */
 export function getNetwork(args: GetNetworkArgs, opts?: pulumi.InvokeOptions): Promise<GetNetworkResult> {
 
@@ -79,7 +77,6 @@ export interface GetNetworkResult {
  *
  * ## Example Usage
  *
- * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -88,7 +85,6 @@ export interface GetNetworkResult {
  *     name: "main",
  * });
  * ```
- * <!--End PulumiCodeChooser -->
  */
 export function getNetworkOutput(args: GetNetworkOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetNetworkResult> {
     return pulumi.output(args).apply((a: any) => getNetwork(a, opts))
