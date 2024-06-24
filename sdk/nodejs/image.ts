@@ -11,6 +11,10 @@ import * as utilities from "./utilities";
  * `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
  * This resource enables running Docker builds as part of a Pulumi deployment.
  *
+ * Note: We recommend you migrate your images to the more modern [Docker
+ * Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+ * the best possible support, features, and performance.
+ *
  * Note: This resource does not delete tags, locally or remotely, when destroyed.
  *
  * ## Image name
@@ -88,12 +92,13 @@ import * as utilities from "./utilities";
  *             images: [pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`],
  *         },
  *         context: "app/",
- *         dockerfile: "Dockerfile",
+ *         dockerfile: "app/Dockerfile",
  *     },
  *     imageName: pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`,
  *     registry: {
  *         password: pulumi.secret(authToken.apply(authToken => authToken.password)),
  *         server: ecrRepository.repositoryUrl,
+ *         username: authToken.apply(authToken => authToken.userName),
  *     },
  * });
  * export const imageName = myAppImage.imageName;

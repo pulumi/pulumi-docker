@@ -121,6 +121,10 @@ class Image(pulumi.CustomResource):
         `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
         This resource enables running Docker builds as part of a Pulumi deployment.
 
+        Note: We recommend you migrate your images to the more modern [Docker
+        Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+        the best possible support, features, and performance.
+
         Note: This resource does not delete tags, locally or remotely, when destroyed.
 
         ## Image name
@@ -191,12 +195,13 @@ class Image(pulumi.CustomResource):
                     images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
                 ),
                 context="app/",
-                dockerfile="Dockerfile",
+                dockerfile="app/Dockerfile",
             ),
             image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
             registry=docker.RegistryArgs(
                 password=pulumi.Output.secret(auth_token.password),
                 server=ecr_repository.repository_url,
+                username=auth_token.user_name,
             ))
         pulumi.export("imageName", my_app_image.image_name)
         ```
@@ -220,6 +225,10 @@ class Image(pulumi.CustomResource):
         `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
         This resource enables running Docker builds as part of a Pulumi deployment.
 
+        Note: We recommend you migrate your images to the more modern [Docker
+        Build](https://www.pulumi.com/registry/packages/docker-build/) provider to get
+        the best possible support, features, and performance.
+
         Note: This resource does not delete tags, locally or remotely, when destroyed.
 
         ## Image name
@@ -290,12 +299,13 @@ class Image(pulumi.CustomResource):
                     images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
                 ),
                 context="app/",
-                dockerfile="Dockerfile",
+                dockerfile="app/Dockerfile",
             ),
             image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
             registry=docker.RegistryArgs(
                 password=pulumi.Output.secret(auth_token.password),
                 server=ecr_repository.repository_url,
+                username=auth_token.user_name,
             ))
         pulumi.export("imageName", my_app_image.image_name)
         ```
