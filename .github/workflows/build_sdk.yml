@@ -1,7 +1,11 @@
 name: "Build SDK"
 
 on:
-  workflow_call: {}
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
 
 env:
   ARM_CLIENT_ID: 30e520fa-12b4-4e21-b473-9426c5ac2e1e
@@ -36,6 +40,7 @@ env:
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   TF_APPEND_USER_AGENT: pulumi
+  PROVIDER_VERSION: ${{ inputs.version }}
 
 jobs:
   build_sdk:
@@ -53,9 +58,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-      - uses: pulumi/provider-version-action@v1
-        with:
-          set-env: 'PROVIDER_VERSION'
       - name: Cache examples generation
         uses: actions/cache@v4
         with:
@@ -100,10 +102,3 @@ jobs:
           name: ${{ matrix.language  }}-sdk.tar.gz
           path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
           retention-days: 30
-      - if: failure() && github.event_name == 'push'
-        name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          author_name: Failure in building ${{ matrix.language }} sdk
-          fields: repo,commit,author,action
-          status: ${{ job.status }}
