@@ -239,6 +239,23 @@ func TestLocalRepoDigestNode(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestRegistryTokenAuth(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "registry-token-auth"),
+			Config: map[string]string{
+				"aws:region": region,
+			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{
