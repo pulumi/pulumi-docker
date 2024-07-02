@@ -1,3 +1,4 @@
+[![pulumi-docker Downloads Last Month](https://assets.piptrends.com/get-last-month-downloads-badge/pulumi-docker.svg 'pulumi-docker Downloads Last Month by pip Trends')](https://piptrends.com/package/pulumi-docker)
 [![Actions Status](https://github.com/pulumi/pulumi-docker/workflows/master/badge.svg)](https://github.com/pulumi/pulumi-docker/actions)
 [![Slack](http://www.pulumi.com/images/docs/badges/slack.svg)](https://slack.pulumi.com)
 [![NPM version](https://badge.fury.io/js/%40pulumi%2Fdocker.svg)](https://www.npmjs.com/package/@pulumi/docker)
