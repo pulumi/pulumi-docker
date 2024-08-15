@@ -92,7 +92,7 @@ namespace Pulumi.Docker.Outputs
         /// <summary>
         /// Sysctls config (Linux only)
         /// </summary>
-        public readonly ImmutableDictionary<string, object>? Sysctl;
+        public readonly ImmutableDictionary<string, string>? Sysctl;
         /// <summary>
         /// The user inside the container
         /// </summary>
@@ -138,7 +138,7 @@ namespace Pulumi.Docker.Outputs
 
             string? stopSignal,
 
-            ImmutableDictionary<string, object>? sysctl,
+            ImmutableDictionary<string, string>? sysctl,
 
             string? user)
         {

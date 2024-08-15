@@ -16,7 +16,7 @@ namespace Pulumi.Docker.Outputs
         /// <summary>
         /// Auxiliary IPv4 or IPv6 addresses used by Network driver
         /// </summary>
-        public readonly ImmutableDictionary<string, object>? AuxAddress;
+        public readonly ImmutableDictionary<string, string>? AuxAddress;
         /// <summary>
         /// The IP address of the gateway
         /// </summary>
@@ -32,7 +32,7 @@ namespace Pulumi.Docker.Outputs
 
         [OutputConstructor]
         private NetworkIpamConfig(
-            ImmutableDictionary<string, object>? auxAddress,
+            ImmutableDictionary<string, string>? auxAddress,
 
             string? gateway,
 

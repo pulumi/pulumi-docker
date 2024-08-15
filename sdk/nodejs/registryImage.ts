@@ -55,7 +55,7 @@ export class RegistryImage extends pulumi.CustomResource {
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */
-    public readonly triggers!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly triggers!: pulumi.Output<{[key: string]: string} | undefined>;
 
     /**
      * Create a RegistryImage resource with the given unique name, arguments, and options.
@@ -111,7 +111,7 @@ export interface RegistryImageState {
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */
-    triggers?: pulumi.Input<{[key: string]: any}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }
 
 /**
@@ -133,5 +133,5 @@ export interface RegistryImageArgs {
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */
-    triggers?: pulumi.Input<{[key: string]: any}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }

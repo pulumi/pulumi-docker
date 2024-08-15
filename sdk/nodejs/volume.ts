@@ -87,7 +87,7 @@ export class Volume extends pulumi.CustomResource {
     /**
      * Options specific to the driver.
      */
-    public readonly driverOpts!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly driverOpts!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * User-defined key/value metadata
      */
@@ -143,7 +143,7 @@ export interface VolumeState {
     /**
      * Options specific to the driver.
      */
-    driverOpts?: pulumi.Input<{[key: string]: any}>;
+    driverOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * User-defined key/value metadata
      */
@@ -169,7 +169,7 @@ export interface VolumeArgs {
     /**
      * Options specific to the driver.
      */
-    driverOpts?: pulumi.Input<{[key: string]: any}>;
+    driverOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * User-defined key/value metadata
      */

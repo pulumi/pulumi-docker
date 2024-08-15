@@ -15,17 +15,37 @@ import (
 //
 // ## Example Usage
 //
-// ### With alias
+// ```go
+// package main
 //
-//	data "Plugin" "byAlias" {
-//	  alias = "sample-volume-plugin:latest"
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			// ## With alias
+//			_, err := docker.LookupPlugin(ctx, &docker.LookupPluginArgs{
+//				Alias: pulumi.StringRef("sample-volume-plugin:latest"),
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			// ## With ID
+//			_, err = docker.LookupPlugin(ctx, &docker.LookupPluginArgs{
+//				Id: pulumi.StringRef("e9a9db917b3bfd6706b5d3a66d4bceb9f"),
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
 //	}
 //
-// ### With ID
-//
-//	data "Plugin" "byId" {
-//	  id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
-//	}
+// ```
 func LookupPlugin(ctx *pulumi.Context, args *LookupPluginArgs, opts ...pulumi.InvokeOption) (*LookupPluginResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupPluginResult

@@ -14,7 +14,6 @@ import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecPrivileges;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecSecret;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +122,7 @@ public final class ServiceTaskSpecContainerSpec {
      * @return Sysctls config (Linux only)
      * 
      */
-    private @Nullable Map<String,Object> sysctl;
+    private @Nullable Map<String,String> sysctl;
     /**
      * @return The user inside the container
      * 
@@ -268,7 +267,7 @@ public final class ServiceTaskSpecContainerSpec {
      * @return Sysctls config (Linux only)
      * 
      */
-    public Map<String,Object> sysctl() {
+    public Map<String,String> sysctl() {
         return this.sysctl == null ? Map.of() : this.sysctl;
     }
     /**
@@ -307,7 +306,7 @@ public final class ServiceTaskSpecContainerSpec {
         private @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets;
         private @Nullable String stopGracePeriod;
         private @Nullable String stopSignal;
-        private @Nullable Map<String,Object> sysctl;
+        private @Nullable Map<String,String> sysctl;
         private @Nullable String user;
         public Builder() {}
         public Builder(ServiceTaskSpecContainerSpec defaults) {
@@ -476,7 +475,7 @@ public final class ServiceTaskSpecContainerSpec {
             return this;
         }
         @CustomType.Setter
-        public Builder sysctl(@Nullable Map<String,Object> sysctl) {
+        public Builder sysctl(@Nullable Map<String,String> sysctl) {
 
             this.sysctl = sysctl;
             return this;

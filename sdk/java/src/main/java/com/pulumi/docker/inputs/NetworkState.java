@@ -8,7 +8,6 @@ import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.NetworkIpamConfigArgs;
 import com.pulumi.docker.inputs.NetworkLabelArgs;
 import java.lang.Boolean;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -131,13 +130,13 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="ipamOptions")
-    private @Nullable Output<Map<String,Object>> ipamOptions;
+    private @Nullable Output<Map<String,String>> ipamOptions;
 
     /**
      * @return Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
      * 
      */
-    public Optional<Output<Map<String,Object>>> ipamOptions() {
+    public Optional<Output<Map<String,String>>> ipamOptions() {
         return Optional.ofNullable(this.ipamOptions);
     }
 
@@ -191,13 +190,13 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="options")
-    private @Nullable Output<Map<String,Object>> options;
+    private @Nullable Output<Map<String,String>> options;
 
     /**
      * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    public Optional<Output<Map<String,Object>>> options() {
+    public Optional<Output<Map<String,String>>> options() {
         return Optional.ofNullable(this.options);
     }
 
@@ -415,7 +414,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder ipamOptions(@Nullable Output<Map<String,Object>> ipamOptions) {
+        public Builder ipamOptions(@Nullable Output<Map<String,String>> ipamOptions) {
             $.ipamOptions = ipamOptions;
             return this;
         }
@@ -426,7 +425,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder ipamOptions(Map<String,Object> ipamOptions) {
+        public Builder ipamOptions(Map<String,String> ipamOptions) {
             return ipamOptions(Output.of(ipamOptions));
         }
 
@@ -509,7 +508,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder options(@Nullable Output<Map<String,Object>> options) {
+        public Builder options(@Nullable Output<Map<String,String>> options) {
             $.options = options;
             return this;
         }
@@ -520,7 +519,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder options(Map<String,Object> options) {
+        public Builder options(Map<String,String> options) {
             return options(Output.of(options));
         }
 

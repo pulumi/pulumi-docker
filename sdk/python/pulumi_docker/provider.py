@@ -140,7 +140,7 @@ class Provider(pulumi.ProviderResource):
                  cert_path: Optional[pulumi.Input[str]] = None,
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
                  ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
@@ -190,7 +190,7 @@ class Provider(pulumi.ProviderResource):
                  cert_path: Optional[pulumi.Input[str]] = None,
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
                  ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)

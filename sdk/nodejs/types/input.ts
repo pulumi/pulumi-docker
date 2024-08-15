@@ -350,7 +350,7 @@ export interface NetworkIpamConfig {
     /**
      * Auxiliary IPv4 or IPv6 addresses used by Network driver
      */
-    auxAddress?: pulumi.Input<{[key: string]: any}>;
+    auxAddress?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * The IP address of the gateway
      */
@@ -864,7 +864,7 @@ export interface ServiceTaskSpecContainerSpec {
     /**
      * Sysctls config (Linux only)
      */
-    sysctl?: pulumi.Input<{[key: string]: any}>;
+    sysctl?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * The user inside the container
      */

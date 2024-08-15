@@ -13,14 +13,14 @@ namespace Pulumi.Docker.Inputs
     public sealed class NetworkIpamConfigArgs : global::Pulumi.ResourceArgs
     {
         [Input("auxAddress")]
-        private InputMap<object>? _auxAddress;
+        private InputMap<string>? _auxAddress;
 
         /// <summary>
         /// Auxiliary IPv4 or IPv6 addresses used by Network driver
         /// </summary>
-        public InputMap<object> AuxAddress
+        public InputMap<string> AuxAddress
         {
-            get => _auxAddress ?? (_auxAddress = new InputMap<object>());
+            get => _auxAddress ?? (_auxAddress = new InputMap<string>());
             set => _auxAddress = value;
         }
 

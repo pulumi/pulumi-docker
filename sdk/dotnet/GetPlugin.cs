@@ -16,15 +16,27 @@ namespace Pulumi.Docker
         /// 
         /// ## Example Usage
         /// 
-        /// ### With alias
-        /// data "docker.Plugin" "by_alias" {
-        ///   alias = "sample-volume-plugin:latest"
-        /// }
+        /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
+        /// using Pulumi;
+        /// using Docker = Pulumi.Docker;
         /// 
-        /// ### With ID
-        /// data "docker.Plugin" "by_id" {
-        ///   id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
-        /// }
+        /// return await Deployment.RunAsync(() =&gt; 
+        /// {
+        ///     //## With alias
+        ///     var byAlias = Docker.GetPlugin.Invoke(new()
+        ///     {
+        ///         Alias = "sample-volume-plugin:latest",
+        ///     });
+        /// 
+        ///     //## With ID
+        ///     var byId = Docker.GetPlugin.Invoke(new()
+        ///     {
+        ///         Id = "e9a9db917b3bfd6706b5d3a66d4bceb9f",
+        ///     });
+        /// 
+        /// });
         /// ```
         /// </summary>
         public static Task<GetPluginResult> InvokeAsync(GetPluginArgs? args = null, InvokeOptions? options = null)
@@ -35,15 +47,27 @@ namespace Pulumi.Docker
         /// 
         /// ## Example Usage
         /// 
-        /// ### With alias
-        /// data "docker.Plugin" "by_alias" {
-        ///   alias = "sample-volume-plugin:latest"
-        /// }
+        /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
+        /// using Pulumi;
+        /// using Docker = Pulumi.Docker;
         /// 
-        /// ### With ID
-        /// data "docker.Plugin" "by_id" {
-        ///   id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
-        /// }
+        /// return await Deployment.RunAsync(() =&gt; 
+        /// {
+        ///     //## With alias
+        ///     var byAlias = Docker.GetPlugin.Invoke(new()
+        ///     {
+        ///         Alias = "sample-volume-plugin:latest",
+        ///     });
+        /// 
+        ///     //## With ID
+        ///     var byId = Docker.GetPlugin.Invoke(new()
+        ///     {
+        ///         Id = "e9a9db917b3bfd6706b5d3a66d4bceb9f",
+        ///     });
+        /// 
+        /// });
         /// ```
         /// </summary>
         public static Output<GetPluginResult> Invoke(GetPluginInvokeArgs? args = null, InvokeOptions? options = null)

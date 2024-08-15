@@ -227,15 +227,44 @@ public final class DockerFunctions {
      * 
      * ## Example Usage
      * 
-     * ### With alias
-     * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
-     *   alias = &#34;sample-volume-plugin:latest&#34;
-     * }
+     * &lt;!--Start PulumiCodeChooser --&gt;
+     * <pre>
+     * {@code
+     * package generated_program;
      * 
-     * ### With ID
-     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
-     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetPluginArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
+     * 
+     * public class App {
+     *     public static void main(String[] args) {
+     *         Pulumi.run(App::stack);
+     *     }
+     * 
+     *     public static void stack(Context ctx) {
+     *         //## With alias
+     *         final var byAlias = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .alias("sample-volume-plugin:latest")
+     *             .build());
+     * 
+     *         //## With ID
+     *         final var byId = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .id("e9a9db917b3bfd6706b5d3a66d4bceb9f")
+     *             .build());
+     * 
+     *     }
      * }
+     * }
+     * </pre>
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetPluginResult> getPlugin() {
@@ -246,15 +275,44 @@ public final class DockerFunctions {
      * 
      * ## Example Usage
      * 
-     * ### With alias
-     * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
-     *   alias = &#34;sample-volume-plugin:latest&#34;
-     * }
+     * &lt;!--Start PulumiCodeChooser --&gt;
+     * <pre>
+     * {@code
+     * package generated_program;
      * 
-     * ### With ID
-     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
-     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetPluginArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
+     * 
+     * public class App {
+     *     public static void main(String[] args) {
+     *         Pulumi.run(App::stack);
+     *     }
+     * 
+     *     public static void stack(Context ctx) {
+     *         //## With alias
+     *         final var byAlias = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .alias("sample-volume-plugin:latest")
+     *             .build());
+     * 
+     *         //## With ID
+     *         final var byId = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .id("e9a9db917b3bfd6706b5d3a66d4bceb9f")
+     *             .build());
+     * 
+     *     }
      * }
+     * }
+     * </pre>
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetPluginResult> getPluginPlain() {
@@ -265,15 +323,44 @@ public final class DockerFunctions {
      * 
      * ## Example Usage
      * 
-     * ### With alias
-     * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
-     *   alias = &#34;sample-volume-plugin:latest&#34;
-     * }
+     * &lt;!--Start PulumiCodeChooser --&gt;
+     * <pre>
+     * {@code
+     * package generated_program;
      * 
-     * ### With ID
-     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
-     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetPluginArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
+     * 
+     * public class App {
+     *     public static void main(String[] args) {
+     *         Pulumi.run(App::stack);
+     *     }
+     * 
+     *     public static void stack(Context ctx) {
+     *         //## With alias
+     *         final var byAlias = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .alias("sample-volume-plugin:latest")
+     *             .build());
+     * 
+     *         //## With ID
+     *         final var byId = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .id("e9a9db917b3bfd6706b5d3a66d4bceb9f")
+     *             .build());
+     * 
+     *     }
      * }
+     * }
+     * </pre>
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetPluginResult> getPlugin(GetPluginArgs args) {
@@ -284,15 +371,44 @@ public final class DockerFunctions {
      * 
      * ## Example Usage
      * 
-     * ### With alias
-     * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
-     *   alias = &#34;sample-volume-plugin:latest&#34;
-     * }
+     * &lt;!--Start PulumiCodeChooser --&gt;
+     * <pre>
+     * {@code
+     * package generated_program;
      * 
-     * ### With ID
-     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
-     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetPluginArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
+     * 
+     * public class App {
+     *     public static void main(String[] args) {
+     *         Pulumi.run(App::stack);
+     *     }
+     * 
+     *     public static void stack(Context ctx) {
+     *         //## With alias
+     *         final var byAlias = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .alias("sample-volume-plugin:latest")
+     *             .build());
+     * 
+     *         //## With ID
+     *         final var byId = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .id("e9a9db917b3bfd6706b5d3a66d4bceb9f")
+     *             .build());
+     * 
+     *     }
      * }
+     * }
+     * </pre>
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetPluginResult> getPluginPlain(GetPluginPlainArgs args) {
@@ -303,15 +419,44 @@ public final class DockerFunctions {
      * 
      * ## Example Usage
      * 
-     * ### With alias
-     * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
-     *   alias = &#34;sample-volume-plugin:latest&#34;
-     * }
+     * &lt;!--Start PulumiCodeChooser --&gt;
+     * <pre>
+     * {@code
+     * package generated_program;
      * 
-     * ### With ID
-     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
-     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetPluginArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
+     * 
+     * public class App {
+     *     public static void main(String[] args) {
+     *         Pulumi.run(App::stack);
+     *     }
+     * 
+     *     public static void stack(Context ctx) {
+     *         //## With alias
+     *         final var byAlias = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .alias("sample-volume-plugin:latest")
+     *             .build());
+     * 
+     *         //## With ID
+     *         final var byId = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .id("e9a9db917b3bfd6706b5d3a66d4bceb9f")
+     *             .build());
+     * 
+     *     }
      * }
+     * }
+     * </pre>
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetPluginResult> getPlugin(GetPluginArgs args, InvokeOptions options) {
@@ -322,15 +467,44 @@ public final class DockerFunctions {
      * 
      * ## Example Usage
      * 
-     * ### With alias
-     * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
-     *   alias = &#34;sample-volume-plugin:latest&#34;
-     * }
+     * &lt;!--Start PulumiCodeChooser --&gt;
+     * <pre>
+     * {@code
+     * package generated_program;
      * 
-     * ### With ID
-     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
-     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetPluginArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
+     * 
+     * public class App {
+     *     public static void main(String[] args) {
+     *         Pulumi.run(App::stack);
+     *     }
+     * 
+     *     public static void stack(Context ctx) {
+     *         //## With alias
+     *         final var byAlias = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .alias("sample-volume-plugin:latest")
+     *             .build());
+     * 
+     *         //## With ID
+     *         final var byId = DockerFunctions.getPlugin(GetPluginArgs.builder()
+     *             .id("e9a9db917b3bfd6706b5d3a66d4bceb9f")
+     *             .build());
+     * 
+     *     }
      * }
+     * }
+     * </pre>
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetPluginResult> getPluginPlain(GetPluginPlainArgs args, InvokeOptions options) {
@@ -554,12 +728,12 @@ public final class DockerFunctions {
      * import java.nio.file.Files;
      * import java.nio.file.Paths;
      * 
-     * public class App {
-     *     public static void main(String[] args) {
+     * public class App }{{@code
+     *     public static void main(String[] args) }{{@code
      *         Pulumi.run(App::stack);
-     *     }
+     *     }}{@code
      * 
-     *     public static void stack(Context ctx) {
+     *     public static void stack(Context ctx) }{{@code
      *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name("nginx")
@@ -572,16 +746,16 @@ public final class DockerFunctions {
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx:1.19.1}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
-     *     }
-     * }
+     *     }}{@code
+     * }}{@code
      * }
      * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
@@ -612,12 +786,12 @@ public final class DockerFunctions {
      * import java.nio.file.Files;
      * import java.nio.file.Paths;
      * 
-     * public class App {
-     *     public static void main(String[] args) {
+     * public class App }{{@code
+     *     public static void main(String[] args) }{{@code
      *         Pulumi.run(App::stack);
-     *     }
+     *     }}{@code
      * 
-     *     public static void stack(Context ctx) {
+     *     public static void stack(Context ctx) }{{@code
      *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name("nginx")
@@ -630,16 +804,16 @@ public final class DockerFunctions {
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx:1.19.1}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
-     *     }
-     * }
+     *     }}{@code
+     * }}{@code
      * }
      * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
@@ -670,12 +844,12 @@ public final class DockerFunctions {
      * import java.nio.file.Files;
      * import java.nio.file.Paths;
      * 
-     * public class App {
-     *     public static void main(String[] args) {
+     * public class App }{{@code
+     *     public static void main(String[] args) }{{@code
      *         Pulumi.run(App::stack);
-     *     }
+     *     }}{@code
      * 
-     *     public static void stack(Context ctx) {
+     *     public static void stack(Context ctx) }{{@code
      *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name("nginx")
@@ -688,16 +862,16 @@ public final class DockerFunctions {
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx:1.19.1}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
-     *     }
-     * }
+     *     }}{@code
+     * }}{@code
      * }
      * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;
@@ -728,12 +902,12 @@ public final class DockerFunctions {
      * import java.nio.file.Files;
      * import java.nio.file.Paths;
      * 
-     * public class App {
-     *     public static void main(String[] args) {
+     * public class App }{{@code
+     *     public static void main(String[] args) }{{@code
      *         Pulumi.run(App::stack);
-     *     }
+     *     }}{@code
      * 
-     *     public static void stack(Context ctx) {
+     *     public static void stack(Context ctx) }{{@code
      *         // uses the 'latest' tag
      *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name("nginx")
@@ -746,16 +920,16 @@ public final class DockerFunctions {
      * 
      *         // use the image digest
      *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
      *         // uses the tag and the image digest
      *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
-     *             .name("nginx:1.19.1{@literal @}sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
+     *             .name("nginx:1.19.1}{@literal @}{@code sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
      *             .build());
      * 
-     *     }
-     * }
+     *     }}{@code
+     * }}{@code
      * }
      * </pre>
      * &lt;!--End PulumiCodeChooser --&gt;

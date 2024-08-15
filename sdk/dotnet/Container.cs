@@ -256,7 +256,7 @@ namespace Pulumi.Docker
         /// Key/value pairs to use as options for the logging driver.
         /// </summary>
         [Output("logOpts")]
-        public Output<ImmutableDictionary<string, object>?> LogOpts { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> LogOpts { get; private set; } = null!;
 
         /// <summary>
         /// Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -409,19 +409,19 @@ namespace Pulumi.Docker
         /// Key/value pairs for the storage driver options, e.g. `size`: `120G`
         /// </summary>
         [Output("storageOpts")]
-        public Output<ImmutableDictionary<string, object>?> StorageOpts { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> StorageOpts { get; private set; } = null!;
 
         /// <summary>
         /// A map of kernel parameters (sysctls) to set in the container.
         /// </summary>
         [Output("sysctls")]
-        public Output<ImmutableDictionary<string, object>?> Sysctls { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> Sysctls { get; private set; } = null!;
 
         /// <summary>
         /// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
         /// </summary>
         [Output("tmpfs")]
-        public Output<ImmutableDictionary<string, object>?> Tmpfs { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> Tmpfs { get; private set; } = null!;
 
         /// <summary>
         /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
@@ -734,14 +734,14 @@ namespace Pulumi.Docker
         public Input<string>? LogDriver { get; set; }
 
         [Input("logOpts")]
-        private InputMap<object>? _logOpts;
+        private InputMap<string>? _logOpts;
 
         /// <summary>
         /// Key/value pairs to use as options for the logging driver.
         /// </summary>
-        public InputMap<object> LogOpts
+        public InputMap<string> LogOpts
         {
-            get => _logOpts ?? (_logOpts = new InputMap<object>());
+            get => _logOpts ?? (_logOpts = new InputMap<string>());
             set => _logOpts = value;
         }
 
@@ -911,38 +911,38 @@ namespace Pulumi.Docker
         public Input<int>? StopTimeout { get; set; }
 
         [Input("storageOpts")]
-        private InputMap<object>? _storageOpts;
+        private InputMap<string>? _storageOpts;
 
         /// <summary>
         /// Key/value pairs for the storage driver options, e.g. `size`: `120G`
         /// </summary>
-        public InputMap<object> StorageOpts
+        public InputMap<string> StorageOpts
         {
-            get => _storageOpts ?? (_storageOpts = new InputMap<object>());
+            get => _storageOpts ?? (_storageOpts = new InputMap<string>());
             set => _storageOpts = value;
         }
 
         [Input("sysctls")]
-        private InputMap<object>? _sysctls;
+        private InputMap<string>? _sysctls;
 
         /// <summary>
         /// A map of kernel parameters (sysctls) to set in the container.
         /// </summary>
-        public InputMap<object> Sysctls
+        public InputMap<string> Sysctls
         {
-            get => _sysctls ?? (_sysctls = new InputMap<object>());
+            get => _sysctls ?? (_sysctls = new InputMap<string>());
             set => _sysctls = value;
         }
 
         [Input("tmpfs")]
-        private InputMap<object>? _tmpfs;
+        private InputMap<string>? _tmpfs;
 
         /// <summary>
         /// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
         /// </summary>
-        public InputMap<object> Tmpfs
+        public InputMap<string> Tmpfs
         {
-            get => _tmpfs ?? (_tmpfs = new InputMap<object>());
+            get => _tmpfs ?? (_tmpfs = new InputMap<string>());
             set => _tmpfs = value;
         }
 
@@ -1255,14 +1255,14 @@ namespace Pulumi.Docker
         public Input<string>? LogDriver { get; set; }
 
         [Input("logOpts")]
-        private InputMap<object>? _logOpts;
+        private InputMap<string>? _logOpts;
 
         /// <summary>
         /// Key/value pairs to use as options for the logging driver.
         /// </summary>
-        public InputMap<object> LogOpts
+        public InputMap<string> LogOpts
         {
-            get => _logOpts ?? (_logOpts = new InputMap<object>());
+            get => _logOpts ?? (_logOpts = new InputMap<string>());
             set => _logOpts = value;
         }
 
@@ -1444,38 +1444,38 @@ namespace Pulumi.Docker
         public Input<int>? StopTimeout { get; set; }
 
         [Input("storageOpts")]
-        private InputMap<object>? _storageOpts;
+        private InputMap<string>? _storageOpts;
 
         /// <summary>
         /// Key/value pairs for the storage driver options, e.g. `size`: `120G`
         /// </summary>
-        public InputMap<object> StorageOpts
+        public InputMap<string> StorageOpts
         {
-            get => _storageOpts ?? (_storageOpts = new InputMap<object>());
+            get => _storageOpts ?? (_storageOpts = new InputMap<string>());
             set => _storageOpts = value;
         }
 
         [Input("sysctls")]
-        private InputMap<object>? _sysctls;
+        private InputMap<string>? _sysctls;
 
         /// <summary>
         /// A map of kernel parameters (sysctls) to set in the container.
         /// </summary>
-        public InputMap<object> Sysctls
+        public InputMap<string> Sysctls
         {
-            get => _sysctls ?? (_sysctls = new InputMap<object>());
+            get => _sysctls ?? (_sysctls = new InputMap<string>());
             set => _sysctls = value;
         }
 
         [Input("tmpfs")]
-        private InputMap<object>? _tmpfs;
+        private InputMap<string>? _tmpfs;
 
         /// <summary>
         /// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
         /// </summary>
-        public InputMap<object> Tmpfs
+        public InputMap<string> Tmpfs
         {
-            get => _tmpfs ?? (_tmpfs = new InputMap<object>());
+            get => _tmpfs ?? (_tmpfs = new InputMap<string>());
             set => _tmpfs = value;
         }
 

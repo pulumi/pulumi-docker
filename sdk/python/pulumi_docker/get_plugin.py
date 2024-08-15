@@ -124,15 +124,15 @@ def get_plugin(alias: Optional[str] = None,
 
     ## Example Usage
 
-    ### With alias
-    data "Plugin" "by_alias" {
-      alias = "sample-volume-plugin:latest"
-    }
+    ```python
+    import pulumi
+    import pulumi_docker as docker
 
+    ### With alias
+    by_alias = docker.get_plugin(alias="sample-volume-plugin:latest")
     ### With ID
-    data "Plugin" "by_id" {
-      id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
-    }
+    by_id = docker.get_plugin(id="e9a9db917b3bfd6706b5d3a66d4bceb9f")
+    ```
 
 
     :param str alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
@@ -163,15 +163,15 @@ def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
 
     ## Example Usage
 
-    ### With alias
-    data "Plugin" "by_alias" {
-      alias = "sample-volume-plugin:latest"
-    }
+    ```python
+    import pulumi
+    import pulumi_docker as docker
 
+    ### With alias
+    by_alias = docker.get_plugin(alias="sample-volume-plugin:latest")
     ### With ID
-    data "Plugin" "by_id" {
-      id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
-    }
+    by_id = docker.get_plugin(id="e9a9db917b3bfd6706b5d3a66d4bceb9f")
+    ```
 
 
     :param str alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.

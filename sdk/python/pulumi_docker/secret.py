@@ -130,7 +130,7 @@ class Secret(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  data: Optional[pulumi.Input[str]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['SecretLabelArgs', 'SecretLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
@@ -143,7 +143,7 @@ class Secret(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Sequence[pulumi.Input[Union['SecretLabelArgs', 'SecretLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: User-defined name of the secret
         """
         ...
@@ -175,7 +175,7 @@ class Secret(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  data: Optional[pulumi.Input[str]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['SecretLabelArgs', 'SecretLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -204,7 +204,7 @@ class Secret(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             data: Optional[pulumi.Input[str]] = None,
-            labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['SecretLabelArgs', 'SecretLabelArgsDict']]]]] = None,
             name: Optional[pulumi.Input[str]] = None) -> 'Secret':
         """
         Get an existing Secret resource's state with the given name, id, and optional extra
@@ -214,7 +214,7 @@ class Secret(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Sequence[pulumi.Input[Union['SecretLabelArgs', 'SecretLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: User-defined name of the secret
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))

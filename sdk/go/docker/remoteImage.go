@@ -148,7 +148,7 @@ type RemoteImage struct {
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
 	RepoDigest pulumi.StringOutput `pulumi:"repoDigest"`
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
-	Triggers pulumi.MapOutput `pulumi:"triggers"`
+	Triggers pulumi.StringMapOutput `pulumi:"triggers"`
 }
 
 // NewRemoteImage registers a new resource with the given unique name, arguments, and options.
@@ -201,7 +201,7 @@ type remoteImageState struct {
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
 	RepoDigest *string `pulumi:"repoDigest"`
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
-	Triggers map[string]interface{} `pulumi:"triggers"`
+	Triggers map[string]string `pulumi:"triggers"`
 }
 
 type RemoteImageState struct {
@@ -222,7 +222,7 @@ type RemoteImageState struct {
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
 	RepoDigest pulumi.StringPtrInput
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
-	Triggers pulumi.MapInput
+	Triggers pulumi.StringMapInput
 }
 
 func (RemoteImageState) ElementType() reflect.Type {
@@ -243,7 +243,7 @@ type remoteImageArgs struct {
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers []string `pulumi:"pullTriggers"`
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
-	Triggers map[string]interface{} `pulumi:"triggers"`
+	Triggers map[string]string `pulumi:"triggers"`
 }
 
 // The set of arguments for constructing a RemoteImage resource.
@@ -261,7 +261,7 @@ type RemoteImageArgs struct {
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayInput
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
-	Triggers pulumi.MapInput
+	Triggers pulumi.StringMapInput
 }
 
 func (RemoteImageArgs) ElementType() reflect.Type {
@@ -392,8 +392,8 @@ func (o RemoteImageOutput) RepoDigest() pulumi.StringOutput {
 }
 
 // A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
-func (o RemoteImageOutput) Triggers() pulumi.MapOutput {
-	return o.ApplyT(func(v *RemoteImage) pulumi.MapOutput { return v.Triggers }).(pulumi.MapOutput)
+func (o RemoteImageOutput) Triggers() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *RemoteImage) pulumi.StringMapOutput { return v.Triggers }).(pulumi.StringMapOutput)
 }
 
 type RemoteImageArrayOutput struct{ *pulumi.OutputState }

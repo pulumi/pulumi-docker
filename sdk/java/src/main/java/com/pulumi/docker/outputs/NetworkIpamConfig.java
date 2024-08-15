@@ -4,7 +4,6 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import java.lang.Object;
 import java.lang.String;
 import java.util.Map;
 import java.util.Objects;
@@ -17,7 +16,7 @@ public final class NetworkIpamConfig {
      * @return Auxiliary IPv4 or IPv6 addresses used by Network driver
      * 
      */
-    private @Nullable Map<String,Object> auxAddress;
+    private @Nullable Map<String,String> auxAddress;
     /**
      * @return The IP address of the gateway
      * 
@@ -39,7 +38,7 @@ public final class NetworkIpamConfig {
      * @return Auxiliary IPv4 or IPv6 addresses used by Network driver
      * 
      */
-    public Map<String,Object> auxAddress() {
+    public Map<String,String> auxAddress() {
         return this.auxAddress == null ? Map.of() : this.auxAddress;
     }
     /**
@@ -73,7 +72,7 @@ public final class NetworkIpamConfig {
     }
     @CustomType.Builder
     public static final class Builder {
-        private @Nullable Map<String,Object> auxAddress;
+        private @Nullable Map<String,String> auxAddress;
         private @Nullable String gateway;
         private @Nullable String ipRange;
         private @Nullable String subnet;
@@ -87,7 +86,7 @@ public final class NetworkIpamConfig {
         }
 
         @CustomType.Setter
-        public Builder auxAddress(@Nullable Map<String,Object> auxAddress) {
+        public Builder auxAddress(@Nullable Map<String,String> auxAddress) {
 
             this.auxAddress = auxAddress;
             return this;

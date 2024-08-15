@@ -5,7 +5,6 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import java.lang.Object;
 import java.lang.String;
 import java.util.Map;
 import java.util.Objects;
@@ -22,13 +21,13 @@ public final class NetworkIpamConfigArgs extends com.pulumi.resources.ResourceAr
      * 
      */
     @Import(name="auxAddress")
-    private @Nullable Output<Map<String,Object>> auxAddress;
+    private @Nullable Output<Map<String,String>> auxAddress;
 
     /**
      * @return Auxiliary IPv4 or IPv6 addresses used by Network driver
      * 
      */
-    public Optional<Output<Map<String,Object>>> auxAddress() {
+    public Optional<Output<Map<String,String>>> auxAddress() {
         return Optional.ofNullable(this.auxAddress);
     }
 
@@ -110,7 +109,7 @@ public final class NetworkIpamConfigArgs extends com.pulumi.resources.ResourceAr
          * @return builder
          * 
          */
-        public Builder auxAddress(@Nullable Output<Map<String,Object>> auxAddress) {
+        public Builder auxAddress(@Nullable Output<Map<String,String>> auxAddress) {
             $.auxAddress = auxAddress;
             return this;
         }
@@ -121,7 +120,7 @@ public final class NetworkIpamConfigArgs extends com.pulumi.resources.ResourceAr
          * @return builder
          * 
          */
-        public Builder auxAddress(Map<String,Object> auxAddress) {
+        public Builder auxAddress(Map<String,String> auxAddress) {
             return auxAddress(Output.of(auxAddress));
         }
 
