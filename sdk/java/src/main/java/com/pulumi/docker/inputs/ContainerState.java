@@ -19,7 +19,6 @@ import com.pulumi.docker.inputs.ContainerUploadArgs;
 import com.pulumi.docker.inputs.ContainerVolumeArgs;
 import java.lang.Boolean;
 import java.lang.Integer;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -457,13 +456,13 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="logOpts")
-    private @Nullable Output<Map<String,Object>> logOpts;
+    private @Nullable Output<Map<String,String>> logOpts;
 
     /**
      * @return Key/value pairs to use as options for the logging driver.
      * 
      */
-    public Optional<Output<Map<String,Object>>> logOpts() {
+    public Optional<Output<Map<String,String>>> logOpts() {
         return Optional.ofNullable(this.logOpts);
     }
 
@@ -839,13 +838,13 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="storageOpts")
-    private @Nullable Output<Map<String,Object>> storageOpts;
+    private @Nullable Output<Map<String,String>> storageOpts;
 
     /**
      * @return Key/value pairs for the storage driver options, e.g. `size`: `120G`
      * 
      */
-    public Optional<Output<Map<String,Object>>> storageOpts() {
+    public Optional<Output<Map<String,String>>> storageOpts() {
         return Optional.ofNullable(this.storageOpts);
     }
 
@@ -854,13 +853,13 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="sysctls")
-    private @Nullable Output<Map<String,Object>> sysctls;
+    private @Nullable Output<Map<String,String>> sysctls;
 
     /**
      * @return A map of kernel parameters (sysctls) to set in the container.
      * 
      */
-    public Optional<Output<Map<String,Object>>> sysctls() {
+    public Optional<Output<Map<String,String>>> sysctls() {
         return Optional.ofNullable(this.sysctls);
     }
 
@@ -869,13 +868,13 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="tmpfs")
-    private @Nullable Output<Map<String,Object>> tmpfs;
+    private @Nullable Output<Map<String,String>> tmpfs;
 
     /**
      * @return A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      * 
      */
-    public Optional<Output<Map<String,Object>>> tmpfs() {
+    public Optional<Output<Map<String,String>>> tmpfs() {
         return Optional.ofNullable(this.tmpfs);
     }
 
@@ -1797,7 +1796,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder logOpts(@Nullable Output<Map<String,Object>> logOpts) {
+        public Builder logOpts(@Nullable Output<Map<String,String>> logOpts) {
             $.logOpts = logOpts;
             return this;
         }
@@ -1808,7 +1807,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder logOpts(Map<String,Object> logOpts) {
+        public Builder logOpts(Map<String,String> logOpts) {
             return logOpts(Output.of(logOpts));
         }
 
@@ -2381,7 +2380,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder storageOpts(@Nullable Output<Map<String,Object>> storageOpts) {
+        public Builder storageOpts(@Nullable Output<Map<String,String>> storageOpts) {
             $.storageOpts = storageOpts;
             return this;
         }
@@ -2392,7 +2391,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder storageOpts(Map<String,Object> storageOpts) {
+        public Builder storageOpts(Map<String,String> storageOpts) {
             return storageOpts(Output.of(storageOpts));
         }
 
@@ -2402,7 +2401,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder sysctls(@Nullable Output<Map<String,Object>> sysctls) {
+        public Builder sysctls(@Nullable Output<Map<String,String>> sysctls) {
             $.sysctls = sysctls;
             return this;
         }
@@ -2413,7 +2412,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder sysctls(Map<String,Object> sysctls) {
+        public Builder sysctls(Map<String,String> sysctls) {
             return sysctls(Output.of(sysctls));
         }
 
@@ -2423,7 +2422,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder tmpfs(@Nullable Output<Map<String,Object>> tmpfs) {
+        public Builder tmpfs(@Nullable Output<Map<String,String>> tmpfs) {
             $.tmpfs = tmpfs;
             return this;
         }
@@ -2434,7 +2433,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder tmpfs(Map<String,Object> tmpfs) {
+        public Builder tmpfs(Map<String,String> tmpfs) {
             return tmpfs(Output.of(tmpfs));
         }
 

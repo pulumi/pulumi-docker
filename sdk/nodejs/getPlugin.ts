@@ -9,15 +9,19 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- * ### With alias
- * data "docker.Plugin" "byAlias" {
- *   alias = "sample-volume-plugin:latest"
- * }
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
  *
- * ### With ID
- * data "docker.Plugin" "byId" {
- *   id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
- * }
+ * //## With alias
+ * const byAlias = docker.getPlugin({
+ *     alias: "sample-volume-plugin:latest",
+ * });
+ * //## With ID
+ * const byId = docker.getPlugin({
+ *     id: "e9a9db917b3bfd6706b5d3a66d4bceb9f",
+ * });
+ * ```
  */
 export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Promise<GetPluginResult> {
     args = args || {};
@@ -81,15 +85,19 @@ export interface GetPluginResult {
  *
  * ## Example Usage
  *
- * ### With alias
- * data "docker.Plugin" "byAlias" {
- *   alias = "sample-volume-plugin:latest"
- * }
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
  *
- * ### With ID
- * data "docker.Plugin" "byId" {
- *   id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
- * }
+ * //## With alias
+ * const byAlias = docker.getPlugin({
+ *     alias: "sample-volume-plugin:latest",
+ * });
+ * //## With ID
+ * const byId = docker.getPlugin({
+ *     id: "e9a9db917b3bfd6706b5d3a66d4bceb9f",
+ * });
+ * ```
  */
 export function getPluginOutput(args?: GetPluginOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPluginResult> {
     return pulumi.output(args).apply((a: any) => getPlugin(a, opts))

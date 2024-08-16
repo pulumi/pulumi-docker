@@ -66,7 +66,7 @@ export interface GetNetworkResult {
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    readonly options: {[key: string]: any};
+    readonly options: {[key: string]: string};
     /**
      * Scope of the network. One of `swarm`, `global`, or `local`.
      */

@@ -111,10 +111,10 @@ class Image(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: Optional[pulumi.Input[pulumi.InputType['DockerBuildArgs']]] = None,
+                 build: Optional[pulumi.Input[Union['DockerBuildArgs', 'DockerBuildArgsDict']]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  image_name: Optional[pulumi.Input[str]] = None,
-                 registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
+                 registry: Optional[pulumi.Input[Union['RegistryArgs', 'RegistryArgsDict']]] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         """
@@ -155,11 +155,11 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         demo_image = docker.Image("demo-image",
-            build=docker.DockerBuildArgs(
-                context=".",
-                dockerfile="Dockerfile",
-                platform="linux/amd64",
-            ),
+            build={
+                "context": ".",
+                "dockerfile": "Dockerfile",
+                "platform": "linux/amd64",
+            },
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
@@ -170,10 +170,10 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         demo_push_image = docker.Image("demo-push-image",
-            build=docker.DockerBuildArgs(
-                context=".",
-                dockerfile="Dockerfile",
-            ),
+            build={
+                "context": ".",
+                "dockerfile": "Dockerfile",
+            },
             image_name="docker.io/username/push-image:tag1")
         pulumi.export("imageName", demo_push_image.image_name)
         pulumi.export("repoDigest", demo_push_image.repo_digest)
@@ -187,32 +187,32 @@ class Image(pulumi.CustomResource):
         ecr_repository = aws.ecr.Repository("ecr-repository", name="docker-repository")
         auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
         my_app_image = docker.Image("my-app-image",
-            build=docker.DockerBuildArgs(
-                args={
-                    "BUILDKIT_INLINE_CACHE": "1",
+            build={
+                "args": {
+                    "buildki_t__inlin_e__cache": "1",
                 },
-                cache_from=docker.CacheFromArgs(
-                    images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
-                ),
-                context="app/",
-                dockerfile="app/Dockerfile",
-            ),
+                "cache_from": {
+                    "images": [ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
+                },
+                "context": "app/",
+                "dockerfile": "app/Dockerfile",
+            },
             image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
-            registry=docker.RegistryArgs(
-                password=pulumi.Output.secret(auth_token.password),
-                server=ecr_repository.repository_url,
-                username=auth_token.user_name,
-            ))
+            registry={
+                "password": pulumi.Output.secret(auth_token.password),
+                "server": ecr_repository.repository_url,
+                "username": auth_token.user_name,
+            })
         pulumi.export("imageName", my_app_image.image_name)
         ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['DockerBuildArgs']] build: The Docker build context
+        :param pulumi.Input[Union['DockerBuildArgs', 'DockerBuildArgsDict']] build: The Docker build context
         :param pulumi.Input[bool] build_on_preview: A flag to build an image on preview
         :param pulumi.Input[str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
                This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
-        :param pulumi.Input[pulumi.InputType['RegistryArgs']] registry: The registry to push the image to
+        :param pulumi.Input[Union['RegistryArgs', 'RegistryArgsDict']] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
         ...
@@ -259,11 +259,11 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         demo_image = docker.Image("demo-image",
-            build=docker.DockerBuildArgs(
-                context=".",
-                dockerfile="Dockerfile",
-                platform="linux/amd64",
-            ),
+            build={
+                "context": ".",
+                "dockerfile": "Dockerfile",
+                "platform": "linux/amd64",
+            },
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
@@ -274,10 +274,10 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         demo_push_image = docker.Image("demo-push-image",
-            build=docker.DockerBuildArgs(
-                context=".",
-                dockerfile="Dockerfile",
-            ),
+            build={
+                "context": ".",
+                "dockerfile": "Dockerfile",
+            },
             image_name="docker.io/username/push-image:tag1")
         pulumi.export("imageName", demo_push_image.image_name)
         pulumi.export("repoDigest", demo_push_image.repo_digest)
@@ -291,22 +291,22 @@ class Image(pulumi.CustomResource):
         ecr_repository = aws.ecr.Repository("ecr-repository", name="docker-repository")
         auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
         my_app_image = docker.Image("my-app-image",
-            build=docker.DockerBuildArgs(
-                args={
-                    "BUILDKIT_INLINE_CACHE": "1",
+            build={
+                "args": {
+                    "buildki_t__inlin_e__cache": "1",
                 },
-                cache_from=docker.CacheFromArgs(
-                    images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
-                ),
-                context="app/",
-                dockerfile="app/Dockerfile",
-            ),
+                "cache_from": {
+                    "images": [ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
+                },
+                "context": "app/",
+                "dockerfile": "app/Dockerfile",
+            },
             image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
-            registry=docker.RegistryArgs(
-                password=pulumi.Output.secret(auth_token.password),
-                server=ecr_repository.repository_url,
-                username=auth_token.user_name,
-            ))
+            registry={
+                "password": pulumi.Output.secret(auth_token.password),
+                "server": ecr_repository.repository_url,
+                "username": auth_token.user_name,
+            })
         pulumi.export("imageName", my_app_image.image_name)
         ```
 
@@ -325,10 +325,10 @@ class Image(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: Optional[pulumi.Input[pulumi.InputType['DockerBuildArgs']]] = None,
+                 build: Optional[pulumi.Input[Union['DockerBuildArgs', 'DockerBuildArgsDict']]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  image_name: Optional[pulumi.Input[str]] = None,
-                 registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
+                 registry: Optional[pulumi.Input[Union['RegistryArgs', 'RegistryArgsDict']]] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)

@@ -6,7 +6,6 @@ package com.pulumi.docker.inputs;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.VolumeLabelArgs;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +38,13 @@ public final class VolumeState extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="driverOpts")
-    private @Nullable Output<Map<String,Object>> driverOpts;
+    private @Nullable Output<Map<String,String>> driverOpts;
 
     /**
      * @return Options specific to the driver.
      * 
      */
-    public Optional<Output<Map<String,Object>>> driverOpts() {
+    public Optional<Output<Map<String,String>>> driverOpts() {
         return Optional.ofNullable(this.driverOpts);
     }
 
@@ -149,7 +148,7 @@ public final class VolumeState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder driverOpts(@Nullable Output<Map<String,Object>> driverOpts) {
+        public Builder driverOpts(@Nullable Output<Map<String,String>> driverOpts) {
             $.driverOpts = driverOpts;
             return this;
         }
@@ -160,7 +159,7 @@ public final class VolumeState extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder driverOpts(Map<String,Object> driverOpts) {
+        public Builder driverOpts(Map<String,String> driverOpts) {
             return driverOpts(Output.of(driverOpts));
         }
 

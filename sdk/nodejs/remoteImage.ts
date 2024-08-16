@@ -133,7 +133,7 @@ export class RemoteImage extends pulumi.CustomResource {
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      */
-    public readonly triggers!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly triggers!: pulumi.Output<{[key: string]: string} | undefined>;
 
     /**
      * Create a RemoteImage resource with the given unique name, arguments, and options.
@@ -216,7 +216,7 @@ export interface RemoteImageState {
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      */
-    triggers?: pulumi.Input<{[key: string]: any}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }
 
 /**
@@ -250,5 +250,5 @@ export interface RemoteImageArgs {
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      */
-    triggers?: pulumi.Input<{[key: string]: any}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }

@@ -76,7 +76,7 @@ namespace Pulumi.Docker
         /// Options specific to the driver.
         /// </summary>
         [Output("driverOpts")]
-        public Output<ImmutableDictionary<string, object>?> DriverOpts { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> DriverOpts { get; private set; } = null!;
 
         /// <summary>
         /// User-defined key/value metadata
@@ -149,14 +149,14 @@ namespace Pulumi.Docker
         public Input<string>? Driver { get; set; }
 
         [Input("driverOpts")]
-        private InputMap<object>? _driverOpts;
+        private InputMap<string>? _driverOpts;
 
         /// <summary>
         /// Options specific to the driver.
         /// </summary>
-        public InputMap<object> DriverOpts
+        public InputMap<string> DriverOpts
         {
-            get => _driverOpts ?? (_driverOpts = new InputMap<object>());
+            get => _driverOpts ?? (_driverOpts = new InputMap<string>());
             set => _driverOpts = value;
         }
 
@@ -193,14 +193,14 @@ namespace Pulumi.Docker
         public Input<string>? Driver { get; set; }
 
         [Input("driverOpts")]
-        private InputMap<object>? _driverOpts;
+        private InputMap<string>? _driverOpts;
 
         /// <summary>
         /// Options specific to the driver.
         /// </summary>
-        public InputMap<object> DriverOpts
+        public InputMap<string> DriverOpts
         {
-            get => _driverOpts ?? (_driverOpts = new InputMap<object>());
+            get => _driverOpts ?? (_driverOpts = new InputMap<string>());
             set => _driverOpts = value;
         }
 

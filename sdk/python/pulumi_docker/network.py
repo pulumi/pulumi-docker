@@ -23,11 +23,11 @@ class NetworkArgs:
                  internal: Optional[pulumi.Input[bool]] = None,
                  ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
                  ipam_driver: Optional[pulumi.Input[str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  ipv6: Optional[pulumi.Input[bool]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, Any]]] = None):
+                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a Network resource.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
@@ -37,11 +37,11 @@ class NetworkArgs:
         :param pulumi.Input[bool] internal: Whether the network is internal.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]] ipam_configs: The IPAM configuration options
         :param pulumi.Input[str] ipam_driver: Driver used by the custom IP scheme of the network. Defaults to `default`
-        :param pulumi.Input[Mapping[str, Any]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
@@ -154,14 +154,14 @@ class NetworkArgs:
 
     @property
     @pulumi.getter(name="ipamOptions")
-    def ipam_options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def ipam_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         """
         return pulumi.get(self, "ipam_options")
 
     @ipam_options.setter
-    def ipam_options(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def ipam_options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "ipam_options", value)
 
     @property
@@ -202,14 +202,14 @@ class NetworkArgs:
 
     @property
     @pulumi.getter
-    def options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 
     @options.setter
-    def options(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "options", value)
 
 
@@ -223,11 +223,11 @@ class _NetworkState:
                  internal: Optional[pulumi.Input[bool]] = None,
                  ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
                  ipam_driver: Optional[pulumi.Input[str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  ipv6: Optional[pulumi.Input[bool]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  scope: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Network resources.
@@ -238,11 +238,11 @@ class _NetworkState:
         :param pulumi.Input[bool] internal: Whether the network is internal.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]] ipam_configs: The IPAM configuration options
         :param pulumi.Input[str] ipam_driver: Driver used by the custom IP scheme of the network. Defaults to `default`
-        :param pulumi.Input[Mapping[str, Any]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         :param pulumi.Input[str] scope: Scope of the network. One of `swarm`, `global`, or `local`.
         """
         if attachable is not None:
@@ -358,14 +358,14 @@ class _NetworkState:
 
     @property
     @pulumi.getter(name="ipamOptions")
-    def ipam_options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def ipam_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         """
         return pulumi.get(self, "ipam_options")
 
     @ipam_options.setter
-    def ipam_options(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def ipam_options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "ipam_options", value)
 
     @property
@@ -406,14 +406,14 @@ class _NetworkState:
 
     @property
     @pulumi.getter
-    def options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 
     @options.setter
-    def options(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "options", value)
 
     @property
@@ -439,13 +439,13 @@ class Network(pulumi.CustomResource):
                  driver: Optional[pulumi.Input[str]] = None,
                  ingress: Optional[pulumi.Input[bool]] = None,
                  internal: Optional[pulumi.Input[bool]] = None,
-                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]]] = None,
+                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
                  ipam_driver: Optional[pulumi.Input[str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  ipv6: Optional[pulumi.Input[bool]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -499,13 +499,13 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[bool] internal: Whether the network is internal.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]] ipam_configs: The IPAM configuration options
+        :param pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]] ipam_configs: The IPAM configuration options
         :param pulumi.Input[str] ipam_driver: Driver used by the custom IP scheme of the network. Defaults to `default`
-        :param pulumi.Input[Mapping[str, Any]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         ...
     @overload
@@ -578,13 +578,13 @@ class Network(pulumi.CustomResource):
                  driver: Optional[pulumi.Input[str]] = None,
                  ingress: Optional[pulumi.Input[bool]] = None,
                  internal: Optional[pulumi.Input[bool]] = None,
-                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]]] = None,
+                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
                  ipam_driver: Optional[pulumi.Input[str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  ipv6: Optional[pulumi.Input[bool]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -622,13 +622,13 @@ class Network(pulumi.CustomResource):
             driver: Optional[pulumi.Input[str]] = None,
             ingress: Optional[pulumi.Input[bool]] = None,
             internal: Optional[pulumi.Input[bool]] = None,
-            ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]]] = None,
+            ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
             ipam_driver: Optional[pulumi.Input[str]] = None,
-            ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+            ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
             ipv6: Optional[pulumi.Input[bool]] = None,
-            labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
             name: Optional[pulumi.Input[str]] = None,
-            options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+            options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
             scope: Optional[pulumi.Input[str]] = None) -> 'Network':
         """
         Get an existing Network resource's state with the given name, id, and optional extra
@@ -642,13 +642,13 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[bool] internal: Whether the network is internal.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]] ipam_configs: The IPAM configuration options
+        :param pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]] ipam_configs: The IPAM configuration options
         :param pulumi.Input[str] ipam_driver: Driver used by the custom IP scheme of the network. Defaults to `default`
-        :param pulumi.Input[Mapping[str, Any]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         :param pulumi.Input[str] scope: Scope of the network. One of `swarm`, `global`, or `local`.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -728,7 +728,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipamOptions")
-    def ipam_options(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
+    def ipam_options(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
         """
         Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         """
@@ -760,7 +760,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def options(self) -> pulumi.Output[Mapping[str, Any]]:
+    def options(self) -> pulumi.Output[Mapping[str, str]]:
         """
         Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """

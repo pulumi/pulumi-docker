@@ -116,7 +116,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
-        public readonly ImmutableDictionary<string, object> Options;
+        public readonly ImmutableDictionary<string, string> Options;
         /// <summary>
         /// Scope of the network. One of `swarm`, `global`, or `local`.
         /// </summary>
@@ -134,7 +134,7 @@ namespace Pulumi.Docker
 
             string name,
 
-            ImmutableDictionary<string, object> options,
+            ImmutableDictionary<string, string> options,
 
             string scope)
         {

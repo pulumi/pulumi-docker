@@ -1100,12 +1100,12 @@ class NetworkIpamConfig(dict):
         return super().get(key, default)
 
     def __init__(__self__, *,
-                 aux_address: Optional[Mapping[str, Any]] = None,
+                 aux_address: Optional[Mapping[str, str]] = None,
                  gateway: Optional[str] = None,
                  ip_range: Optional[str] = None,
                  subnet: Optional[str] = None):
         """
-        :param Mapping[str, Any] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
+        :param Mapping[str, str] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
         :param str gateway: The IP address of the gateway
         :param str ip_range: The ip range in CIDR form
         :param str subnet: The subnet in CIDR form
@@ -1121,7 +1121,7 @@ class NetworkIpamConfig(dict):
 
     @property
     @pulumi.getter(name="auxAddress")
-    def aux_address(self) -> Optional[Mapping[str, Any]]:
+    def aux_address(self) -> Optional[Mapping[str, str]]:
         """
         Auxiliary IPv4 or IPv6 addresses used by Network driver
         """
@@ -2465,7 +2465,7 @@ class ServiceTaskSpecContainerSpec(dict):
                  secrets: Optional[Sequence['outputs.ServiceTaskSpecContainerSpecSecret']] = None,
                  stop_grace_period: Optional[str] = None,
                  stop_signal: Optional[str] = None,
-                 sysctl: Optional[Mapping[str, Any]] = None,
+                 sysctl: Optional[Mapping[str, str]] = None,
                  user: Optional[str] = None):
         """
         :param str image: The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repo_digest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
@@ -2487,7 +2487,7 @@ class ServiceTaskSpecContainerSpec(dict):
         :param Sequence['ServiceTaskSpecContainerSpecSecretArgs'] secrets: References to zero or more secrets that will be exposed to the service
         :param str stop_grace_period: Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
         :param str stop_signal: Signal to stop the container
-        :param Mapping[str, Any] sysctl: Sysctls config (Linux only)
+        :param Mapping[str, str] sysctl: Sysctls config (Linux only)
         :param str user: The user inside the container
         """
         pulumi.set(__self__, "image", image)
@@ -2686,7 +2686,7 @@ class ServiceTaskSpecContainerSpec(dict):
 
     @property
     @pulumi.getter
-    def sysctl(self) -> Optional[Mapping[str, Any]]:
+    def sysctl(self) -> Optional[Mapping[str, str]]:
         """
         Sysctls config (Linux only)
         """
@@ -4111,12 +4111,12 @@ class VolumeLabel(dict):
 @pulumi.output_type
 class GetNetworkIpamConfigResult(dict):
     def __init__(__self__, *,
-                 aux_address: Optional[Mapping[str, Any]] = None,
+                 aux_address: Optional[Mapping[str, str]] = None,
                  gateway: Optional[str] = None,
                  ip_range: Optional[str] = None,
                  subnet: Optional[str] = None):
         """
-        :param Mapping[str, Any] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
+        :param Mapping[str, str] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
         :param str gateway: The IP address of the gateway
         :param str ip_range: The ip range in CIDR form
         :param str subnet: The subnet in CIDR form
@@ -4132,7 +4132,7 @@ class GetNetworkIpamConfigResult(dict):
 
     @property
     @pulumi.getter(name="auxAddress")
-    def aux_address(self) -> Optional[Mapping[str, Any]]:
+    def aux_address(self) -> Optional[Mapping[str, str]]:
         """
         Auxiliary IPv4 or IPv6 addresses used by Network driver
         """
