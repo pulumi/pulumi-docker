@@ -345,7 +345,7 @@ class Plugin(pulumi.CustomResource):
                  force_destroy: Optional[pulumi.Input[bool]] = None,
                  force_disable: Optional[pulumi.Input[bool]] = None,
                  grant_all_permissions: Optional[pulumi.Input[bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]]] = None,
+                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
@@ -369,7 +369,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[bool] force_destroy: If true, then the plugin is destroyed forcibly
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]] grant_permissions: Grant specific permissions only
+        :param pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]] grant_permissions: Grant specific permissions only
         :param pulumi.Input[str] name: Docker Plugin name
         """
         ...
@@ -412,7 +412,7 @@ class Plugin(pulumi.CustomResource):
                  force_destroy: Optional[pulumi.Input[bool]] = None,
                  force_disable: Optional[pulumi.Input[bool]] = None,
                  grant_all_permissions: Optional[pulumi.Input[bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]]] = None,
+                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -450,7 +450,7 @@ class Plugin(pulumi.CustomResource):
             force_destroy: Optional[pulumi.Input[bool]] = None,
             force_disable: Optional[pulumi.Input[bool]] = None,
             grant_all_permissions: Optional[pulumi.Input[bool]] = None,
-            grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]]] = None,
+            grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
             name: Optional[pulumi.Input[str]] = None,
             plugin_reference: Optional[pulumi.Input[str]] = None) -> 'Plugin':
         """
@@ -467,7 +467,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[bool] force_destroy: If true, then the plugin is destroyed forcibly
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]] grant_permissions: Grant specific permissions only
+        :param pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]] grant_permissions: Grant specific permissions only
         :param pulumi.Input[str] name: Docker Plugin name
         :param pulumi.Input[str] plugin_reference: Docker Plugin Reference
         """

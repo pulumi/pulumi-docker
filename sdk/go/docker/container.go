@@ -151,7 +151,7 @@ type Container struct {
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringOutput `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
-	LogOpts pulumi.MapOutput `pulumi:"logOpts"`
+	LogOpts pulumi.StringMapOutput `pulumi:"logOpts"`
 	// Save the container logs (`attach` must be enabled). Defaults to `false`.
 	Logs pulumi.BoolPtrOutput `pulumi:"logs"`
 	// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -202,11 +202,11 @@ type Container struct {
 	// Timeout (in seconds) to stop a container.
 	StopTimeout pulumi.IntOutput `pulumi:"stopTimeout"`
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
-	StorageOpts pulumi.MapOutput `pulumi:"storageOpts"`
+	StorageOpts pulumi.StringMapOutput `pulumi:"storageOpts"`
 	// A map of kernel parameters (sysctls) to set in the container.
-	Sysctls pulumi.MapOutput `pulumi:"sysctls"`
+	Sysctls pulumi.StringMapOutput `pulumi:"sysctls"`
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-	Tmpfs pulumi.MapOutput `pulumi:"tmpfs"`
+	Tmpfs pulumi.StringMapOutput `pulumi:"tmpfs"`
 	// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
 	Tty pulumi.BoolPtrOutput `pulumi:"tty"`
 	// Ulimit options to add.
@@ -317,7 +317,7 @@ type containerState struct {
 	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
-	LogOpts map[string]interface{} `pulumi:"logOpts"`
+	LogOpts map[string]string `pulumi:"logOpts"`
 	// Save the container logs (`attach` must be enabled). Defaults to `false`.
 	Logs *bool `pulumi:"logs"`
 	// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -368,11 +368,11 @@ type containerState struct {
 	// Timeout (in seconds) to stop a container.
 	StopTimeout *int `pulumi:"stopTimeout"`
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
-	StorageOpts map[string]interface{} `pulumi:"storageOpts"`
+	StorageOpts map[string]string `pulumi:"storageOpts"`
 	// A map of kernel parameters (sysctls) to set in the container.
-	Sysctls map[string]interface{} `pulumi:"sysctls"`
+	Sysctls map[string]string `pulumi:"sysctls"`
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-	Tmpfs map[string]interface{} `pulumi:"tmpfs"`
+	Tmpfs map[string]string `pulumi:"tmpfs"`
 	// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
 	Tty *bool `pulumi:"tty"`
 	// Ulimit options to add.
@@ -451,7 +451,7 @@ type ContainerState struct {
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
 	// Key/value pairs to use as options for the logging driver.
-	LogOpts pulumi.MapInput
+	LogOpts pulumi.StringMapInput
 	// Save the container logs (`attach` must be enabled). Defaults to `false`.
 	Logs pulumi.BoolPtrInput
 	// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -502,11 +502,11 @@ type ContainerState struct {
 	// Timeout (in seconds) to stop a container.
 	StopTimeout pulumi.IntPtrInput
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
-	StorageOpts pulumi.MapInput
+	StorageOpts pulumi.StringMapInput
 	// A map of kernel parameters (sysctls) to set in the container.
-	Sysctls pulumi.MapInput
+	Sysctls pulumi.StringMapInput
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-	Tmpfs pulumi.MapInput
+	Tmpfs pulumi.StringMapInput
 	// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
 	Tty pulumi.BoolPtrInput
 	// Ulimit options to add.
@@ -583,7 +583,7 @@ type containerArgs struct {
 	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
-	LogOpts map[string]interface{} `pulumi:"logOpts"`
+	LogOpts map[string]string `pulumi:"logOpts"`
 	// Save the container logs (`attach` must be enabled). Defaults to `false`.
 	Logs *bool `pulumi:"logs"`
 	// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -632,11 +632,11 @@ type containerArgs struct {
 	// Timeout (in seconds) to stop a container.
 	StopTimeout *int `pulumi:"stopTimeout"`
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
-	StorageOpts map[string]interface{} `pulumi:"storageOpts"`
+	StorageOpts map[string]string `pulumi:"storageOpts"`
 	// A map of kernel parameters (sysctls) to set in the container.
-	Sysctls map[string]interface{} `pulumi:"sysctls"`
+	Sysctls map[string]string `pulumi:"sysctls"`
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-	Tmpfs map[string]interface{} `pulumi:"tmpfs"`
+	Tmpfs map[string]string `pulumi:"tmpfs"`
 	// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
 	Tty *bool `pulumi:"tty"`
 	// Ulimit options to add.
@@ -710,7 +710,7 @@ type ContainerArgs struct {
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
 	// Key/value pairs to use as options for the logging driver.
-	LogOpts pulumi.MapInput
+	LogOpts pulumi.StringMapInput
 	// Save the container logs (`attach` must be enabled). Defaults to `false`.
 	Logs pulumi.BoolPtrInput
 	// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -759,11 +759,11 @@ type ContainerArgs struct {
 	// Timeout (in seconds) to stop a container.
 	StopTimeout pulumi.IntPtrInput
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
-	StorageOpts pulumi.MapInput
+	StorageOpts pulumi.StringMapInput
 	// A map of kernel parameters (sysctls) to set in the container.
-	Sysctls pulumi.MapInput
+	Sysctls pulumi.StringMapInput
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-	Tmpfs pulumi.MapInput
+	Tmpfs pulumi.StringMapInput
 	// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
 	Tty pulumi.BoolPtrInput
 	// Ulimit options to add.
@@ -1012,8 +1012,8 @@ func (o ContainerOutput) LogDriver() pulumi.StringOutput {
 }
 
 // Key/value pairs to use as options for the logging driver.
-func (o ContainerOutput) LogOpts() pulumi.MapOutput {
-	return o.ApplyT(func(v *Container) pulumi.MapOutput { return v.LogOpts }).(pulumi.MapOutput)
+func (o ContainerOutput) LogOpts() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringMapOutput { return v.LogOpts }).(pulumi.StringMapOutput)
 }
 
 // Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -1141,18 +1141,18 @@ func (o ContainerOutput) StopTimeout() pulumi.IntOutput {
 }
 
 // Key/value pairs for the storage driver options, e.g. `size`: `120G`
-func (o ContainerOutput) StorageOpts() pulumi.MapOutput {
-	return o.ApplyT(func(v *Container) pulumi.MapOutput { return v.StorageOpts }).(pulumi.MapOutput)
+func (o ContainerOutput) StorageOpts() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringMapOutput { return v.StorageOpts }).(pulumi.StringMapOutput)
 }
 
 // A map of kernel parameters (sysctls) to set in the container.
-func (o ContainerOutput) Sysctls() pulumi.MapOutput {
-	return o.ApplyT(func(v *Container) pulumi.MapOutput { return v.Sysctls }).(pulumi.MapOutput)
+func (o ContainerOutput) Sysctls() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringMapOutput { return v.Sysctls }).(pulumi.StringMapOutput)
 }
 
 // A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-func (o ContainerOutput) Tmpfs() pulumi.MapOutput {
-	return o.ApplyT(func(v *Container) pulumi.MapOutput { return v.Tmpfs }).(pulumi.MapOutput)
+func (o ContainerOutput) Tmpfs() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringMapOutput { return v.Tmpfs }).(pulumi.StringMapOutput)
 }
 
 // If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.

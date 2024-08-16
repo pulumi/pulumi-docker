@@ -77,7 +77,7 @@ type Volume struct {
 	// Driver type for the volume. Defaults to `local`.
 	Driver pulumi.StringOutput `pulumi:"driver"`
 	// Options specific to the driver.
-	DriverOpts pulumi.MapOutput `pulumi:"driverOpts"`
+	DriverOpts pulumi.StringMapOutput `pulumi:"driverOpts"`
 	// User-defined key/value metadata
 	Labels VolumeLabelArrayOutput `pulumi:"labels"`
 	// The mountpoint of the volume.
@@ -119,7 +119,7 @@ type volumeState struct {
 	// Driver type for the volume. Defaults to `local`.
 	Driver *string `pulumi:"driver"`
 	// Options specific to the driver.
-	DriverOpts map[string]interface{} `pulumi:"driverOpts"`
+	DriverOpts map[string]string `pulumi:"driverOpts"`
 	// User-defined key/value metadata
 	Labels []VolumeLabel `pulumi:"labels"`
 	// The mountpoint of the volume.
@@ -132,7 +132,7 @@ type VolumeState struct {
 	// Driver type for the volume. Defaults to `local`.
 	Driver pulumi.StringPtrInput
 	// Options specific to the driver.
-	DriverOpts pulumi.MapInput
+	DriverOpts pulumi.StringMapInput
 	// User-defined key/value metadata
 	Labels VolumeLabelArrayInput
 	// The mountpoint of the volume.
@@ -149,7 +149,7 @@ type volumeArgs struct {
 	// Driver type for the volume. Defaults to `local`.
 	Driver *string `pulumi:"driver"`
 	// Options specific to the driver.
-	DriverOpts map[string]interface{} `pulumi:"driverOpts"`
+	DriverOpts map[string]string `pulumi:"driverOpts"`
 	// User-defined key/value metadata
 	Labels []VolumeLabel `pulumi:"labels"`
 	// The name of the Docker volume (will be generated if not provided).
@@ -161,7 +161,7 @@ type VolumeArgs struct {
 	// Driver type for the volume. Defaults to `local`.
 	Driver pulumi.StringPtrInput
 	// Options specific to the driver.
-	DriverOpts pulumi.MapInput
+	DriverOpts pulumi.StringMapInput
 	// User-defined key/value metadata
 	Labels VolumeLabelArrayInput
 	// The name of the Docker volume (will be generated if not provided).
@@ -261,8 +261,8 @@ func (o VolumeOutput) Driver() pulumi.StringOutput {
 }
 
 // Options specific to the driver.
-func (o VolumeOutput) DriverOpts() pulumi.MapOutput {
-	return o.ApplyT(func(v *Volume) pulumi.MapOutput { return v.DriverOpts }).(pulumi.MapOutput)
+func (o VolumeOutput) DriverOpts() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Volume) pulumi.StringMapOutput { return v.DriverOpts }).(pulumi.StringMapOutput)
 }
 
 // User-defined key/value metadata

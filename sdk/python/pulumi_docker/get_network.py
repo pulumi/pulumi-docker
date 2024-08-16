@@ -87,7 +87,7 @@ class GetNetworkResult:
 
     @property
     @pulumi.getter
-    def options(self) -> Mapping[str, Any]:
+    def options(self) -> Mapping[str, str]:
         """
         Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """

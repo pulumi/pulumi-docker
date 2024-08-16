@@ -1134,12 +1134,12 @@ class ContainerVolumeArgs:
 @pulumi.input_type
 class NetworkIpamConfigArgs:
     def __init__(__self__, *,
-                 aux_address: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 aux_address: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  gateway: Optional[pulumi.Input[str]] = None,
                  ip_range: Optional[pulumi.Input[str]] = None,
                  subnet: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[Mapping[str, Any]] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
         :param pulumi.Input[str] gateway: The IP address of the gateway
         :param pulumi.Input[str] ip_range: The ip range in CIDR form
         :param pulumi.Input[str] subnet: The subnet in CIDR form
@@ -1155,14 +1155,14 @@ class NetworkIpamConfigArgs:
 
     @property
     @pulumi.getter(name="auxAddress")
-    def aux_address(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def aux_address(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Auxiliary IPv4 or IPv6 addresses used by Network driver
         """
         return pulumi.get(self, "aux_address")
 
     @aux_address.setter
-    def aux_address(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def aux_address(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "aux_address", value)
 
     @property
@@ -2739,7 +2739,7 @@ class ServiceTaskSpecContainerSpecArgs:
                  secrets: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]] = None,
                  stop_grace_period: Optional[pulumi.Input[str]] = None,
                  stop_signal: Optional[pulumi.Input[str]] = None,
-                 sysctl: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 sysctl: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  user: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] image: The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repo_digest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
@@ -2761,7 +2761,7 @@ class ServiceTaskSpecContainerSpecArgs:
         :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]] secrets: References to zero or more secrets that will be exposed to the service
         :param pulumi.Input[str] stop_grace_period: Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
         :param pulumi.Input[str] stop_signal: Signal to stop the container
-        :param pulumi.Input[Mapping[str, Any]] sysctl: Sysctls config (Linux only)
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] sysctl: Sysctls config (Linux only)
         :param pulumi.Input[str] user: The user inside the container
         """
         pulumi.set(__self__, "image", image)
@@ -3036,14 +3036,14 @@ class ServiceTaskSpecContainerSpecArgs:
 
     @property
     @pulumi.getter
-    def sysctl(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def sysctl(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Sysctls config (Linux only)
         """
         return pulumi.get(self, "sysctl")
 
     @sysctl.setter
-    def sysctl(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def sysctl(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "sysctl", value)
 
     @property

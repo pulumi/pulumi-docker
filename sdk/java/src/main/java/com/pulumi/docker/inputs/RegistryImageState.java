@@ -6,7 +6,6 @@ package com.pulumi.docker.inputs;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import java.lang.Boolean;
-import java.lang.Object;
 import java.lang.String;
 import java.util.Map;
 import java.util.Objects;
@@ -83,13 +82,13 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
      * 
      */
     @Import(name="triggers")
-    private @Nullable Output<Map<String,Object>> triggers;
+    private @Nullable Output<Map<String,String>> triggers;
 
     /**
      * @return A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      * 
      */
-    public Optional<Output<Map<String,Object>>> triggers() {
+    public Optional<Output<Map<String,String>>> triggers() {
         return Optional.ofNullable(this.triggers);
     }
 
@@ -211,7 +210,7 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
          * @return builder
          * 
          */
-        public Builder triggers(@Nullable Output<Map<String,Object>> triggers) {
+        public Builder triggers(@Nullable Output<Map<String,String>> triggers) {
             $.triggers = triggers;
             return this;
         }
@@ -222,7 +221,7 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
          * @return builder
          * 
          */
-        public Builder triggers(Map<String,Object> triggers) {
+        public Builder triggers(Map<String,String> triggers) {
             return triggers(Output.of(triggers));
         }
 

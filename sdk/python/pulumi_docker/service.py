@@ -321,15 +321,15 @@ class Service(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
-                 converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
-                 endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
-                 mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
+                 auth: Optional[pulumi.Input[Union['ServiceAuthArgs', 'ServiceAuthArgsDict']]] = None,
+                 converge_config: Optional[pulumi.Input[Union['ServiceConvergeConfigArgs', 'ServiceConvergeConfigArgsDict']]] = None,
+                 endpoint_spec: Optional[pulumi.Input[Union['ServiceEndpointSpecArgs', 'ServiceEndpointSpecArgsDict']]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ServiceLabelArgs', 'ServiceLabelArgsDict']]]]] = None,
+                 mode: Optional[pulumi.Input[Union['ServiceModeArgs', 'ServiceModeArgsDict']]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
-                 task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
-                 update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None,
+                 rollback_config: Optional[pulumi.Input[Union['ServiceRollbackConfigArgs', 'ServiceRollbackConfigArgsDict']]] = None,
+                 task_spec: Optional[pulumi.Input[Union['ServiceTaskSpecArgs', 'ServiceTaskSpecArgsDict']]] = None,
+                 update_config: Optional[pulumi.Input[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict']]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -393,15 +393,15 @@ class Service(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: Configuration for the authentication for pulling the images of the service
-        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
-        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: Properties that can be configured to access and load balance a service
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: User-defined key/value metadata
-        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: Scheduling mode for the service
+        :param pulumi.Input[Union['ServiceAuthArgs', 'ServiceAuthArgsDict']] auth: Configuration for the authentication for pulling the images of the service
+        :param pulumi.Input[Union['ServiceConvergeConfigArgs', 'ServiceConvergeConfigArgsDict']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
+        :param pulumi.Input[Union['ServiceEndpointSpecArgs', 'ServiceEndpointSpecArgsDict']] endpoint_spec: Properties that can be configured to access and load balance a service
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ServiceLabelArgs', 'ServiceLabelArgsDict']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Union['ServiceModeArgs', 'ServiceModeArgsDict']] mode: Scheduling mode for the service
         :param pulumi.Input[str] name: Name of the service
-        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: Specification for the rollback strategy of the service
-        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: User modifiable task configuration
-        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: Specification for the update strategy of the service
+        :param pulumi.Input[Union['ServiceRollbackConfigArgs', 'ServiceRollbackConfigArgsDict']] rollback_config: Specification for the rollback strategy of the service
+        :param pulumi.Input[Union['ServiceTaskSpecArgs', 'ServiceTaskSpecArgsDict']] task_spec: User modifiable task configuration
+        :param pulumi.Input[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict']] update_config: Specification for the update strategy of the service
         """
         ...
     @overload
@@ -484,15 +484,15 @@ class Service(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
-                 converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
-                 endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
-                 mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
+                 auth: Optional[pulumi.Input[Union['ServiceAuthArgs', 'ServiceAuthArgsDict']]] = None,
+                 converge_config: Optional[pulumi.Input[Union['ServiceConvergeConfigArgs', 'ServiceConvergeConfigArgsDict']]] = None,
+                 endpoint_spec: Optional[pulumi.Input[Union['ServiceEndpointSpecArgs', 'ServiceEndpointSpecArgsDict']]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ServiceLabelArgs', 'ServiceLabelArgsDict']]]]] = None,
+                 mode: Optional[pulumi.Input[Union['ServiceModeArgs', 'ServiceModeArgsDict']]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
-                 task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
-                 update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None,
+                 rollback_config: Optional[pulumi.Input[Union['ServiceRollbackConfigArgs', 'ServiceRollbackConfigArgsDict']]] = None,
+                 task_spec: Optional[pulumi.Input[Union['ServiceTaskSpecArgs', 'ServiceTaskSpecArgsDict']]] = None,
+                 update_config: Optional[pulumi.Input[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict']]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -523,15 +523,15 @@ class Service(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
-            converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
-            endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
-            labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
-            mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
+            auth: Optional[pulumi.Input[Union['ServiceAuthArgs', 'ServiceAuthArgsDict']]] = None,
+            converge_config: Optional[pulumi.Input[Union['ServiceConvergeConfigArgs', 'ServiceConvergeConfigArgsDict']]] = None,
+            endpoint_spec: Optional[pulumi.Input[Union['ServiceEndpointSpecArgs', 'ServiceEndpointSpecArgsDict']]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ServiceLabelArgs', 'ServiceLabelArgsDict']]]]] = None,
+            mode: Optional[pulumi.Input[Union['ServiceModeArgs', 'ServiceModeArgsDict']]] = None,
             name: Optional[pulumi.Input[str]] = None,
-            rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
-            task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
-            update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None) -> 'Service':
+            rollback_config: Optional[pulumi.Input[Union['ServiceRollbackConfigArgs', 'ServiceRollbackConfigArgsDict']]] = None,
+            task_spec: Optional[pulumi.Input[Union['ServiceTaskSpecArgs', 'ServiceTaskSpecArgsDict']]] = None,
+            update_config: Optional[pulumi.Input[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict']]] = None) -> 'Service':
         """
         Get an existing Service resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -539,15 +539,15 @@ class Service(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: Configuration for the authentication for pulling the images of the service
-        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
-        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: Properties that can be configured to access and load balance a service
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: User-defined key/value metadata
-        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: Scheduling mode for the service
+        :param pulumi.Input[Union['ServiceAuthArgs', 'ServiceAuthArgsDict']] auth: Configuration for the authentication for pulling the images of the service
+        :param pulumi.Input[Union['ServiceConvergeConfigArgs', 'ServiceConvergeConfigArgsDict']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
+        :param pulumi.Input[Union['ServiceEndpointSpecArgs', 'ServiceEndpointSpecArgsDict']] endpoint_spec: Properties that can be configured to access and load balance a service
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ServiceLabelArgs', 'ServiceLabelArgsDict']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Union['ServiceModeArgs', 'ServiceModeArgsDict']] mode: Scheduling mode for the service
         :param pulumi.Input[str] name: Name of the service
-        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: Specification for the rollback strategy of the service
-        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: User modifiable task configuration
-        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: Specification for the update strategy of the service
+        :param pulumi.Input[Union['ServiceRollbackConfigArgs', 'ServiceRollbackConfigArgsDict']] rollback_config: Specification for the rollback strategy of the service
+        :param pulumi.Input[Union['ServiceTaskSpecArgs', 'ServiceTaskSpecArgsDict']] task_spec: User modifiable task configuration
+        :param pulumi.Input[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict']] update_config: Specification for the update strategy of the service
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 

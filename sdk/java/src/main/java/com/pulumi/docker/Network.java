@@ -13,7 +13,6 @@ import com.pulumi.docker.inputs.NetworkState;
 import com.pulumi.docker.outputs.NetworkIpamConfig;
 import com.pulumi.docker.outputs.NetworkLabel;
 import java.lang.Boolean;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -196,14 +195,14 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
      * 
      */
-    @Export(name="ipamOptions", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> ipamOptions;
+    @Export(name="ipamOptions", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> ipamOptions;
 
     /**
      * @return Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
      * 
      */
-    public Output<Optional<Map<String,Object>>> ipamOptions() {
+    public Output<Optional<Map<String,String>>> ipamOptions() {
         return Codegen.optional(this.ipamOptions);
     }
     /**
@@ -252,14 +251,14 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    @Export(name="options", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output<Map<String,Object>> options;
+    @Export(name="options", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output<Map<String,String>> options;
 
     /**
      * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    public Output<Map<String,Object>> options() {
+    public Output<Map<String,String>> options() {
         return this.options;
     }
     /**
@@ -281,7 +280,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      *
      * @param name The _unique_ name of the resulting resource.
      */
-    public Network(String name) {
+    public Network(java.lang.String name) {
         this(name, NetworkArgs.Empty);
     }
     /**
@@ -289,7 +288,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Network(String name, @Nullable NetworkArgs args) {
+    public Network(java.lang.String name, @Nullable NetworkArgs args) {
         this(name, args, null);
     }
     /**
@@ -298,15 +297,22 @@ public class Network extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Network(String name, @Nullable NetworkArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/network:Network", name, args == null ? NetworkArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
+    public Network(java.lang.String name, @Nullable NetworkArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/network:Network", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
-    private Network(String name, Output<String> id, @Nullable NetworkState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/network:Network", name, state, makeResourceOptions(options, id));
+    private Network(java.lang.String name, Output<java.lang.String> id, @Nullable NetworkState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/network:Network", name, state, makeResourceOptions(options, id), false);
     }
 
-    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
+    private static NetworkArgs makeArgs(@Nullable NetworkArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        if (options != null && options.getUrn().isPresent()) {
+            return null;
+        }
+        return args == null ? NetworkArgs.Empty : args;
+    }
+
+    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<java.lang.String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
             .build();
@@ -322,7 +328,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * @param state
      * @param options Optional settings to control the behavior of the CustomResource.
      */
-    public static Network get(String name, Output<String> id, @Nullable NetworkState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public static Network get(java.lang.String name, Output<java.lang.String> id, @Nullable NetworkState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         return new Network(name, id, state, options);
     }
 }

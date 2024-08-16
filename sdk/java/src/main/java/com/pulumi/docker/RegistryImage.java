@@ -11,7 +11,6 @@ import com.pulumi.docker.RegistryImageArgs;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.RegistryImageState;
 import java.lang.Boolean;
-import java.lang.Object;
 import java.lang.String;
 import java.util.Map;
 import java.util.Optional;
@@ -84,14 +83,14 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      * 
      */
-    @Export(name="triggers", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> triggers;
+    @Export(name="triggers", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> triggers;
 
     /**
      * @return A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      * 
      */
-    public Output<Optional<Map<String,Object>>> triggers() {
+    public Output<Optional<Map<String,String>>> triggers() {
         return Codegen.optional(this.triggers);
     }
 
@@ -99,7 +98,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      *
      * @param name The _unique_ name of the resulting resource.
      */
-    public RegistryImage(String name) {
+    public RegistryImage(java.lang.String name) {
         this(name, RegistryImageArgs.Empty);
     }
     /**
@@ -107,7 +106,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public RegistryImage(String name, @Nullable RegistryImageArgs args) {
+    public RegistryImage(java.lang.String name, @Nullable RegistryImageArgs args) {
         this(name, args, null);
     }
     /**
@@ -116,15 +115,22 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public RegistryImage(String name, @Nullable RegistryImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/registryImage:RegistryImage", name, args == null ? RegistryImageArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
+    public RegistryImage(java.lang.String name, @Nullable RegistryImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/registryImage:RegistryImage", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
-    private RegistryImage(String name, Output<String> id, @Nullable RegistryImageState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/registryImage:RegistryImage", name, state, makeResourceOptions(options, id));
+    private RegistryImage(java.lang.String name, Output<java.lang.String> id, @Nullable RegistryImageState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/registryImage:RegistryImage", name, state, makeResourceOptions(options, id), false);
     }
 
-    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
+    private static RegistryImageArgs makeArgs(@Nullable RegistryImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        if (options != null && options.getUrn().isPresent()) {
+            return null;
+        }
+        return args == null ? RegistryImageArgs.Empty : args;
+    }
+
+    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<java.lang.String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
             .build();
@@ -140,7 +146,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * @param state
      * @param options Optional settings to control the behavior of the CustomResource.
      */
-    public static RegistryImage get(String name, Output<String> id, @Nullable RegistryImageState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public static RegistryImage get(java.lang.String name, Output<java.lang.String> id, @Nullable RegistryImageState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         return new RegistryImage(name, id, state, options);
     }
 }

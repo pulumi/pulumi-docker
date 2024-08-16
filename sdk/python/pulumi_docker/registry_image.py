@@ -17,13 +17,13 @@ class RegistryImageArgs:
                  insecure_skip_verify: Optional[pulumi.Input[bool]] = None,
                  keep_remotely: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
+                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a RegistryImage resource.
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
-        :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
@@ -72,14 +72,14 @@ class RegistryImageArgs:
 
     @property
     @pulumi.getter
-    def triggers(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def triggers(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         return pulumi.get(self, "triggers")
 
     @triggers.setter
-    def triggers(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def triggers(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "triggers", value)
 
 
@@ -90,14 +90,14 @@ class _RegistryImageState:
                  keep_remotely: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  sha256_digest: Optional[pulumi.Input[str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
+                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None):
         """
         Input properties used for looking up and filtering RegistryImage resources.
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
-        :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
@@ -160,14 +160,14 @@ class _RegistryImageState:
 
     @property
     @pulumi.getter
-    def triggers(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def triggers(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         return pulumi.get(self, "triggers")
 
     @triggers.setter
-    def triggers(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def triggers(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "triggers", value)
 
 
@@ -179,7 +179,7 @@ class RegistryImage(pulumi.CustomResource):
                  insecure_skip_verify: Optional[pulumi.Input[bool]] = None,
                  keep_remotely: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -190,7 +190,7 @@ class RegistryImage(pulumi.CustomResource):
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
-        :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         ...
     @overload
@@ -220,7 +220,7 @@ class RegistryImage(pulumi.CustomResource):
                  insecure_skip_verify: Optional[pulumi.Input[bool]] = None,
                  keep_remotely: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -249,7 +249,7 @@ class RegistryImage(pulumi.CustomResource):
             keep_remotely: Optional[pulumi.Input[bool]] = None,
             name: Optional[pulumi.Input[str]] = None,
             sha256_digest: Optional[pulumi.Input[str]] = None,
-            triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None) -> 'RegistryImage':
+            triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None) -> 'RegistryImage':
         """
         Get an existing RegistryImage resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -261,7 +261,7 @@ class RegistryImage(pulumi.CustomResource):
         :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
-        :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -308,7 +308,7 @@ class RegistryImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def triggers(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
+    def triggers(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """

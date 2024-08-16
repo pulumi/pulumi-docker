@@ -67,7 +67,7 @@ type LookupNetworkResult struct {
 	// The name of the Docker network.
 	Name string `pulumi:"name"`
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options map[string]interface{} `pulumi:"options"`
+	Options map[string]string `pulumi:"options"`
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope string `pulumi:"scope"`
 }
@@ -136,8 +136,8 @@ func (o LookupNetworkResultOutput) Name() pulumi.StringOutput {
 }
 
 // Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-func (o LookupNetworkResultOutput) Options() pulumi.MapOutput {
-	return o.ApplyT(func(v LookupNetworkResult) map[string]interface{} { return v.Options }).(pulumi.MapOutput)
+func (o LookupNetworkResultOutput) Options() pulumi.StringMapOutput {
+	return o.ApplyT(func(v LookupNetworkResult) map[string]string { return v.Options }).(pulumi.StringMapOutput)
 }
 
 // Scope of the network. One of `swarm`, `global`, or `local`.

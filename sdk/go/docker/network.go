@@ -89,7 +89,7 @@ type Network struct {
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver pulumi.StringPtrOutput `pulumi:"ipamDriver"`
 	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
-	IpamOptions pulumi.MapOutput `pulumi:"ipamOptions"`
+	IpamOptions pulumi.StringMapOutput `pulumi:"ipamOptions"`
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 pulumi.BoolPtrOutput `pulumi:"ipv6"`
 	// User-defined key/value metadata
@@ -97,7 +97,7 @@ type Network struct {
 	// The name of the Docker network.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options pulumi.MapOutput `pulumi:"options"`
+	Options pulumi.StringMapOutput `pulumi:"options"`
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope pulumi.StringOutput `pulumi:"scope"`
 }
@@ -147,7 +147,7 @@ type networkState struct {
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver *string `pulumi:"ipamDriver"`
 	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
-	IpamOptions map[string]interface{} `pulumi:"ipamOptions"`
+	IpamOptions map[string]string `pulumi:"ipamOptions"`
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 *bool `pulumi:"ipv6"`
 	// User-defined key/value metadata
@@ -155,7 +155,7 @@ type networkState struct {
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options map[string]interface{} `pulumi:"options"`
+	Options map[string]string `pulumi:"options"`
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope *string `pulumi:"scope"`
 }
@@ -176,7 +176,7 @@ type NetworkState struct {
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver pulumi.StringPtrInput
 	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
-	IpamOptions pulumi.MapInput
+	IpamOptions pulumi.StringMapInput
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 pulumi.BoolPtrInput
 	// User-defined key/value metadata
@@ -184,7 +184,7 @@ type NetworkState struct {
 	// The name of the Docker network.
 	Name pulumi.StringPtrInput
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options pulumi.MapInput
+	Options pulumi.StringMapInput
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope pulumi.StringPtrInput
 }
@@ -209,7 +209,7 @@ type networkArgs struct {
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver *string `pulumi:"ipamDriver"`
 	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
-	IpamOptions map[string]interface{} `pulumi:"ipamOptions"`
+	IpamOptions map[string]string `pulumi:"ipamOptions"`
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 *bool `pulumi:"ipv6"`
 	// User-defined key/value metadata
@@ -217,7 +217,7 @@ type networkArgs struct {
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options map[string]interface{} `pulumi:"options"`
+	Options map[string]string `pulumi:"options"`
 }
 
 // The set of arguments for constructing a Network resource.
@@ -237,7 +237,7 @@ type NetworkArgs struct {
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver pulumi.StringPtrInput
 	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
-	IpamOptions pulumi.MapInput
+	IpamOptions pulumi.StringMapInput
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 pulumi.BoolPtrInput
 	// User-defined key/value metadata
@@ -245,7 +245,7 @@ type NetworkArgs struct {
 	// The name of the Docker network.
 	Name pulumi.StringPtrInput
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options pulumi.MapInput
+	Options pulumi.StringMapInput
 }
 
 func (NetworkArgs) ElementType() reflect.Type {
@@ -371,8 +371,8 @@ func (o NetworkOutput) IpamDriver() pulumi.StringPtrOutput {
 }
 
 // Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
-func (o NetworkOutput) IpamOptions() pulumi.MapOutput {
-	return o.ApplyT(func(v *Network) pulumi.MapOutput { return v.IpamOptions }).(pulumi.MapOutput)
+func (o NetworkOutput) IpamOptions() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Network) pulumi.StringMapOutput { return v.IpamOptions }).(pulumi.StringMapOutput)
 }
 
 // Enable IPv6 networking. Defaults to `false`.
@@ -391,8 +391,8 @@ func (o NetworkOutput) Name() pulumi.StringOutput {
 }
 
 // Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-func (o NetworkOutput) Options() pulumi.MapOutput {
-	return o.ApplyT(func(v *Network) pulumi.MapOutput { return v.Options }).(pulumi.MapOutput)
+func (o NetworkOutput) Options() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Network) pulumi.StringMapOutput { return v.Options }).(pulumi.StringMapOutput)
 }
 
 // Scope of the network. One of `swarm`, `global`, or `local`.

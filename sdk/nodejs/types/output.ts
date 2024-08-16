@@ -298,7 +298,7 @@ export interface GetNetworkIpamConfig {
     /**
      * Auxiliary IPv4 or IPv6 addresses used by Network driver
      */
-    auxAddress?: {[key: string]: any};
+    auxAddress?: {[key: string]: string};
     /**
      * The IP address of the gateway
      */
@@ -317,7 +317,7 @@ export interface NetworkIpamConfig {
     /**
      * Auxiliary IPv4 or IPv6 addresses used by Network driver
      */
-    auxAddress?: {[key: string]: any};
+    auxAddress?: {[key: string]: string};
     /**
      * The IP address of the gateway
      */
@@ -789,7 +789,7 @@ export interface ServiceTaskSpecContainerSpec {
     /**
      * Sysctls config (Linux only)
      */
-    sysctl?: {[key: string]: any};
+    sysctl?: {[key: string]: string};
     /**
      * The user inside the container
      */

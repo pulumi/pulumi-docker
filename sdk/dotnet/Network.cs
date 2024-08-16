@@ -112,7 +112,7 @@ namespace Pulumi.Docker
         /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         /// </summary>
         [Output("ipamOptions")]
-        public Output<ImmutableDictionary<string, object>?> IpamOptions { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> IpamOptions { get; private set; } = null!;
 
         /// <summary>
         /// Enable IPv6 networking. Defaults to `false`.
@@ -136,7 +136,7 @@ namespace Pulumi.Docker
         /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         [Output("options")]
-        public Output<ImmutableDictionary<string, object>> Options { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>> Options { get; private set; } = null!;
 
         /// <summary>
         /// Scope of the network. One of `swarm`, `global`, or `local`.
@@ -239,14 +239,14 @@ namespace Pulumi.Docker
         public Input<string>? IpamDriver { get; set; }
 
         [Input("ipamOptions")]
-        private InputMap<object>? _ipamOptions;
+        private InputMap<string>? _ipamOptions;
 
         /// <summary>
         /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         /// </summary>
-        public InputMap<object> IpamOptions
+        public InputMap<string> IpamOptions
         {
-            get => _ipamOptions ?? (_ipamOptions = new InputMap<object>());
+            get => _ipamOptions ?? (_ipamOptions = new InputMap<string>());
             set => _ipamOptions = value;
         }
 
@@ -275,14 +275,14 @@ namespace Pulumi.Docker
         public Input<string>? Name { get; set; }
 
         [Input("options")]
-        private InputMap<object>? _options;
+        private InputMap<string>? _options;
 
         /// <summary>
         /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
-        public InputMap<object> Options
+        public InputMap<string> Options
         {
-            get => _options ?? (_options = new InputMap<object>());
+            get => _options ?? (_options = new InputMap<string>());
             set => _options = value;
         }
 
@@ -343,14 +343,14 @@ namespace Pulumi.Docker
         public Input<string>? IpamDriver { get; set; }
 
         [Input("ipamOptions")]
-        private InputMap<object>? _ipamOptions;
+        private InputMap<string>? _ipamOptions;
 
         /// <summary>
         /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         /// </summary>
-        public InputMap<object> IpamOptions
+        public InputMap<string> IpamOptions
         {
-            get => _ipamOptions ?? (_ipamOptions = new InputMap<object>());
+            get => _ipamOptions ?? (_ipamOptions = new InputMap<string>());
             set => _ipamOptions = value;
         }
 
@@ -379,14 +379,14 @@ namespace Pulumi.Docker
         public Input<string>? Name { get; set; }
 
         [Input("options")]
-        private InputMap<object>? _options;
+        private InputMap<string>? _options;
 
         /// <summary>
         /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
-        public InputMap<object> Options
+        public InputMap<string> Options
         {
-            get => _options ?? (_options = new InputMap<object>());
+            get => _options ?? (_options = new InputMap<string>());
             set => _options = value;
         }
 

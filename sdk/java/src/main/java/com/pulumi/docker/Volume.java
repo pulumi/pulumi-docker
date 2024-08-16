@@ -11,7 +11,6 @@ import com.pulumi.docker.Utilities;
 import com.pulumi.docker.VolumeArgs;
 import com.pulumi.docker.inputs.VolumeState;
 import com.pulumi.docker.outputs.VolumeLabel;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -110,14 +109,14 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * Options specific to the driver.
      * 
      */
-    @Export(name="driverOpts", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> driverOpts;
+    @Export(name="driverOpts", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> driverOpts;
 
     /**
      * @return Options specific to the driver.
      * 
      */
-    public Output<Optional<Map<String,Object>>> driverOpts() {
+    public Output<Optional<Map<String,String>>> driverOpts() {
         return Codegen.optional(this.driverOpts);
     }
     /**
@@ -167,7 +166,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      *
      * @param name The _unique_ name of the resulting resource.
      */
-    public Volume(String name) {
+    public Volume(java.lang.String name) {
         this(name, VolumeArgs.Empty);
     }
     /**
@@ -175,7 +174,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Volume(String name, @Nullable VolumeArgs args) {
+    public Volume(java.lang.String name, @Nullable VolumeArgs args) {
         this(name, args, null);
     }
     /**
@@ -184,15 +183,22 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Volume(String name, @Nullable VolumeArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/volume:Volume", name, args == null ? VolumeArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
+    public Volume(java.lang.String name, @Nullable VolumeArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/volume:Volume", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
-    private Volume(String name, Output<String> id, @Nullable VolumeState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/volume:Volume", name, state, makeResourceOptions(options, id));
+    private Volume(java.lang.String name, Output<java.lang.String> id, @Nullable VolumeState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/volume:Volume", name, state, makeResourceOptions(options, id), false);
     }
 
-    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
+    private static VolumeArgs makeArgs(@Nullable VolumeArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        if (options != null && options.getUrn().isPresent()) {
+            return null;
+        }
+        return args == null ? VolumeArgs.Empty : args;
+    }
+
+    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<java.lang.String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
             .build();
@@ -208,7 +214,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * @param state
      * @param options Optional settings to control the behavior of the CustomResource.
      */
-    public static Volume get(String name, Output<String> id, @Nullable VolumeState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public static Volume get(java.lang.String name, Output<java.lang.String> id, @Nullable VolumeState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         return new Volume(name, id, state, options);
     }
 }

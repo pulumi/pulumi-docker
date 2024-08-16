@@ -25,7 +25,7 @@ type RegistryImage struct {
 	// The sha256 digest of the image.
 	Sha256Digest pulumi.StringOutput `pulumi:"sha256Digest"`
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
-	Triggers pulumi.MapOutput `pulumi:"triggers"`
+	Triggers pulumi.StringMapOutput `pulumi:"triggers"`
 }
 
 // NewRegistryImage registers a new resource with the given unique name, arguments, and options.
@@ -67,7 +67,7 @@ type registryImageState struct {
 	// The sha256 digest of the image.
 	Sha256Digest *string `pulumi:"sha256Digest"`
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
-	Triggers map[string]interface{} `pulumi:"triggers"`
+	Triggers map[string]string `pulumi:"triggers"`
 }
 
 type RegistryImageState struct {
@@ -80,7 +80,7 @@ type RegistryImageState struct {
 	// The sha256 digest of the image.
 	Sha256Digest pulumi.StringPtrInput
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
-	Triggers pulumi.MapInput
+	Triggers pulumi.StringMapInput
 }
 
 func (RegistryImageState) ElementType() reflect.Type {
@@ -95,7 +95,7 @@ type registryImageArgs struct {
 	// The name of the Docker image.
 	Name *string `pulumi:"name"`
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
-	Triggers map[string]interface{} `pulumi:"triggers"`
+	Triggers map[string]string `pulumi:"triggers"`
 }
 
 // The set of arguments for constructing a RegistryImage resource.
@@ -107,7 +107,7 @@ type RegistryImageArgs struct {
 	// The name of the Docker image.
 	Name pulumi.StringPtrInput
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
-	Triggers pulumi.MapInput
+	Triggers pulumi.StringMapInput
 }
 
 func (RegistryImageArgs) ElementType() reflect.Type {
@@ -218,8 +218,8 @@ func (o RegistryImageOutput) Sha256Digest() pulumi.StringOutput {
 }
 
 // A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
-func (o RegistryImageOutput) Triggers() pulumi.MapOutput {
-	return o.ApplyT(func(v *RegistryImage) pulumi.MapOutput { return v.Triggers }).(pulumi.MapOutput)
+func (o RegistryImageOutput) Triggers() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *RegistryImage) pulumi.StringMapOutput { return v.Triggers }).(pulumi.StringMapOutput)
 }
 
 type RegistryImageArrayOutput struct{ *pulumi.OutputState }

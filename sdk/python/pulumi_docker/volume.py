@@ -17,13 +17,13 @@ __all__ = ['VolumeArgs', 'Volume']
 class VolumeArgs:
     def __init__(__self__, *,
                  driver: Optional[pulumi.Input[str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Volume resource.
         :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
-        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_opts: Options specific to the driver.
         :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
@@ -50,14 +50,14 @@ class VolumeArgs:
 
     @property
     @pulumi.getter(name="driverOpts")
-    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Options specific to the driver.
         """
         return pulumi.get(self, "driver_opts")
 
     @driver_opts.setter
-    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "driver_opts", value)
 
     @property
@@ -89,14 +89,14 @@ class VolumeArgs:
 class _VolumeState:
     def __init__(__self__, *,
                  driver: Optional[pulumi.Input[str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
                  mountpoint: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Volume resources.
         :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
-        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_opts: Options specific to the driver.
         :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] mountpoint: The mountpoint of the volume.
         :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
@@ -126,14 +126,14 @@ class _VolumeState:
 
     @property
     @pulumi.getter(name="driverOpts")
-    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
         Options specific to the driver.
         """
         return pulumi.get(self, "driver_opts")
 
     @driver_opts.setter
-    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "driver_opts", value)
 
     @property
@@ -179,8 +179,8 @@ class Volume(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  driver: Optional[pulumi.Input[str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
@@ -231,8 +231,8 @@ class Volume(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
-        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
         ...
@@ -302,8 +302,8 @@ class Volume(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  driver: Optional[pulumi.Input[str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -330,8 +330,8 @@ class Volume(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             driver: Optional[pulumi.Input[str]] = None,
-            driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
-            labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]]] = None,
+            driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
             mountpoint: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None) -> 'Volume':
         """
@@ -342,8 +342,8 @@ class Volume(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
-        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] mountpoint: The mountpoint of the volume.
         :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
@@ -368,7 +368,7 @@ class Volume(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="driverOpts")
-    def driver_opts(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
+    def driver_opts(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
         """
         Options specific to the driver.
         """

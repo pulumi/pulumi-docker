@@ -24,7 +24,6 @@ import com.pulumi.docker.outputs.ContainerUpload;
 import com.pulumi.docker.outputs.ContainerVolume;
 import java.lang.Boolean;
 import java.lang.Integer;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -520,14 +519,14 @@ public class Container extends com.pulumi.resources.CustomResource {
      * Key/value pairs to use as options for the logging driver.
      * 
      */
-    @Export(name="logOpts", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> logOpts;
+    @Export(name="logOpts", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> logOpts;
 
     /**
      * @return Key/value pairs to use as options for the logging driver.
      * 
      */
-    public Output<Optional<Map<String,Object>>> logOpts() {
+    public Output<Optional<Map<String,String>>> logOpts() {
         return Codegen.optional(this.logOpts);
     }
     /**
@@ -876,42 +875,42 @@ public class Container extends com.pulumi.resources.CustomResource {
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      * 
      */
-    @Export(name="storageOpts", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> storageOpts;
+    @Export(name="storageOpts", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> storageOpts;
 
     /**
      * @return Key/value pairs for the storage driver options, e.g. `size`: `120G`
      * 
      */
-    public Output<Optional<Map<String,Object>>> storageOpts() {
+    public Output<Optional<Map<String,String>>> storageOpts() {
         return Codegen.optional(this.storageOpts);
     }
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      * 
      */
-    @Export(name="sysctls", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> sysctls;
+    @Export(name="sysctls", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> sysctls;
 
     /**
      * @return A map of kernel parameters (sysctls) to set in the container.
      * 
      */
-    public Output<Optional<Map<String,Object>>> sysctls() {
+    public Output<Optional<Map<String,String>>> sysctls() {
         return Codegen.optional(this.sysctls);
     }
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      * 
      */
-    @Export(name="tmpfs", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
-    private Output</* @Nullable */ Map<String,Object>> tmpfs;
+    @Export(name="tmpfs", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> tmpfs;
 
     /**
      * @return A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      * 
      */
-    public Output<Optional<Map<String,Object>>> tmpfs() {
+    public Output<Optional<Map<String,String>>> tmpfs() {
         return Codegen.optional(this.tmpfs);
     }
     /**
@@ -1045,7 +1044,7 @@ public class Container extends com.pulumi.resources.CustomResource {
      *
      * @param name The _unique_ name of the resulting resource.
      */
-    public Container(String name) {
+    public Container(java.lang.String name) {
         this(name, ContainerArgs.Empty);
     }
     /**
@@ -1053,7 +1052,7 @@ public class Container extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Container(String name, ContainerArgs args) {
+    public Container(java.lang.String name, ContainerArgs args) {
         this(name, args, null);
     }
     /**
@@ -1062,15 +1061,22 @@ public class Container extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Container(String name, ContainerArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/container:Container", name, args == null ? ContainerArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
+    public Container(java.lang.String name, ContainerArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/container:Container", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
-    private Container(String name, Output<String> id, @Nullable ContainerState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/container:Container", name, state, makeResourceOptions(options, id));
+    private Container(java.lang.String name, Output<java.lang.String> id, @Nullable ContainerState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/container:Container", name, state, makeResourceOptions(options, id), false);
     }
 
-    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
+    private static ContainerArgs makeArgs(ContainerArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        if (options != null && options.getUrn().isPresent()) {
+            return null;
+        }
+        return args == null ? ContainerArgs.Empty : args;
+    }
+
+    private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<java.lang.String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
             .build();
@@ -1086,7 +1092,7 @@ public class Container extends com.pulumi.resources.CustomResource {
      * @param state
      * @param options Optional settings to control the behavior of the CustomResource.
      */
-    public static Container get(String name, Output<String> id, @Nullable ContainerState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public static Container get(java.lang.String name, Output<java.lang.String> id, @Nullable ContainerState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         return new Container(name, id, state, options);
     }
 }

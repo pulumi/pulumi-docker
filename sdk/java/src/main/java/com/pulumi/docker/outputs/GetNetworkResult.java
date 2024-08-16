@@ -7,7 +7,6 @@ import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.GetNetworkIpamConfig;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
-import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ public final class GetNetworkResult {
      * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    private Map<String,Object> options;
+    private Map<String,String> options;
     /**
      * @return Scope of the network. One of `swarm`, `global`, or `local`.
      * 
@@ -91,7 +90,7 @@ public final class GetNetworkResult {
      * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    public Map<String,Object> options() {
+    public Map<String,String> options() {
         return this.options;
     }
     /**
@@ -116,7 +115,7 @@ public final class GetNetworkResult {
         private Boolean internal;
         private List<GetNetworkIpamConfig> ipamConfigs;
         private String name;
-        private Map<String,Object> options;
+        private Map<String,String> options;
         private String scope;
         public Builder() {}
         public Builder(GetNetworkResult defaults) {
@@ -174,7 +173,7 @@ public final class GetNetworkResult {
             return this;
         }
         @CustomType.Setter
-        public Builder options(Map<String,Object> options) {
+        public Builder options(Map<String,String> options) {
             if (options == null) {
               throw new MissingRequiredPropertyException("GetNetworkResult", "options");
             }

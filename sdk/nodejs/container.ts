@@ -211,7 +211,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Key/value pairs to use as options for the logging driver.
      */
-    public readonly logOpts!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly logOpts!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * Save the container logs (`attach` must be enabled). Defaults to `false`.
      */
@@ -312,15 +312,15 @@ export class Container extends pulumi.CustomResource {
     /**
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      */
-    public readonly storageOpts!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly storageOpts!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
-    public readonly sysctls!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly sysctls!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
-    public readonly tmpfs!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly tmpfs!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
      */
@@ -633,7 +633,7 @@ export interface ContainerState {
     /**
      * Key/value pairs to use as options for the logging driver.
      */
-    logOpts?: pulumi.Input<{[key: string]: any}>;
+    logOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * Save the container logs (`attach` must be enabled). Defaults to `false`.
      */
@@ -734,15 +734,15 @@ export interface ContainerState {
     /**
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      */
-    storageOpts?: pulumi.Input<{[key: string]: any}>;
+    storageOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
-    sysctls?: pulumi.Input<{[key: string]: any}>;
+    sysctls?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
-    tmpfs?: pulumi.Input<{[key: string]: any}>;
+    tmpfs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
      */
@@ -888,7 +888,7 @@ export interface ContainerArgs {
     /**
      * Key/value pairs to use as options for the logging driver.
      */
-    logOpts?: pulumi.Input<{[key: string]: any}>;
+    logOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * Save the container logs (`attach` must be enabled). Defaults to `false`.
      */
@@ -985,15 +985,15 @@ export interface ContainerArgs {
     /**
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      */
-    storageOpts?: pulumi.Input<{[key: string]: any}>;
+    storageOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
-    sysctls?: pulumi.Input<{[key: string]: any}>;
+    sysctls?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
-    tmpfs?: pulumi.Input<{[key: string]: any}>;
+    tmpfs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
      */

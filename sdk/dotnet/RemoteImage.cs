@@ -161,7 +161,7 @@ namespace Pulumi.Docker
         /// A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         /// </summary>
         [Output("triggers")]
-        public Output<ImmutableDictionary<string, object>?> Triggers { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>?> Triggers { get; private set; } = null!;
 
 
         /// <summary>
@@ -252,14 +252,14 @@ namespace Pulumi.Docker
         }
 
         [Input("triggers")]
-        private InputMap<object>? _triggers;
+        private InputMap<string>? _triggers;
 
         /// <summary>
         /// A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         /// </summary>
-        public InputMap<object> Triggers
+        public InputMap<string> Triggers
         {
-            get => _triggers ?? (_triggers = new InputMap<object>());
+            get => _triggers ?? (_triggers = new InputMap<string>());
             set => _triggers = value;
         }
 
@@ -326,14 +326,14 @@ namespace Pulumi.Docker
         public Input<string>? RepoDigest { get; set; }
 
         [Input("triggers")]
-        private InputMap<object>? _triggers;
+        private InputMap<string>? _triggers;
 
         /// <summary>
         /// A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         /// </summary>
-        public InputMap<object> Triggers
+        public InputMap<string> Triggers
         {
-            get => _triggers ?? (_triggers = new InputMap<object>());
+            get => _triggers ?? (_triggers = new InputMap<string>());
             set => _triggers = value;
         }
 

@@ -111,7 +111,7 @@ export class Network extends pulumi.CustomResource {
     /**
      * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
      */
-    public readonly ipamOptions!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly ipamOptions!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
@@ -127,7 +127,7 @@ export class Network extends pulumi.CustomResource {
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    public readonly options!: pulumi.Output<{[key: string]: any}>;
+    public readonly options!: pulumi.Output<{[key: string]: string}>;
     /**
      * Scope of the network. One of `swarm`, `global`, or `local`.
      */
@@ -215,7 +215,7 @@ export interface NetworkState {
     /**
      * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
      */
-    ipamOptions?: pulumi.Input<{[key: string]: any}>;
+    ipamOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
@@ -231,7 +231,7 @@ export interface NetworkState {
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    options?: pulumi.Input<{[key: string]: any}>;
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * Scope of the network. One of `swarm`, `global`, or `local`.
      */
@@ -273,7 +273,7 @@ export interface NetworkArgs {
     /**
      * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
      */
-    ipamOptions?: pulumi.Input<{[key: string]: any}>;
+    ipamOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
@@ -289,5 +289,5 @@ export interface NetworkArgs {
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    options?: pulumi.Input<{[key: string]: any}>;
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }

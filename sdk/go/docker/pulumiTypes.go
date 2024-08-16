@@ -2253,7 +2253,7 @@ func (o ContainerVolumeArrayOutput) Index(i pulumi.IntInput) ContainerVolumeOutp
 
 type NetworkIpamConfig struct {
 	// Auxiliary IPv4 or IPv6 addresses used by Network driver
-	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
+	AuxAddress map[string]string `pulumi:"auxAddress"`
 	// The IP address of the gateway
 	Gateway *string `pulumi:"gateway"`
 	// The ip range in CIDR form
@@ -2275,7 +2275,7 @@ type NetworkIpamConfigInput interface {
 
 type NetworkIpamConfigArgs struct {
 	// Auxiliary IPv4 or IPv6 addresses used by Network driver
-	AuxAddress pulumi.MapInput `pulumi:"auxAddress"`
+	AuxAddress pulumi.StringMapInput `pulumi:"auxAddress"`
 	// The IP address of the gateway
 	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
 	// The ip range in CIDR form
@@ -2336,8 +2336,8 @@ func (o NetworkIpamConfigOutput) ToNetworkIpamConfigOutputWithContext(ctx contex
 }
 
 // Auxiliary IPv4 or IPv6 addresses used by Network driver
-func (o NetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
-	return o.ApplyT(func(v NetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
+func (o NetworkIpamConfigOutput) AuxAddress() pulumi.StringMapOutput {
+	return o.ApplyT(func(v NetworkIpamConfig) map[string]string { return v.AuxAddress }).(pulumi.StringMapOutput)
 }
 
 // The IP address of the gateway
@@ -5451,7 +5451,7 @@ type ServiceTaskSpecContainerSpec struct {
 	// Signal to stop the container
 	StopSignal *string `pulumi:"stopSignal"`
 	// Sysctls config (Linux only)
-	Sysctl map[string]interface{} `pulumi:"sysctl"`
+	Sysctl map[string]string `pulumi:"sysctl"`
 	// The user inside the container
 	User *string `pulumi:"user"`
 }
@@ -5507,7 +5507,7 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	// Signal to stop the container
 	StopSignal pulumi.StringPtrInput `pulumi:"stopSignal"`
 	// Sysctls config (Linux only)
-	Sysctl pulumi.MapInput `pulumi:"sysctl"`
+	Sysctl pulumi.StringMapInput `pulumi:"sysctl"`
 	// The user inside the container
 	User pulumi.StringPtrInput `pulumi:"user"`
 }
@@ -5685,8 +5685,8 @@ func (o ServiceTaskSpecContainerSpecOutput) StopSignal() pulumi.StringPtrOutput 
 }
 
 // Sysctls config (Linux only)
-func (o ServiceTaskSpecContainerSpecOutput) Sysctl() pulumi.MapOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) map[string]interface{} { return v.Sysctl }).(pulumi.MapOutput)
+func (o ServiceTaskSpecContainerSpecOutput) Sysctl() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) map[string]string { return v.Sysctl }).(pulumi.StringMapOutput)
 }
 
 // The user inside the container
@@ -5909,13 +5909,13 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) StopSignal() pulumi.StringPtrOutp
 }
 
 // Sysctls config (Linux only)
-func (o ServiceTaskSpecContainerSpecPtrOutput) Sysctl() pulumi.MapOutput {
-	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) map[string]interface{} {
+func (o ServiceTaskSpecContainerSpecPtrOutput) Sysctl() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) map[string]string {
 		if v == nil {
 			return nil
 		}
 		return v.Sysctl
-	}).(pulumi.MapOutput)
+	}).(pulumi.StringMapOutput)
 }
 
 // The user inside the container
@@ -10275,7 +10275,7 @@ func (o DockerBuildPtrOutput) Target() pulumi.StringPtrOutput {
 
 type GetNetworkIpamConfig struct {
 	// Auxiliary IPv4 or IPv6 addresses used by Network driver
-	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
+	AuxAddress map[string]string `pulumi:"auxAddress"`
 	// The IP address of the gateway
 	Gateway *string `pulumi:"gateway"`
 	// The ip range in CIDR form
@@ -10297,7 +10297,7 @@ type GetNetworkIpamConfigInput interface {
 
 type GetNetworkIpamConfigArgs struct {
 	// Auxiliary IPv4 or IPv6 addresses used by Network driver
-	AuxAddress pulumi.MapInput `pulumi:"auxAddress"`
+	AuxAddress pulumi.StringMapInput `pulumi:"auxAddress"`
 	// The IP address of the gateway
 	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
 	// The ip range in CIDR form
@@ -10358,8 +10358,8 @@ func (o GetNetworkIpamConfigOutput) ToGetNetworkIpamConfigOutputWithContext(ctx 
 }
 
 // Auxiliary IPv4 or IPv6 addresses used by Network driver
-func (o GetNetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
-	return o.ApplyT(func(v GetNetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
+func (o GetNetworkIpamConfigOutput) AuxAddress() pulumi.StringMapOutput {
+	return o.ApplyT(func(v GetNetworkIpamConfig) map[string]string { return v.AuxAddress }).(pulumi.StringMapOutput)
 }
 
 // The IP address of the gateway
