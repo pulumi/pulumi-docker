@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -896,7 +897,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 				"credentials. Please double check you are using the correct credentials and registry name.",
 				jm.Error.Message)
 		}
-		return "", fmt.Errorf(jm.Error.Message)
+		return "", errors.New(jm.Error.Message)
 	}
 	if jm.From != "" {
 		info += jm.From
