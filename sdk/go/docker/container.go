@@ -13,6 +13,7 @@ import (
 )
 
 // <!-- Bug: Type and Name are switched -->
+//
 // Manages the lifecycle of a Docker container.
 //
 // ## Example Usage
@@ -189,7 +190,7 @@ type Container struct {
 	Rm pulumi.BoolPtrOutput `pulumi:"rm"`
 	// Runtime to use for the container.
 	Runtime pulumi.StringOutput `pulumi:"runtime"`
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
 	SecurityOpts pulumi.StringArrayOutput `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntOutput `pulumi:"shmSize"`
@@ -355,7 +356,7 @@ type containerState struct {
 	Rm *bool `pulumi:"rm"`
 	// Runtime to use for the container.
 	Runtime *string `pulumi:"runtime"`
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
 	SecurityOpts []string `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
@@ -489,7 +490,7 @@ type ContainerState struct {
 	Rm pulumi.BoolPtrInput
 	// Runtime to use for the container.
 	Runtime pulumi.StringPtrInput
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
 	SecurityOpts pulumi.StringArrayInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
@@ -619,7 +620,7 @@ type containerArgs struct {
 	Rm *bool `pulumi:"rm"`
 	// Runtime to use for the container.
 	Runtime *string `pulumi:"runtime"`
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
 	SecurityOpts []string `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
@@ -746,7 +747,7 @@ type ContainerArgs struct {
 	Rm pulumi.BoolPtrInput
 	// Runtime to use for the container.
 	Runtime pulumi.StringPtrInput
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
 	SecurityOpts pulumi.StringArrayInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
@@ -1110,7 +1111,7 @@ func (o ContainerOutput) Runtime() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Runtime }).(pulumi.StringOutput)
 }
 
-// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
 func (o ContainerOutput) SecurityOpts() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.SecurityOpts }).(pulumi.StringArrayOutput)
 }

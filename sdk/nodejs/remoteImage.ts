@@ -9,8 +9,9 @@ import * as utilities from "./utilities";
 
 /**
  * <!-- Bug: Type and Name are switched -->
+ *
  * Pulls a Docker image to a given Docker host from a Docker Registry.
- *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
+ * This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
  *
  * ## Example Usage
  *

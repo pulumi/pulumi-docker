@@ -183,6 +183,7 @@ class RegistryImage(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
 
         :param str resource_name: The name of the resource.
@@ -200,6 +201,7 @@ class RegistryImage(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
 
         :param str resource_name: The name of the resource.

@@ -38,7 +38,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? CgroupParent;
         /// <summary>
-        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
         /// </summary>
         public readonly string Context;
         /// <summary>

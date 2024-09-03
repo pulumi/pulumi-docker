@@ -455,7 +455,7 @@ export interface RemoteImageBuild {
      */
     cgroupParent?: pulumi.Input<string>;
     /**
-     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
      */
     context: pulumi.Input<string>;
     /**

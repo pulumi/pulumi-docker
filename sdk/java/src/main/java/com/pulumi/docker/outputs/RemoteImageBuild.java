@@ -49,7 +49,7 @@ public final class RemoteImageBuild {
      */
     private @Nullable String cgroupParent;
     /**
-     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
      * 
      */
     private String context;
@@ -238,7 +238,7 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.cgroupParent);
     }
     /**
-     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
      * 
      */
     public String context() {

@@ -9,6 +9,7 @@ import * as utilities from "./utilities";
 
 /**
  * <!-- Bug: Type and Name are switched -->
+ *
  * `docker.Network` provides a docker network resource.
  *
  * ## Example Usage

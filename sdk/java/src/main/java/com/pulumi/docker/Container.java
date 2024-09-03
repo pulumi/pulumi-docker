@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 
 /**
  * &lt;!-- Bug: Type and Name are switched --&gt;
+ * 
  * Manages the lifecycle of a Docker container.
  * 
  * ## Example Usage
@@ -788,14 +789,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.runtime;
     }
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
      * 
      */
     @Export(name="securityOpts", refs={List.class,String.class}, tree="[0,1]")
     private Output<List<String>> securityOpts;
 
     /**
-     * @return List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * @return List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
      * 
      */
     public Output<List<String>> securityOpts() {

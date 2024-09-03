@@ -113,14 +113,14 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
      * 
      */
     @Import(name="context", required=true)
     private Output<String> context;
 
     /**
-     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
      * 
      */
     public Output<String> context() {
@@ -752,7 +752,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
          * 
          * @return builder
          * 
@@ -763,7 +763,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
          * 
          * @return builder
          * 

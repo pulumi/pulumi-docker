@@ -11,6 +11,7 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// 
     /// `docker.Network` provides a docker network resource.
     /// 
     /// ## Example Usage

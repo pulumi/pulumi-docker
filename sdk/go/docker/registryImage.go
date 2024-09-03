@@ -12,6 +12,7 @@ import (
 )
 
 // <!-- Bug: Type and Name are switched -->
+//
 // Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
 type RegistryImage struct {
 	pulumi.CustomResourceState

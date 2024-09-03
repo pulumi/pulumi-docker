@@ -12,6 +12,7 @@ import (
 )
 
 // <!-- Bug: Type and Name are switched -->
+//
 // Creates and destroys a volume in Docker. This can be used alongside Container to prepare volumes that can be shared across containers.
 //
 // ## Example Usage

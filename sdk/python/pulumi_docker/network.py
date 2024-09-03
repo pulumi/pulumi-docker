@@ -449,6 +449,7 @@ class Network(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
+
         `Network` provides a docker network resource.
 
         ## Example Usage
@@ -515,6 +516,7 @@ class Network(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
+
         `Network` provides a docker network resource.
 
         ## Example Usage

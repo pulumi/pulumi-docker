@@ -11,6 +11,7 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// 
     /// Manages the lifecycle of a Docker container.
     /// 
     /// ## Example Usage
@@ -370,7 +371,7 @@ namespace Pulumi.Docker
         public Output<string> Runtime { get; private set; } = null!;
 
         /// <summary>
-        /// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         /// </summary>
         [Output("securityOpts")]
         public Output<ImmutableArray<string>> SecurityOpts { get; private set; } = null!;
@@ -872,7 +873,7 @@ namespace Pulumi.Docker
         private InputList<string>? _securityOpts;
 
         /// <summary>
-        /// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         /// </summary>
         public InputList<string> SecurityOpts
         {
@@ -1405,7 +1406,7 @@ namespace Pulumi.Docker
         private InputList<string>? _securityOpts;
 
         /// <summary>
-        /// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         /// </summary>
         public InputList<string> SecurityOpts
         {

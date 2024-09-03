@@ -350,6 +350,7 @@ class Plugin(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Manages the lifecycle of a Docker plugin.
 
         ## Import
@@ -380,6 +381,7 @@ class Plugin(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Manages the lifecycle of a Docker plugin.
 
         ## Import

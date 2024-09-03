@@ -9,6 +9,7 @@ import * as utilities from "./utilities";
 
 /**
  * <!-- Bug: Type and Name are switched -->
+ *
  * Manages the lifecycle of a Docker container.
  *
  * ## Example Usage
@@ -286,7 +287,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly runtime!: pulumi.Output<string>;
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
      */
     public readonly securityOpts!: pulumi.Output<string[]>;
     /**
@@ -708,7 +709,7 @@ export interface ContainerState {
      */
     runtime?: pulumi.Input<string>;
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
      */
     securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -959,7 +960,7 @@ export interface ContainerArgs {
      */
     runtime?: pulumi.Input<string>;
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
      */
     securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**

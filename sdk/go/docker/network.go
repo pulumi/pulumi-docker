@@ -12,6 +12,7 @@ import (
 )
 
 // <!-- Bug: Type and Name are switched -->
+//
 // `Network` provides a docker network resource.
 //
 // ## Example Usage

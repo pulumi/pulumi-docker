@@ -73,7 +73,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? CgroupParent { get; set; }
 
         /// <summary>
-        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
         /// </summary>
         [Input("context", required: true)]
         public Input<string> Context { get; set; } = null!;
