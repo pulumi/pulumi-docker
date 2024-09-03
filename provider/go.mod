@@ -1,6 +1,8 @@
 module github.com/pulumi/pulumi-docker/provider/v4
 
-go 1.21.12
+go 1.22
+
+toolchain go1.22.6
 
 require (
 	github.com/docker/cli v25.0.3+incompatible
@@ -13,9 +15,9 @@ require (
 	github.com/moby/patternmatcher v0.6.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.89.1
-	github.com/pulumi/pulumi/pkg/v3 v3.129.0
-	github.com/pulumi/pulumi/sdk/v3 v3.129.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.89.2-0.20240830143852-beec4df2d17b
+	github.com/pulumi/pulumi/pkg/v3 v3.130.0
+	github.com/pulumi/pulumi/sdk/v3 v3.130.0
 	github.com/spf13/afero v1.9.5
 	github.com/stretchr/testify v1.9.0
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
