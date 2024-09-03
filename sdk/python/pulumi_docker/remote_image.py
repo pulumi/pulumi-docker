@@ -299,8 +299,9 @@ class RemoteImage(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Pulls a Docker image to a given Docker host from a Docker Registry.
-         This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
+        This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
 
         ## Example Usage
 
@@ -374,8 +375,9 @@ class RemoteImage(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Pulls a Docker image to a given Docker host from a Docker Registry.
-         This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
+        This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
 
         ## Example Usage
 

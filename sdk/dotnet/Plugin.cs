@@ -11,6 +11,7 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// 
     /// Manages the lifecycle of a Docker plugin.
     /// 
     /// ## Import

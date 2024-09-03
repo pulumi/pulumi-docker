@@ -1413,7 +1413,7 @@ class RemoteImageBuildArgs:
                  ulimits: Optional[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]]] = None,
                  version: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        :param pulumi.Input[str] context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
         :param pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgs']]] auth_configs: The configuration for the authentication
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_arg: Set build-time variables
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: Pairs for build-time variables in the form TODO
@@ -1523,7 +1523,7 @@ class RemoteImageBuildArgs:
     @pulumi.getter
     def context(self) -> pulumi.Input[str]:
         """
-        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
         """
         return pulumi.get(self, "context")
 

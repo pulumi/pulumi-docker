@@ -123,7 +123,7 @@ class ContainerArgs:
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[str] runtime: Runtime to use for the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         :param pulumi.Input[bool] stdin_open: If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
@@ -795,7 +795,7 @@ class ContainerArgs:
     @pulumi.getter(name="securityOpts")
     def security_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         """
         return pulumi.get(self, "security_opts")
 
@@ -1126,7 +1126,7 @@ class _ContainerState:
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[str] runtime: Runtime to use for the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         :param pulumi.Input[bool] stdin_open: If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
@@ -1855,7 +1855,7 @@ class _ContainerState:
     @pulumi.getter(name="securityOpts")
     def security_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         """
         return pulumi.get(self, "security_opts")
 
@@ -2138,6 +2138,7 @@ class Container(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Manages the lifecycle of a Docker container.
 
         ## Example Usage
@@ -2241,7 +2242,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[str] runtime: Runtime to use for the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         :param pulumi.Input[bool] stdin_open: If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
@@ -2268,6 +2269,7 @@ class Container(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
+
         Manages the lifecycle of a Docker container.
 
         ## Example Usage
@@ -2610,7 +2612,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[str] runtime: Runtime to use for the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         :param pulumi.Input[bool] stdin_open: If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
@@ -3086,7 +3088,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="securityOpts")
     def security_opts(self) -> pulumi.Output[Sequence[str]]:
         """
-        List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        List of string values to customize labels for MLS systems, such as SELinux. See [https://docs.docker.com/engine/reference/run/#security-configuration](https://docs.docker.com/engine/reference/run/#security-configuration).
         """
         return pulumi.get(self, "security_opts")
 

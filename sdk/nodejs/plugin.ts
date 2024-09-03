@@ -9,6 +9,7 @@ import * as utilities from "./utilities";
 
 /**
  * <!-- Bug: Type and Name are switched -->
+ *
  * Manages the lifecycle of a Docker plugin.
  *
  * ## Import

@@ -10,11 +10,6 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
-    /// &lt;!-- Bug: Type and Name are switched --&gt;
-    /// This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
-    ///  With the Converge Config Name of the service
-    /// - `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)
-    /// 
     /// ## Import
     /// 
     /// ### Example

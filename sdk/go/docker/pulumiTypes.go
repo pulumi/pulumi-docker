@@ -2739,7 +2739,7 @@ type RemoteImageBuild struct {
 	CacheFroms []string `pulumi:"cacheFroms"`
 	// Optional parent cgroup for the container
 	CgroupParent *string `pulumi:"cgroupParent"`
-	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
 	Context string `pulumi:"context"`
 	// The length of a CPU period in microseconds
 	CpuPeriod *int `pulumi:"cpuPeriod"`
@@ -2823,7 +2823,7 @@ type RemoteImageBuildArgs struct {
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
 	// Optional parent cgroup for the container
 	CgroupParent pulumi.StringPtrInput `pulumi:"cgroupParent"`
-	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
 	Context pulumi.StringInput `pulumi:"context"`
 	// The length of a CPU period in microseconds
 	CpuPeriod pulumi.IntPtrInput `pulumi:"cpuPeriod"`
@@ -2990,7 +2990,7 @@ func (o RemoteImageBuildOutput) CgroupParent() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.CgroupParent }).(pulumi.StringPtrOutput)
 }
 
-// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
 func (o RemoteImageBuildOutput) Context() pulumi.StringOutput {
 	return o.ApplyT(func(v RemoteImageBuild) string { return v.Context }).(pulumi.StringOutput)
 }
@@ -3219,7 +3219,7 @@ func (o RemoteImageBuildPtrOutput) CgroupParent() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see [https://docs.docker.com/build/building/context/](https://docs.docker.com/build/building/context/) for more information about build contexts.
 func (o RemoteImageBuildPtrOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
