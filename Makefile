@@ -29,7 +29,7 @@ development: install_plugins provider build_sdks install_sdks
 
 build: install_plugins provider build_sdks install_sdks
 
-build_sdks: build_nodejs build_python build_go build_dotnet build_java
+build_sdks: build_nodejs build_python build_dotnet build_go build_java 
 
 install_go_sdk:
 
@@ -125,12 +125,12 @@ install_plugins: .pulumi/bin/pulumi
 	.pulumi/bin/pulumi plugin install resource aws 6.8.0
 
 lint_provider: provider
-	cd provider && golangci-lint run -c ../.golangci.yml
+	cd provider && golangci-lint run --path-prefix provider -c ../.golangci.yml
 
 # `lint_provider.fix` is a utility target meant to be run manually
 # that will run the linter and fix errors when possible.
 lint_provider.fix:
-	cd provider && golangci-lint run -c ../.golangci.yml --fix
+	cd provider && golangci-lint run --path-prefix provider -c ../.golangci.yml --fix
 
 # `make provider_no_deps` builds the provider binary directly, without ensuring that
 # `cmd/pulumi-resource-docker/schema.json` is valid and up to date.
@@ -179,9 +179,9 @@ bin/pulumi-java-gen: .pulumi-java-gen.version
 # - Run make ci-mgmt to apply the change locally.
 #
 ci-mgmt: .ci-mgmt.yaml
-	rm .github/workflows/*.yml # Copied from update-workflows.yml
+	rm -f .github/workflows/*.yml # Copied from update-workflows.yml
 	go run github.com/pulumi/ci-mgmt/provider-ci@master generate \
-		--name pulumi/pulumi-$(PACK) \
+		--name $(ORG)/pulumi-$(PACK) \
 		--out . \
 		--template bridged-provider \
 		--config $<
