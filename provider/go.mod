@@ -7,7 +7,6 @@ require (
 	github.com/docker/distribution v2.8.2+incompatible
 	github.com/docker/docker v25.0.2+incompatible
 	github.com/golang/protobuf v1.5.4
-	github.com/google/uuid v1.6.0
 	github.com/moby/buildkit v0.13.0-beta3.0.20240205165705-d6e142600ee5
 	github.com/moby/moby v25.0.4+incompatible
 	github.com/moby/patternmatcher v0.6.0
@@ -125,6 +124,7 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/google/wire v0.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.2 // indirect
