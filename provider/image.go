@@ -33,7 +33,6 @@ import (
 	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
-	"github.com/google/uuid"
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/moby/buildkit/identity"
 	"github.com/moby/buildkit/session"
@@ -432,23 +431,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 }
 
 // runImageBuild runs the image build and ensures that the correct image exists in the local image
-// store. Due to reliability issues and a possible race condition, we use a defense-in-depth
-// approach to add uniqueness to built images, and poll for the image store to contain a built image
-// with the ID we expect.
-//
-// The returned image ID will be a sha that is unique to the image store, but cannot be used for
-// pushing, e.g.: "sha256:39a1a41d26ee99b35c260e96b8fa21778885a4a67c8f1d81c7b58b1979d52319". These
-// ids are only meaningful for the Docker Engine that built them.
-//
-// We take these steps to ensure that the image we built is the image we push:
-//
-// 1. We label the image with a unique buildID.
-//
-// 2. We obtain the Docker image store's imageID as a result of `ImageBuild`.
-//
-// 3. We poll the image store looking for the image.
-//
-// 4. We only return an imageID if the image in the store matches both (1.) and (2.)
+// store.
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
 	opts types.ImageBuildOptions, urn resource.URN,
@@ -456,14 +439,6 @@ func (p *dockerNativeProvider) runImageBuild(
 	if opts.Labels == nil {
 		opts.Labels = make(map[string]string)
 	}
-	// TODO: https://github.com/pulumi/pulumi-docker/issues/846 - Consider removing the build ID.
-	id, err := uuid.NewRandom()
-	if err != nil {
-		return "", fmt.Errorf("error generating random ID for build: %v", err)
-	}
-	buildIDLabel := "pulumi.com/build-id"
-	buildIDValue := id.String()
-	opts.Labels[buildIDLabel] = buildIDValue
 
 	// Close the imgBuildResp in a timely manner
 	_ = p.host.LogStatus(ctx, "info", urn, "Starting Docker build")
@@ -507,13 +482,7 @@ func (p *dockerNativeProvider) runImageBuild(
 		// Search for our imageID in listResult
 		for _, storedImage := range listResult {
 			if storedImage.ID == imageID {
-				if storedImage.Labels[buildIDLabel] == buildIDValue {
-					return true, nil
-				}
-				_ = p.host.Log(ctx, "warning", urn,
-					fmt.Sprintf("Found in store does not match built image, expected label %s=%s, found %s",
-						buildIDLabel, buildIDValue, storedImage.Labels[buildIDLabel]))
-				return false, nil
+				return true, nil
 			}
 		}
 		return false, nil
@@ -896,7 +865,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 				"credentials. Please double check you are using the correct credentials and registry name.",
 				jm.Error.Message)
 		}
-		return "", fmt.Errorf(jm.Error.Message)
+		return "", fmt.Errorf("%s", jm.Error.Message)
 	}
 	if jm.From != "" {
 		info += jm.From
