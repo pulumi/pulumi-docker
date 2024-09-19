@@ -8,7 +8,6 @@ import * as utilities from "./utilities";
  * `docker.getLogs` provides logs from specific container
  */
 export function getLogs(args: GetLogsArgs, opts?: pulumi.InvokeOptions): Promise<GetLogsResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getLogs:getLogs", {
         "details": args.details,
@@ -88,7 +87,20 @@ export interface GetLogsResult {
  * `docker.getLogs` provides logs from specific container
  */
 export function getLogsOutput(args: GetLogsOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetLogsResult> {
-    return pulumi.output(args).apply((a: any) => getLogs(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("docker:index/getLogs:getLogs", {
+        "details": args.details,
+        "discardHeaders": args.discardHeaders,
+        "follow": args.follow,
+        "logsListStringEnabled": args.logsListStringEnabled,
+        "name": args.name,
+        "showStderr": args.showStderr,
+        "showStdout": args.showStdout,
+        "since": args.since,
+        "tail": args.tail,
+        "timestamps": args.timestamps,
+        "until": args.until,
+    }, opts);
 }
 
 /**

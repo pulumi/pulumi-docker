@@ -64,14 +64,20 @@ type GetLogsResult struct {
 
 func GetLogsOutput(ctx *pulumi.Context, args GetLogsOutputArgs, opts ...pulumi.InvokeOption) GetLogsResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (GetLogsResult, error) {
+		ApplyT(func(v interface{}) (GetLogsResultOutput, error) {
 			args := v.(GetLogsArgs)
-			r, err := GetLogs(ctx, &args, opts...)
-			var s GetLogsResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv GetLogsResult
+			secret, err := ctx.InvokePackageRaw("docker:index/getLogs:getLogs", args, &rv, "", opts...)
+			if err != nil {
+				return GetLogsResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(GetLogsResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(GetLogsResultOutput), nil
+			}
+			return output, nil
 		}).(GetLogsResultOutput)
 }
 

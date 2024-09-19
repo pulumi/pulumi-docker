@@ -32,7 +32,6 @@ import * as utilities from "./utilities";
  * ```
  */
 export function getRemoteImage(args: GetRemoteImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRemoteImageResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getRemoteImage:getRemoteImage", {
         "name": args.name,
@@ -94,7 +93,10 @@ export interface GetRemoteImageResult {
  * ```
  */
 export function getRemoteImageOutput(args: GetRemoteImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRemoteImageResult> {
-    return pulumi.output(args).apply((a: any) => getRemoteImage(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("docker:index/getRemoteImage:getRemoteImage", {
+        "name": args.name,
+    }, opts);
 }
 
 /**
