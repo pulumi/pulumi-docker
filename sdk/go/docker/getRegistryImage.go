@@ -79,14 +79,20 @@ type LookupRegistryImageResult struct {
 
 func LookupRegistryImageOutput(ctx *pulumi.Context, args LookupRegistryImageOutputArgs, opts ...pulumi.InvokeOption) LookupRegistryImageResultOutput {
 	return pulumi.ToOutputWithContext(context.Background(), args).
-		ApplyT(func(v interface{}) (LookupRegistryImageResult, error) {
+		ApplyT(func(v interface{}) (LookupRegistryImageResultOutput, error) {
 			args := v.(LookupRegistryImageArgs)
-			r, err := LookupRegistryImage(ctx, &args, opts...)
-			var s LookupRegistryImageResult
-			if r != nil {
-				s = *r
+			opts = internal.PkgInvokeDefaultOpts(opts)
+			var rv LookupRegistryImageResult
+			secret, err := ctx.InvokePackageRaw("docker:index/getRegistryImage:getRegistryImage", args, &rv, "", opts...)
+			if err != nil {
+				return LookupRegistryImageResultOutput{}, err
 			}
-			return s, err
+
+			output := pulumi.ToOutput(rv).(LookupRegistryImageResultOutput)
+			if secret {
+				return pulumi.ToSecret(output).(LookupRegistryImageResultOutput), nil
+			}
+			return output, nil
 		}).(LookupRegistryImageResultOutput)
 }
 

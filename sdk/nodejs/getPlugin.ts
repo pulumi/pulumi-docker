@@ -25,7 +25,6 @@ import * as utilities from "./utilities";
  */
 export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Promise<GetPluginResult> {
     args = args || {};
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getPlugin:getPlugin", {
         "alias": args.alias,
@@ -100,7 +99,12 @@ export interface GetPluginResult {
  * ```
  */
 export function getPluginOutput(args?: GetPluginOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPluginResult> {
-    return pulumi.output(args).apply((a: any) => getPlugin(a, opts))
+    args = args || {};
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("docker:index/getPlugin:getPlugin", {
+        "alias": args.alias,
+        "id": args.id,
+    }, opts);
 }
 
 /**
