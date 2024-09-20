@@ -23,7 +23,6 @@ import * as utilities from "./utilities";
  * ```
  */
 export function getRegistryImage(args: GetRegistryImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryImageResult> {
-
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getRegistryImage:getRegistryImage", {
         "insecureSkipVerify": args.insecureSkipVerify,
@@ -85,7 +84,11 @@ export interface GetRegistryImageResult {
  * ```
  */
 export function getRegistryImageOutput(args: GetRegistryImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRegistryImageResult> {
-    return pulumi.output(args).apply((a: any) => getRegistryImage(a, opts))
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
+    return pulumi.runtime.invokeOutput("docker:index/getRegistryImage:getRegistryImage", {
+        "insecureSkipVerify": args.insecureSkipVerify,
+        "name": args.name,
+    }, opts);
 }
 
 /**
