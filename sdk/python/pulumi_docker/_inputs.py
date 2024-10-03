@@ -4,76 +4,158 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from ._enums import *
 
 __all__ = [
     'ContainerCapabilitiesArgs',
+    'ContainerCapabilitiesArgsDict',
     'ContainerDeviceArgs',
+    'ContainerDeviceArgsDict',
     'ContainerHealthcheckArgs',
+    'ContainerHealthcheckArgsDict',
     'ContainerHostArgs',
+    'ContainerHostArgsDict',
     'ContainerLabelArgs',
+    'ContainerLabelArgsDict',
     'ContainerMountArgs',
+    'ContainerMountArgsDict',
     'ContainerMountBindOptionsArgs',
+    'ContainerMountBindOptionsArgsDict',
     'ContainerMountTmpfsOptionsArgs',
+    'ContainerMountTmpfsOptionsArgsDict',
     'ContainerMountVolumeOptionsArgs',
+    'ContainerMountVolumeOptionsArgsDict',
     'ContainerMountVolumeOptionsLabelArgs',
+    'ContainerMountVolumeOptionsLabelArgsDict',
     'ContainerNetworkDataArgs',
+    'ContainerNetworkDataArgsDict',
     'ContainerNetworksAdvancedArgs',
+    'ContainerNetworksAdvancedArgsDict',
     'ContainerPortArgs',
+    'ContainerPortArgsDict',
     'ContainerUlimitArgs',
+    'ContainerUlimitArgsDict',
     'ContainerUploadArgs',
+    'ContainerUploadArgsDict',
     'ContainerVolumeArgs',
+    'ContainerVolumeArgsDict',
     'NetworkIpamConfigArgs',
+    'NetworkIpamConfigArgsDict',
     'NetworkLabelArgs',
+    'NetworkLabelArgsDict',
     'PluginGrantPermissionArgs',
+    'PluginGrantPermissionArgsDict',
     'ProviderRegistryAuthArgs',
+    'ProviderRegistryAuthArgsDict',
     'RemoteImageBuildArgs',
+    'RemoteImageBuildArgsDict',
     'RemoteImageBuildAuthConfigArgs',
+    'RemoteImageBuildAuthConfigArgsDict',
     'RemoteImageBuildUlimitArgs',
+    'RemoteImageBuildUlimitArgsDict',
     'SecretLabelArgs',
+    'SecretLabelArgsDict',
     'ServiceAuthArgs',
+    'ServiceAuthArgsDict',
     'ServiceConvergeConfigArgs',
+    'ServiceConvergeConfigArgsDict',
     'ServiceEndpointSpecArgs',
+    'ServiceEndpointSpecArgsDict',
     'ServiceEndpointSpecPortArgs',
+    'ServiceEndpointSpecPortArgsDict',
     'ServiceLabelArgs',
+    'ServiceLabelArgsDict',
     'ServiceModeArgs',
+    'ServiceModeArgsDict',
     'ServiceModeReplicatedArgs',
+    'ServiceModeReplicatedArgsDict',
     'ServiceRollbackConfigArgs',
+    'ServiceRollbackConfigArgsDict',
     'ServiceTaskSpecArgs',
+    'ServiceTaskSpecArgsDict',
     'ServiceTaskSpecContainerSpecArgs',
+    'ServiceTaskSpecContainerSpecArgsDict',
     'ServiceTaskSpecContainerSpecConfigArgs',
+    'ServiceTaskSpecContainerSpecConfigArgsDict',
     'ServiceTaskSpecContainerSpecDnsConfigArgs',
+    'ServiceTaskSpecContainerSpecDnsConfigArgsDict',
     'ServiceTaskSpecContainerSpecHealthcheckArgs',
+    'ServiceTaskSpecContainerSpecHealthcheckArgsDict',
     'ServiceTaskSpecContainerSpecHostArgs',
+    'ServiceTaskSpecContainerSpecHostArgsDict',
     'ServiceTaskSpecContainerSpecLabelArgs',
+    'ServiceTaskSpecContainerSpecLabelArgsDict',
     'ServiceTaskSpecContainerSpecMountArgs',
+    'ServiceTaskSpecContainerSpecMountArgsDict',
     'ServiceTaskSpecContainerSpecMountBindOptionsArgs',
+    'ServiceTaskSpecContainerSpecMountBindOptionsArgsDict',
     'ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs',
+    'ServiceTaskSpecContainerSpecMountTmpfsOptionsArgsDict',
     'ServiceTaskSpecContainerSpecMountVolumeOptionsArgs',
+    'ServiceTaskSpecContainerSpecMountVolumeOptionsArgsDict',
     'ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs',
+    'ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgsDict',
     'ServiceTaskSpecContainerSpecPrivilegesArgs',
+    'ServiceTaskSpecContainerSpecPrivilegesArgsDict',
     'ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs',
+    'ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgsDict',
     'ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs',
+    'ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgsDict',
     'ServiceTaskSpecContainerSpecSecretArgs',
+    'ServiceTaskSpecContainerSpecSecretArgsDict',
     'ServiceTaskSpecLogDriverArgs',
+    'ServiceTaskSpecLogDriverArgsDict',
     'ServiceTaskSpecNetworksAdvancedArgs',
+    'ServiceTaskSpecNetworksAdvancedArgsDict',
     'ServiceTaskSpecPlacementArgs',
+    'ServiceTaskSpecPlacementArgsDict',
     'ServiceTaskSpecPlacementPlatformArgs',
+    'ServiceTaskSpecPlacementPlatformArgsDict',
     'ServiceTaskSpecResourcesArgs',
+    'ServiceTaskSpecResourcesArgsDict',
     'ServiceTaskSpecResourcesLimitsArgs',
+    'ServiceTaskSpecResourcesLimitsArgsDict',
     'ServiceTaskSpecResourcesReservationArgs',
+    'ServiceTaskSpecResourcesReservationArgsDict',
     'ServiceTaskSpecResourcesReservationGenericResourcesArgs',
+    'ServiceTaskSpecResourcesReservationGenericResourcesArgsDict',
     'ServiceTaskSpecRestartPolicyArgs',
+    'ServiceTaskSpecRestartPolicyArgsDict',
     'ServiceUpdateConfigArgs',
+    'ServiceUpdateConfigArgsDict',
     'VolumeLabelArgs',
+    'VolumeLabelArgsDict',
     'CacheFromArgs',
+    'CacheFromArgsDict',
     'DockerBuildArgs',
+    'DockerBuildArgsDict',
     'RegistryArgs',
+    'RegistryArgsDict',
 ]
+
+MYPY = False
+
+if not MYPY:
+    class ContainerCapabilitiesArgsDict(TypedDict):
+        adds: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        List of linux capabilities to add.
+        """
+        drops: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        List of linux capabilities to drop.
+        """
+elif False:
+    ContainerCapabilitiesArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerCapabilitiesArgs:
@@ -113,6 +195,23 @@ class ContainerCapabilitiesArgs:
     def drops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "drops", value)
 
+
+if not MYPY:
+    class ContainerDeviceArgsDict(TypedDict):
+        host_path: pulumi.Input[str]
+        """
+        The path on the host where the device is located.
+        """
+        container_path: NotRequired[pulumi.Input[str]]
+        """
+        The path in the container where the device will be bound.
+        """
+        permissions: NotRequired[pulumi.Input[str]]
+        """
+        The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+        """
+elif False:
+    ContainerDeviceArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerDeviceArgs:
@@ -167,6 +266,31 @@ class ContainerDeviceArgs:
     def permissions(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "permissions", value)
 
+
+if not MYPY:
+    class ContainerHealthcheckArgsDict(TypedDict):
+        tests: pulumi.Input[Sequence[pulumi.Input[str]]]
+        """
+        Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+        """
+        interval: NotRequired[pulumi.Input[str]]
+        """
+        Time between running the check (ms|s|m|h). Defaults to `0s`.
+        """
+        retries: NotRequired[pulumi.Input[int]]
+        """
+        Consecutive failures needed to report unhealthy. Defaults to `0`.
+        """
+        start_period: NotRequired[pulumi.Input[str]]
+        """
+        Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        """
+        timeout: NotRequired[pulumi.Input[str]]
+        """
+        Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+        """
+elif False:
+    ContainerHealthcheckArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerHealthcheckArgs:
@@ -254,6 +378,19 @@ class ContainerHealthcheckArgs:
         pulumi.set(self, "timeout", value)
 
 
+if not MYPY:
+    class ContainerHostArgsDict(TypedDict):
+        host: pulumi.Input[str]
+        """
+        Hostname to add
+        """
+        ip: pulumi.Input[str]
+        """
+        IP address this hostname should resolve to.
+        """
+elif False:
+    ContainerHostArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerHostArgs:
     def __init__(__self__, *,
@@ -291,6 +428,19 @@ class ContainerHostArgs:
         pulumi.set(self, "ip", value)
 
 
+if not MYPY:
+    class ContainerLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    ContainerLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerLabelArgs:
     def __init__(__self__, *,
@@ -327,6 +477,39 @@ class ContainerLabelArgs:
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
 
+
+if not MYPY:
+    class ContainerMountArgsDict(TypedDict):
+        target: pulumi.Input[str]
+        """
+        Container path
+        """
+        type: pulumi.Input[str]
+        """
+        The mount type
+        """
+        bind_options: NotRequired[pulumi.Input['ContainerMountBindOptionsArgsDict']]
+        """
+        Optional configuration for the bind type.
+        """
+        read_only: NotRequired[pulumi.Input[bool]]
+        """
+        Whether the mount should be read-only.
+        """
+        source: NotRequired[pulumi.Input[str]]
+        """
+        Mount source (e.g. a volume name, a host path).
+        """
+        tmpfs_options: NotRequired[pulumi.Input['ContainerMountTmpfsOptionsArgsDict']]
+        """
+        Optional configuration for the tmpfs type.
+        """
+        volume_options: NotRequired[pulumi.Input['ContainerMountVolumeOptionsArgsDict']]
+        """
+        Optional configuration for the volume type.
+        """
+elif False:
+    ContainerMountArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerMountArgs:
@@ -445,6 +628,15 @@ class ContainerMountArgs:
         pulumi.set(self, "volume_options", value)
 
 
+if not MYPY:
+    class ContainerMountBindOptionsArgsDict(TypedDict):
+        propagation: NotRequired[pulumi.Input[str]]
+        """
+        A propagation mode with the value.
+        """
+elif False:
+    ContainerMountBindOptionsArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerMountBindOptionsArgs:
     def __init__(__self__, *,
@@ -467,6 +659,19 @@ class ContainerMountBindOptionsArgs:
     def propagation(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "propagation", value)
 
+
+if not MYPY:
+    class ContainerMountTmpfsOptionsArgsDict(TypedDict):
+        mode: NotRequired[pulumi.Input[int]]
+        """
+        The permission mode for the tmpfs mount in an integer.
+        """
+        size_bytes: NotRequired[pulumi.Input[int]]
+        """
+        The size for the tmpfs mount in bytes.
+        """
+elif False:
+    ContainerMountTmpfsOptionsArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerMountTmpfsOptionsArgs:
@@ -506,6 +711,27 @@ class ContainerMountTmpfsOptionsArgs:
     def size_bytes(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "size_bytes", value)
 
+
+if not MYPY:
+    class ContainerMountVolumeOptionsArgsDict(TypedDict):
+        driver_name: NotRequired[pulumi.Input[str]]
+        """
+        Name of the driver to use to create the volume.
+        """
+        driver_options: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        key/value map of driver specific options.
+        """
+        labels: NotRequired[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgsDict']]]]
+        """
+        User-defined key/value metadata.
+        """
+        no_copy: NotRequired[pulumi.Input[bool]]
+        """
+        Populate volume with data from the target.
+        """
+elif False:
+    ContainerMountVolumeOptionsArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerMountVolumeOptionsArgs:
@@ -578,6 +804,19 @@ class ContainerMountVolumeOptionsArgs:
         pulumi.set(self, "no_copy", value)
 
 
+if not MYPY:
+    class ContainerMountVolumeOptionsLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    ContainerMountVolumeOptionsLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerMountVolumeOptionsLabelArgs:
     def __init__(__self__, *,
@@ -614,6 +853,43 @@ class ContainerMountVolumeOptionsLabelArgs:
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
 
+
+if not MYPY:
+    class ContainerNetworkDataArgsDict(TypedDict):
+        gateway: NotRequired[pulumi.Input[str]]
+        """
+        The network gateway of the container.
+        """
+        global_ipv6_address: NotRequired[pulumi.Input[str]]
+        """
+        The IPV6 address of the container.
+        """
+        global_ipv6_prefix_length: NotRequired[pulumi.Input[int]]
+        """
+        The IPV6 prefix length address of the container.
+        """
+        ip_address: NotRequired[pulumi.Input[str]]
+        """
+        The IP address of the container.
+        """
+        ip_prefix_length: NotRequired[pulumi.Input[int]]
+        """
+        The IP prefix length of the container.
+        """
+        ipv6_gateway: NotRequired[pulumi.Input[str]]
+        """
+        The IPV6 gateway of the container.
+        """
+        mac_address: NotRequired[pulumi.Input[str]]
+        """
+        The MAC address of the container.
+        """
+        network_name: NotRequired[pulumi.Input[str]]
+        """
+        The name of the network
+        """
+elif False:
+    ContainerNetworkDataArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerNetworkDataArgs:
@@ -750,6 +1026,27 @@ class ContainerNetworkDataArgs:
         pulumi.set(self, "network_name", value)
 
 
+if not MYPY:
+    class ContainerNetworksAdvancedArgsDict(TypedDict):
+        name: pulumi.Input[str]
+        """
+        The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
+        """
+        aliases: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        The network aliases of the container in the specific network.
+        """
+        ipv4_address: NotRequired[pulumi.Input[str]]
+        """
+        The IPV4 address of the container in the specific network.
+        """
+        ipv6_address: NotRequired[pulumi.Input[str]]
+        """
+        The IPV6 address of the container in the specific network.
+        """
+elif False:
+    ContainerNetworksAdvancedArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerNetworksAdvancedArgs:
     def __init__(__self__, *,
@@ -819,6 +1116,27 @@ class ContainerNetworksAdvancedArgs:
     def ipv6_address(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "ipv6_address", value)
 
+
+if not MYPY:
+    class ContainerPortArgsDict(TypedDict):
+        internal: pulumi.Input[int]
+        """
+        Port within the container.
+        """
+        external: NotRequired[pulumi.Input[int]]
+        """
+        Port exposed out of the container. If not given a free random port `>= 32768` will be used.
+        """
+        ip: NotRequired[pulumi.Input[str]]
+        """
+        IP address/mask that can access this port. Defaults to `0.0.0.0`.
+        """
+        protocol: NotRequired[pulumi.Input[str]]
+        """
+        Protocol that can be used over this port. Defaults to `tcp`.
+        """
+elif False:
+    ContainerPortArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerPortArgs:
@@ -890,6 +1208,23 @@ class ContainerPortArgs:
         pulumi.set(self, "protocol", value)
 
 
+if not MYPY:
+    class ContainerUlimitArgsDict(TypedDict):
+        hard: pulumi.Input[int]
+        """
+        The hard limit
+        """
+        name: pulumi.Input[str]
+        """
+        The name of the ulimit
+        """
+        soft: pulumi.Input[int]
+        """
+        The soft limit
+        """
+elif False:
+    ContainerUlimitArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerUlimitArgs:
     def __init__(__self__, *,
@@ -941,6 +1276,35 @@ class ContainerUlimitArgs:
     def soft(self, value: pulumi.Input[int]):
         pulumi.set(self, "soft", value)
 
+
+if not MYPY:
+    class ContainerUploadArgsDict(TypedDict):
+        file: pulumi.Input[str]
+        """
+        Path to the file in the container where is upload goes to
+        """
+        content: NotRequired[pulumi.Input[str]]
+        """
+        Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` & `source`
+        """
+        content_base64: NotRequired[pulumi.Input[str]]
+        """
+        Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
+        """
+        executable: NotRequired[pulumi.Input[bool]]
+        """
+        If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+        """
+        source: NotRequired[pulumi.Input[str]]
+        """
+        A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `content_base64`
+        """
+        source_hash: NotRequired[pulumi.Input[str]]
+        """
+        If using `source`, this will force an update if the file content has updated but the filename has not.
+        """
+elif False:
+    ContainerUploadArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ContainerUploadArgs:
@@ -1044,6 +1408,31 @@ class ContainerUploadArgs:
         pulumi.set(self, "source_hash", value)
 
 
+if not MYPY:
+    class ContainerVolumeArgsDict(TypedDict):
+        container_path: NotRequired[pulumi.Input[str]]
+        """
+        The path in the container where the volume will be mounted.
+        """
+        from_container: NotRequired[pulumi.Input[str]]
+        """
+        The container where the volume is coming from.
+        """
+        host_path: NotRequired[pulumi.Input[str]]
+        """
+        The path on the host where the volume is coming from.
+        """
+        read_only: NotRequired[pulumi.Input[bool]]
+        """
+        If `true`, this volume will be readonly. Defaults to `false`.
+        """
+        volume_name: NotRequired[pulumi.Input[str]]
+        """
+        The name of the docker volume which should be mounted.
+        """
+elif False:
+    ContainerVolumeArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ContainerVolumeArgs:
     def __init__(__self__, *,
@@ -1131,6 +1520,27 @@ class ContainerVolumeArgs:
         pulumi.set(self, "volume_name", value)
 
 
+if not MYPY:
+    class NetworkIpamConfigArgsDict(TypedDict):
+        aux_address: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        Auxiliary IPv4 or IPv6 addresses used by Network driver
+        """
+        gateway: NotRequired[pulumi.Input[str]]
+        """
+        The IP address of the gateway
+        """
+        ip_range: NotRequired[pulumi.Input[str]]
+        """
+        The ip range in CIDR form
+        """
+        subnet: NotRequired[pulumi.Input[str]]
+        """
+        The subnet in CIDR form
+        """
+elif False:
+    NetworkIpamConfigArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class NetworkIpamConfigArgs:
     def __init__(__self__, *,
@@ -1202,6 +1612,19 @@ class NetworkIpamConfigArgs:
         pulumi.set(self, "subnet", value)
 
 
+if not MYPY:
+    class NetworkLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    NetworkLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class NetworkLabelArgs:
     def __init__(__self__, *,
@@ -1239,6 +1662,19 @@ class NetworkLabelArgs:
         pulumi.set(self, "value", value)
 
 
+if not MYPY:
+    class PluginGrantPermissionArgsDict(TypedDict):
+        name: pulumi.Input[str]
+        """
+        The name of the permission
+        """
+        values: pulumi.Input[Sequence[pulumi.Input[str]]]
+        """
+        The value of the permission
+        """
+elif False:
+    PluginGrantPermissionArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class PluginGrantPermissionArgs:
     def __init__(__self__, *,
@@ -1275,6 +1711,32 @@ class PluginGrantPermissionArgs:
     def values(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "values", value)
 
+
+if not MYPY:
+    class ProviderRegistryAuthArgsDict(TypedDict):
+        address: pulumi.Input[str]
+        """
+        Address of the registry
+        """
+        auth_disabled: NotRequired[pulumi.Input[bool]]
+        config_file: NotRequired[pulumi.Input[str]]
+        """
+        Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        """
+        config_file_content: NotRequired[pulumi.Input[str]]
+        """
+        Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+        """
+        password: NotRequired[pulumi.Input[str]]
+        """
+        Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+        """
+        username: NotRequired[pulumi.Input[str]]
+        """
+        Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+        """
+elif False:
+    ProviderRegistryAuthArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ProviderRegistryAuthArgs:
@@ -1373,6 +1835,151 @@ class ProviderRegistryAuthArgs:
     def username(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "username", value)
 
+
+if not MYPY:
+    class RemoteImageBuildArgsDict(TypedDict):
+        context: pulumi.Input[str]
+        """
+        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        """
+        auth_configs: NotRequired[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgsDict']]]]
+        """
+        The configuration for the authentication
+        """
+        build_arg: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        Set build-time variables
+        """
+        build_args: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        Pairs for build-time variables in the form TODO
+        """
+        build_id: NotRequired[pulumi.Input[str]]
+        """
+        BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+        """
+        cache_froms: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        Images to consider as cache sources
+        """
+        cgroup_parent: NotRequired[pulumi.Input[str]]
+        """
+        Optional parent cgroup for the container
+        """
+        cpu_period: NotRequired[pulumi.Input[int]]
+        """
+        The length of a CPU period in microseconds
+        """
+        cpu_quota: NotRequired[pulumi.Input[int]]
+        """
+        Microseconds of CPU time that the container can get in a CPU period
+        """
+        cpu_set_cpus: NotRequired[pulumi.Input[str]]
+        """
+        CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        """
+        cpu_set_mems: NotRequired[pulumi.Input[str]]
+        """
+        MEMs in which to allow execution (`0-3`, `0`, `1`)
+        """
+        cpu_shares: NotRequired[pulumi.Input[int]]
+        """
+        CPU shares (relative weight)
+        """
+        dockerfile: NotRequired[pulumi.Input[str]]
+        """
+        Name of the Dockerfile. Defaults to `Dockerfile`.
+        """
+        extra_hosts: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        """
+        force_remove: NotRequired[pulumi.Input[bool]]
+        """
+        Always remove intermediate containers
+        """
+        isolation: NotRequired[pulumi.Input[str]]
+        """
+        Isolation represents the isolation technology of a container. The supported values are
+        """
+        label: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        Set metadata for an image
+        """
+        labels: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        User-defined key/value metadata
+        """
+        memory: NotRequired[pulumi.Input[int]]
+        """
+        Set memory limit for build
+        """
+        memory_swap: NotRequired[pulumi.Input[int]]
+        """
+        Total memory (memory + swap), -1 to enable unlimited swap
+        """
+        network_mode: NotRequired[pulumi.Input[str]]
+        """
+        Set the networking mode for the RUN instructions during build
+        """
+        no_cache: NotRequired[pulumi.Input[bool]]
+        """
+        Do not use the cache when building the image
+        """
+        platform: NotRequired[pulumi.Input[str]]
+        """
+        Set platform if server is multi-platform capable
+        """
+        pull_parent: NotRequired[pulumi.Input[bool]]
+        """
+        Attempt to pull the image even if an older image exists locally
+        """
+        remote_context: NotRequired[pulumi.Input[str]]
+        """
+        A Git repository URI or HTTP/HTTPS context URI
+        """
+        remove: NotRequired[pulumi.Input[bool]]
+        """
+        Remove intermediate containers after a successful build. Defaults to `true`.
+        """
+        security_opts: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        The security options
+        """
+        session_id: NotRequired[pulumi.Input[str]]
+        """
+        Set an ID for the build session
+        """
+        shm_size: NotRequired[pulumi.Input[int]]
+        """
+        Size of /dev/shm in bytes. The size must be greater than 0
+        """
+        squash: NotRequired[pulumi.Input[bool]]
+        """
+        If true the new layers are squashed into a new image with a single new layer
+        """
+        suppress_output: NotRequired[pulumi.Input[bool]]
+        """
+        Suppress the build output and print image ID on success
+        """
+        tags: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        Name and optionally a tag in the 'name:tag' format
+        """
+        target: NotRequired[pulumi.Input[str]]
+        """
+        Set the target build stage to build
+        """
+        ulimits: NotRequired[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgsDict']]]]
+        """
+        Configuration for ulimits
+        """
+        version: NotRequired[pulumi.Input[str]]
+        """
+        Version of the underlying builder to use
+        """
+elif False:
+    RemoteImageBuildArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class RemoteImageBuildArgs:
@@ -1940,6 +2547,43 @@ class RemoteImageBuildArgs:
         pulumi.set(self, "version", value)
 
 
+if not MYPY:
+    class RemoteImageBuildAuthConfigArgsDict(TypedDict):
+        host_name: pulumi.Input[str]
+        """
+        hostname of the registry
+        """
+        auth: NotRequired[pulumi.Input[str]]
+        """
+        the auth token
+        """
+        email: NotRequired[pulumi.Input[str]]
+        """
+        the user emal
+        """
+        identity_token: NotRequired[pulumi.Input[str]]
+        """
+        the identity token
+        """
+        password: NotRequired[pulumi.Input[str]]
+        """
+        the registry password
+        """
+        registry_token: NotRequired[pulumi.Input[str]]
+        """
+        the registry token
+        """
+        server_address: NotRequired[pulumi.Input[str]]
+        """
+        the server address
+        """
+        user_name: NotRequired[pulumi.Input[str]]
+        """
+        the registry user name
+        """
+elif False:
+    RemoteImageBuildAuthConfigArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class RemoteImageBuildAuthConfigArgs:
     def __init__(__self__, *,
@@ -2074,6 +2718,23 @@ class RemoteImageBuildAuthConfigArgs:
         pulumi.set(self, "user_name", value)
 
 
+if not MYPY:
+    class RemoteImageBuildUlimitArgsDict(TypedDict):
+        hard: pulumi.Input[int]
+        """
+        soft limit
+        """
+        name: pulumi.Input[str]
+        """
+        type of ulimit, e.g. `nofile`
+        """
+        soft: pulumi.Input[int]
+        """
+        hard limit
+        """
+elif False:
+    RemoteImageBuildUlimitArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class RemoteImageBuildUlimitArgs:
     def __init__(__self__, *,
@@ -2126,6 +2787,19 @@ class RemoteImageBuildUlimitArgs:
         pulumi.set(self, "soft", value)
 
 
+if not MYPY:
+    class SecretLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    SecretLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class SecretLabelArgs:
     def __init__(__self__, *,
@@ -2162,6 +2836,23 @@ class SecretLabelArgs:
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
 
+
+if not MYPY:
+    class ServiceAuthArgsDict(TypedDict):
+        server_address: pulumi.Input[str]
+        """
+        The address of the server for the authentication
+        """
+        password: NotRequired[pulumi.Input[str]]
+        """
+        The password
+        """
+        username: NotRequired[pulumi.Input[str]]
+        """
+        The username
+        """
+elif False:
+    ServiceAuthArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceAuthArgs:
@@ -2217,6 +2908,19 @@ class ServiceAuthArgs:
         pulumi.set(self, "username", value)
 
 
+if not MYPY:
+    class ServiceConvergeConfigArgsDict(TypedDict):
+        delay: NotRequired[pulumi.Input[str]]
+        """
+        The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        """
+        timeout: NotRequired[pulumi.Input[str]]
+        """
+        The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        """
+elif False:
+    ServiceConvergeConfigArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceConvergeConfigArgs:
     def __init__(__self__, *,
@@ -2256,6 +2960,19 @@ class ServiceConvergeConfigArgs:
         pulumi.set(self, "timeout", value)
 
 
+if not MYPY:
+    class ServiceEndpointSpecArgsDict(TypedDict):
+        mode: NotRequired[pulumi.Input[str]]
+        """
+        The mode of resolution to use for internal load balancing between tasks
+        """
+        ports: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgsDict']]]]
+        """
+        List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
+        """
+elif False:
+    ServiceEndpointSpecArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceEndpointSpecArgs:
     def __init__(__self__, *,
@@ -2294,6 +3011,31 @@ class ServiceEndpointSpecArgs:
     def ports(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]]]):
         pulumi.set(self, "ports", value)
 
+
+if not MYPY:
+    class ServiceEndpointSpecPortArgsDict(TypedDict):
+        target_port: pulumi.Input[int]
+        """
+        The port inside the container
+        """
+        name: NotRequired[pulumi.Input[str]]
+        """
+        A random name for the port
+        """
+        protocol: NotRequired[pulumi.Input[str]]
+        """
+        Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+        """
+        publish_mode: NotRequired[pulumi.Input[str]]
+        """
+        Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
+        """
+        published_port: NotRequired[pulumi.Input[int]]
+        """
+        The port on the swarm hosts
+        """
+elif False:
+    ServiceEndpointSpecPortArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceEndpointSpecPortArgs:
@@ -2381,6 +3123,19 @@ class ServiceEndpointSpecPortArgs:
         pulumi.set(self, "published_port", value)
 
 
+if not MYPY:
+    class ServiceLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    ServiceLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceLabelArgs:
     def __init__(__self__, *,
@@ -2417,6 +3172,19 @@ class ServiceLabelArgs:
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
 
+
+if not MYPY:
+    class ServiceModeArgsDict(TypedDict):
+        global_: NotRequired[pulumi.Input[bool]]
+        """
+        When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        """
+        replicated: NotRequired[pulumi.Input['ServiceModeReplicatedArgsDict']]
+        """
+        The replicated service mode
+        """
+elif False:
+    ServiceModeArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceModeArgs:
@@ -2457,6 +3225,15 @@ class ServiceModeArgs:
         pulumi.set(self, "replicated", value)
 
 
+if not MYPY:
+    class ServiceModeReplicatedArgsDict(TypedDict):
+        replicas: NotRequired[pulumi.Input[int]]
+        """
+        The amount of replicas of the service. Defaults to `1`
+        """
+elif False:
+    ServiceModeReplicatedArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceModeReplicatedArgs:
     def __init__(__self__, *,
@@ -2479,6 +3256,35 @@ class ServiceModeReplicatedArgs:
     def replicas(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "replicas", value)
 
+
+if not MYPY:
+    class ServiceRollbackConfigArgsDict(TypedDict):
+        delay: NotRequired[pulumi.Input[str]]
+        """
+        Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
+        """
+        failure_action: NotRequired[pulumi.Input[str]]
+        """
+        Action on rollback failure: pause | continue. Defaults to `pause`.
+        """
+        max_failure_ratio: NotRequired[pulumi.Input[str]]
+        """
+        Failure rate to tolerate during a rollback. Defaults to `0.0`.
+        """
+        monitor: NotRequired[pulumi.Input[str]]
+        """
+        Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
+        """
+        order: NotRequired[pulumi.Input[str]]
+        """
+        Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
+        """
+        parallelism: NotRequired[pulumi.Input[int]]
+        """
+        Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
+        """
+elif False:
+    ServiceRollbackConfigArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceRollbackConfigArgs:
@@ -2582,6 +3388,43 @@ class ServiceRollbackConfigArgs:
     def parallelism(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "parallelism", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecArgsDict(TypedDict):
+        container_spec: pulumi.Input['ServiceTaskSpecContainerSpecArgsDict']
+        """
+        The spec for each container
+        """
+        force_update: NotRequired[pulumi.Input[int]]
+        """
+        A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+        """
+        log_driver: NotRequired[pulumi.Input['ServiceTaskSpecLogDriverArgsDict']]
+        """
+        Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
+        """
+        networks_advanceds: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecNetworksAdvancedArgsDict']]]]
+        """
+        The networks the container is attached to
+        """
+        placement: NotRequired[pulumi.Input['ServiceTaskSpecPlacementArgsDict']]
+        """
+        The placement preferences
+        """
+        resources: NotRequired[pulumi.Input['ServiceTaskSpecResourcesArgsDict']]
+        """
+        Resource requirements which apply to each individual container created as part of the service
+        """
+        restart_policy: NotRequired[pulumi.Input['ServiceTaskSpecRestartPolicyArgsDict']]
+        """
+        Specification for the restart policy which applies to containers created as part of this service.
+        """
+        runtime: NotRequired[pulumi.Input[str]]
+        """
+        Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+        """
+elif False:
+    ServiceTaskSpecArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecArgs:
@@ -2716,6 +3559,95 @@ class ServiceTaskSpecArgs:
     def runtime(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "runtime", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
+        image: pulumi.Input[str]
+        """
+        The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repo_digest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
+        """
+        args: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        Arguments to the command
+        """
+        commands: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
+        """
+        configs: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgsDict']]]]
+        """
+        References to zero or more configs that will be exposed to the service
+        """
+        dir: NotRequired[pulumi.Input[str]]
+        """
+        The working directory for commands to run in
+        """
+        dns_config: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecDnsConfigArgsDict']]
+        """
+        Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
+        """
+        env: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        A list of environment variables in the form VAR="value"
+        """
+        groups: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        A list of additional groups that the container process will run as
+        """
+        healthcheck: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecHealthcheckArgsDict']]
+        """
+        A test to perform to check that the container is healthy
+        """
+        hostname: NotRequired[pulumi.Input[str]]
+        """
+        The hostname to use for the container, as a valid RFC 1123 hostname
+        """
+        hosts: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgsDict']]]]
+        """
+        A list of hostname/IP mappings to add to the container's hosts file
+        """
+        isolation: NotRequired[pulumi.Input[str]]
+        """
+        Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
+        """
+        labels: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgsDict']]]]
+        """
+        User-defined key/value metadata
+        """
+        mounts: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgsDict']]]]
+        """
+        Specification for mounts to be added to containers created as part of the service
+        """
+        privileges: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesArgsDict']]
+        """
+        Security options for the container
+        """
+        read_only: NotRequired[pulumi.Input[bool]]
+        """
+        Mount the container's root filesystem as read only
+        """
+        secrets: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgsDict']]]]
+        """
+        References to zero or more secrets that will be exposed to the service
+        """
+        stop_grace_period: NotRequired[pulumi.Input[str]]
+        """
+        Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
+        """
+        stop_signal: NotRequired[pulumi.Input[str]]
+        """
+        Signal to stop the container
+        """
+        sysctl: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        Sysctls config (Linux only)
+        """
+        user: NotRequired[pulumi.Input[str]]
+        """
+        The user inside the container
+        """
+elif False:
+    ServiceTaskSpecContainerSpecArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecArgs:
@@ -3059,6 +3991,35 @@ class ServiceTaskSpecContainerSpecArgs:
         pulumi.set(self, "user", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecConfigArgsDict(TypedDict):
+        config_id: pulumi.Input[str]
+        """
+        ID of the specific config that we're referencing
+        """
+        file_name: pulumi.Input[str]
+        """
+        Represents the final filename in the filesystem
+        """
+        config_name: NotRequired[pulumi.Input[str]]
+        """
+        Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        """
+        file_gid: NotRequired[pulumi.Input[str]]
+        """
+        Represents the file GID. Defaults to `0`.
+        """
+        file_mode: NotRequired[pulumi.Input[int]]
+        """
+        Represents represents the FileMode of the file. Defaults to `0o444`.
+        """
+        file_uid: NotRequired[pulumi.Input[str]]
+        """
+        Represents the file UID. Defaults to `0`.
+        """
+elif False:
+    ServiceTaskSpecContainerSpecConfigArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecConfigArgs:
     def __init__(__self__, *,
@@ -3160,6 +4121,23 @@ class ServiceTaskSpecContainerSpecConfigArgs:
         pulumi.set(self, "file_uid", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecDnsConfigArgsDict(TypedDict):
+        nameservers: pulumi.Input[Sequence[pulumi.Input[str]]]
+        """
+        The IP addresses of the name servers
+        """
+        options: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        """
+        searches: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        A search list for host-name lookup
+        """
+elif False:
+    ServiceTaskSpecContainerSpecDnsConfigArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecDnsConfigArgs:
     def __init__(__self__, *,
@@ -3213,6 +4191,31 @@ class ServiceTaskSpecContainerSpecDnsConfigArgs:
     def searches(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "searches", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecHealthcheckArgsDict(TypedDict):
+        tests: pulumi.Input[Sequence[pulumi.Input[str]]]
+        """
+        The test to perform as list
+        """
+        interval: NotRequired[pulumi.Input[str]]
+        """
+        Time between running the check (ms|s|m|h). Defaults to `0s`.
+        """
+        retries: NotRequired[pulumi.Input[int]]
+        """
+        Consecutive failures needed to report unhealthy. Defaults to `0`
+        """
+        start_period: NotRequired[pulumi.Input[str]]
+        """
+        Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        """
+        timeout: NotRequired[pulumi.Input[str]]
+        """
+        Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+        """
+elif False:
+    ServiceTaskSpecContainerSpecHealthcheckArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecHealthcheckArgs:
@@ -3300,6 +4303,19 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
         pulumi.set(self, "timeout", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecHostArgsDict(TypedDict):
+        host: pulumi.Input[str]
+        """
+        The name of the host
+        """
+        ip: pulumi.Input[str]
+        """
+        The ip of the host
+        """
+elif False:
+    ServiceTaskSpecContainerSpecHostArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecHostArgs:
     def __init__(__self__, *,
@@ -3337,6 +4353,19 @@ class ServiceTaskSpecContainerSpecHostArgs:
         pulumi.set(self, "ip", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    ServiceTaskSpecContainerSpecLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecLabelArgs:
     def __init__(__self__, *,
@@ -3373,6 +4402,39 @@ class ServiceTaskSpecContainerSpecLabelArgs:
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecMountArgsDict(TypedDict):
+        target: pulumi.Input[str]
+        """
+        Container path
+        """
+        type: pulumi.Input[str]
+        """
+        The mount type
+        """
+        bind_options: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecMountBindOptionsArgsDict']]
+        """
+        Optional configuration for the bind type
+        """
+        read_only: NotRequired[pulumi.Input[bool]]
+        """
+        Whether the mount should be read-only
+        """
+        source: NotRequired[pulumi.Input[str]]
+        """
+        Mount source (e.g. a volume name, a host path)
+        """
+        tmpfs_options: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgsDict']]
+        """
+        Optional configuration for the tmpfs type
+        """
+        volume_options: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsArgsDict']]
+        """
+        Optional configuration for the volume type
+        """
+elif False:
+    ServiceTaskSpecContainerSpecMountArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecMountArgs:
@@ -3491,6 +4553,15 @@ class ServiceTaskSpecContainerSpecMountArgs:
         pulumi.set(self, "volume_options", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecMountBindOptionsArgsDict(TypedDict):
+        propagation: NotRequired[pulumi.Input[str]]
+        """
+        Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+        """
+elif False:
+    ServiceTaskSpecContainerSpecMountBindOptionsArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecMountBindOptionsArgs:
     def __init__(__self__, *,
@@ -3513,6 +4584,19 @@ class ServiceTaskSpecContainerSpecMountBindOptionsArgs:
     def propagation(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "propagation", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgsDict(TypedDict):
+        mode: NotRequired[pulumi.Input[int]]
+        """
+        The permission mode for the tmpfs mount in an integer
+        """
+        size_bytes: NotRequired[pulumi.Input[int]]
+        """
+        The size for the tmpfs mount in bytes
+        """
+elif False:
+    ServiceTaskSpecContainerSpecMountTmpfsOptionsArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs:
@@ -3552,6 +4636,27 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs:
     def size_bytes(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "size_bytes", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecMountVolumeOptionsArgsDict(TypedDict):
+        driver_name: NotRequired[pulumi.Input[str]]
+        """
+        Name of the driver to use to create the volume
+        """
+        driver_options: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        key/value map of driver specific options
+        """
+        labels: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgsDict']]]]
+        """
+        User-defined key/value metadata
+        """
+        no_copy: NotRequired[pulumi.Input[bool]]
+        """
+        Populate volume with data from the target
+        """
+elif False:
+    ServiceTaskSpecContainerSpecMountVolumeOptionsArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
@@ -3624,6 +4729,19 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
         pulumi.set(self, "no_copy", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs:
     def __init__(__self__, *,
@@ -3660,6 +4778,19 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs:
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecPrivilegesArgsDict(TypedDict):
+        credential_spec: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgsDict']]
+        """
+        CredentialSpec for managed service account (Windows only)
+        """
+        se_linux_context: NotRequired[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgsDict']]
+        """
+        SELinux labels of the container
+        """
+elif False:
+    ServiceTaskSpecContainerSpecPrivilegesArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecPrivilegesArgs:
@@ -3700,6 +4831,19 @@ class ServiceTaskSpecContainerSpecPrivilegesArgs:
         pulumi.set(self, "se_linux_context", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgsDict(TypedDict):
+        file: NotRequired[pulumi.Input[str]]
+        """
+        Load credential spec from this file
+        """
+        registry: NotRequired[pulumi.Input[str]]
+        """
+        Load credential spec from this value in the Windows registry
+        """
+elif False:
+    ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs:
     def __init__(__self__, *,
@@ -3738,6 +4882,31 @@ class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs:
     def registry(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "registry", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgsDict(TypedDict):
+        disable: NotRequired[pulumi.Input[bool]]
+        """
+        Disable SELinux
+        """
+        level: NotRequired[pulumi.Input[str]]
+        """
+        SELinux level label
+        """
+        role: NotRequired[pulumi.Input[str]]
+        """
+        SELinux role label
+        """
+        type: NotRequired[pulumi.Input[str]]
+        """
+        SELinux type label
+        """
+        user: NotRequired[pulumi.Input[str]]
+        """
+        SELinux user label
+        """
+elif False:
+    ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
@@ -3825,6 +4994,35 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
     def user(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "user", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecContainerSpecSecretArgsDict(TypedDict):
+        file_name: pulumi.Input[str]
+        """
+        Represents the final filename in the filesystem
+        """
+        secret_id: pulumi.Input[str]
+        """
+        ID of the specific secret that we're referencing
+        """
+        file_gid: NotRequired[pulumi.Input[str]]
+        """
+        Represents the file GID. Defaults to `0`
+        """
+        file_mode: NotRequired[pulumi.Input[int]]
+        """
+        Represents represents the FileMode of the file. Defaults to `0o444`
+        """
+        file_uid: NotRequired[pulumi.Input[str]]
+        """
+        Represents the file UID. Defaults to `0`
+        """
+        secret_name: NotRequired[pulumi.Input[str]]
+        """
+        Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        """
+elif False:
+    ServiceTaskSpecContainerSpecSecretArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecSecretArgs:
@@ -3927,6 +5125,19 @@ class ServiceTaskSpecContainerSpecSecretArgs:
         pulumi.set(self, "secret_name", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecLogDriverArgsDict(TypedDict):
+        name: pulumi.Input[str]
+        """
+        The logging driver to use
+        """
+        options: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        The options for the logging driver
+        """
+elif False:
+    ServiceTaskSpecLogDriverArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecLogDriverArgs:
     def __init__(__self__, *,
@@ -3964,6 +5175,23 @@ class ServiceTaskSpecLogDriverArgs:
     def options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "options", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecNetworksAdvancedArgsDict(TypedDict):
+        name: pulumi.Input[str]
+        """
+        The name/id of the network.
+        """
+        aliases: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        The network aliases of the container in the specific network.
+        """
+        driver_opts: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        An array of driver options for the network, e.g. `opts1=value`
+        """
+elif False:
+    ServiceTaskSpecNetworksAdvancedArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecNetworksAdvancedArgs:
@@ -4018,6 +5246,27 @@ class ServiceTaskSpecNetworksAdvancedArgs:
     def driver_opts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "driver_opts", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecPlacementArgsDict(TypedDict):
+        constraints: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        An array of constraints. e.g.: `node.role==manager`
+        """
+        max_replicas: NotRequired[pulumi.Input[int]]
+        """
+        Maximum number of replicas for per node (default value is `0`, which is unlimited)
+        """
+        platforms: NotRequired[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgsDict']]]]
+        """
+        Platforms stores all the platforms that the service's image can run on
+        """
+        prefs: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+        """
+elif False:
+    ServiceTaskSpecPlacementArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecPlacementArgs:
@@ -4090,6 +5339,19 @@ class ServiceTaskSpecPlacementArgs:
         pulumi.set(self, "prefs", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecPlacementPlatformArgsDict(TypedDict):
+        architecture: pulumi.Input[str]
+        """
+        The architecture, e.g. `amd64`
+        """
+        os: pulumi.Input[str]
+        """
+        The operation system, e.g. `linux`
+        """
+elif False:
+    ServiceTaskSpecPlacementPlatformArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecPlacementPlatformArgs:
     def __init__(__self__, *,
@@ -4126,6 +5388,19 @@ class ServiceTaskSpecPlacementPlatformArgs:
     def os(self, value: pulumi.Input[str]):
         pulumi.set(self, "os", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecResourcesArgsDict(TypedDict):
+        limits: NotRequired[pulumi.Input['ServiceTaskSpecResourcesLimitsArgsDict']]
+        """
+        Describes the resources which can be advertised by a node and requested by a task
+        """
+        reservation: NotRequired[pulumi.Input['ServiceTaskSpecResourcesReservationArgsDict']]
+        """
+        An object describing the resources which can be advertised by a node and requested by a task
+        """
+elif False:
+    ServiceTaskSpecResourcesArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecResourcesArgs:
@@ -4166,6 +5441,19 @@ class ServiceTaskSpecResourcesArgs:
         pulumi.set(self, "reservation", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecResourcesLimitsArgsDict(TypedDict):
+        memory_bytes: NotRequired[pulumi.Input[int]]
+        """
+        The amounf of memory in bytes the container allocates
+        """
+        nano_cpus: NotRequired[pulumi.Input[int]]
+        """
+        CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        """
+elif False:
+    ServiceTaskSpecResourcesLimitsArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecResourcesLimitsArgs:
     def __init__(__self__, *,
@@ -4204,6 +5492,23 @@ class ServiceTaskSpecResourcesLimitsArgs:
     def nano_cpus(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "nano_cpus", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecResourcesReservationArgsDict(TypedDict):
+        generic_resources: NotRequired[pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgsDict']]
+        """
+        User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
+        """
+        memory_bytes: NotRequired[pulumi.Input[int]]
+        """
+        The amounf of memory in bytes the container allocates
+        """
+        nano_cpus: NotRequired[pulumi.Input[int]]
+        """
+        CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
+        """
+elif False:
+    ServiceTaskSpecResourcesReservationArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecResourcesReservationArgs:
@@ -4260,6 +5565,19 @@ class ServiceTaskSpecResourcesReservationArgs:
         pulumi.set(self, "nano_cpus", value)
 
 
+if not MYPY:
+    class ServiceTaskSpecResourcesReservationGenericResourcesArgsDict(TypedDict):
+        discrete_resources_specs: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        The Integer resources
+        """
+        named_resources_specs: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        The String resources
+        """
+elif False:
+    ServiceTaskSpecResourcesReservationGenericResourcesArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ServiceTaskSpecResourcesReservationGenericResourcesArgs:
     def __init__(__self__, *,
@@ -4298,6 +5616,27 @@ class ServiceTaskSpecResourcesReservationGenericResourcesArgs:
     def named_resources_specs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "named_resources_specs", value)
 
+
+if not MYPY:
+    class ServiceTaskSpecRestartPolicyArgsDict(TypedDict):
+        condition: NotRequired[pulumi.Input[str]]
+        """
+        Condition for restart
+        """
+        delay: NotRequired[pulumi.Input[str]]
+        """
+        Delay between restart attempts (ms|s|m|h)
+        """
+        max_attempts: NotRequired[pulumi.Input[int]]
+        """
+        Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        """
+        window: NotRequired[pulumi.Input[str]]
+        """
+        The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+        """
+elif False:
+    ServiceTaskSpecRestartPolicyArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceTaskSpecRestartPolicyArgs:
@@ -4369,6 +5708,35 @@ class ServiceTaskSpecRestartPolicyArgs:
     def window(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "window", value)
 
+
+if not MYPY:
+    class ServiceUpdateConfigArgsDict(TypedDict):
+        delay: NotRequired[pulumi.Input[str]]
+        """
+        Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
+        """
+        failure_action: NotRequired[pulumi.Input[str]]
+        """
+        Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
+        """
+        max_failure_ratio: NotRequired[pulumi.Input[str]]
+        """
+        Failure rate to tolerate during an update. Defaults to `0.0`.
+        """
+        monitor: NotRequired[pulumi.Input[str]]
+        """
+        Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
+        """
+        order: NotRequired[pulumi.Input[str]]
+        """
+        Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
+        """
+        parallelism: NotRequired[pulumi.Input[int]]
+        """
+        Maximum number of tasks to be updated in one iteration. Defaults to `1`
+        """
+elif False:
+    ServiceUpdateConfigArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ServiceUpdateConfigArgs:
@@ -4473,6 +5841,19 @@ class ServiceUpdateConfigArgs:
         pulumi.set(self, "parallelism", value)
 
 
+if not MYPY:
+    class VolumeLabelArgsDict(TypedDict):
+        label: pulumi.Input[str]
+        """
+        Name of the label
+        """
+        value: pulumi.Input[str]
+        """
+        Value of the label
+        """
+elif False:
+    VolumeLabelArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class VolumeLabelArgs:
     def __init__(__self__, *,
@@ -4510,6 +5891,18 @@ class VolumeLabelArgs:
         pulumi.set(self, "value", value)
 
 
+if not MYPY:
+    class CacheFromArgsDict(TypedDict):
+        """
+        Contains a list of images to reference when building using a cache
+        """
+        images: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        Specifies cached images
+        """
+elif False:
+    CacheFromArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class CacheFromArgs:
     def __init__(__self__, *,
@@ -4533,6 +5926,50 @@ class CacheFromArgs:
     def images(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "images", value)
 
+
+if not MYPY:
+    class DockerBuildArgsDict(TypedDict):
+        """
+        The Docker build context
+        """
+        add_hosts: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        Custom host-to-IP mappings to use while building (format: "host:ip")
+        """
+        args: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
+        """
+        builder_version: NotRequired[pulumi.Input['BuilderVersion']]
+        """
+        The version of the Docker builder.
+        """
+        cache_from: NotRequired[pulumi.Input['CacheFromArgsDict']]
+        """
+        A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
+        """
+        context: NotRequired[pulumi.Input[str]]
+        """
+        The path to the build context to use.
+        """
+        dockerfile: NotRequired[pulumi.Input[str]]
+        """
+        The path to the Dockerfile to use.
+        """
+        network: NotRequired[pulumi.Input[str]]
+        """
+        Set the networking mode for RUN instructions
+        """
+        platform: NotRequired[pulumi.Input[str]]
+        """
+        The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
+        """
+        target: NotRequired[pulumi.Input[str]]
+        """
+        The target of the Dockerfile to build
+        """
+elif False:
+    DockerBuildArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class DockerBuildArgs:
@@ -4685,6 +6122,26 @@ class DockerBuildArgs:
     def target(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "target", value)
 
+
+if not MYPY:
+    class RegistryArgsDict(TypedDict):
+        """
+        Describes a Docker container registry
+        """
+        password: NotRequired[pulumi.Input[str]]
+        """
+        The password to authenticate to the registry. Does not cause image rebuild when changed.
+        """
+        server: NotRequired[pulumi.Input[str]]
+        """
+        The URL of the Docker registry server
+        """
+        username: NotRequired[pulumi.Input[str]]
+        """
+        The username to authenticate to the registry. Does not cause image rebuild when changed.
+        """
+elif False:
+    RegistryArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class RegistryArgs:
