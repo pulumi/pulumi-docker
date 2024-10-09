@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -213,9 +218,6 @@ def get_logs(details: Optional[bool] = None,
         tail=pulumi.get(__ret__, 'tail'),
         timestamps=pulumi.get(__ret__, 'timestamps'),
         until=pulumi.get(__ret__, 'until'))
-
-
-@_utilities.lift_output_func(get_logs)
 def get_logs_output(details: Optional[pulumi.Input[Optional[bool]]] = None,
                     discard_headers: Optional[pulumi.Input[Optional[bool]]] = None,
                     follow: Optional[pulumi.Input[Optional[bool]]] = None,
@@ -236,4 +238,31 @@ def get_logs_output(details: Optional[pulumi.Input[Optional[bool]]] = None,
     :param bool logs_list_string_enabled: If true populate computed value `logs_list_string`
     :param str name: The name of the Docker Container
     """
-    ...
+    __args__ = dict()
+    __args__['details'] = details
+    __args__['discardHeaders'] = discard_headers
+    __args__['follow'] = follow
+    __args__['logsListStringEnabled'] = logs_list_string_enabled
+    __args__['name'] = name
+    __args__['showStderr'] = show_stderr
+    __args__['showStdout'] = show_stdout
+    __args__['since'] = since
+    __args__['tail'] = tail
+    __args__['timestamps'] = timestamps
+    __args__['until'] = until
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('docker:index/getLogs:getLogs', __args__, opts=opts, typ=GetLogsResult)
+    return __ret__.apply(lambda __response__: GetLogsResult(
+        details=pulumi.get(__response__, 'details'),
+        discard_headers=pulumi.get(__response__, 'discard_headers'),
+        follow=pulumi.get(__response__, 'follow'),
+        id=pulumi.get(__response__, 'id'),
+        logs_list_string_enabled=pulumi.get(__response__, 'logs_list_string_enabled'),
+        logs_list_strings=pulumi.get(__response__, 'logs_list_strings'),
+        name=pulumi.get(__response__, 'name'),
+        show_stderr=pulumi.get(__response__, 'show_stderr'),
+        show_stdout=pulumi.get(__response__, 'show_stdout'),
+        since=pulumi.get(__response__, 'since'),
+        tail=pulumi.get(__response__, 'tail'),
+        timestamps=pulumi.get(__response__, 'timestamps'),
+        until=pulumi.get(__response__, 'until')))

@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -101,9 +106,6 @@ def get_remote_image(name: Optional[str] = None,
         id=pulumi.get(__ret__, 'id'),
         name=pulumi.get(__ret__, 'name'),
         repo_digest=pulumi.get(__ret__, 'repo_digest'))
-
-
-@_utilities.lift_output_func(get_remote_image)
 def get_remote_image_output(name: Optional[pulumi.Input[str]] = None,
                             opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetRemoteImageResult]:
     """
@@ -128,4 +130,11 @@ def get_remote_image_output(name: Optional[pulumi.Input[str]] = None,
 
     :param str name: The name of the Docker image, including any tags or SHA256 repo digests.
     """
-    ...
+    __args__ = dict()
+    __args__['name'] = name
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('docker:index/getRemoteImage:getRemoteImage', __args__, opts=opts, typ=GetRemoteImageResult)
+    return __ret__.apply(lambda __response__: GetRemoteImageResult(
+        id=pulumi.get(__response__, 'id'),
+        name=pulumi.get(__response__, 'name'),
+        repo_digest=pulumi.get(__response__, 'repo_digest')))

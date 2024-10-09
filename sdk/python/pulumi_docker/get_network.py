@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from . import outputs
 
@@ -147,9 +152,6 @@ def get_network(name: Optional[str] = None,
         name=pulumi.get(__ret__, 'name'),
         options=pulumi.get(__ret__, 'options'),
         scope=pulumi.get(__ret__, 'scope'))
-
-
-@_utilities.lift_output_func(get_network)
 def get_network_output(name: Optional[pulumi.Input[str]] = None,
                        opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetNetworkResult]:
     """
@@ -167,4 +169,15 @@ def get_network_output(name: Optional[pulumi.Input[str]] = None,
 
     :param str name: The name of the Docker network.
     """
-    ...
+    __args__ = dict()
+    __args__['name'] = name
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('docker:index/getNetwork:getNetwork', __args__, opts=opts, typ=GetNetworkResult)
+    return __ret__.apply(lambda __response__: GetNetworkResult(
+        driver=pulumi.get(__response__, 'driver'),
+        id=pulumi.get(__response__, 'id'),
+        internal=pulumi.get(__response__, 'internal'),
+        ipam_configs=pulumi.get(__response__, 'ipam_configs'),
+        name=pulumi.get(__response__, 'name'),
+        options=pulumi.get(__response__, 'options'),
+        scope=pulumi.get(__response__, 'scope')))
