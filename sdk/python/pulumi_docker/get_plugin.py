@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -152,9 +157,6 @@ def get_plugin(alias: Optional[str] = None,
         id=pulumi.get(__ret__, 'id'),
         name=pulumi.get(__ret__, 'name'),
         plugin_reference=pulumi.get(__ret__, 'plugin_reference'))
-
-
-@_utilities.lift_output_func(get_plugin)
 def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
                       id: Optional[pulumi.Input[Optional[str]]] = None,
                       opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetPluginResult]:
@@ -177,4 +179,16 @@ def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
     :param str alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
     :param str id: The ID of the plugin, which has precedence over the `alias` of both are given
     """
-    ...
+    __args__ = dict()
+    __args__['alias'] = alias
+    __args__['id'] = id
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('docker:index/getPlugin:getPlugin', __args__, opts=opts, typ=GetPluginResult)
+    return __ret__.apply(lambda __response__: GetPluginResult(
+        alias=pulumi.get(__response__, 'alias'),
+        enabled=pulumi.get(__response__, 'enabled'),
+        envs=pulumi.get(__response__, 'envs'),
+        grant_all_permissions=pulumi.get(__response__, 'grant_all_permissions'),
+        id=pulumi.get(__response__, 'id'),
+        name=pulumi.get(__response__, 'name'),
+        plugin_reference=pulumi.get(__response__, 'plugin_reference')))

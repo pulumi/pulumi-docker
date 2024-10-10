@@ -4,9 +4,14 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
@@ -113,9 +118,6 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
         insecure_skip_verify=pulumi.get(__ret__, 'insecure_skip_verify'),
         name=pulumi.get(__ret__, 'name'),
         sha256_digest=pulumi.get(__ret__, 'sha256_digest'))
-
-
-@_utilities.lift_output_func(get_registry_image)
 def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Optional[bool]]] = None,
                               name: Optional[pulumi.Input[str]] = None,
                               opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetRegistryImageResult]:
@@ -138,4 +140,13 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
     :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
     :param str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """
-    ...
+    __args__ = dict()
+    __args__['insecureSkipVerify'] = insecure_skip_verify
+    __args__['name'] = name
+    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    __ret__ = pulumi.runtime.invoke_output('docker:index/getRegistryImage:getRegistryImage', __args__, opts=opts, typ=GetRegistryImageResult)
+    return __ret__.apply(lambda __response__: GetRegistryImageResult(
+        id=pulumi.get(__response__, 'id'),
+        insecure_skip_verify=pulumi.get(__response__, 'insecure_skip_verify'),
+        name=pulumi.get(__response__, 'name'),
+        sha256_digest=pulumi.get(__response__, 'sha256_digest')))
