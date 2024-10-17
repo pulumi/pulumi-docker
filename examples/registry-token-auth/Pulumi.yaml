@@ -1,0 +1,3 @@
+name: registry-token-auth
+runtime: nodejs
+description: A minimal AWS TypeScript Pulumi program
