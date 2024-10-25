@@ -38,3 +38,4 @@ actions:
       with:
         ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
 pulumiConvert: 1
+registryDocs: true
