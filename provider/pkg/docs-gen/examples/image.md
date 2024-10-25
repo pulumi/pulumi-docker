@@ -324,7 +324,7 @@ auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.r
 my_app_image = docker.Image("my-app-image",
     build={
         "args": {
-            "buildki_t__inlin_e__cache": "1",
+            "BUILDKIT_INLINE_CACHE": "1",
         },
         "cache_from": {
             "images": [ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
