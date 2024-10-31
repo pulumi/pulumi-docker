@@ -1,4 +1,5 @@
 ---
+# *** WARNING: This file was auto-generated. Do not edit by hand unless you're certain you know what you are doing! ***
 title: Docker Provider
 meta_desc: Provides an overview on how to configure the Pulumi Docker provider.
 layout: package
@@ -604,7 +605,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /Users/guin/.docker
+        value: /home/runner/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
@@ -624,7 +625,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /Users/guin/.docker
+        value: /home/runner/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
@@ -644,7 +645,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /Users/guin/.docker
+        value: /home/runner/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
@@ -664,7 +665,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /Users/guin/.docker
+        value: /home/runner/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
@@ -684,7 +685,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /Users/guin/.docker
+        value: /home/runner/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
@@ -704,7 +705,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /Users/guin/.docker
+        value: /home/runner/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
