@@ -726,7 +726,7 @@ config:
 - `sshOpts` (List of String) Additional SSH option flags to be appended when using `ssh://` protocol
 
 <a id="nestedblock--registry_auth"></a>
-### Nested Configuration Reference for `registryAuth`
+### Nested Schema for `registryAuth`
 
 Required:
 
