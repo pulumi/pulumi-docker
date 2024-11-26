@@ -31,3 +31,7 @@ sdk/java/gradlew.bat
 
 
 sdk/python/venv
+
+
+# Ignore local build tracking directory
+.make
