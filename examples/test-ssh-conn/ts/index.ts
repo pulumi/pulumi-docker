@@ -50,4 +50,6 @@ const container = new docker.Container("container", {
 });
 
 // Test the bridged client's SSH connevtivity via an upstream function Invocation.
-docker.getNetwork({ name: "host" }, { provider: provider });
+const network = docker.getNetwork({ name: "host" }, { provider: provider });
+
+export const driver = network.then(n => n.driver)
