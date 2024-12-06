@@ -229,7 +229,7 @@ def get_logs_output(details: Optional[pulumi.Input[Optional[bool]]] = None,
                     tail: Optional[pulumi.Input[Optional[str]]] = None,
                     timestamps: Optional[pulumi.Input[Optional[bool]]] = None,
                     until: Optional[pulumi.Input[Optional[str]]] = None,
-                    opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetLogsResult]:
+                    opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetLogsResult]:
     """
     `get_logs` provides logs from specific container
 
@@ -250,7 +250,7 @@ def get_logs_output(details: Optional[pulumi.Input[Optional[bool]]] = None,
     __args__['tail'] = tail
     __args__['timestamps'] = timestamps
     __args__['until'] = until
-    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    opts = pulumi.InvokeOutputOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
     __ret__ = pulumi.runtime.invoke_output('docker:index/getLogs:getLogs', __args__, opts=opts, typ=GetLogsResult)
     return __ret__.apply(lambda __response__: GetLogsResult(
         details=pulumi.get(__response__, 'details'),
