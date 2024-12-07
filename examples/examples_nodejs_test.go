@@ -235,7 +235,10 @@ func TestSSHConnNode(t *testing.T) {
 		signer, err := ssh.ParsePrivateKey([]byte(key))
 		require.NoError(t, err)
 
-		err = a.Add(agent.AddedKey{PrivateKey: signer})
+		privateKey, ok := signer.(*rsa.PrivateKey)
+		require.True(t, ok)
+
+		err = a.Add(agent.AddedKey{PrivateKey: privateKey})
 		require.NoError(t, err)
 
 		go func() {
