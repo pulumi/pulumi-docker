@@ -31,6 +31,7 @@ env:
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
+  PRIVATE_SSH_KEY_FOR_DIGITALOCEAN: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
   PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
@@ -204,13 +205,9 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         version: v2.5.0
-    - name: Setup SSH key
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
     - name: Run tests
       if: matrix.testTarget == 'local'
-      run: cd examples && go test -count=1 -cover -timeout 2h -tags=${{ matrix.language }} -skip TestPulumiExamples -parallel 4 .
+      run: cd examples && go test -count=1 -v -cover -timeout 2h -tags=${{ matrix.language }} -skip TestPulumiExamples -parallel 4 .
     - name: Run pulumi/examples tests
       if: matrix.testTarget == 'pulumiExamples'
       run: cd examples && go test -count=1 -cover -timeout 2h -tags=${{ matrix.language }} -run TestPulumiExamples -parallel 4 .
