@@ -232,11 +232,8 @@ func TestSSHConnNode(t *testing.T) {
 
 		a := agent.NewKeyring()
 
-		signer, err := ssh.ParsePrivateKey([]byte(key))
+		privateKey, err := ssh.ParseRawPrivateKey([]byte(key))
 		require.NoError(t, err)
-
-		privateKey, ok := signer.(*rsa.PrivateKey)
-		require.True(t, ok)
 
 		err = a.Add(agent.AddedKey{PrivateKey: privateKey})
 		require.NoError(t, err)
@@ -270,8 +267,8 @@ func TestSSHConnNode(t *testing.T) {
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
-			Env: []string{fmt.Sprintf("SSH_AUTH_SOCK=%s", sshagent())},
-			Verbose:      true,
+			Env:     []string{fmt.Sprintf("SSH_AUTH_SOCK=%s", sshagent())},
+			Verbose: true,
 		})
 	integration.ProgramTest(t, &test)
 }
