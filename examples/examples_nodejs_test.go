@@ -267,7 +267,7 @@ func TestSSHConnNode(t *testing.T) {
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
-			Environments: []string{fmt.Sprintf("SSH_AUTH_SOCK=%s", sshagent())},
+			Env: []string{fmt.Sprintf("SSH_AUTH_SOCK=%s", sshagent())},
 			Verbose:      true,
 		})
 	integration.ProgramTest(t, &test)
