@@ -11,20 +11,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//go:build nodejs || all
-// +build nodejs all
 
 package examples
 
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"net"
 	"os"
 	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/agent"
 )
 
 func TestNginxTs(t *testing.T) {
@@ -207,6 +213,44 @@ func TestSSHConnNode(t *testing.T) {
 	if token == "" {
 		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
 	}
+	key := os.Getenv("PRIVATE_SSH_KEY_FOR_DIGITALOCEAN")
+	if key == "" {
+		t.Skip("PRIVATE_SSH_KEY_FOR_DIGITALOCEAN is unset")
+	}
+
+	// sshagent crates an in-memory SSH agent with our DO private key loaded, and it returns the listening socket.
+	sshagent := func() string {
+		dir, err := os.MkdirTemp(os.TempDir(), "docker-test-*")
+		require.NoError(t, err)
+
+		sock := filepath.Join(dir, "test.sock")
+
+		l, err := net.Listen("unix", sock)
+		require.NoError(t, err)
+
+		a := agent.NewKeyring()
+
+		signer, err := ssh.ParsePrivateKey([]byte(key))
+		require.NoError(t, err)
+
+		err = a.Add(agent.AddedKey{PrivateKey: signer})
+		require.NoError(t, err)
+
+		go func() {
+			for {
+				conn, err := l.Accept()
+				if err != nil {
+					panic(err)
+				}
+				if err := agent.ServeAgent(a, conn); err != nil && !errors.Is(err, io.EOF) {
+					panic(err)
+				}
+			}
+		}()
+
+		return sock
+	}
+
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "test-ssh-conn", "ts"),
@@ -221,7 +265,8 @@ func TestSSHConnNode(t *testing.T) {
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
-			Verbose: true,
+			Environments: []string{fmt.Sprintf("SSH_AUTH_SOCK=%s", sshagent())},
+			Verbose:      true,
 		})
 	integration.ProgramTest(t, &test)
 }
