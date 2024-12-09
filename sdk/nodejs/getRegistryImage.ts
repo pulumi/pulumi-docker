@@ -83,7 +83,7 @@ export interface GetRegistryImageResult {
  * });
  * ```
  */
-export function getRegistryImageOutput(args: GetRegistryImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRegistryImageResult> {
+export function getRegistryImageOutput(args: GetRegistryImageOutputArgs, opts?: pulumi.InvokeOutputOptions): pulumi.Output<GetRegistryImageResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("docker:index/getRegistryImage:getRegistryImage", {
         "insecureSkipVerify": args.insecureSkipVerify,
