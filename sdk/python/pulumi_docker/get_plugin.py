@@ -159,7 +159,7 @@ def get_plugin(alias: Optional[str] = None,
         plugin_reference=pulumi.get(__ret__, 'plugin_reference'))
 def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
                       id: Optional[pulumi.Input[Optional[str]]] = None,
-                      opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetPluginResult]:
+                      opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetPluginResult]:
     """
     Reads the local Docker plugin. The plugin must be installed locally.
 
@@ -182,7 +182,7 @@ def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
     __args__ = dict()
     __args__['alias'] = alias
     __args__['id'] = id
-    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    opts = pulumi.InvokeOutputOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
     __ret__ = pulumi.runtime.invoke_output('docker:index/getPlugin:getPlugin', __args__, opts=opts, typ=GetPluginResult)
     return __ret__.apply(lambda __response__: GetPluginResult(
         alias=pulumi.get(__response__, 'alias'),

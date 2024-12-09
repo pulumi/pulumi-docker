@@ -120,7 +120,7 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
         sha256_digest=pulumi.get(__ret__, 'sha256_digest'))
 def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Optional[bool]]] = None,
                               name: Optional[pulumi.Input[str]] = None,
-                              opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetRegistryImageResult]:
+                              opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetRegistryImageResult]:
     """
     Reads the image metadata from a Docker Registry. Used in conjunction with the RemoteImage resource to keep an image up to date on the latest available version of the tag.
 
@@ -143,7 +143,7 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
     __args__ = dict()
     __args__['insecureSkipVerify'] = insecure_skip_verify
     __args__['name'] = name
-    opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
+    opts = pulumi.InvokeOutputOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
     __ret__ = pulumi.runtime.invoke_output('docker:index/getRegistryImage:getRegistryImage', __args__, opts=opts, typ=GetRegistryImageResult)
     return __ret__.apply(lambda __response__: GetRegistryImageResult(
         id=pulumi.get(__response__, 'id'),
