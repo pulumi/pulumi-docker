@@ -92,7 +92,7 @@ export interface GetRemoteImageResult {
  * });
  * ```
  */
-export function getRemoteImageOutput(args: GetRemoteImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRemoteImageResult> {
+export function getRemoteImageOutput(args: GetRemoteImageOutputArgs, opts?: pulumi.InvokeOutputOptions): pulumi.Output<GetRemoteImageResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("docker:index/getRemoteImage:getRemoteImage", {
         "name": args.name,

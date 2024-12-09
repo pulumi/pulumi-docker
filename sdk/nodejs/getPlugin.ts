@@ -98,7 +98,7 @@ export interface GetPluginResult {
  * });
  * ```
  */
-export function getPluginOutput(args?: GetPluginOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPluginResult> {
+export function getPluginOutput(args?: GetPluginOutputArgs, opts?: pulumi.InvokeOutputOptions): pulumi.Output<GetPluginResult> {
     args = args || {};
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("docker:index/getPlugin:getPlugin", {

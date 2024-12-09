@@ -86,7 +86,7 @@ export interface GetLogsResult {
 /**
  * `docker.getLogs` provides logs from specific container
  */
-export function getLogsOutput(args: GetLogsOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetLogsResult> {
+export function getLogsOutput(args: GetLogsOutputArgs, opts?: pulumi.InvokeOutputOptions): pulumi.Output<GetLogsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("docker:index/getLogs:getLogs", {
         "details": args.details,
