@@ -20,6 +20,7 @@ env:
   GOOGLE_REGION: us-central1
   GOOGLE_ZONE: us-central1-a
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+  PRIVATE_SSH_KEY_FOR_DIGITALOCEAN: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
 makeTemplate: bridged
 docsCmd: "cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./"
 hybrid: true
@@ -31,11 +32,5 @@ plugins:
   - name: aws
     version: "6.8.0"
 team: ecosystem
-actions:
-  preTest:
-    - name: Setup SSH key
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
 pulumiConvert: 1
 registryDocs: true
