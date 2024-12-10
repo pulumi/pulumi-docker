@@ -37,6 +37,7 @@ env:
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
+  PRIVATE_SSH_KEY_FOR_DIGITALOCEAN: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
   PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
@@ -66,7 +67,7 @@ jobs:
       with:
         set-env: 'PROVIDER_VERSION'
     - name: Cache examples generation
-      uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
+      uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
       with:
         path: |
           .pulumi/examples-cache
@@ -96,10 +97,10 @@ jobs:
         } >> "$GITHUB_ENV"
     - if: inputs.is_pr && inputs.is_automated == false
       name: Comment on PR with Details of Schema Check
-      uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6 # v2.5.0
+      uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        comment_tag: schemaCheck
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        comment-tag: schemaCheck
         message: >+
           ${{ env.SCHEMA_CHANGES }}
 
