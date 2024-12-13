@@ -87,21 +87,11 @@ type LookupRemoteImageResult struct {
 }
 
 func LookupRemoteImageOutput(ctx *pulumi.Context, args LookupRemoteImageOutputArgs, opts ...pulumi.InvokeOption) LookupRemoteImageResultOutput {
-	return pulumi.ToOutputWithContext(context.Background(), args).
+	return pulumi.ToOutputWithContext(ctx.Context(), args).
 		ApplyT(func(v interface{}) (LookupRemoteImageResultOutput, error) {
 			args := v.(LookupRemoteImageArgs)
-			opts = internal.PkgInvokeDefaultOpts(opts)
-			var rv LookupRemoteImageResult
-			secret, err := ctx.InvokePackageRaw("docker:index/getRemoteImage:getRemoteImage", args, &rv, "", opts...)
-			if err != nil {
-				return LookupRemoteImageResultOutput{}, err
-			}
-
-			output := pulumi.ToOutput(rv).(LookupRemoteImageResultOutput)
-			if secret {
-				return pulumi.ToSecret(output).(LookupRemoteImageResultOutput), nil
-			}
-			return output, nil
+			options := pulumi.InvokeOutputOptions{InvokeOptions: internal.PkgInvokeDefaultOpts(opts)}
+			return ctx.InvokeOutput("docker:index/getRemoteImage:getRemoteImage", args, LookupRemoteImageResultOutput{}, options).(LookupRemoteImageResultOutput), nil
 		}).(LookupRemoteImageResultOutput)
 }
 

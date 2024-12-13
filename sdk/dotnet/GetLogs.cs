@@ -22,6 +22,12 @@ namespace Pulumi.Docker
         /// </summary>
         public static Output<GetLogsResult> Invoke(GetLogsInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetLogsResult>("docker:index/getLogs:getLogs", args ?? new GetLogsInvokeArgs(), options.WithDefaults());
+
+        /// <summary>
+        /// `docker.getLogs` provides logs from specific container
+        /// </summary>
+        public static Output<GetLogsResult> Invoke(GetLogsInvokeArgs args, InvokeOutputOptions options)
+            => global::Pulumi.Deployment.Instance.Invoke<GetLogsResult>("docker:index/getLogs:getLogs", args ?? new GetLogsInvokeArgs(), options.WithDefaults());
     }
 
 
