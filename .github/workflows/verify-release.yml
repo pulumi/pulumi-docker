@@ -16,6 +16,10 @@ on:
         required: false
         type: boolean
         default: false
+      pythonVersion:
+        description: "Optional python SDK version to verify. Defaults to inputs.providerVersion."
+        type: string
+        required: false
   workflow_call:
     inputs:
       providerVersion:
@@ -32,6 +36,10 @@ on:
         required: false
         type: boolean
         default: false
+      pythonVersion:
+        description: "Optional python SDK version to verify. Defaults to inputs.providerVersion."
+        type: string
+        required: false
 
 env:
   ARM_CLIENT_ID: 30e520fa-12b4-4e21-b473-9426c5ac2e1e
