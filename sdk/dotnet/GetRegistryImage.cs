@@ -76,6 +76,39 @@ namespace Pulumi.Docker
         /// </summary>
         public static Output<GetRegistryImageResult> Invoke(GetRegistryImageInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetRegistryImageResult>("docker:index/getRegistryImage:getRegistryImage", args ?? new GetRegistryImageInvokeArgs(), options.WithDefaults());
+
+        /// <summary>
+        /// Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.
+        /// 
+        /// ## Example Usage
+        /// 
+        /// ```csharp
+        /// using System.Collections.Generic;
+        /// using System.Linq;
+        /// using Pulumi;
+        /// using Docker = Pulumi.Docker;
+        /// 
+        /// return await Deployment.RunAsync(() =&gt; 
+        /// {
+        ///     var ubuntu = Docker.GetRegistryImage.Invoke(new()
+        ///     {
+        ///         Name = "ubuntu:precise",
+        ///     });
+        /// 
+        ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntu", new()
+        ///     {
+        ///         Name = ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+        ///         PullTriggers = new[]
+        ///         {
+        ///             ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+        ///         },
+        ///     });
+        /// 
+        /// });
+        /// ```
+        /// </summary>
+        public static Output<GetRegistryImageResult> Invoke(GetRegistryImageInvokeArgs args, InvokeOutputOptions options)
+            => global::Pulumi.Deployment.Instance.Invoke<GetRegistryImageResult>("docker:index/getRegistryImage:getRegistryImage", args ?? new GetRegistryImageInvokeArgs(), options.WithDefaults());
     }
 
 
