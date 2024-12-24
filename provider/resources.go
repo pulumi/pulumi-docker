@@ -105,6 +105,12 @@ func Provider() tfbridge.ProviderInfo {
 					"networks_advanced": {
 						Name: "networksAdvanced",
 					},
+					"container_logs": {
+						MarkAsOptional: tfbridge.True(),
+					},
+					"healthcheck": {
+						MarkAsOptional: tfbridge.True(),
+					},
 				},
 			},
 			"docker_image": {
