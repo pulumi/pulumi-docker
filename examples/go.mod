@@ -3,7 +3,7 @@ module github.com/pulumi/pulumi-docker/examples
 go 1.21
 
 require (
-	github.com/docker/docker v27.0.3+incompatible
+	github.com/docker/docker v27.1.1+incompatible
 	github.com/pulumi/pulumi/pkg/v3 v3.143.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/crypto v0.31.0
