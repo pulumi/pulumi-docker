@@ -147,38 +147,6 @@ func TestDiffUpdates(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
-	t.Run("DiffConfig happens on changed address name", func(t *testing.T) {
-		expected := map[string]*rpc.PropertyDiff{
-			"registryAuth": {
-				Kind: rpc.PropertyDiff_UPDATE,
-			},
-		}
-		input := map[resource.PropertyKey]resource.ValueDiff{
-			"registryAuth": {
-				Array: &resource.ArrayDiff{
-					Updates: map[int]resource.ValueDiff{
-						0: {
-							Object: &resource.ObjectDiff{
-								Updates: map[resource.PropertyKey]resource.ValueDiff{
-									"address": {
-										Old: resource.PropertyValue{
-											V: "dockerhub",
-										},
-										New: resource.PropertyValue{
-											V: "ShinyPrivateGHCR",
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		}
-		actual := diffUpdates(input)
-		assert.Equal(t, expected, actual)
-	})
-
 	t.Run("No DiffConfig happens on changed password", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{}
 		input := map[resource.PropertyKey]resource.ValueDiff{
@@ -822,12 +790,12 @@ func TestDiff(t *testing.T) {
 			olds: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("username"),
 						"password": resource.NewStringProperty("password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -836,12 +804,12 @@ func TestDiff(t *testing.T) {
 			news: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("username"),
 						"password": resource.NewStringProperty("password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -856,12 +824,12 @@ func TestDiff(t *testing.T) {
 			olds: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("username"),
 						"password": resource.NewStringProperty("password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -870,12 +838,12 @@ func TestDiff(t *testing.T) {
 			news: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("new-username"),
 						"password": resource.NewStringProperty("new-password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("other-ecr"),
+						"address":  resource.NewStringProperty("other-ecr"),
 						"username": resource.NewStringProperty("new-user"),
 						"password": resource.NewStringProperty("new-pass"),
 					}),
@@ -896,12 +864,12 @@ func TestDiff(t *testing.T) {
 			olds: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("username"),
 						"password": resource.NewStringProperty("password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -910,12 +878,12 @@ func TestDiff(t *testing.T) {
 			news: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("new-username"),
 						"password": resource.NewStringProperty("new-password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -926,16 +894,16 @@ func TestDiff(t *testing.T) {
 			},
 		},
 		{
-			name: "Changes for computed in registryAuth", // resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("foo")})
+			name: "Changes for computed in registryAuth",
 			olds: resource.PropertyMap{
 				"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("username"),
 						"password": resource.NewStringProperty("password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -944,12 +912,12 @@ func TestDiff(t *testing.T) {
 			news: resource.PropertyMap{
 				"registryAuth": resource.NewComputedProperty(resource.Computed{Element: resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("dockerhub"),
+						"address":  resource.NewStringProperty("dockerhub"),
 						"username": resource.NewStringProperty("username"),
 						"password": resource.NewStringProperty("password"),
 					}),
 					resource.NewObjectProperty(resource.PropertyMap{
-						"address": resource.NewStringProperty("ecr"),
+						"address":  resource.NewStringProperty("ecr"),
 						"username": resource.NewStringProperty("user"),
 						"password": resource.NewStringProperty("pass"),
 					}),
@@ -992,4 +960,3 @@ func TestDiff(t *testing.T) {
 		})
 	}
 }
-

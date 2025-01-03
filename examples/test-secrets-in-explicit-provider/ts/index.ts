@@ -29,5 +29,14 @@ const providerWithSecretPassword = new docker.Provider("provider-with-password",
     }],
 })
 
+export const randomPassword = "secret-password-" + Math.random().toString(36).slice(2, 7);
+const providerWithRandomPassword = new docker.Provider("provider-with-random-password", {
+    registryAuth: [{
+        address: "some-address",
+        username: passwordResource.result,
+        password: randomPassword,
+    }],
+})
+
 export const password = pulumi.unsecret(passwordResource.result)
     .apply(x => Buffer.from(x).toString('base64'));

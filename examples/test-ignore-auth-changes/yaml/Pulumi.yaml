@@ -1,0 +1,17 @@
+name: docker-provider-config
+runtime: yaml
+config:
+  username:
+    type: string
+  password:
+    type: string
+  address:
+    type: string
+resources:
+  dockerProvider:
+    type: pulumi:providers:docker
+    properties:
+      registryAuth:
+        - address: ${address}
+          username: ${username}
+          password: ${password}

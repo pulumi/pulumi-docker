@@ -228,8 +228,8 @@ func TestDiffConfig(t *testing.T) {
 			})
 
 			// Get the actual arguments that were passed
-            actualCall := mockNativeProvider.Calls[0]
-            actualRequest := actualCall.Arguments[1].(*rpc.DiffRequest)
+			actualCall := mockNativeProvider.Calls[0]
+			actualRequest := actualCall.Arguments[1].(*rpc.DiffRequest)
 
 			actualOlds, err := plugin.UnmarshalProperties(actualRequest.GetOlds(), plugin.MarshalOptions{
 				Label:        "test",

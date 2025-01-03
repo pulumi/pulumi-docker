@@ -10,11 +10,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
-	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 )
 
@@ -91,21 +91,22 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 // 1. A JSON-encoded string containing the nested configuration (used by default providers and explicit providers for TypeScript, Python, .NET, Java)
 // 2. A regular gRPC struct (used by explicit providers for Go and YAML)
 //
-// For JSON-encoded strings, it decodes the nested config while preserving any secret values.
-// For gRPC structs, it returns the config unchanged.
+// For JSON-encoded strings, it decodes the nested config. For gRPC structs, it returns the config unchanged.
 // Under the hood, this is implemented by unmarshalling the grpc struct, unfolding the properties,
 // and then marshalling them back to a grpc struct.
 //
 // This dual format support is needed because different language runtimes serialize their
 // provider configs differently when sending them over gRPC.
+//
+// Note that this function does not preserve secrets, as this provider does not accept secrets. The provider relies on the engine to handle secrets.
 func (dp dockerHybridProvider) unwrapJsonConfig(label string, config *structpb.Struct) (*structpb.Struct, error) {
 	unmarshalled, err := plugin.UnmarshalProperties(config, plugin.MarshalOptions{
 		Label:        label,
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		// the provider does not accept secrets, so we should never receive them here. There's tests that secrets in
-		// provider config are handled correctly. If the assumption changes, those tests will catch it.
-		KeepSecrets:  false,
+		// the provider does not accept secrets, so we should never receive them here. There's e2e tests ensuring that secrets in
+		// provider config are handled correctly. If this assumption changes, those tests will catch it.
+		KeepSecrets: false,
 	})
 	if err != nil {
 		return nil, err
