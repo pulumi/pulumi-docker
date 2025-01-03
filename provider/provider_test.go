@@ -910,18 +910,20 @@ func TestDiff(t *testing.T) {
 				}),
 			},
 			news: resource.PropertyMap{
-				"registryAuth": resource.NewComputedProperty(resource.Computed{Element: resource.NewArrayProperty([]resource.PropertyValue{
-					resource.NewObjectProperty(resource.PropertyMap{
-						"address":  resource.NewStringProperty("dockerhub"),
-						"username": resource.NewStringProperty("username"),
-						"password": resource.NewStringProperty("password"),
+				"registryAuth": resource.NewComputedProperty(resource.Computed{
+					Element: resource.NewArrayProperty([]resource.PropertyValue{
+						resource.NewObjectProperty(resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("username"),
+							"password": resource.NewStringProperty("password"),
+						}),
+						resource.NewObjectProperty(resource.PropertyMap{
+							"address":  resource.NewStringProperty("ecr"),
+							"username": resource.NewStringProperty("user"),
+							"password": resource.NewStringProperty("pass"),
+						}),
 					}),
-					resource.NewObjectProperty(resource.PropertyMap{
-						"address":  resource.NewStringProperty("ecr"),
-						"username": resource.NewStringProperty("user"),
-						"password": resource.NewStringProperty("pass"),
-					}),
-				})}),
+				}),
 			},
 			want: &rpc.DiffResponse{
 				Changes: rpc.DiffResponse_DIFF_SOME,

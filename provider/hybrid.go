@@ -75,11 +75,11 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 	logging.V(9).Infof("%s executing", label)
 
 	var err error
-	request.Olds, err = dp.unwrapJsonConfig(label, request.GetOlds())
+	request.Olds, err = dp.unwrapJSONConfig(label, request.GetOlds())
 	if err != nil {
 		return nil, fmt.Errorf("error unwrapping old config: %w", err)
 	}
-	request.News, err = dp.unwrapJsonConfig(label, request.GetNews())
+	request.News, err = dp.unwrapJSONConfig(label, request.GetNews())
 	if err != nil {
 		return nil, fmt.Errorf("error unwrapping new config: %w", err)
 	}
@@ -87,8 +87,9 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 	return dp.nativeProvider.DiffConfig(ctx, request)
 }
 
-// unwrapJsonConfig handles nested provider configuration data that can be in two formats:
-// 1. A JSON-encoded string containing the nested configuration (used by default providers and explicit providers for TypeScript, Python, .NET, Java)
+// unwrapJSONConfig handles nested provider configuration data that can be in two formats:
+// 1. A JSON-encoded string containing the nested configuration (used by default providers and explicit providers
+// for TypeScript, Python, .NET, Java)
 // 2. A regular gRPC struct (used by explicit providers for Go and YAML)
 //
 // For JSON-encoded strings, it decodes the nested config. For gRPC structs, it returns the config unchanged.
@@ -98,14 +99,15 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 // This dual format support is needed because different language runtimes serialize their
 // provider configs differently when sending them over gRPC.
 //
-// Note that this function does not preserve secrets, as this provider does not accept secrets. The provider relies on the engine to handle secrets.
-func (dp dockerHybridProvider) unwrapJsonConfig(label string, config *structpb.Struct) (*structpb.Struct, error) {
+// Note that this function does not preserve secrets, as this provider does not accept secrets. The provider relies on
+// the engine to handle secrets.
+func (dp dockerHybridProvider) unwrapJSONConfig(label string, config *structpb.Struct) (*structpb.Struct, error) {
 	unmarshalled, err := plugin.UnmarshalProperties(config, plugin.MarshalOptions{
 		Label:        label,
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		// the provider does not accept secrets, so we should never receive them here. There's e2e tests ensuring that secrets in
-		// provider config are handled correctly. If this assumption changes, those tests will catch it.
+		// the provider does not accept secrets, so we should never receive them here. There's e2e tests ensuring that
+		// secrets in provider config are handled correctly. If this assumption changes, those tests will catch it.
 		KeepSecrets: false,
 	})
 	if err != nil {

@@ -4,14 +4,16 @@ import (
 	"context"
 	"testing"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
+
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/require"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
 
 type mockResourceProviderServer struct {
@@ -24,8 +26,8 @@ type diffConfig struct {
 	news resource.PropertyMap
 }
 
-func (m *mockResourceProviderServer) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
-	args := m.Called(ctx, request)
+func (m *mockResourceProviderServer) DiffConfig(ctx context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
+	args := m.Called(ctx, req)
 	return args.Get(0).(*rpc.DiffResponse), args.Error(1)
 }
 
@@ -49,18 +51,32 @@ func TestDiffConfig(t *testing.T) {
 		{
 			name: "unwraps nested json",
 			input: diffConfig{
-				olds: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"dockerhub\", \"username\":\"bob\", \"password\":\"supersecret\"}]")},
-				news: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"ShinyPrivateGHCR\", \"username\":\"alice\", \"password\":\"moresecret\"}]")},
+				olds: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"dockerhub\", \"username\":\"bob\", \"password\":\"supersecret\"}]"),
+				},
+				news: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"ShinyPrivateGHCR\", \"username\":\"alice\", \"password\":\"moresecret\"}]"),
+				},
 			},
 			expected: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewStringProperty("moresecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewStringProperty("moresecret"),
+						},
 					},
 				})},
 			},
@@ -68,18 +84,32 @@ func TestDiffConfig(t *testing.T) {
 		{
 			name: "unwraps nested json with secrets",
 			input: diffConfig{
-				olds: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"dockerhub\", \"username\":\"bob\", \"password\":\"supersecret\"}]")},
-				news: resource.PropertyMap{"registryAuth": resource.MakeSecret(resource.NewStringProperty("[{\"address\":\"ShinyPrivateGHCR\", \"username\":\"alice\", \"password\":\"moresecret\"}]"))},
+				olds: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"dockerhub\", \"username\":\"bob\", \"password\":\"supersecret\"}]"),
+				},
+				news: resource.PropertyMap{
+					"registryAuth": resource.MakeSecret(resource.NewStringProperty(
+						"[{\"address\":\"ShinyPrivateGHCR\", \"username\":\"alice\", \"password\":\"moresecret\"}]")),
+				},
 			},
 			expected: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewStringProperty("moresecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewStringProperty("moresecret"),
+						},
 					},
 				})},
 			},
@@ -87,18 +117,36 @@ func TestDiffConfig(t *testing.T) {
 		{
 			name: "unwraps nested json with nested secrets",
 			input: diffConfig{
-				olds: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"dockerhub\",\"username\":\"bob\",\"password\":{\"4dabf18193072939515e22adb298388d\": \"1b47061264138c4ac30d75fd1eb44270\",\"value\": \"supersecret\"}}]")},
-				news: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"ShinyPrivateGHCR\",\"username\":\"alice\",\"password\":{\"4dabf18193072939515e22adb298388d\": \"1b47061264138c4ac30d75fd1eb44270\",\"value\": \"moresecret\"}}]")},
+				olds: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"dockerhub\",\"username\":\"bob\"," +
+							"\"password\":{\"4dabf18193072939515e22adb298388d\": " +
+							"\"1b47061264138c4ac30d75fd1eb44270\",\"value\": \"supersecret\"}}]"),
+				},
+				news: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"ShinyPrivateGHCR\",\"username\":\"alice\"," +
+							"\"password\":{\"4dabf18193072939515e22adb298388d\": " +
+							"\"1b47061264138c4ac30d75fd1eb44270\",\"value\": \"moresecret\"}}]"),
+				},
 			},
 			expected: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewStringProperty("moresecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewStringProperty("moresecret"),
+						},
 					},
 				})},
 			},
@@ -108,24 +156,40 @@ func TestDiffConfig(t *testing.T) {
 			input: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewStringProperty("moresecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewStringProperty("moresecret"),
+						},
 					},
 				})},
 			},
 			expected: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewStringProperty("moresecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewStringProperty("moresecret"),
+						},
 					},
 				})},
 			},
@@ -146,24 +210,44 @@ func TestDiffConfig(t *testing.T) {
 			input: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("")})},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewComputedProperty(resource.Computed{
+								Element: resource.NewStringProperty(""),
+							}),
+						},
 					},
 				})},
 			},
 			expected: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("")})},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewComputedProperty(resource.Computed{
+								Element: resource.NewStringProperty(""),
+							}),
+						},
 					},
 				})},
 			},
@@ -171,18 +255,35 @@ func TestDiffConfig(t *testing.T) {
 		{
 			name: "keeps computed values in json config",
 			input: diffConfig{
-				olds: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"dockerhub\",\"username\":\"bob\",\"password\":\"supersecret\"}]")},
-				news: resource.PropertyMap{"registryAuth": resource.NewStringProperty("[{\"address\":\"ShinyPrivateGHCR\",\"username\":\"alice\",\"password\":\"04da6b54-80e4-46f7-96ec-b56ff0331ba9\"}]")},
+				olds: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"dockerhub\",\"username\":\"bob\",\"password\":\"supersecret\"}]"),
+				},
+				news: resource.PropertyMap{
+					"registryAuth": resource.NewStringProperty(
+						"[{\"address\":\"ShinyPrivateGHCR\",\"username\":\"alice\"," +
+							"\"password\":\"04da6b54-80e4-46f7-96ec-b56ff0331ba9\"}]"),
+				},
 			},
 			expected: diffConfig{
 				olds: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("dockerhub"), "username": resource.NewStringProperty("bob"), "password": resource.NewStringProperty("supersecret")},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("dockerhub"),
+							"username": resource.NewStringProperty("bob"),
+							"password": resource.NewStringProperty("supersecret"),
+						},
 					},
 				})},
 				news: resource.PropertyMap{"registryAuth": resource.NewArrayProperty([]resource.PropertyValue{
 					{
-						V: resource.PropertyMap{"address": resource.NewStringProperty("ShinyPrivateGHCR"), "username": resource.NewStringProperty("alice"), "password": resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("")})},
+						V: resource.PropertyMap{
+							"address":  resource.NewStringProperty("ShinyPrivateGHCR"),
+							"username": resource.NewStringProperty("alice"),
+							"password": resource.NewComputedProperty(resource.Computed{
+								Element: resource.NewStringProperty(""),
+							}),
+						},
 					},
 				})},
 			},
@@ -221,12 +322,12 @@ func TestDiffConfig(t *testing.T) {
 			})
 			require.NoError(t, err)
 
-			dp.DiffConfig(context.TODO(), &rpc.DiffRequest{
+			_, err = dp.DiffConfig(context.TODO(), &rpc.DiffRequest{
 				Urn:  "testURN",
 				Olds: inputOlds,
 				News: inputNews,
 			})
-
+			require.NoError(t, err)
 			// Get the actual arguments that were passed
 			actualCall := mockNativeProvider.Calls[0]
 			actualRequest := actualCall.Arguments[1].(*rpc.DiffRequest)
