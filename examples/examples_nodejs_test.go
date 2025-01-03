@@ -204,7 +204,9 @@ func TestSecretsInExplicitProviderNode(t *testing.T) {
 
 		t.Run("providerWithRandomPassword", func(t *testing.T) {
 			pw := stack.Outputs["randomPassword"].(string)
-			assert.NotContainsf(t, string(deploymentJSON), pw,
+			realPW, err := base64.StdEncoding.DecodeString(pw)
+			assert.NoError(t, err)
+			assert.NotContainsf(t, string(deploymentJSON), string(realPW),
 				"Secret properties like RegistryAuth.Password should not be stored in the plain")
 		})
 	}
