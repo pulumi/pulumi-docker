@@ -33,8 +33,7 @@ const image = new docker.Image("my-image", {
 
 const ecrProvider = new docker.Provider("ecr-provider", {
     registryAuth: [registryInfo],
-},
-);
+});
 
 // Publish the image to the registry
 const registryImage = new docker.RegistryImage("my-registry-image",

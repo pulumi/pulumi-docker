@@ -83,8 +83,25 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 	if err != nil {
 		return nil, fmt.Errorf("error unwrapping new config: %w", err)
 	}
+	request.OldInputs, err = dp.unwrapJSONConfig(label, request.GetOldInputs())
+	if err != nil {
+		return nil, fmt.Errorf("error unwrapping old inputs: %w", err)
+	}
 
-	return dp.nativeProvider.DiffConfig(ctx, request)
+	ignoreChanges := []string{"registryAuth[*].password", "registryAuth[*].username"}
+	ignoreChanges = append(ignoreChanges, request.IgnoreChanges...)
+	request.IgnoreChanges = ignoreChanges
+
+	res, err := dp.bridgedProvider.DiffConfig(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+
+	// if the diff is empty, it means it only contained changes to username and password which we ignored
+	if res != nil && len(res.Diffs) == 0 && len(res.Replaces) == 0 && len(res.DetailedDiff) == 0 {
+		res.Changes = rpc.DiffResponse_DIFF_NONE
+	}
+	return res, err
 }
 
 // unwrapJSONConfig handles nested provider configuration data that can be in two formats:
