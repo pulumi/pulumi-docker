@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/docker/docker v27.0.3+incompatible
-	github.com/pulumi/pulumi/pkg/v3 v3.143.0
+	github.com/pulumi/pulumi/pkg/v3 v3.145.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/crypto v0.31.0
 )
@@ -134,7 +134,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.10.0 // indirect
-	github.com/pulumi/pulumi/sdk/v3 v3.143.0 // indirect
+	github.com/pulumi/pulumi/sdk/v3 v3.145.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
@@ -165,7 +165,7 @@ require (
 	gocloud.dev/secrets/hashivault v0.37.0 // indirect
 	golang.org/x/exp v0.0.0-20240604190554-fc45aab8b7f8 // indirect
 	golang.org/x/mod v0.18.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
