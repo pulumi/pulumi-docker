@@ -32,10 +32,13 @@ func makeProvider(host *provider.HostClient, name, version string, schemaBytes [
 
 	prov := Provider()
 	bridgedProvider := tfbridge.NewProvider(context.Background(), host, name, version, prov.P, prov, schemaBytes)
+	configEncoding := tfbridge.NewConfigEncoding(prov.P.Schema(), prov.Config)
 	return &dockerHybridProvider{
 		schemaBytes:     schemaBytes,
 		version:         version,
+		name:            name,
 		bridgedProvider: bridgedProvider,
 		nativeProvider:  nativeProvider,
+		configEncoding:  configEncoding,
 	}, nil
 }
