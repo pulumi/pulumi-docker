@@ -111,11 +111,6 @@ jobs:
       run: gcloud --quiet auth configure-docker
     - name: Install dependencies
       run: make install_${{ matrix.language}}_sdk
-    - name: Install gotestfmt
-      uses: GoTestTools/gotestfmt-action@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        version: v2.5.0
     - name: Run tests
       if: matrix.testTarget == 'local'
       run: cd examples && go test -v -count=1 -cover -timeout 2h -tags=${{ matrix.language }} -skip TestPulumiExamples -parallel 4 .
