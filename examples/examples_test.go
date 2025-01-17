@@ -16,15 +16,9 @@ package examples
 
 import (
 	"os"
-	"path/filepath"
 	"testing"
 
-	"github.com/pulumi/providertest/pulumitest"
-	"github.com/pulumi/providertest/pulumitest/changesummary"
-	"github.com/pulumi/providertest/pulumitest/opttest"
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/pulumi/pulumi/sdk/v3/go/auto"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/apitype"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -47,23 +41,4 @@ func assertHasRepoDigest(t *testing.T, stack integration.RuntimeValidationStackI
 	repoDigest, ok := stack.Outputs["repoDigest"].(string)
 	assert.True(t, ok, "expected repoDigest output")
 	assert.NotEmpty(t, repoDigest)
-}
-
-func pulumiTest(t *testing.T, dir string, opts ...opttest.Option) *pulumitest.PulumiTest {
-	cwd, err := os.Getwd()
-	if err != nil {
-		t.Error(err)
-	}
-	opts = append(opts, opttest.LocalProviderPath("docker", filepath.Join(cwd, "..", "bin")))
-	ptest := pulumitest.NewPulumiTest(t, dir, opts...)
-	return ptest
-}
-
-func AssertHasChanges(t *testing.T, preview auto.PreviewResult) {
-	t.Helper()
-
-	convertedMap := changesummary.ChangeSummary(preview.ChangeSummary)
-	expectedOps := convertedMap.WhereOpEquals(apitype.OpDelete, apitype.OpDeleteReplaced, apitype.OpReplace, apitype.OpUpdate)
-
-	assert.NotEmpty(t, expectedOps, "expected changes, but preview returned no changes: %s", preview.StdOut)
 }

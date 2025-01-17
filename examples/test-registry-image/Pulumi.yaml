@@ -1,3 +1,0 @@
-name: test-registry-image
-runtime: nodejs
-description: A minimal AWS TypeScript Pulumi program
