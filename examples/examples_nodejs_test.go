@@ -29,7 +29,6 @@ import (
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/pulumi/pulumi/sdk/v3/go/auto/optpreview"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
@@ -201,21 +200,12 @@ func TestSecretsInExplicitProviderNode(t *testing.T) {
 					"Unexpected panic recorded in engine events")
 			}
 		})
-
-		t.Run("providerWithRandomPassword", func(t *testing.T) {
-			pw := stack.Outputs["randomPassword"].(string)
-			realPW, err := base64.StdEncoding.DecodeString(pw)
-			assert.NoError(t, err)
-			assert.NotContainsf(t, string(deploymentJSON), string(realPW),
-				"Secret properties like RegistryAuth.Password should not be stored in the plain")
-		})
 	}
 	test := getJsOptions(t).With(integration.ProgramTestOptions{
-		Dir: path.Join(getCwd(t), "test-secrets-in-explicit-provider", "ts"),
-		// Changes to registry username or password should not trigger a diff
-		AllowEmptyPreviewChanges: false,
-		SkipEmptyPreviewUpdate:   false,
-		ExtraRuntimeValidation:   check,
+		Dir:                    path.Join(getCwd(t), "test-secrets-in-explicit-provider", "ts"),
+		Quick:                  true,
+		SkipRefresh:            true,
+		ExtraRuntimeValidation: check,
 	})
 	integration.ProgramTest(t, &test)
 }
@@ -296,64 +286,6 @@ func TestLocalRepoDigestNode(t *testing.T) {
 			SkipRefresh: true,
 		})
 	integration.ProgramTest(t, &test)
-}
-
-func TestRegistryImage(t *testing.T) {
-	region := os.Getenv("AWS_REGION")
-	if region == "" {
-		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
-	}
-	test := getJsOptions(t).
-		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "test-registry-image"),
-			Config: map[string]string{
-				"aws:region": region,
-			},
-			ExtraRuntimeValidation: assertHasRepoDigest,
-		})
-	integration.ProgramTest(t, &test)
-}
-
-// TestIgnoreAuthChangesTs tests that changes to username and password do not trigger a diff for runtimes
-// that receive json-encoded data for nested provider config. Nodejs is one such runtime.
-func TestIgnoreAuthChangesTs(t *testing.T) {
-	t.Parallel()
-
-	ptest := pulumiTest(t, path.Join(getCwd(t), "test-ignore-auth-changes", "ts"))
-	ptest.SetConfig(t, "address", "some-address")
-	ptest.SetConfig(t, "username", "some-user")
-	ptest.SetConfig(t, "password", "some-password")
-	ptest.Up(t)
-
-	// Changes to username and password should not trigger a diff.
-	ptest.SetConfig(t, "username", "some-other-user")
-	ptest.SetConfig(t, "password", "some-other-password")
-	ptest.Preview(t, optpreview.ExpectNoChanges())
-
-	// Changes to address should still trigger a diff.
-	ptest.SetConfig(t, "address", "some-other-address")
-	previewResult := ptest.Preview(t)
-	AssertHasChanges(t, previewResult)
-}
-
-// TestIgnoreAuthChangesYaml tests that changes to username and password do not trigger a diff for runtimes
-// that receive regular GRPC structs for nested provider config. YAML is one such runtime.
-func TestIgnoreAuthChangesYaml(t *testing.T) {
-	ptest := pulumiTest(t, path.Join(getCwd(t), "test-ignore-auth-changes", "yaml"))
-	ptest.SetConfig(t, "address", "some-address")
-	ptest.SetConfig(t, "username", "some-user")
-	ptest.SetConfig(t, "password", "some-password")
-	ptest.Up(t)
-
-	// Changes to username and password should not trigger a diff.
-	ptest.SetConfig(t, "username", "some-other-user")
-	ptest.SetConfig(t, "password", "some-other-password")
-	ptest.Preview(t, optpreview.ExpectNoChanges())
-
-	// Changes to address should trigger a diff.
-	ptest.SetConfig(t, "address", "some-other-address")
-	previewResult := ptest.Preview(t)
-	AssertHasChanges(t, previewResult)
 }
 
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {

@@ -1,3 +1,0 @@
-name: test-ignore-auth-changes
-runtime: nodejs
-description: A minimal TypeScript Pulumi program

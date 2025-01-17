@@ -5,14 +5,11 @@ import (
 	"fmt"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	structpb "github.com/golang/protobuf/ptypes/struct"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
@@ -28,11 +25,9 @@ type dockerHybridProvider struct {
 	rpc.UnimplementedResourceProviderServer
 
 	schemaBytes     []byte
-	name            string
 	version         string
 	bridgedProvider rpc.ResourceProviderServer
 	nativeProvider  rpc.ResourceProviderServer
-	configEncoding  *tfbridge.ConfigEncoding
 }
 
 // Track a list of native resource tokens
@@ -70,78 +65,8 @@ func (dp dockerHybridProvider) CheckConfig(ctx context.Context, request *rpc.Che
 }
 
 func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
-	urn := resource.URN(request.GetUrn())
-	label := fmt.Sprintf("%s.DiffConfig(%s)", dp.name, urn)
-	logging.V(9).Infof("%s executing", label)
-
-	var err error
-	request.Olds, err = dp.unwrapJSONConfig(label, request.GetOlds())
-	if err != nil {
-		return nil, fmt.Errorf("error unwrapping old config: %w", err)
-	}
-	request.News, err = dp.unwrapJSONConfig(label, request.GetNews())
-	if err != nil {
-		return nil, fmt.Errorf("error unwrapping new config: %w", err)
-	}
-	request.OldInputs, err = dp.unwrapJSONConfig(label, request.GetOldInputs())
-	if err != nil {
-		return nil, fmt.Errorf("error unwrapping old inputs: %w", err)
-	}
-
-	ignoreChanges := []string{"registryAuth[*].password", "registryAuth[*].username"}
-	ignoreChanges = append(ignoreChanges, request.IgnoreChanges...)
-	request.IgnoreChanges = ignoreChanges
-
-	res, err := dp.bridgedProvider.DiffConfig(ctx, request)
-	if err != nil {
-		return nil, err
-	}
-
-	// if the diff is empty, it means it only contained changes to username and password which we ignored
-	if res != nil && len(res.Diffs) == 0 && len(res.Replaces) == 0 && len(res.DetailedDiff) == 0 {
-		res.Changes = rpc.DiffResponse_DIFF_NONE
-	}
-	return res, err
-}
-
-// unwrapJSONConfig handles nested provider configuration data that can be in two formats:
-// 1. A JSON-encoded string containing the nested configuration (used by default providers and explicit providers
-// for TypeScript, Python, .NET, Java)
-// 2. A regular gRPC struct (used by explicit providers for Go and YAML)
-//
-// For JSON-encoded strings, it decodes the nested config. For gRPC structs, it returns the config unchanged.
-// Under the hood, this is implemented by unmarshalling the grpc struct, unfolding the properties,
-// and then marshalling them back to a grpc struct.
-//
-// This dual format support is needed because different language runtimes serialize their
-// provider configs differently when sending them over gRPC.
-//
-// Note that this function does not preserve secrets, as this provider does not accept secrets. The provider relies on
-// the engine to handle secrets.
-func (dp dockerHybridProvider) unwrapJSONConfig(label string, config *structpb.Struct) (*structpb.Struct, error) {
-	unmarshalled, err := plugin.UnmarshalProperties(config, plugin.MarshalOptions{
-		Label:        label,
-		KeepUnknowns: true,
-		SkipNulls:    true,
-		// the provider does not accept secrets, so we should never receive them here. There's e2e tests ensuring that
-		// secrets in provider config are handled correctly. If this assumption changes, those tests will catch it.
-		KeepSecrets: false,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	unwrappedConfig, err := dp.configEncoding.UnfoldProperties(unmarshalled)
-	if err != nil {
-		return nil, err
-	}
-
-	return plugin.MarshalProperties(unwrappedConfig, plugin.MarshalOptions{
-		Label:        label,
-		KeepUnknowns: true,
-		SkipNulls:    true,
-		KeepSecrets:  false,
-	})
+	// Delegate to the bridged provider, as native Provider does not implement it.
+	return dp.bridgedProvider.DiffConfig(ctx, request)
 }
 
 func (dp dockerHybridProvider) Configure(
