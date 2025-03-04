@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.11
 
 require (
-	github.com/docker/docker v27.0.3+incompatible
+	github.com/docker/docker v27.1.1+incompatible
 	github.com/pulumi/pulumi/pkg/v3 v3.153.1
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/crypto v0.31.0
