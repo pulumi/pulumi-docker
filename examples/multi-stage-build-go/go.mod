@@ -5,9 +5,9 @@ go 1.22
 toolchain go1.23.5
 
 require (
-	github.com/pulumi/pulumi-aws/sdk/v5 v5.42.0
-	github.com/pulumi/pulumi-docker/sdk/v4 v4.0.0-00010101000000-000000000000
-	github.com/pulumi/pulumi/sdk/v3 v3.153.1
+	github.com/pulumi/pulumi-aws/sdk/v5 v5.43.0
+	github.com/pulumi/pulumi-docker/sdk/v4 v4.6.1
+	github.com/pulumi/pulumi/sdk/v3 v3.154.0
 )
 
 replace github.com/pulumi/pulumi-docker/sdk/v4 => ../../sdk
