@@ -98,8 +98,8 @@ import javax.annotation.Nullable;
  *             .build());
  * 
  *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
- *             .name(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.name()))
- *             .pullTriggers(ubuntu.applyValue(getRegistryImageResult -> getRegistryImageResult.sha256Digest()))
+ *             .name(ubuntu.name())
+ *             .pullTriggers(ubuntu.sha256Digest())
  *             .build());
  * 
  *     }
