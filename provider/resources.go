@@ -29,7 +29,6 @@ import (
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
@@ -328,7 +327,7 @@ func Provider() tfbridge.ProviderInfo {
 				RequiredInputs: []string{"imageName"},
 				Aliases: []schema.AliasSpec{
 					{
-						Type: pulumi.StringRef("docker:image:Image"),
+						Type: "docker:image:Image",
 					},
 				},
 			},
