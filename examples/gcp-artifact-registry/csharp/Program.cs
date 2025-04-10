@@ -4,16 +4,38 @@ using System.Threading.Tasks;
 using Pulumi;
 using Pulumi.Docker;
 using Pulumi.Docker.Inputs;
-using Pulumi.Gcp.Container;
+using Pulumi.Gcp.ArtifactRegistry;
+using Pulumi.Random;
 
 class Program
 {
     static Task<int> Main() => Deployment.RunAsync(async () => {
-        // Create a private GCR registry.
-        var registry = new Registry("my-registry");
-        var registryUrl = registry.Id.Apply(async _ => {
-            return (await GetRegistryRepository.InvokeAsync()).RepositoryUrl;
+        // Create a random suffix for the repository name
+        var randomSuffix = new RandomString("random-suffix", new RandomStringArgs
+        {
+            Length = 6,
+            Special = false,
+            Upper = false,
         });
+
+        // Concatenate repository name with random suffix
+        var repoName = Output.Format($"docker-test-repo-{randomSuffix.Result}");
+
+        / Create a private GCP artifact registry
+        var registry = new Repository("my-registry", new RepositoryArgs
+        {
+            Format = "DOCKER",
+            RepositoryId = repoName,
+            Location = "us-central1", // change to your desired region
+            DockerConfig = new RepositoryDockerConfigArgs
+            {
+                ImmutableTags = false,
+            },
+        });
+
+        // Form the registry URL
+        var registryUrl = Output.Format($"{registry.Location}-docker.pkg.dev/{registry.Project}/{registry.RepositoryId}");
+
 
         // Get image name
         var imageName = Output.Format($"{registryUrl}/myapp");
