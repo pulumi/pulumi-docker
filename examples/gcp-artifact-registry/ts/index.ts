@@ -16,9 +16,6 @@ const registry = new gcp.artifactregistry.Repository("my-registry", {
     format: "DOCKER",
     repositoryId: repoName,
     location: "us-central1", // change to your desired region
-    dockerConfig: {
-        immutableTags: false,
-    },
 });
 
 const registryUrl = pulumi.interpolate `${registry.location}-docker.pkg.dev/${registry.project}/${registry.repositoryId}`;

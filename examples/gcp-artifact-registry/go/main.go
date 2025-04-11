@@ -27,9 +27,6 @@ func main() {
 			Format:       pulumi.String("DOCKER"),
 			RepositoryId: repoName,
 			Location:     pulumi.String("us-central1"), // change to your desired region
-			DockerConfig: &artifactregistry.RepositoryDockerConfigArgs{
-				ImmutableTags: pulumi.Bool(false),
-			},
 		})
 		if err != nil {
 			return err

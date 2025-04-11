@@ -16,9 +16,6 @@ registry = gcp.artifactregistry.Repository("my-registry",
     format="DOCKER",
     repository_id=repo_name,
     location="us-central1",  # change to your desired region
-    docker_config=gcp.artifactregistry.RepositoryDockerConfigArgs(
-        immutable_tags=False
-    )
 )
 
 registry_url = pulumi.Output.concat(registry.location, "-docker.pkg.dev/", registry.project, "/", registry.repository_id)

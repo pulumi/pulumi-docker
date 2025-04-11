@@ -21,16 +21,12 @@ class Program
         // Concatenate repository name with random suffix
         var repoName = Output.Format($"docker-test-repo-{randomSuffix.Result}");
 
-        / Create a private GCP artifact registry
+        // Create a private GCP artifact registry
         var registry = new Repository("my-registry", new RepositoryArgs
         {
             Format = "DOCKER",
             RepositoryId = repoName,
             Location = "us-central1", // change to your desired region
-            DockerConfig = new RepositoryDockerConfigArgs
-            {
-                ImmutableTags = false,
-            },
         });
 
         // Form the registry URL
