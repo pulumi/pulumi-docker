@@ -17,7 +17,7 @@ class Program
         {
             ResourceGroupName = rg.Name,
             AdminEnabled = true,
-            Sku = "basic"
+            Sku = "Basic"
         });
 
         // Get registry info (creds and endpoint) so we can build/publish to it.
