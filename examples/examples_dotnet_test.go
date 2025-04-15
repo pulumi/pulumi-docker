@@ -48,6 +48,7 @@ func TestDotNet(t *testing.T) {
 }
 
 func TestAzureContainerRegistryDotNet(t *testing.T) {
+	t.Skip("https://github.com/pulumi/pulumi-docker/issues/1238")
 	location := os.Getenv("AZURE_LOCATION")
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")

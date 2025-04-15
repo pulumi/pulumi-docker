@@ -16,8 +16,6 @@ class Program
         var registry = new Azure.Registry("myregistry", new Azure.RegistryArgs
         {
             ResourceGroupName = rg.Name,
-            AdminEnabled = true,
-            Sku = "Basic"
         });
 
         // Get registry info (creds and endpoint) so we can build/publish to it.
