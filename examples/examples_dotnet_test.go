@@ -48,6 +48,7 @@ func TestDotNet(t *testing.T) {
 }
 
 func TestAzureContainerRegistryDotNet(t *testing.T) {
+	t.Skip("https://github.com/pulumi/pulumi-docker/issues/1238")
 	location := os.Getenv("AZURE_LOCATION")
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
@@ -102,14 +103,14 @@ func TestDigitaloceanContainerRegistryDotnet(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestGcpContainerRegistryDotnet(t *testing.T) {
+func TestGcpArtifactRegistryDotnet(t *testing.T) {
 	project := os.Getenv("GOOGLE_PROJECT")
 	if project == "" {
 		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
 	}
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "gcp-container-registry/csharp"),
+			Dir: path.Join(getCwd(t), "gcp-artifact-registry/csharp"),
 			Config: map[string]string{
 				"gcp:project": project,
 			},
