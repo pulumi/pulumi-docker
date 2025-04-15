@@ -118,7 +118,7 @@ namespace Pulumi.Docker
         /// The logs of the container if its execution is done (`attach` must be disabled).
         /// </summary>
         [Output("containerLogs")]
-        public Output<string> ContainerLogs { get; private set; } = null!;
+        public Output<string?> ContainerLogs { get; private set; } = null!;
 
         /// <summary>
         /// The total number of milliseconds to wait for the container to reach status 'running'
@@ -208,7 +208,7 @@ namespace Pulumi.Docker
         /// A test to perform to check that the container is healthy
         /// </summary>
         [Output("healthcheck")]
-        public Output<Outputs.ContainerHealthcheck> Healthcheck { get; private set; } = null!;
+        public Output<Outputs.ContainerHealthcheck?> Healthcheck { get; private set; } = null!;
 
         /// <summary>
         /// Hostname of the container.
