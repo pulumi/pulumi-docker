@@ -112,7 +112,7 @@ jobs:
       with:
         install_components: gke-gcloud-auth-plugin
     - name: Login to Google Cloud Registry
-      run: gcloud --quiet auth configure-docker
+      run: gcloud --quiet auth configure-docker us-central1-docker.pkg.dev # Ensure that all test artifact registry locations are supplied here.
     - name: Install dependencies
       run: make install_${{ matrix.language}}_sdk
     - name: Run tests

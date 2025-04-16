@@ -81,14 +81,14 @@ func TestDigitaloceanContainerRegistryPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestGcpContainerRegistryPy(t *testing.T) {
+func TestGcpArtifactRegistryPy(t *testing.T) {
 	project := os.Getenv("GOOGLE_PROJECT")
 	if project == "" {
 		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
 	}
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "gcp-container-registry/py"),
+			Dir: path.Join(getCwd(t), "gcp-artifact-registry/py"),
 			Config: map[string]string{
 				"gcp:project": project,
 			},
