@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/containerservice"
-	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/core"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/containerservice"
+	"github.com/pulumi/pulumi-azure/sdk/v6/go/azure/core"
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
