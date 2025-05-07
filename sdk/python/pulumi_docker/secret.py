@@ -130,6 +130,7 @@ class _SecretState:
         pulumi.set(self, "name", value)
 
 
+@pulumi.type_token("docker:index/secret:Secret")
 class Secret(pulumi.CustomResource):
     @overload
     def __init__(__self__,

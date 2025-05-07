@@ -111,6 +111,7 @@ class _TagState:
         pulumi.set(self, "target_image", value)
 
 
+@pulumi.type_token("docker:index/tag:Tag")
 class Tag(pulumi.CustomResource):
     @overload
     def __init__(__self__,

@@ -339,6 +339,7 @@ class _PluginState:
         pulumi.set(self, "plugin_reference", value)
 
 
+@pulumi.type_token("docker:index/plugin:Plugin")
 class Plugin(pulumi.CustomResource):
     @overload
     def __init__(__self__,

@@ -2074,6 +2074,7 @@ class _ContainerState:
         pulumi.set(self, "working_dir", value)
 
 
+@pulumi.type_token("docker:index/container:Container")
 class Container(pulumi.CustomResource):
     @overload
     def __init__(__self__,

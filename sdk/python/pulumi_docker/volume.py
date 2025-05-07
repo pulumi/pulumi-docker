@@ -179,6 +179,7 @@ class _VolumeState:
         pulumi.set(self, "name", value)
 
 
+@pulumi.type_token("docker:index/volume:Volume")
 class Volume(pulumi.CustomResource):
     @overload
     def __init__(__self__,

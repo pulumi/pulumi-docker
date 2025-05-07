@@ -322,6 +322,7 @@ class _ServiceState:
         pulumi.set(self, "update_config", value)
 
 
+@pulumi.type_token("docker:index/service:Service")
 class Service(pulumi.CustomResource):
     @overload
     def __init__(__self__,
