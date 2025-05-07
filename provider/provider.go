@@ -109,15 +109,6 @@ func (p *dockerNativeProvider) Invoke(_ context.Context, req *rpc.InvokeRequest)
 	return nil, fmt.Errorf("unknown Invoke token '%s'", tok)
 }
 
-// StreamInvoke dynamically executes a built-in function in the provider. The result is streamed
-// back as a series of messages.
-func (p *dockerNativeProvider) StreamInvoke(
-	req *rpc.InvokeRequest, _ rpc.ResourceProvider_StreamInvokeServer,
-) error {
-	tok := req.GetTok()
-	return fmt.Errorf("unknown StreamInvoke token '%s'", tok)
-}
-
 // log emits a log to our host, or no-ops if a host has not been configured (as
 // in testing).
 func (p *dockerNativeProvider) log(ctx context.Context, sev diag.Severity, urn resource.URN, msg string) error {
