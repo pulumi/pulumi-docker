@@ -2066,6 +2066,9 @@
                 },
                 "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
             }
+        },
+        "methods": {
+            "terraformConfig": "pulumi:providers:docker/terraformConfig"
         }
     },
     "resources": {
@@ -4600,6 +4603,35 @@
                     "name",
                     "repoDigest",
                     "id"
+                ],
+                "type": "object"
+            }
+        },
+        "pulumi:providers:docker/terraformConfig": {
+            "description": "This function returns a Terraform config object with terraform-namecased keys,to be used with the Terraform Module Provider.",
+            "inputs": {
+                "properties": {
+                    "__self__": {
+                        "type": "ref",
+                        "$ref": "#/resources/pulumi:providers:docker"
+                    }
+                },
+                "type": "pulumi:providers:docker/terraformConfig",
+                "required": [
+                    "__self__"
+                ]
+            },
+            "outputs": {
+                "properties": {
+                    "result": {
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        },
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "result"
                 ],
                 "type": "object"
             }

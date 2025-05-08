@@ -50,10 +50,8 @@ export type Plugin = import("./plugin").Plugin;
 export const Plugin: typeof import("./plugin").Plugin = null as any;
 utilities.lazyLoad(exports, ["Plugin"], () => require("./plugin"));
 
-export { ProviderArgs } from "./provider";
-export type Provider = import("./provider").Provider;
-export const Provider: typeof import("./provider").Provider = null as any;
-utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
+export * from "./provider";
+import { Provider } from "./provider";
 
 export { RegistryImageArgs, RegistryImageState } from "./registryImage";
 export type RegistryImage = import("./registryImage").RegistryImage;
