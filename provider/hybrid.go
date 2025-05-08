@@ -99,10 +99,6 @@ func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRe
 	return dp.bridgedProvider.Invoke(ctx, request)
 }
 
-func (dp dockerHybridProvider) StreamInvoke(*rpc.InvokeRequest, rpc.ResourceProvider_StreamInvokeServer) error {
-	return status.Error(codes.Unimplemented, "StreamInvoke is not yet implemented")
-}
-
 func (dp dockerHybridProvider) Check(ctx context.Context, request *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	urn := resource.URN(request.GetUrn())
 	tok := urn.Type().String()

@@ -290,6 +290,7 @@ class _RemoteImageState:
         pulumi.set(self, "triggers", value)
 
 
+@pulumi.type_token("docker:index/remoteImage:RemoteImage")
 class RemoteImage(pulumi.CustomResource):
     @overload
     def __init__(__self__,

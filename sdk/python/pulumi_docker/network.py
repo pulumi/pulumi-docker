@@ -435,6 +435,7 @@ class _NetworkState:
         pulumi.set(self, "scope", value)
 
 
+@pulumi.type_token("docker:index/network:Network")
 class Network(pulumi.CustomResource):
     @overload
     def __init__(__self__,

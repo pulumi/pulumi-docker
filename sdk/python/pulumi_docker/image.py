@@ -112,6 +112,7 @@ class ImageArgs:
         pulumi.set(self, "skip_push", value)
 
 
+@pulumi.type_token("docker:index/image:Image")
 class Image(pulumi.CustomResource):
     @overload
     def __init__(__self__,

@@ -177,6 +177,7 @@ class _RegistryImageState:
         pulumi.set(self, "triggers", value)
 
 
+@pulumi.type_token("docker:index/registryImage:RegistryImage")
 class RegistryImage(pulumi.CustomResource):
     @overload
     def __init__(__self__,
