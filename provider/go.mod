@@ -7,7 +7,7 @@ toolchain go1.23.7
 require (
 	github.com/docker/cli v25.0.3+incompatible
 	github.com/docker/distribution v2.8.2+incompatible
-	github.com/docker/docker v25.0.2+incompatible
+	github.com/docker/docker v25.0.6+incompatible
 	github.com/golang/protobuf v1.5.4
 	github.com/moby/buildkit v0.13.0-beta3.0.20240205165705-d6e142600ee5
 	github.com/moby/moby v26.1.5+incompatible
