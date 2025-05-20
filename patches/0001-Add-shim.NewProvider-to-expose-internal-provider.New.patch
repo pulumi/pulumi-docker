@@ -1,12 +1,8 @@
-From 82d0f20ef70da03c1e36eb675debc6c6f276cd29 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ian Wahbe <ian@wahbe.com>
 Date: Mon, 6 Mar 2023 13:39:15 +0100
 Subject: [PATCH] Add `shim.NewProvider` to expose `internal/provider.New`
 
----
- shim/shim.go | 10 ++++++++++
- 1 file changed, 10 insertions(+)
- create mode 100644 shim/shim.go
 
 diff --git a/shim/shim.go b/shim/shim.go
 new file mode 100644
@@ -24,6 +20,3 @@ index 0000000..fb00354
 +func NewProvider() *schema.Provider {
 +	return provider.New("dev")()
 +}
--- 
-2.39.1
-
