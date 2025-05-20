@@ -41,6 +41,11 @@ export class Provider extends pulumi.ProviderResource {
      */
     public readonly certPath!: pulumi.Output<string | undefined>;
     /**
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+     * if set.
+     */
+    public readonly context!: pulumi.Output<string | undefined>;
+    /**
      * The Docker daemon address
      */
     public readonly host!: pulumi.Output<string | undefined>;
@@ -63,6 +68,8 @@ export class Provider extends pulumi.ProviderResource {
             resourceInputs["caMaterial"] = args ? args.caMaterial : undefined;
             resourceInputs["certMaterial"] = args ? args.certMaterial : undefined;
             resourceInputs["certPath"] = args ? args.certPath : undefined;
+            resourceInputs["context"] = args ? args.context : undefined;
+            resourceInputs["disableDockerDaemonCheck"] = pulumi.output(args ? args.disableDockerDaemonCheck : undefined).apply(JSON.stringify);
             resourceInputs["host"] = (args ? args.host : undefined) ?? utilities.getEnv("DOCKER_HOST");
             resourceInputs["keyMaterial"] = args ? args.keyMaterial : undefined;
             resourceInputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
@@ -98,6 +105,16 @@ export interface ProviderArgs {
      * Path to directory with Docker TLS config
      */
     certPath?: pulumi.Input<string>;
+    /**
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+     * if set.
+     */
+    context?: pulumi.Input<string>;
+    /**
+     * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+     * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+     */
+    disableDockerDaemonCheck?: pulumi.Input<boolean>;
     /**
      * The Docker daemon address
      */

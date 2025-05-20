@@ -22,6 +22,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly int? Retries;
         /// <summary>
+        /// Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+        /// </summary>
+        public readonly string? StartInterval;
+        /// <summary>
         /// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
         /// </summary>
         public readonly string? StartPeriod;
@@ -40,6 +44,8 @@ namespace Pulumi.Docker.Outputs
 
             int? retries,
 
+            string? startInterval,
+
             string? startPeriod,
 
             ImmutableArray<string> tests,
@@ -48,6 +54,7 @@ namespace Pulumi.Docker.Outputs
         {
             Interval = interval;
             Retries = retries;
+            StartInterval = startInterval;
             StartPeriod = startPeriod;
             Tests = tests;
             Timeout = timeout;

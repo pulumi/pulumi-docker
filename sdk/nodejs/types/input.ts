@@ -52,6 +52,10 @@ export interface ContainerHealthcheck {
      */
     retries?: pulumi.Input<number>;
     /**
+     * Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+     */
+    startInterval?: pulumi.Input<string>;
+    /**
      * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      */
     startPeriod?: pulumi.Input<string>;
@@ -153,6 +157,10 @@ export interface ContainerMountVolumeOptions {
      * Populate volume with data from the target.
      */
     noCopy?: pulumi.Input<boolean>;
+    /**
+     * Path within the volume to mount. Requires docker server version 1.45 or higher.
+     */
+    subpath?: pulumi.Input<string>;
 }
 
 export interface ContainerMountVolumeOptionsLabel {
@@ -272,6 +280,10 @@ export interface ContainerUpload {
      */
     file: pulumi.Input<string>;
     /**
+     * The permission mode for the file in the container. Has precedence over `executable`.
+     */
+    permissions?: pulumi.Input<string>;
+    /**
      * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
      */
     source?: pulumi.Input<string>;
@@ -344,6 +356,36 @@ export interface DockerBuild {
      * The target of the Dockerfile to build
      */
     target?: pulumi.Input<string>;
+}
+
+export interface GetRegistryImageManifestsAuthConfig {
+    /**
+     * The address of the Docker registry.
+     */
+    address: string;
+    /**
+     * The password for the Docker registry.
+     */
+    password: string;
+    /**
+     * The username for the Docker registry.
+     */
+    username: string;
+}
+
+export interface GetRegistryImageManifestsAuthConfigArgs {
+    /**
+     * The address of the Docker registry.
+     */
+    address: pulumi.Input<string>;
+    /**
+     * The password for the Docker registry.
+     */
+    password: pulumi.Input<string>;
+    /**
+     * The username for the Docker registry.
+     */
+    username: pulumi.Input<string>;
 }
 
 export interface NetworkIpamConfig {
@@ -429,23 +471,42 @@ export interface Registry {
     username?: pulumi.Input<string>;
 }
 
+export interface RegistryImageAuthConfig {
+    /**
+     * The address of the Docker registry.
+     */
+    address: pulumi.Input<string>;
+    /**
+     * The password for the Docker registry.
+     */
+    password: pulumi.Input<string>;
+    /**
+     * The username for the Docker registry.
+     */
+    username: pulumi.Input<string>;
+}
+
 export interface RemoteImageBuild {
     /**
      * The configuration for the authentication
      */
     authConfigs?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildAuthConfig>[]>;
     /**
-     * Set build-time variables
-     */
-    buildArg?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * Pairs for build-time variables in the form TODO
+     * Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
      */
     buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
      */
     buildId?: pulumi.Input<string>;
+    /**
+     * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     */
+    buildLogFile?: pulumi.Input<string>;
+    /**
+     * Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     */
+    builder?: pulumi.Input<string>;
     /**
      * Images to consider as cache sources
      */
@@ -455,7 +516,7 @@ export interface RemoteImageBuild {
      */
     cgroupParent?: pulumi.Input<string>;
     /**
-     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      */
     context: pulumi.Input<string>;
     /**
@@ -527,13 +588,17 @@ export interface RemoteImageBuild {
      */
     pullParent?: pulumi.Input<boolean>;
     /**
-     * A Git repository URI or HTTP/HTTPS context URI
+     * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      */
     remoteContext?: pulumi.Input<string>;
     /**
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: pulumi.Input<boolean>;
+    /**
+     * Set build-time secrets. Only available when you use a buildx builder.
+     */
+    secrets?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildSecret>[]>;
     /**
      * The security options
      */
@@ -605,6 +670,21 @@ export interface RemoteImageBuildAuthConfig {
      * the registry user name
      */
     userName?: pulumi.Input<string>;
+}
+
+export interface RemoteImageBuildSecret {
+    /**
+     * Environment variable source of the secret
+     */
+    env?: pulumi.Input<string>;
+    /**
+     * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+     */
+    id: pulumi.Input<string>;
+    /**
+     * File source of the secret. Takes precedence over `env`
+     */
+    src?: pulumi.Input<string>;
 }
 
 export interface RemoteImageBuildUlimit {
@@ -706,7 +786,7 @@ export interface ServiceLabel {
 
 export interface ServiceMode {
     /**
-     * When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * The global service mode. Defaults to `false`
      */
     global?: pulumi.Input<boolean>;
     /**

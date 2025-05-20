@@ -20,6 +20,8 @@ type Tag struct {
 	SourceImage pulumi.StringOutput `pulumi:"sourceImage"`
 	// ImageID of the source image in the format of `sha256:<<ID>>`
 	SourceImageId pulumi.StringOutput `pulumi:"sourceImageId"`
+	// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+	TagTriggers pulumi.StringArrayOutput `pulumi:"tagTriggers"`
 	// Name of the target image.
 	TargetImage pulumi.StringOutput `pulumi:"targetImage"`
 }
@@ -64,6 +66,8 @@ type tagState struct {
 	SourceImage *string `pulumi:"sourceImage"`
 	// ImageID of the source image in the format of `sha256:<<ID>>`
 	SourceImageId *string `pulumi:"sourceImageId"`
+	// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+	TagTriggers []string `pulumi:"tagTriggers"`
 	// Name of the target image.
 	TargetImage *string `pulumi:"targetImage"`
 }
@@ -73,6 +77,8 @@ type TagState struct {
 	SourceImage pulumi.StringPtrInput
 	// ImageID of the source image in the format of `sha256:<<ID>>`
 	SourceImageId pulumi.StringPtrInput
+	// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+	TagTriggers pulumi.StringArrayInput
 	// Name of the target image.
 	TargetImage pulumi.StringPtrInput
 }
@@ -84,6 +90,8 @@ func (TagState) ElementType() reflect.Type {
 type tagArgs struct {
 	// Name of the source image.
 	SourceImage string `pulumi:"sourceImage"`
+	// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+	TagTriggers []string `pulumi:"tagTriggers"`
 	// Name of the target image.
 	TargetImage string `pulumi:"targetImage"`
 }
@@ -92,6 +100,8 @@ type tagArgs struct {
 type TagArgs struct {
 	// Name of the source image.
 	SourceImage pulumi.StringInput
+	// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+	TagTriggers pulumi.StringArrayInput
 	// Name of the target image.
 	TargetImage pulumi.StringInput
 }
@@ -191,6 +201,11 @@ func (o TagOutput) SourceImage() pulumi.StringOutput {
 // ImageID of the source image in the format of `sha256:<<ID>>`
 func (o TagOutput) SourceImageId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Tag) pulumi.StringOutput { return v.SourceImageId }).(pulumi.StringOutput)
+}
+
+// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+func (o TagOutput) TagTriggers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Tag) pulumi.StringArrayOutput { return v.TagTriggers }).(pulumi.StringArrayOutput)
 }
 
 // Name of the target image.

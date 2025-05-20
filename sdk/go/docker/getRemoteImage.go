@@ -11,7 +11,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// `RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+// `RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
 //
 // ## Example Usage
 //

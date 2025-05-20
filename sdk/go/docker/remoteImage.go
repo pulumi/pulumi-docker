@@ -12,126 +12,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// <!-- Bug: Type and Name are switched -->
-// Pulls a Docker image to a given Docker host from a Docker Registry.
-//
-//	This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pullTriggers` field.
-//
-// ## Example Usage
-//
-// ### Basic
-//
-// Finds and downloads the latest `ubuntu:precise` image but does not check
-// for further updates of the image
-//
-// ```go
-// package main
-//
-// import (
-//
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
-//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-//
-// )
-//
-//	func main() {
-//		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
-//				Name: pulumi.String("ubuntu:precise"),
-//			})
-//			if err != nil {
-//				return err
-//			}
-//			return nil
-//		})
-//	}
-//
-// ```
-//
-// ### Dynamic updates
-//
-// To be able to update an image dynamically when the `sha256` sum changes,
-// you need to use it in combination with `RegistryImage` as follows:
-//
-// ```go
-// package main
-//
-// import (
-//
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
-//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-//
-// )
-//
-//	func main() {
-//		pulumi.Run(func(ctx *pulumi.Context) error {
-//			ubuntu, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
-//				Name: "ubuntu:precise",
-//			}, nil)
-//			if err != nil {
-//				return err
-//			}
-//			_, err = docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
-//				Name: pulumi.String(ubuntu.Name),
-//				PullTriggers: pulumi.StringArray{
-//					pulumi.String(ubuntu.Sha256Digest),
-//				},
-//			})
-//			if err != nil {
-//				return err
-//			}
-//			return nil
-//		})
-//	}
-//
-// ```
-//
-// ### Build
-//
-// You can also use the resource to build an image.
-// In this case the image "zoo" and "zoo:develop" are built.
-//
-// ```go
-// package main
-//
-// import (
-//
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
-//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-//
-// )
-//
-//	func main() {
-//		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.NewRemoteImage(ctx, "zoo", &docker.RemoteImageArgs{
-//				Name: pulumi.String("zoo"),
-//				Build: &docker.RemoteImageBuildArgs{
-//					Context: pulumi.String("."),
-//					Tags: pulumi.StringArray{
-//						pulumi.String("zoo:develop"),
-//					},
-//					BuildArg: pulumi.StringMap{
-//						"foo": pulumi.String("zoo"),
-//					},
-//					Label: pulumi.StringMap{
-//						"author": pulumi.String("zoo"),
-//					},
-//				},
-//			})
-//			if err != nil {
-//				return err
-//			}
-//			return nil
-//		})
-//	}
-//
-// ```
-//
-// You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 type RemoteImage struct {
 	pulumi.CustomResourceState
 
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrOutput `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrOutput `pulumi:"forceRemove"`
@@ -145,7 +28,7 @@ type RemoteImage struct {
 	Platform pulumi.StringPtrOutput `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayOutput `pulumi:"pullTriggers"`
-	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
+	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `RegistryImage`) in a previous run.
 	RepoDigest pulumi.StringOutput `pulumi:"repoDigest"`
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
 	Triggers pulumi.StringMapOutput `pulumi:"triggers"`
@@ -184,7 +67,6 @@ func GetRemoteImage(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RemoteImage resources.
 type remoteImageState struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
@@ -198,14 +80,13 @@ type remoteImageState struct {
 	Platform *string `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers []string `pulumi:"pullTriggers"`
-	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
+	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `RegistryImage`) in a previous run.
 	RepoDigest *string `pulumi:"repoDigest"`
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
 	Triggers map[string]string `pulumi:"triggers"`
 }
 
 type RemoteImageState struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
@@ -219,7 +100,7 @@ type RemoteImageState struct {
 	Platform pulumi.StringPtrInput
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayInput
-	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
+	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `RegistryImage`) in a previous run.
 	RepoDigest pulumi.StringPtrInput
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
 	Triggers pulumi.StringMapInput
@@ -230,7 +111,6 @@ func (RemoteImageState) ElementType() reflect.Type {
 }
 
 type remoteImageArgs struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
@@ -248,7 +128,6 @@ type remoteImageArgs struct {
 
 // The set of arguments for constructing a RemoteImage resource.
 type RemoteImageArgs struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
@@ -351,7 +230,6 @@ func (o RemoteImageOutput) ToRemoteImageOutputWithContext(ctx context.Context) R
 	return o
 }
 
-// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 func (o RemoteImageOutput) Build() RemoteImageBuildPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) RemoteImageBuildPtrOutput { return v.Build }).(RemoteImageBuildPtrOutput)
 }
@@ -386,7 +264,7 @@ func (o RemoteImageOutput) PullTriggers() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringArrayOutput { return v.PullTriggers }).(pulumi.StringArrayOutput)
 }
 
-// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
+// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `RegistryImage`) in a previous run.
 func (o RemoteImageOutput) RepoDigest() pulumi.StringOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringOutput { return v.RepoDigest }).(pulumi.StringOutput)
 }

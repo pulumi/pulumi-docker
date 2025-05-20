@@ -30,6 +30,11 @@ export const getRegistryImage: typeof import("./getRegistryImage").getRegistryIm
 export const getRegistryImageOutput: typeof import("./getRegistryImage").getRegistryImageOutput = null as any;
 utilities.lazyLoad(exports, ["getRegistryImage","getRegistryImageOutput"], () => require("./getRegistryImage"));
 
+export { GetRegistryImageManifestsArgs, GetRegistryImageManifestsResult, GetRegistryImageManifestsOutputArgs } from "./getRegistryImageManifests";
+export const getRegistryImageManifests: typeof import("./getRegistryImageManifests").getRegistryImageManifests = null as any;
+export const getRegistryImageManifestsOutput: typeof import("./getRegistryImageManifests").getRegistryImageManifestsOutput = null as any;
+utilities.lazyLoad(exports, ["getRegistryImageManifests","getRegistryImageManifestsOutput"], () => require("./getRegistryImageManifests"));
+
 export { GetRemoteImageArgs, GetRemoteImageResult, GetRemoteImageOutputArgs } from "./getRemoteImage";
 export const getRemoteImage: typeof import("./getRemoteImage").getRemoteImage = null as any;
 export const getRemoteImageOutput: typeof import("./getRemoteImage").getRemoteImageOutput = null as any;

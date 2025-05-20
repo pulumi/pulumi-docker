@@ -52,6 +52,9 @@ class NetworkArgs:
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
         if check_duplicate is not None:
+            warnings.warn("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""", DeprecationWarning)
+            pulumi.log.warn("""check_duplicate is deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
+        if check_duplicate is not None:
             pulumi.set(__self__, "check_duplicate", check_duplicate)
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
@@ -88,6 +91,7 @@ class NetworkArgs:
 
     @property
     @pulumi.getter(name="checkDuplicate")
+    @_utilities.deprecated("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
     def check_duplicate(self) -> Optional[pulumi.Input[builtins.bool]]:
         """
         Requests daemon to check for networks with same name.
@@ -254,6 +258,9 @@ class _NetworkState:
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
         if check_duplicate is not None:
+            warnings.warn("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""", DeprecationWarning)
+            pulumi.log.warn("""check_duplicate is deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
+        if check_duplicate is not None:
             pulumi.set(__self__, "check_duplicate", check_duplicate)
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
@@ -292,6 +299,7 @@ class _NetworkState:
 
     @property
     @pulumi.getter(name="checkDuplicate")
+    @_utilities.deprecated("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
     def check_duplicate(self) -> Optional[pulumi.Input[builtins.bool]]:
         """
         Requests daemon to check for networks with same name.
@@ -687,6 +695,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="checkDuplicate")
+    @_utilities.deprecated("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
     def check_duplicate(self) -> pulumi.Output[Optional[builtins.bool]]:
         """
         Requests daemon to check for networks with same name.

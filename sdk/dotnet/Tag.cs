@@ -28,6 +28,12 @@ namespace Pulumi.Docker
         public Output<string> SourceImageId { get; private set; } = null!;
 
         /// <summary>
+        /// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+        /// </summary>
+        [Output("tagTriggers")]
+        public Output<ImmutableArray<string>> TagTriggers { get; private set; } = null!;
+
+        /// <summary>
         /// Name of the target image.
         /// </summary>
         [Output("targetImage")]
@@ -85,6 +91,18 @@ namespace Pulumi.Docker
         [Input("sourceImage", required: true)]
         public Input<string> SourceImage { get; set; } = null!;
 
+        [Input("tagTriggers")]
+        private InputList<string>? _tagTriggers;
+
+        /// <summary>
+        /// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+        /// </summary>
+        public InputList<string> TagTriggers
+        {
+            get => _tagTriggers ?? (_tagTriggers = new InputList<string>());
+            set => _tagTriggers = value;
+        }
+
         /// <summary>
         /// Name of the target image.
         /// </summary>
@@ -110,6 +128,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("sourceImageId")]
         public Input<string>? SourceImageId { get; set; }
+
+        [Input("tagTriggers")]
+        private InputList<string>? _tagTriggers;
+
+        /// <summary>
+        /// List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+        /// </summary>
+        public InputList<string> TagTriggers
+        {
+            get => _tagTriggers ?? (_tagTriggers = new InputList<string>());
+            set => _tagTriggers = value;
+        }
 
         /// <summary>
         /// Name of the target image.

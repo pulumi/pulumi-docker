@@ -44,6 +44,30 @@ Object.defineProperty(exports, "certPath", {
 });
 
 /**
+ * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+ * if set.
+ */
+export declare const context: string | undefined;
+Object.defineProperty(exports, "context", {
+    get() {
+        return __config.get("context");
+    },
+    enumerable: true,
+});
+
+/**
+ * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+ * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+ */
+export declare const disableDockerDaemonCheck: boolean | undefined;
+Object.defineProperty(exports, "disableDockerDaemonCheck", {
+    get() {
+        return __config.getObject<boolean>("disableDockerDaemonCheck");
+    },
+    enumerable: true,
+});
+
+/**
  * The Docker daemon address
  */
 export declare const host: string | undefined;

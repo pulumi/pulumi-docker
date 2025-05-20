@@ -25,6 +25,12 @@ namespace Pulumi.Docker.Inputs
         public Input<int>? Retries { get; set; }
 
         /// <summary>
+        /// Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+        /// </summary>
+        [Input("startInterval")]
+        public Input<string>? StartInterval { get; set; }
+
+        /// <summary>
         /// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
         /// </summary>
         [Input("startPeriod")]

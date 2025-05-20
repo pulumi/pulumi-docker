@@ -37,8 +37,10 @@ __all__ = [
     'NetworkIpamConfig',
     'NetworkLabel',
     'PluginGrantPermission',
+    'RegistryImageAuthConfig',
     'RemoteImageBuild',
     'RemoteImageBuildAuthConfig',
+    'RemoteImageBuildSecret',
     'RemoteImageBuildUlimit',
     'SecretLabel',
     'ServiceAuth',
@@ -77,6 +79,8 @@ __all__ = [
     'ServiceUpdateConfig',
     'VolumeLabel',
     'GetNetworkIpamConfigResult',
+    'GetRegistryImageManifestsAuthConfigResult',
+    'GetRegistryImageManifestsManifestResult',
 ]
 
 @pulumi.output_type
@@ -176,7 +180,9 @@ class ContainerHealthcheck(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
-        if key == "startPeriod":
+        if key == "startInterval":
+            suggest = "start_interval"
+        elif key == "startPeriod":
             suggest = "start_period"
 
         if suggest:
@@ -194,12 +200,14 @@ class ContainerHealthcheck(dict):
                  tests: Sequence[builtins.str],
                  interval: Optional[builtins.str] = None,
                  retries: Optional[builtins.int] = None,
+                 start_interval: Optional[builtins.str] = None,
                  start_period: Optional[builtins.str] = None,
                  timeout: Optional[builtins.str] = None):
         """
         :param Sequence[builtins.str] tests: Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
         :param builtins.str interval: Time between running the check (ms|s|m|h). Defaults to `0s`.
         :param builtins.int retries: Consecutive failures needed to report unhealthy. Defaults to `0`.
+        :param builtins.str start_interval: Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
         :param builtins.str start_period: Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
         :param builtins.str timeout: Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         """
@@ -208,6 +216,8 @@ class ContainerHealthcheck(dict):
             pulumi.set(__self__, "interval", interval)
         if retries is not None:
             pulumi.set(__self__, "retries", retries)
+        if start_interval is not None:
+            pulumi.set(__self__, "start_interval", start_interval)
         if start_period is not None:
             pulumi.set(__self__, "start_period", start_period)
         if timeout is not None:
@@ -236,6 +246,14 @@ class ContainerHealthcheck(dict):
         Consecutive failures needed to report unhealthy. Defaults to `0`.
         """
         return pulumi.get(self, "retries")
+
+    @property
+    @pulumi.getter(name="startInterval")
+    def start_interval(self) -> Optional[builtins.str]:
+        """
+        Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+        """
+        return pulumi.get(self, "start_interval")
 
     @property
     @pulumi.getter(name="startPeriod")
@@ -518,12 +536,14 @@ class ContainerMountVolumeOptions(dict):
                  driver_name: Optional[builtins.str] = None,
                  driver_options: Optional[Mapping[str, builtins.str]] = None,
                  labels: Optional[Sequence['outputs.ContainerMountVolumeOptionsLabel']] = None,
-                 no_copy: Optional[builtins.bool] = None):
+                 no_copy: Optional[builtins.bool] = None,
+                 subpath: Optional[builtins.str] = None):
         """
         :param builtins.str driver_name: Name of the driver to use to create the volume.
         :param Mapping[str, builtins.str] driver_options: key/value map of driver specific options.
         :param Sequence['ContainerMountVolumeOptionsLabelArgs'] labels: User-defined key/value metadata.
         :param builtins.bool no_copy: Populate volume with data from the target.
+        :param builtins.str subpath: Path within the volume to mount. Requires docker server version 1.45 or higher.
         """
         if driver_name is not None:
             pulumi.set(__self__, "driver_name", driver_name)
@@ -533,6 +553,8 @@ class ContainerMountVolumeOptions(dict):
             pulumi.set(__self__, "labels", labels)
         if no_copy is not None:
             pulumi.set(__self__, "no_copy", no_copy)
+        if subpath is not None:
+            pulumi.set(__self__, "subpath", subpath)
 
     @property
     @pulumi.getter(name="driverName")
@@ -565,6 +587,14 @@ class ContainerMountVolumeOptions(dict):
         Populate volume with data from the target.
         """
         return pulumi.get(self, "no_copy")
+
+    @property
+    @pulumi.getter
+    def subpath(self) -> Optional[builtins.str]:
+        """
+        Path within the volume to mount. Requires docker server version 1.45 or higher.
+        """
+        return pulumi.get(self, "subpath")
 
 
 @pulumi.output_type
@@ -921,6 +951,7 @@ class ContainerUpload(dict):
                  content: Optional[builtins.str] = None,
                  content_base64: Optional[builtins.str] = None,
                  executable: Optional[builtins.bool] = None,
+                 permissions: Optional[builtins.str] = None,
                  source: Optional[builtins.str] = None,
                  source_hash: Optional[builtins.str] = None):
         """
@@ -928,6 +959,7 @@ class ContainerUpload(dict):
         :param builtins.str content: Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` & `source`
         :param builtins.str content_base64: Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
         :param builtins.bool executable: If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+        :param builtins.str permissions: The permission mode for the file in the container. Has precedence over `executable`.
         :param builtins.str source: A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `content_base64`
         :param builtins.str source_hash: If using `source`, this will force an update if the file content has updated but the filename has not.
         """
@@ -938,6 +970,8 @@ class ContainerUpload(dict):
             pulumi.set(__self__, "content_base64", content_base64)
         if executable is not None:
             pulumi.set(__self__, "executable", executable)
+        if permissions is not None:
+            pulumi.set(__self__, "permissions", permissions)
         if source is not None:
             pulumi.set(__self__, "source", source)
         if source_hash is not None:
@@ -974,6 +1008,14 @@ class ContainerUpload(dict):
         If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
         """
         return pulumi.get(self, "executable")
+
+    @property
+    @pulumi.getter
+    def permissions(self) -> Optional[builtins.str]:
+        """
+        The permission mode for the file in the container. Has precedence over `executable`.
+        """
+        return pulumi.get(self, "permissions")
 
     @property
     @pulumi.getter
@@ -1217,18 +1259,58 @@ class PluginGrantPermission(dict):
 
 
 @pulumi.output_type
+class RegistryImageAuthConfig(dict):
+    def __init__(__self__, *,
+                 address: builtins.str,
+                 password: builtins.str,
+                 username: builtins.str):
+        """
+        :param builtins.str address: The address of the Docker registry.
+        :param builtins.str password: The password for the Docker registry.
+        :param builtins.str username: The username for the Docker registry.
+        """
+        pulumi.set(__self__, "address", address)
+        pulumi.set(__self__, "password", password)
+        pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def address(self) -> builtins.str:
+        """
+        The address of the Docker registry.
+        """
+        return pulumi.get(self, "address")
+
+    @property
+    @pulumi.getter
+    def password(self) -> builtins.str:
+        """
+        The password for the Docker registry.
+        """
+        return pulumi.get(self, "password")
+
+    @property
+    @pulumi.getter
+    def username(self) -> builtins.str:
+        """
+        The username for the Docker registry.
+        """
+        return pulumi.get(self, "username")
+
+
+@pulumi.output_type
 class RemoteImageBuild(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
         if key == "authConfigs":
             suggest = "auth_configs"
-        elif key == "buildArg":
-            suggest = "build_arg"
         elif key == "buildArgs":
             suggest = "build_args"
         elif key == "buildId":
             suggest = "build_id"
+        elif key == "buildLogFile":
+            suggest = "build_log_file"
         elif key == "cacheFroms":
             suggest = "cache_froms"
         elif key == "cgroupParent":
@@ -1280,9 +1362,10 @@ class RemoteImageBuild(dict):
     def __init__(__self__, *,
                  context: builtins.str,
                  auth_configs: Optional[Sequence['outputs.RemoteImageBuildAuthConfig']] = None,
-                 build_arg: Optional[Mapping[str, builtins.str]] = None,
                  build_args: Optional[Mapping[str, builtins.str]] = None,
                  build_id: Optional[builtins.str] = None,
+                 build_log_file: Optional[builtins.str] = None,
+                 builder: Optional[builtins.str] = None,
                  cache_froms: Optional[Sequence[builtins.str]] = None,
                  cgroup_parent: Optional[builtins.str] = None,
                  cpu_period: Optional[builtins.int] = None,
@@ -1304,6 +1387,7 @@ class RemoteImageBuild(dict):
                  pull_parent: Optional[builtins.bool] = None,
                  remote_context: Optional[builtins.str] = None,
                  remove: Optional[builtins.bool] = None,
+                 secrets: Optional[Sequence['outputs.RemoteImageBuildSecret']] = None,
                  security_opts: Optional[Sequence[builtins.str]] = None,
                  session_id: Optional[builtins.str] = None,
                  shm_size: Optional[builtins.int] = None,
@@ -1314,11 +1398,12 @@ class RemoteImageBuild(dict):
                  ulimits: Optional[Sequence['outputs.RemoteImageBuildUlimit']] = None,
                  version: Optional[builtins.str] = None):
         """
-        :param builtins.str context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        :param builtins.str context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
         :param Sequence['RemoteImageBuildAuthConfigArgs'] auth_configs: The configuration for the authentication
-        :param Mapping[str, builtins.str] build_arg: Set build-time variables
-        :param Mapping[str, builtins.str] build_args: Pairs for build-time variables in the form TODO
+        :param Mapping[str, builtins.str] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         :param builtins.str build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+        :param builtins.str build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        :param builtins.str builder: Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
         :param Sequence[builtins.str] cache_froms: Images to consider as cache sources
         :param builtins.str cgroup_parent: Optional parent cgroup for the container
         :param builtins.int cpu_period: The length of a CPU period in microseconds
@@ -1338,8 +1423,9 @@ class RemoteImageBuild(dict):
         :param builtins.bool no_cache: Do not use the cache when building the image
         :param builtins.str platform: Set platform if server is multi-platform capable
         :param builtins.bool pull_parent: Attempt to pull the image even if an older image exists locally
-        :param builtins.str remote_context: A Git repository URI or HTTP/HTTPS context URI
+        :param builtins.str remote_context: A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         :param builtins.bool remove: Remove intermediate containers after a successful build. Defaults to `true`.
+        :param Sequence['RemoteImageBuildSecretArgs'] secrets: Set build-time secrets. Only available when you use a buildx builder.
         :param Sequence[builtins.str] security_opts: The security options
         :param builtins.str session_id: Set an ID for the build session
         :param builtins.int shm_size: Size of /dev/shm in bytes. The size must be greater than 0
@@ -1353,12 +1439,14 @@ class RemoteImageBuild(dict):
         pulumi.set(__self__, "context", context)
         if auth_configs is not None:
             pulumi.set(__self__, "auth_configs", auth_configs)
-        if build_arg is not None:
-            pulumi.set(__self__, "build_arg", build_arg)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
         if build_id is not None:
             pulumi.set(__self__, "build_id", build_id)
+        if build_log_file is not None:
+            pulumi.set(__self__, "build_log_file", build_log_file)
+        if builder is not None:
+            pulumi.set(__self__, "builder", builder)
         if cache_froms is not None:
             pulumi.set(__self__, "cache_froms", cache_froms)
         if cgroup_parent is not None:
@@ -1401,6 +1489,8 @@ class RemoteImageBuild(dict):
             pulumi.set(__self__, "remote_context", remote_context)
         if remove is not None:
             pulumi.set(__self__, "remove", remove)
+        if secrets is not None:
+            pulumi.set(__self__, "secrets", secrets)
         if security_opts is not None:
             pulumi.set(__self__, "security_opts", security_opts)
         if session_id is not None:
@@ -1424,7 +1514,7 @@ class RemoteImageBuild(dict):
     @pulumi.getter
     def context(self) -> builtins.str:
         """
-        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
         """
         return pulumi.get(self, "context")
 
@@ -1437,18 +1527,10 @@ class RemoteImageBuild(dict):
         return pulumi.get(self, "auth_configs")
 
     @property
-    @pulumi.getter(name="buildArg")
-    def build_arg(self) -> Optional[Mapping[str, builtins.str]]:
-        """
-        Set build-time variables
-        """
-        return pulumi.get(self, "build_arg")
-
-    @property
     @pulumi.getter(name="buildArgs")
     def build_args(self) -> Optional[Mapping[str, builtins.str]]:
         """
-        Pairs for build-time variables in the form TODO
+        Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         """
         return pulumi.get(self, "build_args")
 
@@ -1459,6 +1541,22 @@ class RemoteImageBuild(dict):
         BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         """
         return pulumi.get(self, "build_id")
+
+    @property
+    @pulumi.getter(name="buildLogFile")
+    def build_log_file(self) -> Optional[builtins.str]:
+        """
+        Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        """
+        return pulumi.get(self, "build_log_file")
+
+    @property
+    @pulumi.getter
+    def builder(self) -> Optional[builtins.str]:
+        """
+        Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        """
+        return pulumi.get(self, "builder")
 
     @property
     @pulumi.getter(name="cacheFroms")
@@ -1616,7 +1714,7 @@ class RemoteImageBuild(dict):
     @pulumi.getter(name="remoteContext")
     def remote_context(self) -> Optional[builtins.str]:
         """
-        A Git repository URI or HTTP/HTTPS context URI
+        A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         """
         return pulumi.get(self, "remote_context")
 
@@ -1627,6 +1725,14 @@ class RemoteImageBuild(dict):
         Remove intermediate containers after a successful build. Defaults to `true`.
         """
         return pulumi.get(self, "remove")
+
+    @property
+    @pulumi.getter
+    def secrets(self) -> Optional[Sequence['outputs.RemoteImageBuildSecret']]:
+        """
+        Set build-time secrets. Only available when you use a buildx builder.
+        """
+        return pulumi.get(self, "secrets")
 
     @property
     @pulumi.getter(name="securityOpts")
@@ -1826,6 +1932,48 @@ class RemoteImageBuildAuthConfig(dict):
         the registry user name
         """
         return pulumi.get(self, "user_name")
+
+
+@pulumi.output_type
+class RemoteImageBuildSecret(dict):
+    def __init__(__self__, *,
+                 id: builtins.str,
+                 env: Optional[builtins.str] = None,
+                 src: Optional[builtins.str] = None):
+        """
+        :param builtins.str id: ID of the secret. By default, secrets are mounted to /run/secrets/\\n\\n
+        :param builtins.str env: Environment variable source of the secret
+        :param builtins.str src: File source of the secret. Takes precedence over `env`
+        """
+        pulumi.set(__self__, "id", id)
+        if env is not None:
+            pulumi.set(__self__, "env", env)
+        if src is not None:
+            pulumi.set(__self__, "src", src)
+
+    @property
+    @pulumi.getter
+    def id(self) -> builtins.str:
+        """
+        ID of the secret. By default, secrets are mounted to /run/secrets/\\n\\n
+        """
+        return pulumi.get(self, "id")
+
+    @property
+    @pulumi.getter
+    def env(self) -> Optional[builtins.str]:
+        """
+        Environment variable source of the secret
+        """
+        return pulumi.get(self, "env")
+
+    @property
+    @pulumi.getter
+    def src(self) -> Optional[builtins.str]:
+        """
+        File source of the secret. Takes precedence over `env`
+        """
+        return pulumi.get(self, "src")
 
 
 @pulumi.output_type
@@ -2157,7 +2305,7 @@ class ServiceMode(dict):
                  global_: Optional[builtins.bool] = None,
                  replicated: Optional['outputs.ServiceModeReplicated'] = None):
         """
-        :param builtins.bool global_: When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        :param builtins.bool global_: The global service mode. Defaults to `false`
         :param 'ServiceModeReplicatedArgs' replicated: The replicated service mode
         """
         if global_ is not None:
@@ -2169,7 +2317,7 @@ class ServiceMode(dict):
     @pulumi.getter(name="global")
     def global_(self) -> Optional[builtins.bool]:
         """
-        When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        The global service mode. Defaults to `false`
         """
         return pulumi.get(self, "global_")
 
@@ -4167,5 +4315,96 @@ class GetNetworkIpamConfigResult(dict):
         The subnet in CIDR form
         """
         return pulumi.get(self, "subnet")
+
+
+@pulumi.output_type
+class GetRegistryImageManifestsAuthConfigResult(dict):
+    def __init__(__self__, *,
+                 address: builtins.str,
+                 password: builtins.str,
+                 username: builtins.str):
+        """
+        :param builtins.str address: The address of the Docker registry.
+        :param builtins.str password: The password for the Docker registry.
+        :param builtins.str username: The username for the Docker registry.
+        """
+        pulumi.set(__self__, "address", address)
+        pulumi.set(__self__, "password", password)
+        pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def address(self) -> builtins.str:
+        """
+        The address of the Docker registry.
+        """
+        return pulumi.get(self, "address")
+
+    @property
+    @pulumi.getter
+    def password(self) -> builtins.str:
+        """
+        The password for the Docker registry.
+        """
+        return pulumi.get(self, "password")
+
+    @property
+    @pulumi.getter
+    def username(self) -> builtins.str:
+        """
+        The username for the Docker registry.
+        """
+        return pulumi.get(self, "username")
+
+
+@pulumi.output_type
+class GetRegistryImageManifestsManifestResult(dict):
+    def __init__(__self__, *,
+                 architecture: builtins.str,
+                 media_type: builtins.str,
+                 os: builtins.str,
+                 sha256_digest: builtins.str):
+        """
+        :param builtins.str architecture: The platform architecture supported by the manifest.
+        :param builtins.str media_type: The media type of the manifest.
+        :param builtins.str os: The operating system supported by the manifest.
+        :param builtins.str sha256_digest: The content digest of the manifest, as stored in the registry.
+        """
+        pulumi.set(__self__, "architecture", architecture)
+        pulumi.set(__self__, "media_type", media_type)
+        pulumi.set(__self__, "os", os)
+        pulumi.set(__self__, "sha256_digest", sha256_digest)
+
+    @property
+    @pulumi.getter
+    def architecture(self) -> builtins.str:
+        """
+        The platform architecture supported by the manifest.
+        """
+        return pulumi.get(self, "architecture")
+
+    @property
+    @pulumi.getter(name="mediaType")
+    def media_type(self) -> builtins.str:
+        """
+        The media type of the manifest.
+        """
+        return pulumi.get(self, "media_type")
+
+    @property
+    @pulumi.getter
+    def os(self) -> builtins.str:
+        """
+        The operating system supported by the manifest.
+        """
+        return pulumi.get(self, "os")
+
+    @property
+    @pulumi.getter(name="sha256Digest")
+    def sha256_digest(self) -> builtins.str:
+        """
+        The content digest of the manifest, as stored in the registry.
+        """
+        return pulumi.get(self, "sha256_digest")
 
 

@@ -14,23 +14,29 @@ if sys.version_info >= (3, 11):
 else:
     from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
+from . import outputs
+from ._inputs import *
 
 __all__ = ['RegistryImageArgs', 'RegistryImage']
 
 @pulumi.input_type
 class RegistryImageArgs:
     def __init__(__self__, *,
+                 auth_config: Optional[pulumi.Input['RegistryImageAuthConfigArgs']] = None,
                  insecure_skip_verify: Optional[pulumi.Input[builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[builtins.bool]] = None,
                  name: Optional[pulumi.Input[builtins.str]] = None,
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]]] = None):
         """
         The set of arguments for constructing a RegistryImage resource.
+        :param pulumi.Input['RegistryImageAuthConfigArgs'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
         :param pulumi.Input[builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[builtins.bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[builtins.str] name: The name of the Docker image.
         :param pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
+        if auth_config is not None:
+            pulumi.set(__self__, "auth_config", auth_config)
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
@@ -39,6 +45,18 @@ class RegistryImageArgs:
             pulumi.set(__self__, "name", name)
         if triggers is not None:
             pulumi.set(__self__, "triggers", triggers)
+
+    @property
+    @pulumi.getter(name="authConfig")
+    def auth_config(self) -> Optional[pulumi.Input['RegistryImageAuthConfigArgs']]:
+        """
+        Authentication configuration for the Docker registry. It is only used for this resource.
+        """
+        return pulumi.get(self, "auth_config")
+
+    @auth_config.setter
+    def auth_config(self, value: Optional[pulumi.Input['RegistryImageAuthConfigArgs']]):
+        pulumi.set(self, "auth_config", value)
 
     @property
     @pulumi.getter(name="insecureSkipVerify")
@@ -92,6 +110,7 @@ class RegistryImageArgs:
 @pulumi.input_type
 class _RegistryImageState:
     def __init__(__self__, *,
+                 auth_config: Optional[pulumi.Input['RegistryImageAuthConfigArgs']] = None,
                  insecure_skip_verify: Optional[pulumi.Input[builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[builtins.bool]] = None,
                  name: Optional[pulumi.Input[builtins.str]] = None,
@@ -99,12 +118,15 @@ class _RegistryImageState:
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering RegistryImage resources.
+        :param pulumi.Input['RegistryImageAuthConfigArgs'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
         :param pulumi.Input[builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[builtins.bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[builtins.str] name: The name of the Docker image.
         :param pulumi.Input[builtins.str] sha256_digest: The sha256 digest of the image.
         :param pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
+        if auth_config is not None:
+            pulumi.set(__self__, "auth_config", auth_config)
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
@@ -115,6 +137,18 @@ class _RegistryImageState:
             pulumi.set(__self__, "sha256_digest", sha256_digest)
         if triggers is not None:
             pulumi.set(__self__, "triggers", triggers)
+
+    @property
+    @pulumi.getter(name="authConfig")
+    def auth_config(self) -> Optional[pulumi.Input['RegistryImageAuthConfigArgs']]:
+        """
+        Authentication configuration for the Docker registry. It is only used for this resource.
+        """
+        return pulumi.get(self, "auth_config")
+
+    @auth_config.setter
+    def auth_config(self, value: Optional[pulumi.Input['RegistryImageAuthConfigArgs']]):
+        pulumi.set(self, "auth_config", value)
 
     @property
     @pulumi.getter(name="insecureSkipVerify")
@@ -183,6 +217,7 @@ class RegistryImage(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
                  insecure_skip_verify: Optional[pulumi.Input[builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[builtins.bool]] = None,
                  name: Optional[pulumi.Input[builtins.str]] = None,
@@ -194,6 +229,7 @@ class RegistryImage(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
         :param pulumi.Input[builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[builtins.bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[builtins.str] name: The name of the Docker image.
@@ -224,6 +260,7 @@ class RegistryImage(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
                  insecure_skip_verify: Optional[pulumi.Input[builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[builtins.bool]] = None,
                  name: Optional[pulumi.Input[builtins.str]] = None,
@@ -237,6 +274,7 @@ class RegistryImage(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = RegistryImageArgs.__new__(RegistryImageArgs)
 
+            __props__.__dict__["auth_config"] = auth_config
             __props__.__dict__["insecure_skip_verify"] = insecure_skip_verify
             __props__.__dict__["keep_remotely"] = keep_remotely
             __props__.__dict__["name"] = name
@@ -252,6 +290,7 @@ class RegistryImage(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
+            auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
             insecure_skip_verify: Optional[pulumi.Input[builtins.bool]] = None,
             keep_remotely: Optional[pulumi.Input[builtins.bool]] = None,
             name: Optional[pulumi.Input[builtins.str]] = None,
@@ -264,6 +303,7 @@ class RegistryImage(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
         :param pulumi.Input[builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[builtins.bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[builtins.str] name: The name of the Docker image.
@@ -274,12 +314,21 @@ class RegistryImage(pulumi.CustomResource):
 
         __props__ = _RegistryImageState.__new__(_RegistryImageState)
 
+        __props__.__dict__["auth_config"] = auth_config
         __props__.__dict__["insecure_skip_verify"] = insecure_skip_verify
         __props__.__dict__["keep_remotely"] = keep_remotely
         __props__.__dict__["name"] = name
         __props__.__dict__["sha256_digest"] = sha256_digest
         __props__.__dict__["triggers"] = triggers
         return RegistryImage(resource_name, opts=opts, __props__=__props__)
+
+    @property
+    @pulumi.getter(name="authConfig")
+    def auth_config(self) -> pulumi.Output[Optional['outputs.RegistryImageAuthConfig']]:
+        """
+        Authentication configuration for the Docker registry. It is only used for this resource.
+        """
+        return pulumi.get(self, "auth_config")
 
     @property
     @pulumi.getter(name="insecureSkipVerify")

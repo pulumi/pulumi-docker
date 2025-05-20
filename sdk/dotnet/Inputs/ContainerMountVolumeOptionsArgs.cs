@@ -48,6 +48,12 @@ namespace Pulumi.Docker.Inputs
         [Input("noCopy")]
         public Input<bool>? NoCopy { get; set; }
 
+        /// <summary>
+        /// Path within the volume to mount. Requires docker server version 1.45 or higher.
+        /// </summary>
+        [Input("subpath")]
+        public Input<string>? Subpath { get; set; }
+
         public ContainerMountVolumeOptionsArgs()
         {
         }

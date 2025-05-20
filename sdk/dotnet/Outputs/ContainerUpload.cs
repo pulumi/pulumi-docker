@@ -30,6 +30,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string File;
         /// <summary>
+        /// The permission mode for the file in the container. Has precedence over `executable`.
+        /// </summary>
+        public readonly string? Permissions;
+        /// <summary>
         /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
         /// </summary>
         public readonly string? Source;
@@ -48,6 +52,8 @@ namespace Pulumi.Docker.Outputs
 
             string file,
 
+            string? permissions,
+
             string? source,
 
             string? sourceHash)
@@ -56,6 +62,7 @@ namespace Pulumi.Docker.Outputs
             ContentBase64 = contentBase64;
             Executable = executable;
             File = file;
+            Permissions = permissions;
             Source = source;
             SourceHash = sourceHash;
         }

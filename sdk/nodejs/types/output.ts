@@ -42,6 +42,10 @@ export interface ContainerHealthcheck {
      */
     retries?: number;
     /**
+     * Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+     */
+    startInterval?: string;
+    /**
      * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      */
     startPeriod?: string;
@@ -143,6 +147,10 @@ export interface ContainerMountVolumeOptions {
      * Populate volume with data from the target.
      */
     noCopy?: boolean;
+    /**
+     * Path within the volume to mount. Requires docker server version 1.45 or higher.
+     */
+    subpath?: string;
 }
 
 export interface ContainerMountVolumeOptionsLabel {
@@ -262,6 +270,10 @@ export interface ContainerUpload {
      */
     file: string;
     /**
+     * The permission mode for the file in the container. Has precedence over `executable`.
+     */
+    permissions?: string;
+    /**
      * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
      */
     source?: string;
@@ -313,6 +325,40 @@ export interface GetNetworkIpamConfig {
     subnet?: string;
 }
 
+export interface GetRegistryImageManifestsAuthConfig {
+    /**
+     * The address of the Docker registry.
+     */
+    address: string;
+    /**
+     * The password for the Docker registry.
+     */
+    password: string;
+    /**
+     * The username for the Docker registry.
+     */
+    username: string;
+}
+
+export interface GetRegistryImageManifestsManifest {
+    /**
+     * The platform architecture supported by the manifest.
+     */
+    architecture: string;
+    /**
+     * The media type of the manifest.
+     */
+    mediaType: string;
+    /**
+     * The operating system supported by the manifest.
+     */
+    os: string;
+    /**
+     * The content digest of the manifest, as stored in the registry.
+     */
+    sha256Digest: string;
+}
+
 export interface NetworkIpamConfig {
     /**
      * Auxiliary IPv4 or IPv6 addresses used by Network driver
@@ -354,23 +400,42 @@ export interface PluginGrantPermission {
     values: string[];
 }
 
+export interface RegistryImageAuthConfig {
+    /**
+     * The address of the Docker registry.
+     */
+    address: string;
+    /**
+     * The password for the Docker registry.
+     */
+    password: string;
+    /**
+     * The username for the Docker registry.
+     */
+    username: string;
+}
+
 export interface RemoteImageBuild {
     /**
      * The configuration for the authentication
      */
     authConfigs?: outputs.RemoteImageBuildAuthConfig[];
     /**
-     * Set build-time variables
-     */
-    buildArg?: {[key: string]: string};
-    /**
-     * Pairs for build-time variables in the form TODO
+     * Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
      */
     buildArgs?: {[key: string]: string};
     /**
      * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
      */
     buildId?: string;
+    /**
+     * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     */
+    buildLogFile?: string;
+    /**
+     * Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     */
+    builder?: string;
     /**
      * Images to consider as cache sources
      */
@@ -380,7 +445,7 @@ export interface RemoteImageBuild {
      */
     cgroupParent?: string;
     /**
-     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      */
     context: string;
     /**
@@ -452,13 +517,17 @@ export interface RemoteImageBuild {
      */
     pullParent?: boolean;
     /**
-     * A Git repository URI or HTTP/HTTPS context URI
+     * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      */
     remoteContext?: string;
     /**
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: boolean;
+    /**
+     * Set build-time secrets. Only available when you use a buildx builder.
+     */
+    secrets?: outputs.RemoteImageBuildSecret[];
     /**
      * The security options
      */
@@ -530,6 +599,21 @@ export interface RemoteImageBuildAuthConfig {
      * the registry user name
      */
     userName?: string;
+}
+
+export interface RemoteImageBuildSecret {
+    /**
+     * Environment variable source of the secret
+     */
+    env?: string;
+    /**
+     * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+     */
+    id: string;
+    /**
+     * File source of the secret. Takes precedence over `env`
+     */
+    src?: string;
 }
 
 export interface RemoteImageBuildUlimit {
@@ -631,7 +715,7 @@ export interface ServiceLabel {
 
 export interface ServiceMode {
     /**
-     * When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * The global service mode. Defaults to `false`
      */
     global?: boolean;
     /**

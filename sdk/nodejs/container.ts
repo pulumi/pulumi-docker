@@ -113,7 +113,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly cgroupnsMode!: pulumi.Output<string | undefined>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
      */
     public readonly command!: pulumi.Output<string[]>;
     /**
@@ -132,6 +132,10 @@ export class Container extends pulumi.CustomResource {
      * CPU shares (relative weight) for the container.
      */
     public readonly cpuShares!: pulumi.Output<number | undefined>;
+    /**
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     */
+    public readonly cpus!: pulumi.Output<string | undefined>;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
@@ -157,7 +161,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly domainname!: pulumi.Output<string | undefined>;
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
      */
     public readonly entrypoints!: pulumi.Output<string[]>;
     /**
@@ -189,7 +193,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      */
     public readonly image!: pulumi.Output<string>;
     /**
@@ -242,7 +246,7 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly networkDatas!: pulumi.Output<outputs.ContainerNetworkData[]>;
     /**
-     * Network mode of the container.
+     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      */
     public readonly networkMode!: pulumi.Output<string | undefined>;
     /**
@@ -346,7 +350,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly volumes!: pulumi.Output<outputs.ContainerVolume[] | undefined>;
     /**
-     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      */
     public readonly wait!: pulumi.Output<boolean | undefined>;
     /**
@@ -380,6 +384,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["containerReadRefreshTimeoutMilliseconds"] = state ? state.containerReadRefreshTimeoutMilliseconds : undefined;
             resourceInputs["cpuSet"] = state ? state.cpuSet : undefined;
             resourceInputs["cpuShares"] = state ? state.cpuShares : undefined;
+            resourceInputs["cpus"] = state ? state.cpus : undefined;
             resourceInputs["destroyGraceSeconds"] = state ? state.destroyGraceSeconds : undefined;
             resourceInputs["devices"] = state ? state.devices : undefined;
             resourceInputs["dns"] = state ? state.dns : undefined;
@@ -449,6 +454,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["containerReadRefreshTimeoutMilliseconds"] = args ? args.containerReadRefreshTimeoutMilliseconds : undefined;
             resourceInputs["cpuSet"] = args ? args.cpuSet : undefined;
             resourceInputs["cpuShares"] = args ? args.cpuShares : undefined;
+            resourceInputs["cpus"] = args ? args.cpus : undefined;
             resourceInputs["destroyGraceSeconds"] = args ? args.destroyGraceSeconds : undefined;
             resourceInputs["devices"] = args ? args.devices : undefined;
             resourceInputs["dns"] = args ? args.dns : undefined;
@@ -535,7 +541,7 @@ export interface ContainerState {
      */
     cgroupnsMode?: pulumi.Input<string>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -554,6 +560,10 @@ export interface ContainerState {
      * CPU shares (relative weight) for the container.
      */
     cpuShares?: pulumi.Input<number>;
+    /**
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     */
+    cpus?: pulumi.Input<string>;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
@@ -579,7 +589,7 @@ export interface ContainerState {
      */
     domainname?: pulumi.Input<string>;
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
      */
     entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -611,7 +621,7 @@ export interface ContainerState {
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      */
     image?: pulumi.Input<string>;
     /**
@@ -664,7 +674,7 @@ export interface ContainerState {
      */
     networkDatas?: pulumi.Input<pulumi.Input<inputs.ContainerNetworkData>[]>;
     /**
-     * Network mode of the container.
+     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      */
     networkMode?: pulumi.Input<string>;
     /**
@@ -768,7 +778,7 @@ export interface ContainerState {
      */
     volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
     /**
-     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      */
     wait?: pulumi.Input<boolean>;
     /**
@@ -798,7 +808,7 @@ export interface ContainerArgs {
      */
     cgroupnsMode?: pulumi.Input<string>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -813,6 +823,10 @@ export interface ContainerArgs {
      * CPU shares (relative weight) for the container.
      */
     cpuShares?: pulumi.Input<number>;
+    /**
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     */
+    cpus?: pulumi.Input<string>;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
@@ -838,7 +852,7 @@ export interface ContainerArgs {
      */
     domainname?: pulumi.Input<string>;
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
      */
     entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -866,7 +880,7 @@ export interface ContainerArgs {
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      */
     image: pulumi.Input<string>;
     /**
@@ -915,7 +929,7 @@ export interface ContainerArgs {
      */
     name?: pulumi.Input<string>;
     /**
-     * Network mode of the container.
+     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      */
     networkMode?: pulumi.Input<string>;
     /**
@@ -1019,7 +1033,7 @@ export interface ContainerArgs {
      */
     volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
     /**
-     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      */
     wait?: pulumi.Input<boolean>;
     /**

@@ -18,17 +18,21 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<Outputs.RemoteImageBuildAuthConfig> AuthConfigs;
         /// <summary>
-        /// Set build-time variables
-        /// </summary>
-        public readonly ImmutableDictionary<string, string>? BuildArg;
-        /// <summary>
-        /// Pairs for build-time variables in the form TODO
+        /// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         /// </summary>
         public readonly ImmutableDictionary<string, string>? BuildArgs;
         /// <summary>
         /// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         /// </summary>
         public readonly string? BuildId;
+        /// <summary>
+        /// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        /// </summary>
+        public readonly string? BuildLogFile;
+        /// <summary>
+        /// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        /// </summary>
+        public readonly string? Builder;
         /// <summary>
         /// Images to consider as cache sources
         /// </summary>
@@ -38,7 +42,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? CgroupParent;
         /// <summary>
-        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
         /// </summary>
         public readonly string Context;
         /// <summary>
@@ -110,13 +114,17 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly bool? PullParent;
         /// <summary>
-        /// A Git repository URI or HTTP/HTTPS context URI
+        /// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         /// </summary>
         public readonly string? RemoteContext;
         /// <summary>
         /// Remove intermediate containers after a successful build. Defaults to `true`.
         /// </summary>
         public readonly bool? Remove;
+        /// <summary>
+        /// Set build-time secrets. Only available when you use a buildx builder.
+        /// </summary>
+        public readonly ImmutableArray<Outputs.RemoteImageBuildSecret> Secrets;
         /// <summary>
         /// The security options
         /// </summary>
@@ -158,11 +166,13 @@ namespace Pulumi.Docker.Outputs
         private RemoteImageBuild(
             ImmutableArray<Outputs.RemoteImageBuildAuthConfig> authConfigs,
 
-            ImmutableDictionary<string, string>? buildArg,
-
             ImmutableDictionary<string, string>? buildArgs,
 
             string? buildId,
+
+            string? buildLogFile,
+
+            string? builder,
 
             ImmutableArray<string> cacheFroms,
 
@@ -208,6 +218,8 @@ namespace Pulumi.Docker.Outputs
 
             bool? remove,
 
+            ImmutableArray<Outputs.RemoteImageBuildSecret> secrets,
+
             ImmutableArray<string> securityOpts,
 
             string? sessionId,
@@ -227,9 +239,10 @@ namespace Pulumi.Docker.Outputs
             string? version)
         {
             AuthConfigs = authConfigs;
-            BuildArg = buildArg;
             BuildArgs = buildArgs;
             BuildId = buildId;
+            BuildLogFile = buildLogFile;
+            Builder = builder;
             CacheFroms = cacheFroms;
             CgroupParent = cgroupParent;
             Context = context;
@@ -252,6 +265,7 @@ namespace Pulumi.Docker.Outputs
             PullParent = pullParent;
             RemoteContext = remoteContext;
             Remove = remove;
+            Secrets = secrets;
             SecurityOpts = securityOpts;
             SessionId = sessionId;
             ShmSize = shmSize;

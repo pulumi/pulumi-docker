@@ -29,6 +29,10 @@ namespace Pulumi.Docker.Outputs
         /// Populate volume with data from the target.
         /// </summary>
         public readonly bool? NoCopy;
+        /// <summary>
+        /// Path within the volume to mount. Requires docker server version 1.45 or higher.
+        /// </summary>
+        public readonly string? Subpath;
 
         [OutputConstructor]
         private ContainerMountVolumeOptions(
@@ -38,12 +42,15 @@ namespace Pulumi.Docker.Outputs
 
             ImmutableArray<Outputs.ContainerMountVolumeOptionsLabel> labels,
 
-            bool? noCopy)
+            bool? noCopy,
+
+            string? subpath)
         {
             DriverName = driverName;
             DriverOptions = driverOptions;
             Labels = labels;
             NoCopy = noCopy;
+            Subpath = subpath;
         }
     }
 }

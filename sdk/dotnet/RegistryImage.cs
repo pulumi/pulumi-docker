@@ -17,6 +17,12 @@ namespace Pulumi.Docker
     public partial class RegistryImage : global::Pulumi.CustomResource
     {
         /// <summary>
+        /// Authentication configuration for the Docker registry. It is only used for this resource.
+        /// </summary>
+        [Output("authConfig")]
+        public Output<Outputs.RegistryImageAuthConfig?> AuthConfig { get; private set; } = null!;
+
+        /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
         [Output("insecureSkipVerify")]
@@ -93,6 +99,12 @@ namespace Pulumi.Docker
     public sealed class RegistryImageArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Authentication configuration for the Docker registry. It is only used for this resource.
+        /// </summary>
+        [Input("authConfig")]
+        public Input<Inputs.RegistryImageAuthConfigArgs>? AuthConfig { get; set; }
+
+        /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
         [Input("insecureSkipVerify")]
@@ -130,6 +142,12 @@ namespace Pulumi.Docker
 
     public sealed class RegistryImageState : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Authentication configuration for the Docker registry. It is only used for this resource.
+        /// </summary>
+        [Input("authConfig")]
+        public Input<Inputs.RegistryImageAuthConfigGetArgs>? AuthConfig { get; set; }
+
         /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>

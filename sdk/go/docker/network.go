@@ -77,6 +77,8 @@ type Network struct {
 	// Enable manual container attachment to the network.
 	Attachable pulumi.BoolPtrOutput `pulumi:"attachable"`
 	// Requests daemon to check for networks with same name.
+	//
+	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
 	CheckDuplicate pulumi.BoolPtrOutput `pulumi:"checkDuplicate"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringOutput `pulumi:"driver"`
@@ -135,6 +137,8 @@ type networkState struct {
 	// Enable manual container attachment to the network.
 	Attachable *bool `pulumi:"attachable"`
 	// Requests daemon to check for networks with same name.
+	//
+	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
 	CheckDuplicate *bool `pulumi:"checkDuplicate"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver *string `pulumi:"driver"`
@@ -164,6 +168,8 @@ type NetworkState struct {
 	// Enable manual container attachment to the network.
 	Attachable pulumi.BoolPtrInput
 	// Requests daemon to check for networks with same name.
+	//
+	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
 	CheckDuplicate pulumi.BoolPtrInput
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringPtrInput
@@ -197,6 +203,8 @@ type networkArgs struct {
 	// Enable manual container attachment to the network.
 	Attachable *bool `pulumi:"attachable"`
 	// Requests daemon to check for networks with same name.
+	//
+	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
 	CheckDuplicate *bool `pulumi:"checkDuplicate"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver *string `pulumi:"driver"`
@@ -225,6 +233,8 @@ type NetworkArgs struct {
 	// Enable manual container attachment to the network.
 	Attachable pulumi.BoolPtrInput
 	// Requests daemon to check for networks with same name.
+	//
+	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
 	CheckDuplicate pulumi.BoolPtrInput
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringPtrInput
@@ -341,6 +351,8 @@ func (o NetworkOutput) Attachable() pulumi.BoolPtrOutput {
 }
 
 // Requests daemon to check for networks with same name.
+//
+// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
 func (o NetworkOutput) CheckDuplicate() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.CheckDuplicate }).(pulumi.BoolPtrOutput)
 }
