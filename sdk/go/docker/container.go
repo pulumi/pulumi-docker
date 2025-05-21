@@ -102,7 +102,7 @@ type Container struct {
 	Capabilities ContainerCapabilitiesPtrOutput `pulumi:"capabilities"`
 	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
 	CgroupnsMode pulumi.StringPtrOutput `pulumi:"cgroupnsMode"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
 	Command pulumi.StringArrayOutput `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringOutput `pulumi:"containerLogs"`
@@ -112,6 +112,8 @@ type Container struct {
 	CpuSet pulumi.StringPtrOutput `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrOutput `pulumi:"cpuShares"`
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	Cpus pulumi.StringPtrOutput `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrOutput `pulumi:"destroyGraceSeconds"`
 	// Bind devices to the container.
@@ -124,7 +126,7 @@ type Container struct {
 	DnsSearches pulumi.StringArrayOutput `pulumi:"dnsSearches"`
 	// Domain name of the container.
 	Domainname pulumi.StringPtrOutput `pulumi:"domainname"`
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
 	Entrypoints pulumi.StringArrayOutput `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayOutput `pulumi:"envs"`
@@ -140,7 +142,7 @@ type Container struct {
 	Hostname pulumi.StringOutput `pulumi:"hostname"`
 	// Additional hosts to add to the container.
 	Hosts ContainerHostArrayOutput `pulumi:"hosts"`
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `RemoteImage` resource as is shown in the example.
 	Image pulumi.StringOutput `pulumi:"image"`
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init pulumi.BoolOutput `pulumi:"init"`
@@ -167,7 +169,7 @@ type Container struct {
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayOutput `pulumi:"networkDatas"`
-	// Network mode of the container.
+	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrOutput `pulumi:"networkMode"`
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayOutput `pulumi:"networksAdvanced"`
@@ -219,7 +221,7 @@ type Container struct {
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
 	// Spec for mounting volumes in the container.
 	Volumes ContainerVolumeArrayOutput `pulumi:"volumes"`
-	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
 	Wait pulumi.BoolPtrOutput `pulumi:"wait"`
 	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
 	WaitTimeout pulumi.IntPtrOutput `pulumi:"waitTimeout"`
@@ -268,7 +270,7 @@ type containerState struct {
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
 	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
 	CgroupnsMode *string `pulumi:"cgroupnsMode"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
 	Command []string `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs *string `pulumi:"containerLogs"`
@@ -278,6 +280,8 @@ type containerState struct {
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares *int `pulumi:"cpuShares"`
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
 	// Bind devices to the container.
@@ -290,7 +294,7 @@ type containerState struct {
 	DnsSearches []string `pulumi:"dnsSearches"`
 	// Domain name of the container.
 	Domainname *string `pulumi:"domainname"`
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
 	Entrypoints []string `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs []string `pulumi:"envs"`
@@ -306,7 +310,7 @@ type containerState struct {
 	Hostname *string `pulumi:"hostname"`
 	// Additional hosts to add to the container.
 	Hosts []ContainerHost `pulumi:"hosts"`
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `RemoteImage` resource as is shown in the example.
 	Image *string `pulumi:"image"`
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init *bool `pulumi:"init"`
@@ -333,7 +337,7 @@ type containerState struct {
 	Name *string `pulumi:"name"`
 	// The data of the networks the container is connected to.
 	NetworkDatas []ContainerNetworkData `pulumi:"networkDatas"`
-	// Network mode of the container.
+	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode *string `pulumi:"networkMode"`
 	// The networks the container is attached to
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
@@ -385,7 +389,7 @@ type containerState struct {
 	UsernsMode *string `pulumi:"usernsMode"`
 	// Spec for mounting volumes in the container.
 	Volumes []ContainerVolume `pulumi:"volumes"`
-	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
 	Wait *bool `pulumi:"wait"`
 	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
 	WaitTimeout *int `pulumi:"waitTimeout"`
@@ -402,7 +406,7 @@ type ContainerState struct {
 	Capabilities ContainerCapabilitiesPtrInput
 	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
 	CgroupnsMode pulumi.StringPtrInput
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
 	Command pulumi.StringArrayInput
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringPtrInput
@@ -412,6 +416,8 @@ type ContainerState struct {
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrInput
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
 	// Bind devices to the container.
@@ -424,7 +430,7 @@ type ContainerState struct {
 	DnsSearches pulumi.StringArrayInput
 	// Domain name of the container.
 	Domainname pulumi.StringPtrInput
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
 	Entrypoints pulumi.StringArrayInput
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayInput
@@ -440,7 +446,7 @@ type ContainerState struct {
 	Hostname pulumi.StringPtrInput
 	// Additional hosts to add to the container.
 	Hosts ContainerHostArrayInput
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `RemoteImage` resource as is shown in the example.
 	Image pulumi.StringPtrInput
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init pulumi.BoolPtrInput
@@ -467,7 +473,7 @@ type ContainerState struct {
 	Name pulumi.StringPtrInput
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayInput
-	// Network mode of the container.
+	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrInput
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
@@ -519,7 +525,7 @@ type ContainerState struct {
 	UsernsMode pulumi.StringPtrInput
 	// Spec for mounting volumes in the container.
 	Volumes ContainerVolumeArrayInput
-	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
 	Wait pulumi.BoolPtrInput
 	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
 	WaitTimeout pulumi.IntPtrInput
@@ -538,7 +544,7 @@ type containerArgs struct {
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
 	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
 	CgroupnsMode *string `pulumi:"cgroupnsMode"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
 	Command []string `pulumi:"command"`
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds *int `pulumi:"containerReadRefreshTimeoutMilliseconds"`
@@ -546,6 +552,8 @@ type containerArgs struct {
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares *int `pulumi:"cpuShares"`
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
 	// Bind devices to the container.
@@ -558,7 +566,7 @@ type containerArgs struct {
 	DnsSearches []string `pulumi:"dnsSearches"`
 	// Domain name of the container.
 	Domainname *string `pulumi:"domainname"`
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
 	Entrypoints []string `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs []string `pulumi:"envs"`
@@ -572,7 +580,7 @@ type containerArgs struct {
 	Hostname *string `pulumi:"hostname"`
 	// Additional hosts to add to the container.
 	Hosts []ContainerHost `pulumi:"hosts"`
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `RemoteImage` resource as is shown in the example.
 	Image string `pulumi:"image"`
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init *bool `pulumi:"init"`
@@ -597,7 +605,7 @@ type containerArgs struct {
 	MustRun *bool            `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
-	// Network mode of the container.
+	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode *string `pulumi:"networkMode"`
 	// The networks the container is attached to
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
@@ -649,7 +657,7 @@ type containerArgs struct {
 	UsernsMode *string `pulumi:"usernsMode"`
 	// Spec for mounting volumes in the container.
 	Volumes []ContainerVolume `pulumi:"volumes"`
-	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
 	Wait *bool `pulumi:"wait"`
 	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
 	WaitTimeout *int `pulumi:"waitTimeout"`
@@ -665,7 +673,7 @@ type ContainerArgs struct {
 	Capabilities ContainerCapabilitiesPtrInput
 	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
 	CgroupnsMode pulumi.StringPtrInput
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
 	Command pulumi.StringArrayInput
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrInput
@@ -673,6 +681,8 @@ type ContainerArgs struct {
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrInput
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
 	// Bind devices to the container.
@@ -685,7 +695,7 @@ type ContainerArgs struct {
 	DnsSearches pulumi.StringArrayInput
 	// Domain name of the container.
 	Domainname pulumi.StringPtrInput
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
 	Entrypoints pulumi.StringArrayInput
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayInput
@@ -699,7 +709,7 @@ type ContainerArgs struct {
 	Hostname pulumi.StringPtrInput
 	// Additional hosts to add to the container.
 	Hosts ContainerHostArrayInput
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `RemoteImage` resource as is shown in the example.
 	Image pulumi.StringInput
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init pulumi.BoolPtrInput
@@ -724,7 +734,7 @@ type ContainerArgs struct {
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
-	// Network mode of the container.
+	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrInput
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
@@ -776,7 +786,7 @@ type ContainerArgs struct {
 	UsernsMode pulumi.StringPtrInput
 	// Spec for mounting volumes in the container.
 	Volumes ContainerVolumeArrayInput
-	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
 	Wait pulumi.BoolPtrInput
 	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
 	WaitTimeout pulumi.IntPtrInput
@@ -891,7 +901,7 @@ func (o ContainerOutput) CgroupnsMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.CgroupnsMode }).(pulumi.StringPtrOutput)
 }
 
-// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
 func (o ContainerOutput) Command() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Command }).(pulumi.StringArrayOutput)
 }
@@ -914,6 +924,11 @@ func (o ContainerOutput) CpuSet() pulumi.StringPtrOutput {
 // CPU shares (relative weight) for the container.
 func (o ContainerOutput) CpuShares() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.CpuShares }).(pulumi.IntPtrOutput)
+}
+
+// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+func (o ContainerOutput) Cpus() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Cpus }).(pulumi.StringPtrOutput)
 }
 
 // If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -946,7 +961,7 @@ func (o ContainerOutput) Domainname() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Domainname }).(pulumi.StringPtrOutput)
 }
 
-// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
 func (o ContainerOutput) Entrypoints() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Entrypoints }).(pulumi.StringArrayOutput)
 }
@@ -986,7 +1001,7 @@ func (o ContainerOutput) Hosts() ContainerHostArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerHostArrayOutput { return v.Hosts }).(ContainerHostArrayOutput)
 }
 
-// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+// The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `RemoteImage` resource as is shown in the example.
 func (o ContainerOutput) Image() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Image }).(pulumi.StringOutput)
 }
@@ -1055,7 +1070,7 @@ func (o ContainerOutput) NetworkDatas() ContainerNetworkDataArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerNetworkDataArrayOutput { return v.NetworkDatas }).(ContainerNetworkDataArrayOutput)
 }
 
-// Network mode of the container.
+// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
 func (o ContainerOutput) NetworkMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.NetworkMode }).(pulumi.StringPtrOutput)
 }
@@ -1185,7 +1200,7 @@ func (o ContainerOutput) Volumes() ContainerVolumeArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerVolumeArrayOutput { return v.Volumes }).(ContainerVolumeArrayOutput)
 }
 
-// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
 func (o ContainerOutput) Wait() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.Wait }).(pulumi.BoolPtrOutput)
 }

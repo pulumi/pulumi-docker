@@ -1,18 +1,15 @@
-From 35c36871b55dcaae8c073e630472cc1cf1bb6587 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Aaron Friel <mayreply@aaronfriel.com>
 Date: Sun, 12 Mar 2023 19:00:46 -0700
 Subject: [PATCH] Smarter default Docker client behavior
 
----
- internal/provider/config.go | 34 ++++++++++++----------------------
- 1 file changed, 12 insertions(+), 22 deletions(-)
 
 diff --git a/internal/provider/config.go b/internal/provider/config.go
-index 32a99d7..7393751 100644
+index c2cb41e..9047e9b 100644
 --- a/internal/provider/config.go
 +++ b/internal/provider/config.go
 @@ -83,6 +83,9 @@ func defaultPooledTransport() *http.Transport {
-
+ 
  // NewClient returns a new Docker client.
  func (c *Config) NewClient() (*client.Client, error) {
 +	opts := []client.Opt{
@@ -24,7 +21,7 @@ index 32a99d7..7393751 100644
 @@ -97,25 +100,13 @@ func (c *Config) NewClient() (*client.Client, error) {
  			return nil, err
  		}
-
+ 
 -		// Note: don't change the order here, because the custom client
 -		// needs to be set first them we overwrite the other options: host, version
 -		return client.NewClientWithOpts(
@@ -48,7 +45,7 @@ index 32a99d7..7393751 100644
 -		)
 +		opts = append(opts, client.WithTLSClientConfig(ca, cert, key))
  	}
-
+ 
  	// If there is no cert information, then check for ssh://
 @@ -124,18 +115,17 @@ func (c *Config) NewClient() (*client.Client, error) {
  		return nil, err
@@ -59,11 +56,11 @@ index 32a99d7..7393751 100644
 -			client.WithDialContext(helper.Dialer),
 -			client.WithAPIVersionNegotiation(),
 -		)
-+		opts = append(opts, client.WithDialContext(helper.Dialer), client.WithHost(helper.Host))
++		opts = append(opts, client.WithHost(helper.Host), client.WithDialContext(helper.Dialer))
 +	} else if c.Host != "" {
 +		opts = append(opts, client.WithHost(c.Host))
  	}
-
+ 
  	// If there is no ssh://, then just return the direct client
 -	return client.NewClientWithOpts(
 -		client.WithHost(c.Host),
@@ -73,5 +70,5 @@ index 32a99d7..7393751 100644
 +	ret, err := client.NewClientWithOpts(opts...)
 +	return ret, err
  }
-
+ 
  // Data structure for holding data that we fetch from Docker.

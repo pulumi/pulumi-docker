@@ -37,6 +37,13 @@ namespace Pulumi.Docker
         public Output<string?> CertPath { get; private set; } = null!;
 
         /// <summary>
+        /// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+        /// if set.
+        /// </summary>
+        [Output("context")]
+        public Output<string?> Context { get; private set; } = null!;
+
+        /// <summary>
         /// The Docker daemon address
         /// </summary>
         [Output("host")]
@@ -99,6 +106,20 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("certPath")]
         public Input<string>? CertPath { get; set; }
+
+        /// <summary>
+        /// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+        /// if set.
+        /// </summary>
+        [Input("context")]
+        public Input<string>? Context { get; set; }
+
+        /// <summary>
+        /// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+        /// resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+        /// </summary>
+        [Input("disableDockerDaemonCheck", json: true)]
+        public Input<bool>? DisableDockerDaemonCheck { get; set; }
 
         /// <summary>
         /// The Docker daemon address

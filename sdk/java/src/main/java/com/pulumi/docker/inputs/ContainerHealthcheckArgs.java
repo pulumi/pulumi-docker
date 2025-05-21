@@ -49,6 +49,21 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
     }
 
     /**
+     * Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
+    @Import(name="startInterval")
+    private @Nullable Output<String> startInterval;
+
+    /**
+     * @return Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
+    public Optional<Output<String>> startInterval() {
+        return Optional.ofNullable(this.startInterval);
+    }
+
+    /**
      * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      * 
      */
@@ -98,6 +113,7 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
     private ContainerHealthcheckArgs(ContainerHealthcheckArgs $) {
         this.interval = $.interval;
         this.retries = $.retries;
+        this.startInterval = $.startInterval;
         this.startPeriod = $.startPeriod;
         this.tests = $.tests;
         this.timeout = $.timeout;
@@ -161,6 +177,27 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
          */
         public Builder retries(Integer retries) {
             return retries(Output.of(retries));
+        }
+
+        /**
+         * @param startInterval Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder startInterval(@Nullable Output<String> startInterval) {
+            $.startInterval = startInterval;
+            return this;
+        }
+
+        /**
+         * @param startInterval Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder startInterval(String startInterval) {
+            return startInterval(Output.of(startInterval));
         }
 
         /**

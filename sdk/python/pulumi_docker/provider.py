@@ -24,6 +24,8 @@ class ProviderArgs:
                  ca_material: Optional[pulumi.Input[builtins.str]] = None,
                  cert_material: Optional[pulumi.Input[builtins.str]] = None,
                  cert_path: Optional[pulumi.Input[builtins.str]] = None,
+                 context: Optional[pulumi.Input[builtins.str]] = None,
+                 disable_docker_daemon_check: Optional[pulumi.Input[builtins.bool]] = None,
                  host: Optional[pulumi.Input[builtins.str]] = None,
                  key_material: Optional[pulumi.Input[builtins.str]] = None,
                  registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None,
@@ -33,6 +35,10 @@ class ProviderArgs:
         :param pulumi.Input[builtins.str] ca_material: PEM-encoded content of Docker host CA certificate
         :param pulumi.Input[builtins.str] cert_material: PEM-encoded content of Docker client certificate
         :param pulumi.Input[builtins.str] cert_path: Path to directory with Docker TLS config
+        :param pulumi.Input[builtins.str] context: The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+               if set.
+        :param pulumi.Input[builtins.bool] disable_docker_daemon_check: If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+               resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
         :param pulumi.Input[builtins.str] host: The Docker daemon address
         :param pulumi.Input[builtins.str] key_material: PEM-encoded content of Docker client private key
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
@@ -43,6 +49,10 @@ class ProviderArgs:
             pulumi.set(__self__, "cert_material", cert_material)
         if cert_path is not None:
             pulumi.set(__self__, "cert_path", cert_path)
+        if context is not None:
+            pulumi.set(__self__, "context", context)
+        if disable_docker_daemon_check is not None:
+            pulumi.set(__self__, "disable_docker_daemon_check", disable_docker_daemon_check)
         if host is None:
             host = _utilities.get_env('DOCKER_HOST')
         if host is not None:
@@ -89,6 +99,32 @@ class ProviderArgs:
     @cert_path.setter
     def cert_path(self, value: Optional[pulumi.Input[builtins.str]]):
         pulumi.set(self, "cert_path", value)
+
+    @property
+    @pulumi.getter
+    def context(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+        if set.
+        """
+        return pulumi.get(self, "context")
+
+    @context.setter
+    def context(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "context", value)
+
+    @property
+    @pulumi.getter(name="disableDockerDaemonCheck")
+    def disable_docker_daemon_check(self) -> Optional[pulumi.Input[builtins.bool]]:
+        """
+        If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+        resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
+        """
+        return pulumi.get(self, "disable_docker_daemon_check")
+
+    @disable_docker_daemon_check.setter
+    def disable_docker_daemon_check(self, value: Optional[pulumi.Input[builtins.bool]]):
+        pulumi.set(self, "disable_docker_daemon_check", value)
 
     @property
     @pulumi.getter
@@ -145,6 +181,8 @@ class Provider(pulumi.ProviderResource):
                  ca_material: Optional[pulumi.Input[builtins.str]] = None,
                  cert_material: Optional[pulumi.Input[builtins.str]] = None,
                  cert_path: Optional[pulumi.Input[builtins.str]] = None,
+                 context: Optional[pulumi.Input[builtins.str]] = None,
+                 disable_docker_daemon_check: Optional[pulumi.Input[builtins.bool]] = None,
                  host: Optional[pulumi.Input[builtins.str]] = None,
                  key_material: Optional[pulumi.Input[builtins.str]] = None,
                  registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
@@ -161,6 +199,10 @@ class Provider(pulumi.ProviderResource):
         :param pulumi.Input[builtins.str] ca_material: PEM-encoded content of Docker host CA certificate
         :param pulumi.Input[builtins.str] cert_material: PEM-encoded content of Docker client certificate
         :param pulumi.Input[builtins.str] cert_path: Path to directory with Docker TLS config
+        :param pulumi.Input[builtins.str] context: The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+               if set.
+        :param pulumi.Input[builtins.bool] disable_docker_daemon_check: If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+               resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
         :param pulumi.Input[builtins.str] host: The Docker daemon address
         :param pulumi.Input[builtins.str] key_material: PEM-encoded content of Docker client private key
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
@@ -195,6 +237,8 @@ class Provider(pulumi.ProviderResource):
                  ca_material: Optional[pulumi.Input[builtins.str]] = None,
                  cert_material: Optional[pulumi.Input[builtins.str]] = None,
                  cert_path: Optional[pulumi.Input[builtins.str]] = None,
+                 context: Optional[pulumi.Input[builtins.str]] = None,
+                 disable_docker_daemon_check: Optional[pulumi.Input[builtins.bool]] = None,
                  host: Optional[pulumi.Input[builtins.str]] = None,
                  key_material: Optional[pulumi.Input[builtins.str]] = None,
                  registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
@@ -211,6 +255,8 @@ class Provider(pulumi.ProviderResource):
             __props__.__dict__["ca_material"] = ca_material
             __props__.__dict__["cert_material"] = cert_material
             __props__.__dict__["cert_path"] = cert_path
+            __props__.__dict__["context"] = context
+            __props__.__dict__["disable_docker_daemon_check"] = pulumi.Output.from_input(disable_docker_daemon_check).apply(pulumi.runtime.to_json) if disable_docker_daemon_check is not None else None
             if host is None:
                 host = _utilities.get_env('DOCKER_HOST')
             __props__.__dict__["host"] = host
@@ -246,6 +292,15 @@ class Provider(pulumi.ProviderResource):
         Path to directory with Docker TLS config
         """
         return pulumi.get(self, "cert_path")
+
+    @property
+    @pulumi.getter
+    def context(self) -> pulumi.Output[Optional[builtins.str]]:
+        """
+        The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+        if set.
+        """
+        return pulumi.get(self, "context")
 
     @property
     @pulumi.getter

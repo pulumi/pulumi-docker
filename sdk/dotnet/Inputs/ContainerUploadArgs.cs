@@ -37,6 +37,12 @@ namespace Pulumi.Docker.Inputs
         public Input<string> File { get; set; } = null!;
 
         /// <summary>
+        /// The permission mode for the file in the container. Has precedence over `executable`.
+        /// </summary>
+        [Input("permissions")]
+        public Input<string>? Permissions { get; set; }
+
+        /// <summary>
         /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
         /// </summary>
         [Input("source")]

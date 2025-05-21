@@ -30,6 +30,7 @@ class ContainerArgs:
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
+                 cpus: Optional[pulumi.Input[builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[builtins.int]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
@@ -86,21 +87,22 @@ class ContainerArgs:
                  working_dir: Optional[pulumi.Input[builtins.str]] = None):
         """
         The set of arguments for constructing a Container resource.
-        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[builtins.str] domainname: Domain name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] group_adds: Additional groups for the container user
@@ -118,7 +120,7 @@ class ContainerArgs:
         :param pulumi.Input[builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[builtins.str] name: The name of the container.
-        :param pulumi.Input[builtins.str] network_mode: Network mode of the container.
+        :param pulumi.Input[builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
@@ -144,7 +146,7 @@ class ContainerArgs:
         :param pulumi.Input[builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]] volumes: Spec for mounting volumes in the container.
-        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         :param pulumi.Input[builtins.int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[builtins.str] working_dir: The working directory for commands to run in.
         """
@@ -163,6 +165,8 @@ class ContainerArgs:
             pulumi.set(__self__, "cpu_set", cpu_set)
         if cpu_shares is not None:
             pulumi.set(__self__, "cpu_shares", cpu_shares)
+        if cpus is not None:
+            pulumi.set(__self__, "cpus", cpus)
         if destroy_grace_seconds is not None:
             pulumi.set(__self__, "destroy_grace_seconds", destroy_grace_seconds)
         if devices is not None:
@@ -276,7 +280,7 @@ class ContainerArgs:
     @pulumi.getter
     def image(self) -> pulumi.Input[builtins.str]:
         """
-        The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         """
         return pulumi.get(self, "image")
 
@@ -324,7 +328,7 @@ class ContainerArgs:
     @pulumi.getter
     def command(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]:
         """
-        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         """
         return pulumi.get(self, "command")
 
@@ -367,6 +371,18 @@ class ContainerArgs:
     @cpu_shares.setter
     def cpu_shares(self, value: Optional[pulumi.Input[builtins.int]]):
         pulumi.set(self, "cpu_shares", value)
+
+    @property
+    @pulumi.getter
+    def cpus(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        """
+        return pulumi.get(self, "cpus")
+
+    @cpus.setter
+    def cpus(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpus", value)
 
     @property
     @pulumi.getter(name="destroyGraceSeconds")
@@ -444,7 +460,7 @@ class ContainerArgs:
     @pulumi.getter
     def entrypoints(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]:
         """
-        The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         """
         return pulumi.get(self, "entrypoints")
 
@@ -669,7 +685,7 @@ class ContainerArgs:
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        Network mode of the container.
+        Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         """
         return pulumi.get(self, "network_mode")
 
@@ -981,7 +997,7 @@ class ContainerArgs:
     @pulumi.getter
     def wait(self) -> Optional[pulumi.Input[builtins.bool]]:
         """
-        If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         """
         return pulumi.get(self, "wait")
 
@@ -1026,6 +1042,7 @@ class _ContainerState:
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
+                 cpus: Optional[pulumi.Input[builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[builtins.int]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
@@ -1089,18 +1106,19 @@ class _ContainerState:
         :param pulumi.Input[builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[builtins.str] domainname: Domain name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[builtins.int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
         :param pulumi.Input[builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
@@ -1108,7 +1126,7 @@ class _ContainerState:
         :param pulumi.Input['ContainerHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[builtins.str] hostname: Hostname of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]] hosts: Additional hosts to add to the container.
-        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[builtins.bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[builtins.str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
@@ -1121,7 +1139,7 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]] network_datas: The data of the networks the container is connected to.
-        :param pulumi.Input[builtins.str] network_mode: Network mode of the container.
+        :param pulumi.Input[builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
@@ -1147,7 +1165,7 @@ class _ContainerState:
         :param pulumi.Input[builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]] volumes: Spec for mounting volumes in the container.
-        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         :param pulumi.Input[builtins.int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[builtins.str] working_dir: The working directory for commands to run in.
         """
@@ -1169,6 +1187,8 @@ class _ContainerState:
             pulumi.set(__self__, "cpu_set", cpu_set)
         if cpu_shares is not None:
             pulumi.set(__self__, "cpu_shares", cpu_shares)
+        if cpus is not None:
+            pulumi.set(__self__, "cpus", cpus)
         if destroy_grace_seconds is not None:
             pulumi.set(__self__, "destroy_grace_seconds", destroy_grace_seconds)
         if devices is not None:
@@ -1336,7 +1356,7 @@ class _ContainerState:
     @pulumi.getter
     def command(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]:
         """
-        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         """
         return pulumi.get(self, "command")
 
@@ -1391,6 +1411,18 @@ class _ContainerState:
     @cpu_shares.setter
     def cpu_shares(self, value: Optional[pulumi.Input[builtins.int]]):
         pulumi.set(self, "cpu_shares", value)
+
+    @property
+    @pulumi.getter
+    def cpus(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        """
+        return pulumi.get(self, "cpus")
+
+    @cpus.setter
+    def cpus(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpus", value)
 
     @property
     @pulumi.getter(name="destroyGraceSeconds")
@@ -1468,7 +1500,7 @@ class _ContainerState:
     @pulumi.getter
     def entrypoints(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]:
         """
-        The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         """
         return pulumi.get(self, "entrypoints")
 
@@ -1564,7 +1596,7 @@ class _ContainerState:
     @pulumi.getter
     def image(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         """
         return pulumi.get(self, "image")
 
@@ -1729,7 +1761,7 @@ class _ContainerState:
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        Network mode of the container.
+        Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         """
         return pulumi.get(self, "network_mode")
 
@@ -2041,7 +2073,7 @@ class _ContainerState:
     @pulumi.getter
     def wait(self) -> Optional[pulumi.Input[builtins.bool]]:
         """
-        If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         """
         return pulumi.get(self, "wait")
 
@@ -2087,6 +2119,7 @@ class Container(pulumi.CustomResource):
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
+                 cpus: Optional[pulumi.Input[builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[builtins.int]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
@@ -2208,24 +2241,25 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[builtins.str] domainname: Domain name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] group_adds: Additional groups for the container user
         :param pulumi.Input[Union['ContainerHealthcheckArgs', 'ContainerHealthcheckArgsDict']] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[builtins.str] hostname: Hostname of the container.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerHostArgs', 'ContainerHostArgsDict']]]] hosts: Additional hosts to add to the container.
-        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[builtins.bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[builtins.str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerLabelArgs', 'ContainerLabelArgsDict']]]] labels: User-defined key/value metadata
@@ -2237,7 +2271,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[builtins.str] name: The name of the container.
-        :param pulumi.Input[builtins.str] network_mode: Network mode of the container.
+        :param pulumi.Input[builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]] ports: Publish a container's port(s) to the host.
@@ -2263,7 +2297,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerVolumeArgs', 'ContainerVolumeArgsDict']]]] volumes: Spec for mounting volumes in the container.
-        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         :param pulumi.Input[builtins.int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[builtins.str] working_dir: The working directory for commands to run in.
         """
@@ -2355,6 +2389,7 @@ class Container(pulumi.CustomResource):
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
+                 cpus: Optional[pulumi.Input[builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[builtins.int]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
@@ -2426,6 +2461,7 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
             __props__.__dict__["cpu_set"] = cpu_set
             __props__.__dict__["cpu_shares"] = cpu_shares
+            __props__.__dict__["cpus"] = cpus
             __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
             __props__.__dict__["devices"] = devices
             __props__.__dict__["dns"] = dns
@@ -2506,6 +2542,7 @@ class Container(pulumi.CustomResource):
             container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
             cpu_set: Optional[pulumi.Input[builtins.str]] = None,
             cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
+            cpus: Optional[pulumi.Input[builtins.str]] = None,
             destroy_grace_seconds: Optional[pulumi.Input[builtins.int]] = None,
             devices: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]]] = None,
             dns: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
@@ -2574,18 +2611,19 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[builtins.str] domainname: Domain name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[builtins.int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
         :param pulumi.Input[builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
@@ -2593,7 +2631,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Union['ContainerHealthcheckArgs', 'ContainerHealthcheckArgsDict']] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[builtins.str] hostname: Hostname of the container.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerHostArgs', 'ContainerHostArgsDict']]]] hosts: Additional hosts to add to the container.
-        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[builtins.bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[builtins.str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerLabelArgs', 'ContainerLabelArgsDict']]]] labels: User-defined key/value metadata
@@ -2606,7 +2644,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworkDataArgs', 'ContainerNetworkDataArgsDict']]]] network_datas: The data of the networks the container is connected to.
-        :param pulumi.Input[builtins.str] network_mode: Network mode of the container.
+        :param pulumi.Input[builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]] ports: Publish a container's port(s) to the host.
@@ -2632,7 +2670,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerVolumeArgs', 'ContainerVolumeArgsDict']]]] volumes: Spec for mounting volumes in the container.
-        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         :param pulumi.Input[builtins.int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[builtins.str] working_dir: The working directory for commands to run in.
         """
@@ -2649,6 +2687,7 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
         __props__.__dict__["cpu_set"] = cpu_set
         __props__.__dict__["cpu_shares"] = cpu_shares
+        __props__.__dict__["cpus"] = cpus
         __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
         __props__.__dict__["devices"] = devices
         __props__.__dict__["dns"] = dns
@@ -2744,7 +2783,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def command(self) -> pulumi.Output[Sequence[builtins.str]]:
         """
-        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         """
         return pulumi.get(self, "command")
 
@@ -2779,6 +2818,14 @@ class Container(pulumi.CustomResource):
         CPU shares (relative weight) for the container.
         """
         return pulumi.get(self, "cpu_shares")
+
+    @property
+    @pulumi.getter
+    def cpus(self) -> pulumi.Output[Optional[builtins.str]]:
+        """
+        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        """
+        return pulumi.get(self, "cpus")
 
     @property
     @pulumi.getter(name="destroyGraceSeconds")
@@ -2832,7 +2879,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def entrypoints(self) -> pulumi.Output[Sequence[builtins.str]]:
         """
-        The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         """
         return pulumi.get(self, "entrypoints")
 
@@ -2896,7 +2943,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def image(self) -> pulumi.Output[builtins.str]:
         """
-        The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+        The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         """
         return pulumi.get(self, "image")
 
@@ -3005,7 +3052,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> pulumi.Output[Optional[builtins.str]]:
         """
-        Network mode of the container.
+        Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         """
         return pulumi.get(self, "network_mode")
 
@@ -3213,7 +3260,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def wait(self) -> pulumi.Output[Optional[builtins.bool]]:
         """
-        If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         """
         return pulumi.get(self, "wait")
 

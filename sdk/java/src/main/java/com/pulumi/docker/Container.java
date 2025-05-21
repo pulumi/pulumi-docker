@@ -180,14 +180,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.cgroupnsMode);
     }
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
      * 
      */
     @Export(name="command", refs={List.class,String.class}, tree="[0,1]")
     private Output<List<String>> command;
 
     /**
-     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
      * 
      */
     public Output<List<String>> command() {
@@ -248,6 +248,20 @@ public class Container extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<Integer>> cpuShares() {
         return Codegen.optional(this.cpuShares);
+    }
+    /**
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * 
+     */
+    @Export(name="cpus", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> cpus;
+
+    /**
+     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * 
+     */
+    public Output<Optional<String>> cpus() {
+        return Codegen.optional(this.cpus);
     }
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -334,14 +348,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.domainname);
     }
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
      * 
      */
     @Export(name="entrypoints", refs={List.class,String.class}, tree="[0,1]")
     private Output<List<String>> entrypoints;
 
     /**
-     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
      * 
      */
     public Output<List<String>> entrypoints() {
@@ -446,14 +460,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.hosts);
     }
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     @Export(name="image", refs={String.class}, tree="[0]")
     private Output<String> image;
 
     /**
-     * @return The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * @return The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     public Output<String> image() {
@@ -634,14 +648,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.networkDatas;
     }
     /**
-     * Network mode of the container.
+     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      * 
      */
     @Export(name="networkMode", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> networkMode;
 
     /**
-     * @return Network mode of the container.
+     * @return Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      * 
      */
     public Output<Optional<String>> networkMode() {
@@ -998,14 +1012,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.volumes);
     }
     /**
-     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      * 
      */
     @Export(name="wait", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> wait;
 
     /**
-     * @return If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * @return If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      * 
      */
     public Output<Optional<Boolean>> wait_() {

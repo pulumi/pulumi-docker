@@ -38,14 +38,22 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
     /**
      * Requests daemon to check for networks with same name.
      * 
+     * @deprecated
+     * This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
+     * 
      */
+    @Deprecated /* This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks. */
     @Import(name="checkDuplicate")
     private @Nullable Output<Boolean> checkDuplicate;
 
     /**
      * @return Requests daemon to check for networks with same name.
      * 
+     * @deprecated
+     * This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
+     * 
      */
+    @Deprecated /* This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks. */
     public Optional<Output<Boolean>> checkDuplicate() {
         return Optional.ofNullable(this.checkDuplicate);
     }
@@ -277,7 +285,11 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          * 
          * @return builder
          * 
+         * @deprecated
+         * This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
+         * 
          */
+        @Deprecated /* This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks. */
         public Builder checkDuplicate(@Nullable Output<Boolean> checkDuplicate) {
             $.checkDuplicate = checkDuplicate;
             return this;
@@ -288,7 +300,11 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          * 
          * @return builder
          * 
+         * @deprecated
+         * This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
+         * 
          */
+        @Deprecated /* This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks. */
         public Builder checkDuplicate(Boolean checkDuplicate) {
             return checkDuplicate(Output.of(checkDuplicate));
         }

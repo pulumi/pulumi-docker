@@ -66,6 +66,14 @@
                 "type": "string",
                 "description": "Path to directory with Docker TLS config\n"
             },
+            "context": {
+                "type": "string",
+                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`\nif set.\n"
+            },
+            "disableDockerDaemonCheck": {
+                "type": "boolean",
+                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for\nresources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.\n"
+            },
             "host": {
                 "type": "string",
                 "description": "The Docker daemon address\n",
@@ -188,6 +196,10 @@
                 "retries": {
                     "type": "integer",
                     "description": "Consecutive failures needed to report unhealthy. Defaults to `0`.\n"
+                },
+                "startInterval": {
+                    "type": "string",
+                    "description": "Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.\n"
                 },
                 "startPeriod": {
                     "type": "string",
@@ -331,6 +343,11 @@
                 "noCopy": {
                     "type": "boolean",
                     "description": "Populate volume with data from the target.\n"
+                },
+                "subpath": {
+                    "type": "string",
+                    "description": "Path within the volume to mount. Requires docker server version 1.45 or higher.\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object"
@@ -519,6 +536,11 @@
                     "description": "Path to the file in the container where is upload goes to\n",
                     "willReplaceOnChanges": true
                 },
+                "permissions": {
+                    "type": "string",
+                    "description": "The permission mode for the file in the container. Has precedence over `executable`.\n",
+                    "willReplaceOnChanges": true
+                },
                 "source": {
                     "type": "string",
                     "description": "A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` \u0026 `content_base64`\n",
@@ -669,6 +691,29 @@
                 }
             }
         },
+        "docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "The address of the Docker registry.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password for the Docker registry.\n",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username for the Docker registry.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "address",
+                "password",
+                "username"
+            ]
+        },
         "docker:index/RemoteImageBuild:RemoteImageBuild": {
             "properties": {
                 "authConfigs": {
@@ -678,25 +723,27 @@
                     },
                     "description": "The configuration for the authentication\n"
                 },
-                "buildArg": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Set build-time variables\n",
-                    "willReplaceOnChanges": true
-                },
                 "buildArgs": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "Pairs for build-time variables in the form TODO\n",
+                    "description": "Pairs for build-time variables in the form of `ENDPOINT : \"https://example.com\"`\n",
                     "willReplaceOnChanges": true
                 },
                 "buildId": {
                     "type": "string",
                     "description": "BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.\n",
+                    "willReplaceOnChanges": true
+                },
+                "buildLogFile": {
+                    "type": "string",
+                    "description": "Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.\n",
+                    "willReplaceOnChanges": true
+                },
+                "builder": {
+                    "type": "string",
+                    "description": "Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.\n",
                     "willReplaceOnChanges": true
                 },
                 "cacheFroms": {
@@ -714,7 +761,7 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.\n",
+                    "description": "Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.\n",
                     "willReplaceOnChanges": true
                 },
                 "cpuPeriod": {
@@ -812,12 +859,19 @@
                 },
                 "remoteContext": {
                     "type": "string",
-                    "description": "A Git repository URI or HTTP/HTTPS context URI\n",
+                    "description": "A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.\n",
                     "willReplaceOnChanges": true
                 },
                 "remove": {
                     "type": "boolean",
                     "description": "Remove intermediate containers after a successful build. Defaults to `true`.\n"
+                },
+                "secrets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/RemoteImageBuildSecret:RemoteImageBuildSecret"
+                    },
+                    "description": "Set build-time secrets. Only available when you use a buildx builder.\n"
                 },
                 "securityOpts": {
                     "type": "array",
@@ -915,6 +969,29 @@
             "type": "object",
             "required": [
                 "hostName"
+            ]
+        },
+        "docker:index/RemoteImageBuildSecret:RemoteImageBuildSecret": {
+            "properties": {
+                "env": {
+                    "type": "string",
+                    "description": "Environment variable source of the secret\n",
+                    "willReplaceOnChanges": true
+                },
+                "id": {
+                    "type": "string",
+                    "description": "ID of the secret. By default, secrets are mounted to /run/secrets/\\n\\n\n",
+                    "willReplaceOnChanges": true
+                },
+                "src": {
+                    "type": "string",
+                    "description": "File source of the secret. Takes precedence over `env`\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "id"
             ]
         },
         "docker:index/RemoteImageBuildUlimit:RemoteImageBuildUlimit": {
@@ -1970,6 +2047,61 @@
             },
             "type": "object"
         },
+        "docker:index/getRegistryImageManifestsAuthConfig:getRegistryImageManifestsAuthConfig": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "The address of the Docker registry.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password for the Docker registry.\n",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username for the Docker registry.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "address",
+                "password",
+                "username"
+            ]
+        },
+        "docker:index/getRegistryImageManifestsManifest:getRegistryImageManifestsManifest": {
+            "properties": {
+                "architecture": {
+                    "type": "string",
+                    "description": "The platform architecture supported by the manifest.\n"
+                },
+                "mediaType": {
+                    "type": "string",
+                    "description": "The media type of the manifest.\n"
+                },
+                "os": {
+                    "type": "string",
+                    "description": "The operating system supported by the manifest.\n"
+                },
+                "sha256Digest": {
+                    "type": "string",
+                    "description": "The content digest of the manifest, as stored in the registry.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "architecture",
+                "mediaType",
+                "os",
+                "sha256Digest"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
         "docker:index/registry:Registry": {
             "description": "Describes a Docker container registry",
             "properties": {
@@ -2005,6 +2137,14 @@
                 "type": "string",
                 "description": "Path to directory with Docker TLS config\n"
             },
+            "context": {
+                "type": "string",
+                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`\nif set.\n"
+            },
+            "disableDockerDaemonCheck": {
+                "type": "boolean",
+                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for\nresources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.\n"
+            },
             "host": {
                 "type": "string",
                 "description": "The Docker daemon address\n"
@@ -2039,6 +2179,14 @@
             "certPath": {
                 "type": "string",
                 "description": "Path to directory with Docker TLS config\n"
+            },
+            "context": {
+                "type": "string",
+                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`\nif set.\n"
+            },
+            "disableDockerDaemonCheck": {
+                "type": "boolean",
+                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for\nresources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.\n"
             },
             "host": {
                 "type": "string",
@@ -2096,7 +2244,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.\n"
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.conf\"]`.\n"
                 },
                 "containerLogs": {
                     "type": "string",
@@ -2113,6 +2261,10 @@
                 "cpuShares": {
                     "type": "integer",
                     "description": "CPU shares (relative weight) for the container.\n"
+                },
+                "cpus": {
+                    "type": "string",
+                    "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs\n"
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
@@ -2155,7 +2307,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n"
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogram\"]`.\n"
                 },
                 "envs": {
                     "type": "array",
@@ -2196,7 +2348,7 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n"
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.\n"
                 },
                 "init": {
                     "type": "boolean",
@@ -2263,7 +2415,7 @@
                 },
                 "networkMode": {
                     "type": "string",
-                    "description": "Network mode of the container.\n"
+                    "description": "Network mode of the container. See https://docs.docker.com/engine/network/ for more information.\n"
                 },
                 "networksAdvanced": {
                     "type": "array",
@@ -2394,7 +2546,7 @@
                 },
                 "wait": {
                     "type": "boolean",
-                    "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.\n"
+                    "description": "If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.\n"
                 },
                 "waitTimeout": {
                     "type": "integer",
@@ -2447,7 +2599,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.\n",
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.conf\"]`.\n",
                     "willReplaceOnChanges": true
                 },
                 "containerReadRefreshTimeoutMilliseconds": {
@@ -2461,6 +2613,11 @@
                 "cpuShares": {
                     "type": "integer",
                     "description": "CPU shares (relative weight) for the container.\n"
+                },
+                "cpus": {
+                    "type": "string",
+                    "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs\n",
+                    "willReplaceOnChanges": true
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
@@ -2508,7 +2665,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n",
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogram\"]`.\n",
                     "willReplaceOnChanges": true
                 },
                 "envs": {
@@ -2551,7 +2708,7 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n",
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.\n",
                     "willReplaceOnChanges": true
                 },
                 "init": {
@@ -2618,7 +2775,7 @@
                 },
                 "networkMode": {
                     "type": "string",
-                    "description": "Network mode of the container.\n",
+                    "description": "Network mode of the container. See https://docs.docker.com/engine/network/ for more information.\n",
                     "willReplaceOnChanges": true
                 },
                 "networksAdvanced": {
@@ -2770,7 +2927,7 @@
                 },
                 "wait": {
                     "type": "boolean",
-                    "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.\n"
+                    "description": "If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.\n"
                 },
                 "waitTimeout": {
                     "type": "integer",
@@ -2811,7 +2968,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.\n",
+                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.conf\"]`.\n",
                         "willReplaceOnChanges": true
                     },
                     "containerLogs": {
@@ -2829,6 +2986,11 @@
                     "cpuShares": {
                         "type": "integer",
                         "description": "CPU shares (relative weight) for the container.\n"
+                    },
+                    "cpus": {
+                        "type": "string",
+                        "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs\n",
+                        "willReplaceOnChanges": true
                     },
                     "destroyGraceSeconds": {
                         "type": "integer",
@@ -2876,7 +3038,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n",
+                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogram\"]`.\n",
                         "willReplaceOnChanges": true
                     },
                     "envs": {
@@ -2923,7 +3085,7 @@
                     },
                     "image": {
                         "type": "string",
-                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n",
+                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.\n",
                         "willReplaceOnChanges": true
                     },
                     "init": {
@@ -2997,7 +3159,7 @@
                     },
                     "networkMode": {
                         "type": "string",
-                        "description": "Network mode of the container.\n",
+                        "description": "Network mode of the container. See https://docs.docker.com/engine/network/ for more information.\n",
                         "willReplaceOnChanges": true
                     },
                     "networksAdvanced": {
@@ -3149,7 +3311,7 @@
                     },
                     "wait": {
                         "type": "boolean",
-                        "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.\n"
+                        "description": "If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.\n"
                     },
                     "waitTimeout": {
                         "type": "integer",
@@ -3247,7 +3409,8 @@
                 },
                 "checkDuplicate": {
                     "type": "boolean",
-                    "description": "Requests daemon to check for networks with same name.\n"
+                    "description": "Requests daemon to check for networks with same name.\n",
+                    "deprecationMessage": "This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks."
                 },
                 "driver": {
                     "type": "string",
@@ -3323,6 +3486,7 @@
                 "checkDuplicate": {
                     "type": "boolean",
                     "description": "Requests daemon to check for networks with same name.\n",
+                    "deprecationMessage": "This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.",
                     "willReplaceOnChanges": true
                 },
                 "driver": {
@@ -3399,6 +3563,7 @@
                     "checkDuplicate": {
                         "type": "boolean",
                         "description": "Requests daemon to check for networks with same name.\n",
+                        "deprecationMessage": "This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.",
                         "willReplaceOnChanges": true
                     },
                     "driver": {
@@ -3631,6 +3796,10 @@
         "docker:index/registryImage:RegistryImage": {
             "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again\n\n",
             "properties": {
+                "authConfig": {
+                    "$ref": "#/types/docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig",
+                    "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                },
                 "insecureSkipVerify": {
                     "type": "boolean",
                     "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
@@ -3660,6 +3829,10 @@
                 "sha256Digest"
             ],
             "inputProperties": {
+                "authConfig": {
+                    "$ref": "#/types/docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig",
+                    "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                },
                 "insecureSkipVerify": {
                     "type": "boolean",
                     "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
@@ -3685,6 +3858,10 @@
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering RegistryImage resources.\n",
                 "properties": {
+                    "authConfig": {
+                        "$ref": "#/types/docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig",
+                        "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                    },
                     "insecureSkipVerify": {
                         "type": "boolean",
                         "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
@@ -3715,11 +3892,9 @@
             }
         },
         "docker:index/remoteImage:RemoteImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nPulls a Docker image to a given Docker host from a Docker Registry.\n This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.\n\n## Example Usage\n\n### Basic\n\nFinds and downloads the latest `ubuntu:precise` image but does not check\nfor further updates of the image\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {name: \"ubuntu:precise\"});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var ubuntu = new Docker.RemoteImage(\"ubuntu\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntu = new RemoteImage(\"ubuntu\", RemoteImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntu:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n### Dynamic updates\n\nTo be able to update an image dynamically when the `sha256` sum changes,\nyou need to use it in combination with `docker.RegistryImage` as follows:\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntu = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntu.then(ubuntu =\u003e ubuntu.name),\n    pullTriggers: [ubuntu.then(ubuntu =\u003e ubuntu.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntu\",\n    name=ubuntu.name,\n    pull_triggers=[ubuntu.sha256_digest])\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var ubuntu = Docker.GetRegistryImage.Invoke(new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntu\", new()\n    {\n        Name = ubuntu.Apply(getRegistryImageResult =\u003e getRegistryImageResult.Name),\n        PullTriggers = new[]\n        {\n            ubuntu.Apply(getRegistryImageResult =\u003e getRegistryImageResult.Sha256Digest),\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntu, err := docker.LookupRegistryImage(ctx, \u0026docker.LookupRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntu.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntu.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()\n            .name(ubuntu.name())\n            .pullTriggers(ubuntu.sha256Digest())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    name: ubuntu\n    properties:\n      name: ${ubuntu.name}\n      pullTriggers:\n        - ${ubuntu.sha256Digest}\nvariables:\n  ubuntu:\n    fn::invoke:\n      function: docker:getRegistryImage\n      arguments:\n        name: ubuntu:precise\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n### Build\n\nYou can also use the resource to build an image.\nIn this case the image \"zoo\" and \"zoo:develop\" are built.\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst zoo = new docker.RemoteImage(\"zoo\", {\n    name: \"zoo\",\n    build: {\n        context: \".\",\n        tags: [\"zoo:develop\"],\n        buildArg: {\n            foo: \"zoo\",\n        },\n        label: {\n            author: \"zoo\",\n        },\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nzoo = docker.RemoteImage(\"zoo\",\n    name=\"zoo\",\n    build={\n        \"context\": \".\",\n        \"tags\": [\"zoo:develop\"],\n        \"build_arg\": {\n            \"foo\": \"zoo\",\n        },\n        \"label\": {\n            \"author\": \"zoo\",\n        },\n    })\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var zoo = new Docker.RemoteImage(\"zoo\", new()\n    {\n        Name = \"zoo\",\n        Build = new Docker.Inputs.RemoteImageBuildArgs\n        {\n            Context = \".\",\n            Tags = new[]\n            {\n                \"zoo:develop\",\n            },\n            BuildArg = \n            {\n                { \"foo\", \"zoo\" },\n            },\n            Label = \n            {\n                { \"author\", \"zoo\" },\n            },\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"zoo\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"zoo\"),\n\t\t\tBuild: \u0026docker.RemoteImageBuildArgs{\n\t\t\t\tContext: pulumi.String(\".\"),\n\t\t\t\tTags: pulumi.StringArray{\n\t\t\t\t\tpulumi.String(\"zoo:develop\"),\n\t\t\t\t},\n\t\t\t\tBuildArg: pulumi.StringMap{\n\t\t\t\t\t\"foo\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t\tLabel: pulumi.StringMap{\n\t\t\t\t\t\"author\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.inputs.RemoteImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var zoo = new RemoteImage(\"zoo\", RemoteImageArgs.builder()\n            .name(\"zoo\")\n            .build(RemoteImageBuildArgs.builder()\n                .context(\".\")\n                .tags(\"zoo:develop\")\n                .buildArg(Map.of(\"foo\", \"zoo\"))\n                .label(Map.of(\"author\", \"zoo\"))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  zoo:\n    type: docker:RemoteImage\n    properties:\n      name: zoo\n      build:\n        context: .\n        tags:\n          - zoo:develop\n        buildArg:\n          foo: zoo\n        label:\n          author: zoo\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\nYou can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.\n\n",
             "properties": {
                 "build": {
-                    "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                    "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                    "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild"
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -3750,7 +3925,7 @@
                 },
                 "repoDigest": {
                     "type": "string",
-                    "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`.\n"
+                    "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.\n"
                 },
                 "triggers": {
                     "type": "object",
@@ -3767,8 +3942,7 @@
             ],
             "inputProperties": {
                 "build": {
-                    "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                    "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                    "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild"
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -3812,8 +3986,7 @@
                 "description": "Input properties used for looking up and filtering RemoteImage resources.\n",
                 "properties": {
                     "build": {
-                        "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                        "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                        "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild"
                     },
                     "forceRemove": {
                         "type": "boolean",
@@ -3847,7 +4020,7 @@
                     },
                     "repoDigest": {
                         "type": "string",
-                        "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`.\n"
+                        "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.\n"
                     },
                     "triggers": {
                         "type": "object",
@@ -4140,6 +4313,13 @@
                     "type": "string",
                     "description": "ImageID of the source image in the format of `sha256:\u003c\u003cID\u003e\u003e`\n"
                 },
+                "tagTriggers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.\n"
+                },
                 "targetImage": {
                     "type": "string",
                     "description": "Name of the target image.\n"
@@ -4154,6 +4334,14 @@
                 "sourceImage": {
                     "type": "string",
                     "description": "Name of the source image.\n",
+                    "willReplaceOnChanges": true
+                },
+                "tagTriggers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.\n",
                     "willReplaceOnChanges": true
                 },
                 "targetImage": {
@@ -4177,6 +4365,14 @@
                     "sourceImageId": {
                         "type": "string",
                         "description": "ImageID of the source image in the format of `sha256:\u003c\u003cID\u003e\u003e`\n"
+                    },
+                    "tagTriggers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.\n",
+                        "willReplaceOnChanges": true
                     },
                     "targetImage": {
                         "type": "string",
@@ -4563,6 +4759,64 @@
                 "required": [
                     "name",
                     "sha256Digest",
+                    "id"
+                ],
+                "type": "object"
+            }
+        },
+        "docker:index/getRegistryImageManifests:getRegistryImageManifests": {
+            "description": "Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.\n",
+            "inputs": {
+                "description": "A collection of arguments for invoking getRegistryImageManifests.\n",
+                "properties": {
+                    "authConfig": {
+                        "$ref": "#/types/docker:index/getRegistryImageManifestsAuthConfig:getRegistryImageManifestsAuthConfig",
+                        "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                    },
+                    "insecureSkipVerify": {
+                        "type": "boolean",
+                        "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getRegistryImageManifests.\n",
+                "properties": {
+                    "authConfig": {
+                        "$ref": "#/types/docker:index/getRegistryImageManifestsAuthConfig:getRegistryImageManifestsAuthConfig",
+                        "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                    },
+                    "id": {
+                        "description": "The provider-assigned unique ID for this managed resource.\n",
+                        "type": "string"
+                    },
+                    "insecureSkipVerify": {
+                        "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n",
+                        "type": "boolean"
+                    },
+                    "manifests": {
+                        "description": "The metadata for each manifest in the image\n",
+                        "items": {
+                            "$ref": "#/types/docker:index/getRegistryImageManifestsManifest:getRegistryImageManifestsManifest"
+                        },
+                        "type": "array"
+                    },
+                    "name": {
+                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "manifests",
+                    "name",
                     "id"
                 ],
                 "type": "object"

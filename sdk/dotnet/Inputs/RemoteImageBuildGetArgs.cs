@@ -24,23 +24,11 @@ namespace Pulumi.Docker.Inputs
             set => _authConfigs = value;
         }
 
-        [Input("buildArg")]
-        private InputMap<string>? _buildArg;
-
-        /// <summary>
-        /// Set build-time variables
-        /// </summary>
-        public InputMap<string> BuildArg
-        {
-            get => _buildArg ?? (_buildArg = new InputMap<string>());
-            set => _buildArg = value;
-        }
-
         [Input("buildArgs")]
         private InputMap<string>? _buildArgs;
 
         /// <summary>
-        /// Pairs for build-time variables in the form TODO
+        /// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         /// </summary>
         public InputMap<string> BuildArgs
         {
@@ -53,6 +41,18 @@ namespace Pulumi.Docker.Inputs
         /// </summary>
         [Input("buildId")]
         public Input<string>? BuildId { get; set; }
+
+        /// <summary>
+        /// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        /// </summary>
+        [Input("buildLogFile")]
+        public Input<string>? BuildLogFile { get; set; }
+
+        /// <summary>
+        /// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        /// </summary>
+        [Input("builder")]
+        public Input<string>? Builder { get; set; }
 
         [Input("cacheFroms")]
         private InputList<string>? _cacheFroms;
@@ -73,7 +73,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? CgroupParent { get; set; }
 
         /// <summary>
-        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
         /// </summary>
         [Input("context", required: true)]
         public Input<string> Context { get; set; } = null!;
@@ -199,7 +199,7 @@ namespace Pulumi.Docker.Inputs
         public Input<bool>? PullParent { get; set; }
 
         /// <summary>
-        /// A Git repository URI or HTTP/HTTPS context URI
+        /// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         /// </summary>
         [Input("remoteContext")]
         public Input<string>? RemoteContext { get; set; }
@@ -209,6 +209,18 @@ namespace Pulumi.Docker.Inputs
         /// </summary>
         [Input("remove")]
         public Input<bool>? Remove { get; set; }
+
+        [Input("secrets")]
+        private InputList<Inputs.RemoteImageBuildSecretGetArgs>? _secrets;
+
+        /// <summary>
+        /// Set build-time secrets. Only available when you use a buildx builder.
+        /// </summary>
+        public InputList<Inputs.RemoteImageBuildSecretGetArgs> Secrets
+        {
+            get => _secrets ?? (_secrets = new InputList<Inputs.RemoteImageBuildSecretGetArgs>());
+            set => _secrets = value;
+        }
 
         [Input("securityOpts")]
         private InputList<string>? _securityOpts;

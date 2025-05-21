@@ -129,6 +129,9 @@
                                 "extra_hosts": {
                                     "maxItemsOne": false
                                 },
+                                "secrets": {
+                                    "maxItemsOne": false
+                                },
                                 "security_opt": {
                                     "maxItemsOne": false
                                 },
@@ -176,7 +179,12 @@
                 }
             },
             "docker_registry_image": {
-                "current": "docker:index/registryImage:RegistryImage"
+                "current": "docker:index/registryImage:RegistryImage",
+                "fields": {
+                    "auth_config": {
+                        "maxItemsOne": true
+                    }
+                }
             },
             "docker_secret": {
                 "current": "docker:index/secret:Secret",
@@ -389,7 +397,12 @@
                 }
             },
             "docker_tag": {
-                "current": "docker:index/tag:Tag"
+                "current": "docker:index/tag:Tag",
+                "fields": {
+                    "tag_triggers": {
+                        "maxItemsOne": false
+                    }
+                }
             },
             "docker_volume": {
                 "current": "docker:index/volume:Volume",
@@ -430,6 +443,17 @@
             },
             "docker_registry_image": {
                 "current": "docker:index/getRegistryImage:getRegistryImage"
+            },
+            "docker_registry_image_manifests": {
+                "current": "docker:index/getRegistryImageManifests:getRegistryImageManifests",
+                "fields": {
+                    "auth_config": {
+                        "maxItemsOne": true
+                    },
+                    "manifests": {
+                        "maxItemsOne": false
+                    }
+                }
             }
         }
     },

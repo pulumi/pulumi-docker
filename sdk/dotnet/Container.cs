@@ -109,7 +109,7 @@ namespace Pulumi.Docker
         public Output<string?> CgroupnsMode { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         /// </summary>
         [Output("command")]
         public Output<ImmutableArray<string>> Command { get; private set; } = null!;
@@ -137,6 +137,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("cpuShares")]
         public Output<int?> CpuShares { get; private set; } = null!;
+
+        /// <summary>
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        /// </summary>
+        [Output("cpus")]
+        public Output<string?> Cpus { get; private set; } = null!;
 
         /// <summary>
         /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -175,7 +181,7 @@ namespace Pulumi.Docker
         public Output<string?> Domainname { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         /// </summary>
         [Output("entrypoints")]
         public Output<ImmutableArray<string>> Entrypoints { get; private set; } = null!;
@@ -223,7 +229,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerHost>> Hosts { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Output("image")]
         public Output<string> Image { get; private set; } = null!;
@@ -304,7 +310,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerNetworkData>> NetworkDatas { get; private set; } = null!;
 
         /// <summary>
-        /// Network mode of the container.
+        /// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Output("networkMode")]
         public Output<string?> NetworkMode { get; private set; } = null!;
@@ -460,7 +466,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerVolume>> Volumes { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         /// </summary>
         [Output("wait")]
         public Output<bool?> Wait { get; private set; } = null!;
@@ -545,7 +551,7 @@ namespace Pulumi.Docker
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -570,6 +576,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("cpuShares")]
         public Input<int>? CpuShares { get; set; }
+
+        /// <summary>
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        /// </summary>
+        [Input("cpus")]
+        public Input<string>? Cpus { get; set; }
 
         /// <summary>
         /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -635,7 +647,7 @@ namespace Pulumi.Docker
         private InputList<string>? _entrypoints;
 
         /// <summary>
-        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         /// </summary>
         public InputList<string> Entrypoints
         {
@@ -698,7 +710,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
@@ -791,7 +803,7 @@ namespace Pulumi.Docker
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Network mode of the container.
+        /// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
@@ -1001,7 +1013,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         /// </summary>
         [Input("wait")]
         public Input<bool>? Wait { get; set; }
@@ -1054,7 +1066,7 @@ namespace Pulumi.Docker
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -1085,6 +1097,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("cpuShares")]
         public Input<int>? CpuShares { get; set; }
+
+        /// <summary>
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        /// </summary>
+        [Input("cpus")]
+        public Input<string>? Cpus { get; set; }
 
         /// <summary>
         /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -1150,7 +1168,7 @@ namespace Pulumi.Docker
         private InputList<string>? _entrypoints;
 
         /// <summary>
-        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         /// </summary>
         public InputList<string> Entrypoints
         {
@@ -1219,7 +1237,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Input("image")]
         public Input<string>? Image { get; set; }
@@ -1324,7 +1342,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Network mode of the container.
+        /// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
@@ -1534,7 +1552,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
         /// </summary>
         [Input("wait")]
         public Input<bool>? Wait { get; set; }

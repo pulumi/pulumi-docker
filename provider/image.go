@@ -18,6 +18,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/distribution/reference"
 	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
@@ -25,19 +26,19 @@ import (
 	"github.com/docker/cli/cli/config/credentials"
 	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/cli/cli/connhelper"
-	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
-	registrytypes "github.com/docker/docker/api/types/registry"
+	imgtypes "github.com/docker/docker/api/types/image"
+	regtypes "github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/jsonmessage"
+	"github.com/docker/docker/registry"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/moby/buildkit/identity"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
-	"github.com/moby/moby/registry"
 	"github.com/opencontainers/go-digest"
 	"github.com/spf13/afero"
 
@@ -190,15 +191,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	authConfigs := make(map[string]registrytypes.AuthConfig)
-	var regAuth registrytypes.AuthConfig
+	authConfigs := make(map[string]regtypes.AuthConfig)
+	var regAuth regtypes.AuthConfig
 
 	auths, err := cfg.GetAllCredentials()
 	if err != nil {
 		return "", nil, err
 	}
 	for k, auth := range auths {
-		authConfigs[k] = registrytypes.AuthConfig(auth)
+		authConfigs[k] = regtypes.AuthConfig(auth)
 	}
 
 	// sign into registry if we're pushing or setting CacheFrom
@@ -235,12 +236,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// Start a session for BuildKit
 	if build.BuilderVersion == defaultBuilder {
-		sess, err := session.NewSession(ctx, "pulumi-docker", identity.NewID())
+		sess, err := session.NewSession(ctx, identity.NewID())
 		if err != nil {
 			return "", nil, err
 		}
 
-		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg, nil)
+		dockerAuthProvider := authprovider.NewDockerAuthProvider(authprovider.DockerAuthProviderConfig{ConfigFile: cfg})
 		sess.Allow(dockerAuthProvider)
 
 		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
@@ -306,7 +307,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// if we are not pushing to the registry, or we are in Preview mode, we return after building the local image.
 	if img.SkipPush || isPreview {
 		// Obtain image digest from docker inspect
-		imageInspect, _, inspErr := docker.ImageInspectWithRaw(ctx, img.Name)
+		imageInspect, inspErr := docker.ImageInspect(ctx, img.Name)
 		if inspErr != nil {
 			return "", nil, err
 		}
@@ -327,7 +328,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
-	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
+	pushOpts := imgtypes.PushOptions{RegistryAuth: authConfigEncoded}
 
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
 	pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
@@ -402,7 +403,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 	ctx context.Context, docker *client.Client, imageID string,
 	img Image, urn resource.URN,
 ) (reference.Reference, error) {
-	dist, _, err := docker.ImageInspectWithRaw(ctx, imageID)
+	dist, err := docker.ImageInspect(ctx, imageID)
 	if err != nil {
 		return nil, err
 	}
@@ -475,7 +476,7 @@ func (p *dockerNativeProvider) runImageBuild(
 	// TODO: https://github.com/pulumi/pulumi-docker/issues/846 - Consider removing polling for the
 	// image.
 	findImageID := func() (bool, error) {
-		listResult, err := docker.ImageList(ctx, types.ImageListOptions{})
+		listResult, err := docker.ImageList(ctx, imgtypes.ListOptions{})
 		if err != nil {
 			return false, fmt.Errorf("error inspecting image: %v", err)
 		}
@@ -508,7 +509,7 @@ func (p *dockerNativeProvider) runImageBuild(
 }
 
 func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN,
-	docker *client.Client, authConfig registrytypes.AuthConfig, cachedImage string, platform string,
+	docker *client.Client, authConfig regtypes.AuthConfig, cachedImage string, platform string,
 ) error {
 	if cachedImage != "" {
 		_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
@@ -519,7 +520,7 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 		}
 		cachedImageRegistryAuth := base64.URLEncoding.EncodeToString(cachedImageAuthBytes)
 
-		pullOutput, err := docker.ImagePull(ctx, cachedImage, types.ImagePullOptions{
+		pullOutput, err := docker.ImagePull(ctx, cachedImage, imgtypes.PullOptions{
 			RegistryAuth: cachedImageRegistryAuth,
 			Platform:     platform,
 		})
@@ -739,15 +740,16 @@ func getDefaultDockerConfig() (*configfile.ConfigFile, error) {
 	if err != nil {
 		return nil, err
 	}
+	var _ = authprovider.DockerAuthProviderConfig{}
 	cfg.CredentialsStore = credentials.DetectDefaultStore(cfg.CredentialsStore)
 	return cfg, nil
 }
 
-func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (registrytypes.AuthConfig, string, error) {
+func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (regtypes.AuthConfig, string, error) {
 	// authentication for registry push or cache pull
 	// we check if the user set creds in the Pulumi program, and use those preferentially,
 	// otherwise we use host machine creds via authConfigs.
-	var regAuthConfig registrytypes.AuthConfig
+	var regAuthConfig regtypes.AuthConfig
 	var msg string
 
 	if img.Registry.Username != "" && img.Registry.Password != "" {
@@ -778,7 +780,7 @@ func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (registrytypes.AuthC
 			return regAuthConfig, msg, err
 		}
 
-		regAuthConfig = registrytypes.AuthConfig(cliPushAuthConfig)
+		regAuthConfig = regtypes.AuthConfig(cliPushAuthConfig)
 	}
 	return regAuthConfig, msg, nil
 }
@@ -797,7 +799,7 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 			return "", err
 		}
 	} else {
-		hostname = registry.ConvertToHostname(serverName)
+		hostname = credentials.ConvertToHostname(serverName)
 	}
 
 	switch hostname {
@@ -888,7 +890,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 			if err := json.Unmarshal(*jm.Aux, &infoBytes); err != nil {
 				info += "failed to parse aux message: " + err.Error()
 			}
-			if err := (&resp).Unmarshal(infoBytes); err != nil {
+			if err := (&resp).UnmarshalVT(infoBytes); err != nil {
 				info += "failed to parse info bytes: " + err.Error()
 			}
 			for _, vertex := range resp.Vertexes {

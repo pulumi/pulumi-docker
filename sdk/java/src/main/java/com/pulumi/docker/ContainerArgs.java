@@ -77,14 +77,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
      * 
      */
     @Import(name="command")
     private @Nullable Output<List<String>> command;
 
     /**
-     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
      * 
      */
     public Optional<Output<List<String>>> command() {
@@ -134,6 +134,21 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<Integer>> cpuShares() {
         return Optional.ofNullable(this.cpuShares);
+    }
+
+    /**
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * 
+     */
+    @Import(name="cpus")
+    private @Nullable Output<String> cpus;
+
+    /**
+     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * 
+     */
+    public Optional<Output<String>> cpus() {
+        return Optional.ofNullable(this.cpus);
     }
 
     /**
@@ -227,14 +242,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
      * 
      */
     @Import(name="entrypoints")
     private @Nullable Output<List<String>> entrypoints;
 
     /**
-     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
      * 
      */
     public Optional<Output<List<String>>> entrypoints() {
@@ -332,14 +347,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     @Import(name="image", required=true)
     private Output<String> image;
 
     /**
-     * @return The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * @return The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     public Output<String> image() {
@@ -519,14 +534,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Network mode of the container.
+     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      * 
      */
     @Import(name="networkMode")
     private @Nullable Output<String> networkMode;
 
     /**
-     * @return Network mode of the container.
+     * @return Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      * 
      */
     public Optional<Output<String>> networkMode() {
@@ -909,14 +924,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      * 
      */
     @Import(name="wait")
     private @Nullable Output<Boolean> wait;
 
     /**
-     * @return If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * @return If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      * 
      */
     public Optional<Output<Boolean>> wait_() {
@@ -963,6 +978,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.containerReadRefreshTimeoutMilliseconds = $.containerReadRefreshTimeoutMilliseconds;
         this.cpuSet = $.cpuSet;
         this.cpuShares = $.cpuShares;
+        this.cpus = $.cpus;
         this.destroyGraceSeconds = $.destroyGraceSeconds;
         this.devices = $.devices;
         this.dns = $.dns;
@@ -1102,7 +1118,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
          * 
          * @return builder
          * 
@@ -1113,7 +1129,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
          * 
          * @return builder
          * 
@@ -1123,7 +1139,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.conf&#34;]`.
          * 
          * @return builder
          * 
@@ -1193,6 +1209,27 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder cpuShares(Integer cpuShares) {
             return cpuShares(Output.of(cpuShares));
+        }
+
+        /**
+         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cpus(@Nullable Output<String> cpus) {
+            $.cpus = cpus;
+            return this;
+        }
+
+        /**
+         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cpus(String cpus) {
+            return cpus(Output.of(cpus));
         }
 
         /**
@@ -1362,7 +1399,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
          * 
          * @return builder
          * 
@@ -1373,7 +1410,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
          * 
          * @return builder
          * 
@@ -1383,7 +1420,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogram&#34;]`.
          * 
          * @return builder
          * 
@@ -1549,7 +1586,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
          * 
          * @return builder
          * 
@@ -1560,7 +1597,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
          * 
          * @return builder
          * 
@@ -1830,7 +1867,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networkMode Network mode of the container.
+         * @param networkMode Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
          * 
          * @return builder
          * 
@@ -1841,7 +1878,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networkMode Network mode of the container.
+         * @param networkMode Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
          * 
          * @return builder
          * 
@@ -2436,7 +2473,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param wait If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+         * @param wait If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
          * 
          * @return builder
          * 
@@ -2447,7 +2484,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param wait If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+         * @param wait If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
          * 
          * @return builder
          * 

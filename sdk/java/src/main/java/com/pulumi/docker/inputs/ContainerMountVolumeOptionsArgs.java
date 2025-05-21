@@ -79,6 +79,21 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
         return Optional.ofNullable(this.noCopy);
     }
 
+    /**
+     * Path within the volume to mount. Requires docker server version 1.45 or higher.
+     * 
+     */
+    @Import(name="subpath")
+    private @Nullable Output<String> subpath;
+
+    /**
+     * @return Path within the volume to mount. Requires docker server version 1.45 or higher.
+     * 
+     */
+    public Optional<Output<String>> subpath() {
+        return Optional.ofNullable(this.subpath);
+    }
+
     private ContainerMountVolumeOptionsArgs() {}
 
     private ContainerMountVolumeOptionsArgs(ContainerMountVolumeOptionsArgs $) {
@@ -86,6 +101,7 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
         this.driverOptions = $.driverOptions;
         this.labels = $.labels;
         this.noCopy = $.noCopy;
+        this.subpath = $.subpath;
     }
 
     public static Builder builder() {
@@ -198,6 +214,27 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
          */
         public Builder noCopy(Boolean noCopy) {
             return noCopy(Output.of(noCopy));
+        }
+
+        /**
+         * @param subpath Path within the volume to mount. Requires docker server version 1.45 or higher.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder subpath(@Nullable Output<String> subpath) {
+            $.subpath = subpath;
+            return this;
+        }
+
+        /**
+         * @param subpath Path within the volume to mount. Requires docker server version 1.45 or higher.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder subpath(String subpath) {
+            return subpath(Output.of(subpath));
         }
 
         public ContainerMountVolumeOptionsArgs build() {

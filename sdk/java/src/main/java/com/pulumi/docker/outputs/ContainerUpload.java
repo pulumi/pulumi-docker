@@ -34,6 +34,11 @@ public final class ContainerUpload {
      */
     private String file;
     /**
+     * @return The permission mode for the file in the container. Has precedence over `executable`.
+     * 
+     */
+    private @Nullable String permissions;
+    /**
      * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
      * 
      */
@@ -74,6 +79,13 @@ public final class ContainerUpload {
         return this.file;
     }
     /**
+     * @return The permission mode for the file in the container. Has precedence over `executable`.
+     * 
+     */
+    public Optional<String> permissions() {
+        return Optional.ofNullable(this.permissions);
+    }
+    /**
      * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
      * 
      */
@@ -101,6 +113,7 @@ public final class ContainerUpload {
         private @Nullable String contentBase64;
         private @Nullable Boolean executable;
         private String file;
+        private @Nullable String permissions;
         private @Nullable String source;
         private @Nullable String sourceHash;
         public Builder() {}
@@ -110,6 +123,7 @@ public final class ContainerUpload {
     	      this.contentBase64 = defaults.contentBase64;
     	      this.executable = defaults.executable;
     	      this.file = defaults.file;
+    	      this.permissions = defaults.permissions;
     	      this.source = defaults.source;
     	      this.sourceHash = defaults.sourceHash;
         }
@@ -141,6 +155,12 @@ public final class ContainerUpload {
             return this;
         }
         @CustomType.Setter
+        public Builder permissions(@Nullable String permissions) {
+
+            this.permissions = permissions;
+            return this;
+        }
+        @CustomType.Setter
         public Builder source(@Nullable String source) {
 
             this.source = source;
@@ -158,6 +178,7 @@ public final class ContainerUpload {
             _resultValue.contentBase64 = contentBase64;
             _resultValue.executable = executable;
             _resultValue.file = file;
+            _resultValue.permissions = permissions;
             _resultValue.source = source;
             _resultValue.sourceHash = sourceHash;
             return _resultValue;

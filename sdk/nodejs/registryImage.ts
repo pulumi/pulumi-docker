@@ -2,6 +2,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
@@ -37,6 +40,10 @@ export class RegistryImage extends pulumi.CustomResource {
     }
 
     /**
+     * Authentication configuration for the Docker registry. It is only used for this resource.
+     */
+    public readonly authConfig!: pulumi.Output<outputs.RegistryImageAuthConfig | undefined>;
+    /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
     public readonly insecureSkipVerify!: pulumi.Output<boolean | undefined>;
@@ -70,6 +77,7 @@ export class RegistryImage extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RegistryImageState | undefined;
+            resourceInputs["authConfig"] = state ? state.authConfig : undefined;
             resourceInputs["insecureSkipVerify"] = state ? state.insecureSkipVerify : undefined;
             resourceInputs["keepRemotely"] = state ? state.keepRemotely : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
@@ -77,6 +85,7 @@ export class RegistryImage extends pulumi.CustomResource {
             resourceInputs["triggers"] = state ? state.triggers : undefined;
         } else {
             const args = argsOrState as RegistryImageArgs | undefined;
+            resourceInputs["authConfig"] = args ? args.authConfig : undefined;
             resourceInputs["insecureSkipVerify"] = args ? args.insecureSkipVerify : undefined;
             resourceInputs["keepRemotely"] = args ? args.keepRemotely : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
@@ -92,6 +101,10 @@ export class RegistryImage extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RegistryImage resources.
  */
 export interface RegistryImageState {
+    /**
+     * Authentication configuration for the Docker registry. It is only used for this resource.
+     */
+    authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
@@ -118,6 +131,10 @@ export interface RegistryImageState {
  * The set of arguments for constructing a RegistryImage resource.
  */
 export interface RegistryImageArgs {
+    /**
+     * Authentication configuration for the Docker registry. It is only used for this resource.
+     */
+    authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */

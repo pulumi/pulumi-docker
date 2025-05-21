@@ -65,6 +65,22 @@ public class Provider extends com.pulumi.resources.ProviderResource {
         return Codegen.optional(this.certPath);
     }
     /**
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+     * if set.
+     * 
+     */
+    @Export(name="context", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> context;
+
+    /**
+     * @return The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+     * if set.
+     * 
+     */
+    public Output<Optional<String>> context() {
+        return Codegen.optional(this.context);
+    }
+    /**
      * The Docker daemon address
      * 
      */

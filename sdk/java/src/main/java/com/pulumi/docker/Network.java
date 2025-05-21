@@ -110,7 +110,11 @@ public class Network extends com.pulumi.resources.CustomResource {
     /**
      * Requests daemon to check for networks with same name.
      * 
+     * @deprecated
+     * This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
+     * 
      */
+    @Deprecated /* This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks. */
     @Export(name="checkDuplicate", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> checkDuplicate;
 

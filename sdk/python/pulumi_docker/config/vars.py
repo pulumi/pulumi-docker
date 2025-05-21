@@ -44,6 +44,22 @@ class _ExportableConfig(types.ModuleType):
         return __config__.get('certPath')
 
     @property
+    def context(self) -> Optional[str]:
+        """
+        The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+        if set.
+        """
+        return __config__.get('context')
+
+    @property
+    def disable_docker_daemon_check(self) -> Optional[bool]:
+        """
+        If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+        resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
+        """
+        return __config__.get_bool('disableDockerDaemonCheck')
+
+    @property
     def host(self) -> Optional[str]:
         """
         The Docker daemon address

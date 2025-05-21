@@ -289,6 +289,8 @@ type ContainerHealthcheck struct {
 	Interval *string `pulumi:"interval"`
 	// Consecutive failures needed to report unhealthy. Defaults to `0`.
 	Retries *int `pulumi:"retries"`
+	// Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+	StartInterval *string `pulumi:"startInterval"`
 	// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 	StartPeriod *string `pulumi:"startPeriod"`
 	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
@@ -313,6 +315,8 @@ type ContainerHealthcheckArgs struct {
 	Interval pulumi.StringPtrInput `pulumi:"interval"`
 	// Consecutive failures needed to report unhealthy. Defaults to `0`.
 	Retries pulumi.IntPtrInput `pulumi:"retries"`
+	// Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+	StartInterval pulumi.StringPtrInput `pulumi:"startInterval"`
 	// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 	StartPeriod pulumi.StringPtrInput `pulumi:"startPeriod"`
 	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
@@ -408,6 +412,11 @@ func (o ContainerHealthcheckOutput) Retries() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
 }
 
+// Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+func (o ContainerHealthcheckOutput) StartInterval() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartInterval }).(pulumi.StringPtrOutput)
+}
+
 // Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckOutput) StartPeriod() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
@@ -465,6 +474,16 @@ func (o ContainerHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
 		}
 		return v.Retries
 	}).(pulumi.IntPtrOutput)
+}
+
+// Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+func (o ContainerHealthcheckPtrOutput) StartInterval() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ContainerHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.StartInterval
+	}).(pulumi.StringPtrOutput)
 }
 
 // Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
@@ -1162,6 +1181,8 @@ type ContainerMountVolumeOptions struct {
 	Labels []ContainerMountVolumeOptionsLabel `pulumi:"labels"`
 	// Populate volume with data from the target.
 	NoCopy *bool `pulumi:"noCopy"`
+	// Path within the volume to mount. Requires docker server version 1.45 or higher.
+	Subpath *string `pulumi:"subpath"`
 }
 
 // ContainerMountVolumeOptionsInput is an input type that accepts ContainerMountVolumeOptionsArgs and ContainerMountVolumeOptionsOutput values.
@@ -1184,6 +1205,8 @@ type ContainerMountVolumeOptionsArgs struct {
 	Labels ContainerMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
 	// Populate volume with data from the target.
 	NoCopy pulumi.BoolPtrInput `pulumi:"noCopy"`
+	// Path within the volume to mount. Requires docker server version 1.45 or higher.
+	Subpath pulumi.StringPtrInput `pulumi:"subpath"`
 }
 
 func (ContainerMountVolumeOptionsArgs) ElementType() reflect.Type {
@@ -1283,6 +1306,11 @@ func (o ContainerMountVolumeOptionsOutput) NoCopy() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
 }
 
+// Path within the volume to mount. Requires docker server version 1.45 or higher.
+func (o ContainerMountVolumeOptionsOutput) Subpath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerMountVolumeOptions) *string { return v.Subpath }).(pulumi.StringPtrOutput)
+}
+
 type ContainerMountVolumeOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsPtrOutput) ElementType() reflect.Type {
@@ -1345,6 +1373,16 @@ func (o ContainerMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
 		}
 		return v.NoCopy
 	}).(pulumi.BoolPtrOutput)
+}
+
+// Path within the volume to mount. Requires docker server version 1.45 or higher.
+func (o ContainerMountVolumeOptionsPtrOutput) Subpath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ContainerMountVolumeOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Subpath
+	}).(pulumi.StringPtrOutput)
 }
 
 type ContainerMountVolumeOptionsLabel struct {
@@ -1985,6 +2023,8 @@ type ContainerUpload struct {
 	Executable *bool `pulumi:"executable"`
 	// Path to the file in the container where is upload goes to
 	File string `pulumi:"file"`
+	// The permission mode for the file in the container. Has precedence over `executable`.
+	Permissions *string `pulumi:"permissions"`
 	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
 	Source *string `pulumi:"source"`
 	// If using `source`, this will force an update if the file content has updated but the filename has not.
@@ -2011,6 +2051,8 @@ type ContainerUploadArgs struct {
 	Executable pulumi.BoolPtrInput `pulumi:"executable"`
 	// Path to the file in the container where is upload goes to
 	File pulumi.StringInput `pulumi:"file"`
+	// The permission mode for the file in the container. Has precedence over `executable`.
+	Permissions pulumi.StringPtrInput `pulumi:"permissions"`
 	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
 	Source pulumi.StringPtrInput `pulumi:"source"`
 	// If using `source`, this will force an update if the file content has updated but the filename has not.
@@ -2086,6 +2128,11 @@ func (o ContainerUploadOutput) Executable() pulumi.BoolPtrOutput {
 // Path to the file in the container where is upload goes to
 func (o ContainerUploadOutput) File() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerUpload) string { return v.File }).(pulumi.StringOutput)
+}
+
+// The permission mode for the file in the container. Has precedence over `executable`.
+func (o ContainerUploadOutput) Permissions() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerUpload) *string { return v.Permissions }).(pulumi.StringPtrOutput)
 }
 
 // A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
@@ -2726,20 +2773,197 @@ func (o ProviderRegistryAuthArrayOutput) Index(i pulumi.IntInput) ProviderRegist
 	}).(ProviderRegistryAuthOutput)
 }
 
+type RegistryImageAuthConfig struct {
+	// The address of the Docker registry.
+	Address string `pulumi:"address"`
+	// The password for the Docker registry.
+	Password string `pulumi:"password"`
+	// The username for the Docker registry.
+	Username string `pulumi:"username"`
+}
+
+// RegistryImageAuthConfigInput is an input type that accepts RegistryImageAuthConfigArgs and RegistryImageAuthConfigOutput values.
+// You can construct a concrete instance of `RegistryImageAuthConfigInput` via:
+//
+//	RegistryImageAuthConfigArgs{...}
+type RegistryImageAuthConfigInput interface {
+	pulumi.Input
+
+	ToRegistryImageAuthConfigOutput() RegistryImageAuthConfigOutput
+	ToRegistryImageAuthConfigOutputWithContext(context.Context) RegistryImageAuthConfigOutput
+}
+
+type RegistryImageAuthConfigArgs struct {
+	// The address of the Docker registry.
+	Address pulumi.StringInput `pulumi:"address"`
+	// The password for the Docker registry.
+	Password pulumi.StringInput `pulumi:"password"`
+	// The username for the Docker registry.
+	Username pulumi.StringInput `pulumi:"username"`
+}
+
+func (RegistryImageAuthConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageAuthConfig)(nil)).Elem()
+}
+
+func (i RegistryImageAuthConfigArgs) ToRegistryImageAuthConfigOutput() RegistryImageAuthConfigOutput {
+	return i.ToRegistryImageAuthConfigOutputWithContext(context.Background())
+}
+
+func (i RegistryImageAuthConfigArgs) ToRegistryImageAuthConfigOutputWithContext(ctx context.Context) RegistryImageAuthConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageAuthConfigOutput)
+}
+
+func (i RegistryImageAuthConfigArgs) ToRegistryImageAuthConfigPtrOutput() RegistryImageAuthConfigPtrOutput {
+	return i.ToRegistryImageAuthConfigPtrOutputWithContext(context.Background())
+}
+
+func (i RegistryImageAuthConfigArgs) ToRegistryImageAuthConfigPtrOutputWithContext(ctx context.Context) RegistryImageAuthConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageAuthConfigOutput).ToRegistryImageAuthConfigPtrOutputWithContext(ctx)
+}
+
+// RegistryImageAuthConfigPtrInput is an input type that accepts RegistryImageAuthConfigArgs, RegistryImageAuthConfigPtr and RegistryImageAuthConfigPtrOutput values.
+// You can construct a concrete instance of `RegistryImageAuthConfigPtrInput` via:
+//
+//	        RegistryImageAuthConfigArgs{...}
+//
+//	or:
+//
+//	        nil
+type RegistryImageAuthConfigPtrInput interface {
+	pulumi.Input
+
+	ToRegistryImageAuthConfigPtrOutput() RegistryImageAuthConfigPtrOutput
+	ToRegistryImageAuthConfigPtrOutputWithContext(context.Context) RegistryImageAuthConfigPtrOutput
+}
+
+type registryImageAuthConfigPtrType RegistryImageAuthConfigArgs
+
+func RegistryImageAuthConfigPtr(v *RegistryImageAuthConfigArgs) RegistryImageAuthConfigPtrInput {
+	return (*registryImageAuthConfigPtrType)(v)
+}
+
+func (*registryImageAuthConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryImageAuthConfig)(nil)).Elem()
+}
+
+func (i *registryImageAuthConfigPtrType) ToRegistryImageAuthConfigPtrOutput() RegistryImageAuthConfigPtrOutput {
+	return i.ToRegistryImageAuthConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *registryImageAuthConfigPtrType) ToRegistryImageAuthConfigPtrOutputWithContext(ctx context.Context) RegistryImageAuthConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageAuthConfigPtrOutput)
+}
+
+type RegistryImageAuthConfigOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageAuthConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageAuthConfig)(nil)).Elem()
+}
+
+func (o RegistryImageAuthConfigOutput) ToRegistryImageAuthConfigOutput() RegistryImageAuthConfigOutput {
+	return o
+}
+
+func (o RegistryImageAuthConfigOutput) ToRegistryImageAuthConfigOutputWithContext(ctx context.Context) RegistryImageAuthConfigOutput {
+	return o
+}
+
+func (o RegistryImageAuthConfigOutput) ToRegistryImageAuthConfigPtrOutput() RegistryImageAuthConfigPtrOutput {
+	return o.ToRegistryImageAuthConfigPtrOutputWithContext(context.Background())
+}
+
+func (o RegistryImageAuthConfigOutput) ToRegistryImageAuthConfigPtrOutputWithContext(ctx context.Context) RegistryImageAuthConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v RegistryImageAuthConfig) *RegistryImageAuthConfig {
+		return &v
+	}).(RegistryImageAuthConfigPtrOutput)
+}
+
+// The address of the Docker registry.
+func (o RegistryImageAuthConfigOutput) Address() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageAuthConfig) string { return v.Address }).(pulumi.StringOutput)
+}
+
+// The password for the Docker registry.
+func (o RegistryImageAuthConfigOutput) Password() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageAuthConfig) string { return v.Password }).(pulumi.StringOutput)
+}
+
+// The username for the Docker registry.
+func (o RegistryImageAuthConfigOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageAuthConfig) string { return v.Username }).(pulumi.StringOutput)
+}
+
+type RegistryImageAuthConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageAuthConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryImageAuthConfig)(nil)).Elem()
+}
+
+func (o RegistryImageAuthConfigPtrOutput) ToRegistryImageAuthConfigPtrOutput() RegistryImageAuthConfigPtrOutput {
+	return o
+}
+
+func (o RegistryImageAuthConfigPtrOutput) ToRegistryImageAuthConfigPtrOutputWithContext(ctx context.Context) RegistryImageAuthConfigPtrOutput {
+	return o
+}
+
+func (o RegistryImageAuthConfigPtrOutput) Elem() RegistryImageAuthConfigOutput {
+	return o.ApplyT(func(v *RegistryImageAuthConfig) RegistryImageAuthConfig {
+		if v != nil {
+			return *v
+		}
+		var ret RegistryImageAuthConfig
+		return ret
+	}).(RegistryImageAuthConfigOutput)
+}
+
+// The address of the Docker registry.
+func (o RegistryImageAuthConfigPtrOutput) Address() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageAuthConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Address
+	}).(pulumi.StringPtrOutput)
+}
+
+// The password for the Docker registry.
+func (o RegistryImageAuthConfigPtrOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageAuthConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Password
+	}).(pulumi.StringPtrOutput)
+}
+
+// The username for the Docker registry.
+func (o RegistryImageAuthConfigPtrOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageAuthConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Username
+	}).(pulumi.StringPtrOutput)
+}
+
 type RemoteImageBuild struct {
 	// The configuration for the authentication
 	AuthConfigs []RemoteImageBuildAuthConfig `pulumi:"authConfigs"`
-	// Set build-time variables
-	BuildArg map[string]string `pulumi:"buildArg"`
-	// Pairs for build-time variables in the form TODO
+	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
 	BuildArgs map[string]string `pulumi:"buildArgs"`
 	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 	BuildId *string `pulumi:"buildId"`
+	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+	BuildLogFile *string `pulumi:"buildLogFile"`
+	// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+	Builder *string `pulumi:"builder"`
 	// Images to consider as cache sources
 	CacheFroms []string `pulumi:"cacheFroms"`
 	// Optional parent cgroup for the container
 	CgroupParent *string `pulumi:"cgroupParent"`
-	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
 	Context string `pulumi:"context"`
 	// The length of a CPU period in microseconds
 	CpuPeriod *int `pulumi:"cpuPeriod"`
@@ -2775,10 +2999,12 @@ type RemoteImageBuild struct {
 	Platform *string `pulumi:"platform"`
 	// Attempt to pull the image even if an older image exists locally
 	PullParent *bool `pulumi:"pullParent"`
-	// A Git repository URI or HTTP/HTTPS context URI
+	// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
 	RemoteContext *string `pulumi:"remoteContext"`
 	// Remove intermediate containers after a successful build. Defaults to `true`.
 	Remove *bool `pulumi:"remove"`
+	// Set build-time secrets. Only available when you use a buildx builder.
+	Secrets []RemoteImageBuildSecret `pulumi:"secrets"`
 	// The security options
 	SecurityOpts []string `pulumi:"securityOpts"`
 	// Set an ID for the build session
@@ -2813,17 +3039,19 @@ type RemoteImageBuildInput interface {
 type RemoteImageBuildArgs struct {
 	// The configuration for the authentication
 	AuthConfigs RemoteImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
-	// Set build-time variables
-	BuildArg pulumi.StringMapInput `pulumi:"buildArg"`
-	// Pairs for build-time variables in the form TODO
+	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
 	BuildArgs pulumi.StringMapInput `pulumi:"buildArgs"`
 	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
+	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+	BuildLogFile pulumi.StringPtrInput `pulumi:"buildLogFile"`
+	// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+	Builder pulumi.StringPtrInput `pulumi:"builder"`
 	// Images to consider as cache sources
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
 	// Optional parent cgroup for the container
 	CgroupParent pulumi.StringPtrInput `pulumi:"cgroupParent"`
-	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
 	Context pulumi.StringInput `pulumi:"context"`
 	// The length of a CPU period in microseconds
 	CpuPeriod pulumi.IntPtrInput `pulumi:"cpuPeriod"`
@@ -2859,10 +3087,12 @@ type RemoteImageBuildArgs struct {
 	Platform pulumi.StringPtrInput `pulumi:"platform"`
 	// Attempt to pull the image even if an older image exists locally
 	PullParent pulumi.BoolPtrInput `pulumi:"pullParent"`
-	// A Git repository URI or HTTP/HTTPS context URI
+	// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
 	RemoteContext pulumi.StringPtrInput `pulumi:"remoteContext"`
 	// Remove intermediate containers after a successful build. Defaults to `true`.
 	Remove pulumi.BoolPtrInput `pulumi:"remove"`
+	// Set build-time secrets. Only available when you use a buildx builder.
+	Secrets RemoteImageBuildSecretArrayInput `pulumi:"secrets"`
 	// The security options
 	SecurityOpts pulumi.StringArrayInput `pulumi:"securityOpts"`
 	// Set an ID for the build session
@@ -2965,12 +3195,7 @@ func (o RemoteImageBuildOutput) AuthConfigs() RemoteImageBuildAuthConfigArrayOut
 	return o.ApplyT(func(v RemoteImageBuild) []RemoteImageBuildAuthConfig { return v.AuthConfigs }).(RemoteImageBuildAuthConfigArrayOutput)
 }
 
-// Set build-time variables
-func (o RemoteImageBuildOutput) BuildArg() pulumi.StringMapOutput {
-	return o.ApplyT(func(v RemoteImageBuild) map[string]string { return v.BuildArg }).(pulumi.StringMapOutput)
-}
-
-// Pairs for build-time variables in the form TODO
+// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
 func (o RemoteImageBuildOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v RemoteImageBuild) map[string]string { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
@@ -2978,6 +3203,16 @@ func (o RemoteImageBuildOutput) BuildArgs() pulumi.StringMapOutput {
 // BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 func (o RemoteImageBuildOutput) BuildId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.BuildId }).(pulumi.StringPtrOutput)
+}
+
+// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+func (o RemoteImageBuildOutput) BuildLogFile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RemoteImageBuild) *string { return v.BuildLogFile }).(pulumi.StringPtrOutput)
+}
+
+// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+func (o RemoteImageBuildOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Builder }).(pulumi.StringPtrOutput)
 }
 
 // Images to consider as cache sources
@@ -2990,7 +3225,7 @@ func (o RemoteImageBuildOutput) CgroupParent() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.CgroupParent }).(pulumi.StringPtrOutput)
 }
 
-// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
 func (o RemoteImageBuildOutput) Context() pulumi.StringOutput {
 	return o.ApplyT(func(v RemoteImageBuild) string { return v.Context }).(pulumi.StringOutput)
 }
@@ -3080,7 +3315,7 @@ func (o RemoteImageBuildOutput) PullParent() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.PullParent }).(pulumi.BoolPtrOutput)
 }
 
-// A Git repository URI or HTTP/HTTPS context URI
+// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
 func (o RemoteImageBuildOutput) RemoteContext() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.RemoteContext }).(pulumi.StringPtrOutput)
 }
@@ -3088,6 +3323,11 @@ func (o RemoteImageBuildOutput) RemoteContext() pulumi.StringPtrOutput {
 // Remove intermediate containers after a successful build. Defaults to `true`.
 func (o RemoteImageBuildOutput) Remove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.Remove }).(pulumi.BoolPtrOutput)
+}
+
+// Set build-time secrets. Only available when you use a buildx builder.
+func (o RemoteImageBuildOutput) Secrets() RemoteImageBuildSecretArrayOutput {
+	return o.ApplyT(func(v RemoteImageBuild) []RemoteImageBuildSecret { return v.Secrets }).(RemoteImageBuildSecretArrayOutput)
 }
 
 // The security options
@@ -3169,17 +3409,7 @@ func (o RemoteImageBuildPtrOutput) AuthConfigs() RemoteImageBuildAuthConfigArray
 	}).(RemoteImageBuildAuthConfigArrayOutput)
 }
 
-// Set build-time variables
-func (o RemoteImageBuildPtrOutput) BuildArg() pulumi.StringMapOutput {
-	return o.ApplyT(func(v *RemoteImageBuild) map[string]string {
-		if v == nil {
-			return nil
-		}
-		return v.BuildArg
-	}).(pulumi.StringMapOutput)
-}
-
-// Pairs for build-time variables in the form TODO
+// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
 func (o RemoteImageBuildPtrOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) map[string]string {
 		if v == nil {
@@ -3196,6 +3426,26 @@ func (o RemoteImageBuildPtrOutput) BuildId() pulumi.StringPtrOutput {
 			return nil
 		}
 		return v.BuildId
+	}).(pulumi.StringPtrOutput)
+}
+
+// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+func (o RemoteImageBuildPtrOutput) BuildLogFile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RemoteImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BuildLogFile
+	}).(pulumi.StringPtrOutput)
+}
+
+// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+func (o RemoteImageBuildPtrOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RemoteImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Builder
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -3219,7 +3469,7 @@ func (o RemoteImageBuildPtrOutput) CgroupParent() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
 func (o RemoteImageBuildPtrOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -3399,7 +3649,7 @@ func (o RemoteImageBuildPtrOutput) PullParent() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// A Git repository URI or HTTP/HTTPS context URI
+// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
 func (o RemoteImageBuildPtrOutput) RemoteContext() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -3417,6 +3667,16 @@ func (o RemoteImageBuildPtrOutput) Remove() pulumi.BoolPtrOutput {
 		}
 		return v.Remove
 	}).(pulumi.BoolPtrOutput)
+}
+
+// Set build-time secrets. Only available when you use a buildx builder.
+func (o RemoteImageBuildPtrOutput) Secrets() RemoteImageBuildSecretArrayOutput {
+	return o.ApplyT(func(v *RemoteImageBuild) []RemoteImageBuildSecret {
+		if v == nil {
+			return nil
+		}
+		return v.Secrets
+	}).(RemoteImageBuildSecretArrayOutput)
 }
 
 // The security options
@@ -3667,6 +3927,121 @@ func (o RemoteImageBuildAuthConfigArrayOutput) Index(i pulumi.IntInput) RemoteIm
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RemoteImageBuildAuthConfig {
 		return vs[0].([]RemoteImageBuildAuthConfig)[vs[1].(int)]
 	}).(RemoteImageBuildAuthConfigOutput)
+}
+
+type RemoteImageBuildSecret struct {
+	// Environment variable source of the secret
+	Env *string `pulumi:"env"`
+	// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+	Id string `pulumi:"id"`
+	// File source of the secret. Takes precedence over `env`
+	Src *string `pulumi:"src"`
+}
+
+// RemoteImageBuildSecretInput is an input type that accepts RemoteImageBuildSecretArgs and RemoteImageBuildSecretOutput values.
+// You can construct a concrete instance of `RemoteImageBuildSecretInput` via:
+//
+//	RemoteImageBuildSecretArgs{...}
+type RemoteImageBuildSecretInput interface {
+	pulumi.Input
+
+	ToRemoteImageBuildSecretOutput() RemoteImageBuildSecretOutput
+	ToRemoteImageBuildSecretOutputWithContext(context.Context) RemoteImageBuildSecretOutput
+}
+
+type RemoteImageBuildSecretArgs struct {
+	// Environment variable source of the secret
+	Env pulumi.StringPtrInput `pulumi:"env"`
+	// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+	Id pulumi.StringInput `pulumi:"id"`
+	// File source of the secret. Takes precedence over `env`
+	Src pulumi.StringPtrInput `pulumi:"src"`
+}
+
+func (RemoteImageBuildSecretArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RemoteImageBuildSecret)(nil)).Elem()
+}
+
+func (i RemoteImageBuildSecretArgs) ToRemoteImageBuildSecretOutput() RemoteImageBuildSecretOutput {
+	return i.ToRemoteImageBuildSecretOutputWithContext(context.Background())
+}
+
+func (i RemoteImageBuildSecretArgs) ToRemoteImageBuildSecretOutputWithContext(ctx context.Context) RemoteImageBuildSecretOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildSecretOutput)
+}
+
+// RemoteImageBuildSecretArrayInput is an input type that accepts RemoteImageBuildSecretArray and RemoteImageBuildSecretArrayOutput values.
+// You can construct a concrete instance of `RemoteImageBuildSecretArrayInput` via:
+//
+//	RemoteImageBuildSecretArray{ RemoteImageBuildSecretArgs{...} }
+type RemoteImageBuildSecretArrayInput interface {
+	pulumi.Input
+
+	ToRemoteImageBuildSecretArrayOutput() RemoteImageBuildSecretArrayOutput
+	ToRemoteImageBuildSecretArrayOutputWithContext(context.Context) RemoteImageBuildSecretArrayOutput
+}
+
+type RemoteImageBuildSecretArray []RemoteImageBuildSecretInput
+
+func (RemoteImageBuildSecretArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RemoteImageBuildSecret)(nil)).Elem()
+}
+
+func (i RemoteImageBuildSecretArray) ToRemoteImageBuildSecretArrayOutput() RemoteImageBuildSecretArrayOutput {
+	return i.ToRemoteImageBuildSecretArrayOutputWithContext(context.Background())
+}
+
+func (i RemoteImageBuildSecretArray) ToRemoteImageBuildSecretArrayOutputWithContext(ctx context.Context) RemoteImageBuildSecretArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildSecretArrayOutput)
+}
+
+type RemoteImageBuildSecretOutput struct{ *pulumi.OutputState }
+
+func (RemoteImageBuildSecretOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RemoteImageBuildSecret)(nil)).Elem()
+}
+
+func (o RemoteImageBuildSecretOutput) ToRemoteImageBuildSecretOutput() RemoteImageBuildSecretOutput {
+	return o
+}
+
+func (o RemoteImageBuildSecretOutput) ToRemoteImageBuildSecretOutputWithContext(ctx context.Context) RemoteImageBuildSecretOutput {
+	return o
+}
+
+// Environment variable source of the secret
+func (o RemoteImageBuildSecretOutput) Env() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RemoteImageBuildSecret) *string { return v.Env }).(pulumi.StringPtrOutput)
+}
+
+// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+func (o RemoteImageBuildSecretOutput) Id() pulumi.StringOutput {
+	return o.ApplyT(func(v RemoteImageBuildSecret) string { return v.Id }).(pulumi.StringOutput)
+}
+
+// File source of the secret. Takes precedence over `env`
+func (o RemoteImageBuildSecretOutput) Src() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RemoteImageBuildSecret) *string { return v.Src }).(pulumi.StringPtrOutput)
+}
+
+type RemoteImageBuildSecretArrayOutput struct{ *pulumi.OutputState }
+
+func (RemoteImageBuildSecretArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RemoteImageBuildSecret)(nil)).Elem()
+}
+
+func (o RemoteImageBuildSecretArrayOutput) ToRemoteImageBuildSecretArrayOutput() RemoteImageBuildSecretArrayOutput {
+	return o
+}
+
+func (o RemoteImageBuildSecretArrayOutput) ToRemoteImageBuildSecretArrayOutputWithContext(ctx context.Context) RemoteImageBuildSecretArrayOutput {
+	return o
+}
+
+func (o RemoteImageBuildSecretArrayOutput) Index(i pulumi.IntInput) RemoteImageBuildSecretOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RemoteImageBuildSecret {
+		return vs[0].([]RemoteImageBuildSecret)[vs[1].(int)]
+	}).(RemoteImageBuildSecretOutput)
 }
 
 type RemoteImageBuildUlimit struct {
@@ -10397,6 +10772,305 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 	}).(GetNetworkIpamConfigOutput)
 }
 
+type GetRegistryImageManifestsAuthConfig struct {
+	// The address of the Docker registry.
+	Address string `pulumi:"address"`
+	// The password for the Docker registry.
+	Password string `pulumi:"password"`
+	// The username for the Docker registry.
+	Username string `pulumi:"username"`
+}
+
+// GetRegistryImageManifestsAuthConfigInput is an input type that accepts GetRegistryImageManifestsAuthConfigArgs and GetRegistryImageManifestsAuthConfigOutput values.
+// You can construct a concrete instance of `GetRegistryImageManifestsAuthConfigInput` via:
+//
+//	GetRegistryImageManifestsAuthConfigArgs{...}
+type GetRegistryImageManifestsAuthConfigInput interface {
+	pulumi.Input
+
+	ToGetRegistryImageManifestsAuthConfigOutput() GetRegistryImageManifestsAuthConfigOutput
+	ToGetRegistryImageManifestsAuthConfigOutputWithContext(context.Context) GetRegistryImageManifestsAuthConfigOutput
+}
+
+type GetRegistryImageManifestsAuthConfigArgs struct {
+	// The address of the Docker registry.
+	Address pulumi.StringInput `pulumi:"address"`
+	// The password for the Docker registry.
+	Password pulumi.StringInput `pulumi:"password"`
+	// The username for the Docker registry.
+	Username pulumi.StringInput `pulumi:"username"`
+}
+
+func (GetRegistryImageManifestsAuthConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetRegistryImageManifestsAuthConfig)(nil)).Elem()
+}
+
+func (i GetRegistryImageManifestsAuthConfigArgs) ToGetRegistryImageManifestsAuthConfigOutput() GetRegistryImageManifestsAuthConfigOutput {
+	return i.ToGetRegistryImageManifestsAuthConfigOutputWithContext(context.Background())
+}
+
+func (i GetRegistryImageManifestsAuthConfigArgs) ToGetRegistryImageManifestsAuthConfigOutputWithContext(ctx context.Context) GetRegistryImageManifestsAuthConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetRegistryImageManifestsAuthConfigOutput)
+}
+
+func (i GetRegistryImageManifestsAuthConfigArgs) ToGetRegistryImageManifestsAuthConfigPtrOutput() GetRegistryImageManifestsAuthConfigPtrOutput {
+	return i.ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(context.Background())
+}
+
+func (i GetRegistryImageManifestsAuthConfigArgs) ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(ctx context.Context) GetRegistryImageManifestsAuthConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetRegistryImageManifestsAuthConfigOutput).ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(ctx)
+}
+
+// GetRegistryImageManifestsAuthConfigPtrInput is an input type that accepts GetRegistryImageManifestsAuthConfigArgs, GetRegistryImageManifestsAuthConfigPtr and GetRegistryImageManifestsAuthConfigPtrOutput values.
+// You can construct a concrete instance of `GetRegistryImageManifestsAuthConfigPtrInput` via:
+//
+//	        GetRegistryImageManifestsAuthConfigArgs{...}
+//
+//	or:
+//
+//	        nil
+type GetRegistryImageManifestsAuthConfigPtrInput interface {
+	pulumi.Input
+
+	ToGetRegistryImageManifestsAuthConfigPtrOutput() GetRegistryImageManifestsAuthConfigPtrOutput
+	ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(context.Context) GetRegistryImageManifestsAuthConfigPtrOutput
+}
+
+type getRegistryImageManifestsAuthConfigPtrType GetRegistryImageManifestsAuthConfigArgs
+
+func GetRegistryImageManifestsAuthConfigPtr(v *GetRegistryImageManifestsAuthConfigArgs) GetRegistryImageManifestsAuthConfigPtrInput {
+	return (*getRegistryImageManifestsAuthConfigPtrType)(v)
+}
+
+func (*getRegistryImageManifestsAuthConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**GetRegistryImageManifestsAuthConfig)(nil)).Elem()
+}
+
+func (i *getRegistryImageManifestsAuthConfigPtrType) ToGetRegistryImageManifestsAuthConfigPtrOutput() GetRegistryImageManifestsAuthConfigPtrOutput {
+	return i.ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *getRegistryImageManifestsAuthConfigPtrType) ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(ctx context.Context) GetRegistryImageManifestsAuthConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetRegistryImageManifestsAuthConfigPtrOutput)
+}
+
+type GetRegistryImageManifestsAuthConfigOutput struct{ *pulumi.OutputState }
+
+func (GetRegistryImageManifestsAuthConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetRegistryImageManifestsAuthConfig)(nil)).Elem()
+}
+
+func (o GetRegistryImageManifestsAuthConfigOutput) ToGetRegistryImageManifestsAuthConfigOutput() GetRegistryImageManifestsAuthConfigOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsAuthConfigOutput) ToGetRegistryImageManifestsAuthConfigOutputWithContext(ctx context.Context) GetRegistryImageManifestsAuthConfigOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsAuthConfigOutput) ToGetRegistryImageManifestsAuthConfigPtrOutput() GetRegistryImageManifestsAuthConfigPtrOutput {
+	return o.ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(context.Background())
+}
+
+func (o GetRegistryImageManifestsAuthConfigOutput) ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(ctx context.Context) GetRegistryImageManifestsAuthConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v GetRegistryImageManifestsAuthConfig) *GetRegistryImageManifestsAuthConfig {
+		return &v
+	}).(GetRegistryImageManifestsAuthConfigPtrOutput)
+}
+
+// The address of the Docker registry.
+func (o GetRegistryImageManifestsAuthConfigOutput) Address() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) string { return v.Address }).(pulumi.StringOutput)
+}
+
+// The password for the Docker registry.
+func (o GetRegistryImageManifestsAuthConfigOutput) Password() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) string { return v.Password }).(pulumi.StringOutput)
+}
+
+// The username for the Docker registry.
+func (o GetRegistryImageManifestsAuthConfigOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) string { return v.Username }).(pulumi.StringOutput)
+}
+
+type GetRegistryImageManifestsAuthConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (GetRegistryImageManifestsAuthConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**GetRegistryImageManifestsAuthConfig)(nil)).Elem()
+}
+
+func (o GetRegistryImageManifestsAuthConfigPtrOutput) ToGetRegistryImageManifestsAuthConfigPtrOutput() GetRegistryImageManifestsAuthConfigPtrOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsAuthConfigPtrOutput) ToGetRegistryImageManifestsAuthConfigPtrOutputWithContext(ctx context.Context) GetRegistryImageManifestsAuthConfigPtrOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsAuthConfigPtrOutput) Elem() GetRegistryImageManifestsAuthConfigOutput {
+	return o.ApplyT(func(v *GetRegistryImageManifestsAuthConfig) GetRegistryImageManifestsAuthConfig {
+		if v != nil {
+			return *v
+		}
+		var ret GetRegistryImageManifestsAuthConfig
+		return ret
+	}).(GetRegistryImageManifestsAuthConfigOutput)
+}
+
+// The address of the Docker registry.
+func (o GetRegistryImageManifestsAuthConfigPtrOutput) Address() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *GetRegistryImageManifestsAuthConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Address
+	}).(pulumi.StringPtrOutput)
+}
+
+// The password for the Docker registry.
+func (o GetRegistryImageManifestsAuthConfigPtrOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *GetRegistryImageManifestsAuthConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Password
+	}).(pulumi.StringPtrOutput)
+}
+
+// The username for the Docker registry.
+func (o GetRegistryImageManifestsAuthConfigPtrOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *GetRegistryImageManifestsAuthConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Username
+	}).(pulumi.StringPtrOutput)
+}
+
+type GetRegistryImageManifestsManifest struct {
+	// The platform architecture supported by the manifest.
+	Architecture string `pulumi:"architecture"`
+	// The media type of the manifest.
+	MediaType string `pulumi:"mediaType"`
+	// The operating system supported by the manifest.
+	Os string `pulumi:"os"`
+	// The content digest of the manifest, as stored in the registry.
+	Sha256Digest string `pulumi:"sha256Digest"`
+}
+
+// GetRegistryImageManifestsManifestInput is an input type that accepts GetRegistryImageManifestsManifestArgs and GetRegistryImageManifestsManifestOutput values.
+// You can construct a concrete instance of `GetRegistryImageManifestsManifestInput` via:
+//
+//	GetRegistryImageManifestsManifestArgs{...}
+type GetRegistryImageManifestsManifestInput interface {
+	pulumi.Input
+
+	ToGetRegistryImageManifestsManifestOutput() GetRegistryImageManifestsManifestOutput
+	ToGetRegistryImageManifestsManifestOutputWithContext(context.Context) GetRegistryImageManifestsManifestOutput
+}
+
+type GetRegistryImageManifestsManifestArgs struct {
+	// The platform architecture supported by the manifest.
+	Architecture pulumi.StringInput `pulumi:"architecture"`
+	// The media type of the manifest.
+	MediaType pulumi.StringInput `pulumi:"mediaType"`
+	// The operating system supported by the manifest.
+	Os pulumi.StringInput `pulumi:"os"`
+	// The content digest of the manifest, as stored in the registry.
+	Sha256Digest pulumi.StringInput `pulumi:"sha256Digest"`
+}
+
+func (GetRegistryImageManifestsManifestArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetRegistryImageManifestsManifest)(nil)).Elem()
+}
+
+func (i GetRegistryImageManifestsManifestArgs) ToGetRegistryImageManifestsManifestOutput() GetRegistryImageManifestsManifestOutput {
+	return i.ToGetRegistryImageManifestsManifestOutputWithContext(context.Background())
+}
+
+func (i GetRegistryImageManifestsManifestArgs) ToGetRegistryImageManifestsManifestOutputWithContext(ctx context.Context) GetRegistryImageManifestsManifestOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetRegistryImageManifestsManifestOutput)
+}
+
+// GetRegistryImageManifestsManifestArrayInput is an input type that accepts GetRegistryImageManifestsManifestArray and GetRegistryImageManifestsManifestArrayOutput values.
+// You can construct a concrete instance of `GetRegistryImageManifestsManifestArrayInput` via:
+//
+//	GetRegistryImageManifestsManifestArray{ GetRegistryImageManifestsManifestArgs{...} }
+type GetRegistryImageManifestsManifestArrayInput interface {
+	pulumi.Input
+
+	ToGetRegistryImageManifestsManifestArrayOutput() GetRegistryImageManifestsManifestArrayOutput
+	ToGetRegistryImageManifestsManifestArrayOutputWithContext(context.Context) GetRegistryImageManifestsManifestArrayOutput
+}
+
+type GetRegistryImageManifestsManifestArray []GetRegistryImageManifestsManifestInput
+
+func (GetRegistryImageManifestsManifestArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetRegistryImageManifestsManifest)(nil)).Elem()
+}
+
+func (i GetRegistryImageManifestsManifestArray) ToGetRegistryImageManifestsManifestArrayOutput() GetRegistryImageManifestsManifestArrayOutput {
+	return i.ToGetRegistryImageManifestsManifestArrayOutputWithContext(context.Background())
+}
+
+func (i GetRegistryImageManifestsManifestArray) ToGetRegistryImageManifestsManifestArrayOutputWithContext(ctx context.Context) GetRegistryImageManifestsManifestArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetRegistryImageManifestsManifestArrayOutput)
+}
+
+type GetRegistryImageManifestsManifestOutput struct{ *pulumi.OutputState }
+
+func (GetRegistryImageManifestsManifestOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetRegistryImageManifestsManifest)(nil)).Elem()
+}
+
+func (o GetRegistryImageManifestsManifestOutput) ToGetRegistryImageManifestsManifestOutput() GetRegistryImageManifestsManifestOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsManifestOutput) ToGetRegistryImageManifestsManifestOutputWithContext(ctx context.Context) GetRegistryImageManifestsManifestOutput {
+	return o
+}
+
+// The platform architecture supported by the manifest.
+func (o GetRegistryImageManifestsManifestOutput) Architecture() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsManifest) string { return v.Architecture }).(pulumi.StringOutput)
+}
+
+// The media type of the manifest.
+func (o GetRegistryImageManifestsManifestOutput) MediaType() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsManifest) string { return v.MediaType }).(pulumi.StringOutput)
+}
+
+// The operating system supported by the manifest.
+func (o GetRegistryImageManifestsManifestOutput) Os() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsManifest) string { return v.Os }).(pulumi.StringOutput)
+}
+
+// The content digest of the manifest, as stored in the registry.
+func (o GetRegistryImageManifestsManifestOutput) Sha256Digest() pulumi.StringOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsManifest) string { return v.Sha256Digest }).(pulumi.StringOutput)
+}
+
+type GetRegistryImageManifestsManifestArrayOutput struct{ *pulumi.OutputState }
+
+func (GetRegistryImageManifestsManifestArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetRegistryImageManifestsManifest)(nil)).Elem()
+}
+
+func (o GetRegistryImageManifestsManifestArrayOutput) ToGetRegistryImageManifestsManifestArrayOutput() GetRegistryImageManifestsManifestArrayOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsManifestArrayOutput) ToGetRegistryImageManifestsManifestArrayOutputWithContext(ctx context.Context) GetRegistryImageManifestsManifestArrayOutput {
+	return o
+}
+
+func (o GetRegistryImageManifestsManifestArrayOutput) Index(i pulumi.IntInput) GetRegistryImageManifestsManifestOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetRegistryImageManifestsManifest {
+		return vs[0].([]GetRegistryImageManifestsManifest)[vs[1].(int)]
+	}).(GetRegistryImageManifestsManifestOutput)
+}
+
 // Describes a Docker container registry
 type Registry struct {
 	// The password to authenticate to the registry. Does not cause image rebuild when changed.
@@ -10616,10 +11290,14 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*PluginGrantPermissionArrayInput)(nil)).Elem(), PluginGrantPermissionArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ProviderRegistryAuthInput)(nil)).Elem(), ProviderRegistryAuthArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ProviderRegistryAuthArrayInput)(nil)).Elem(), ProviderRegistryAuthArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageAuthConfigInput)(nil)).Elem(), RegistryImageAuthConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageAuthConfigPtrInput)(nil)).Elem(), RegistryImageAuthConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildInput)(nil)).Elem(), RemoteImageBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildPtrInput)(nil)).Elem(), RemoteImageBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildAuthConfigInput)(nil)).Elem(), RemoteImageBuildAuthConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildAuthConfigArrayInput)(nil)).Elem(), RemoteImageBuildAuthConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildSecretInput)(nil)).Elem(), RemoteImageBuildSecretArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildSecretArrayInput)(nil)).Elem(), RemoteImageBuildSecretArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildUlimitInput)(nil)).Elem(), RemoteImageBuildUlimitArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildUlimitArrayInput)(nil)).Elem(), RemoteImageBuildUlimitArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*SecretLabelInput)(nil)).Elem(), SecretLabelArgs{})
@@ -10700,6 +11378,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildPtrInput)(nil)).Elem(), DockerBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigInput)(nil)).Elem(), GetNetworkIpamConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigArrayInput)(nil)).Elem(), GetNetworkIpamConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetRegistryImageManifestsAuthConfigInput)(nil)).Elem(), GetRegistryImageManifestsAuthConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetRegistryImageManifestsAuthConfigPtrInput)(nil)).Elem(), GetRegistryImageManifestsAuthConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetRegistryImageManifestsManifestInput)(nil)).Elem(), GetRegistryImageManifestsManifestArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetRegistryImageManifestsManifestArrayInput)(nil)).Elem(), GetRegistryImageManifestsManifestArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryInput)(nil)).Elem(), RegistryArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryPtrInput)(nil)).Elem(), RegistryArgs{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesOutput{})
@@ -10742,10 +11424,14 @@ func init() {
 	pulumi.RegisterOutputType(PluginGrantPermissionArrayOutput{})
 	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})
 	pulumi.RegisterOutputType(ProviderRegistryAuthArrayOutput{})
+	pulumi.RegisterOutputType(RegistryImageAuthConfigOutput{})
+	pulumi.RegisterOutputType(RegistryImageAuthConfigPtrOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildPtrOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildAuthConfigOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildAuthConfigArrayOutput{})
+	pulumi.RegisterOutputType(RemoteImageBuildSecretOutput{})
+	pulumi.RegisterOutputType(RemoteImageBuildSecretArrayOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildUlimitOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildUlimitArrayOutput{})
 	pulumi.RegisterOutputType(SecretLabelOutput{})
@@ -10826,6 +11512,10 @@ func init() {
 	pulumi.RegisterOutputType(DockerBuildPtrOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
+	pulumi.RegisterOutputType(GetRegistryImageManifestsAuthConfigOutput{})
+	pulumi.RegisterOutputType(GetRegistryImageManifestsAuthConfigPtrOutput{})
+	pulumi.RegisterOutputType(GetRegistryImageManifestsManifestOutput{})
+	pulumi.RegisterOutputType(GetRegistryImageManifestsManifestArrayOutput{})
 	pulumi.RegisterOutputType(RegistryOutput{})
 	pulumi.RegisterOutputType(RegistryPtrOutput{})
 }

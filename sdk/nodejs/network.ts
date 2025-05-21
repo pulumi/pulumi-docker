@@ -86,6 +86,8 @@ export class Network extends pulumi.CustomResource {
     public readonly attachable!: pulumi.Output<boolean | undefined>;
     /**
      * Requests daemon to check for networks with same name.
+     *
+     * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
      */
     public readonly checkDuplicate!: pulumi.Output<boolean | undefined>;
     /**
@@ -190,6 +192,8 @@ export interface NetworkState {
     attachable?: pulumi.Input<boolean>;
     /**
      * Requests daemon to check for networks with same name.
+     *
+     * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
      */
     checkDuplicate?: pulumi.Input<boolean>;
     /**
@@ -248,6 +252,8 @@ export interface NetworkArgs {
     attachable?: pulumi.Input<boolean>;
     /**
      * Requests daemon to check for networks with same name.
+     *
+     * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
      */
     checkDuplicate?: pulumi.Input<boolean>;
     /**

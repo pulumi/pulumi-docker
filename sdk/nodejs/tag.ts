@@ -44,6 +44,10 @@ export class Tag extends pulumi.CustomResource {
      */
     public /*out*/ readonly sourceImageId!: pulumi.Output<string>;
     /**
+     * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     */
+    public readonly tagTriggers!: pulumi.Output<string[] | undefined>;
+    /**
      * Name of the target image.
      */
     public readonly targetImage!: pulumi.Output<string>;
@@ -63,6 +67,7 @@ export class Tag extends pulumi.CustomResource {
             const state = argsOrState as TagState | undefined;
             resourceInputs["sourceImage"] = state ? state.sourceImage : undefined;
             resourceInputs["sourceImageId"] = state ? state.sourceImageId : undefined;
+            resourceInputs["tagTriggers"] = state ? state.tagTriggers : undefined;
             resourceInputs["targetImage"] = state ? state.targetImage : undefined;
         } else {
             const args = argsOrState as TagArgs | undefined;
@@ -73,6 +78,7 @@ export class Tag extends pulumi.CustomResource {
                 throw new Error("Missing required property 'targetImage'");
             }
             resourceInputs["sourceImage"] = args ? args.sourceImage : undefined;
+            resourceInputs["tagTriggers"] = args ? args.tagTriggers : undefined;
             resourceInputs["targetImage"] = args ? args.targetImage : undefined;
             resourceInputs["sourceImageId"] = undefined /*out*/;
         }
@@ -94,6 +100,10 @@ export interface TagState {
      */
     sourceImageId?: pulumi.Input<string>;
     /**
+     * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     */
+    tagTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * Name of the target image.
      */
     targetImage?: pulumi.Input<string>;
@@ -107,6 +117,10 @@ export interface TagArgs {
      * Name of the source image.
      */
     sourceImage: pulumi.Input<string>;
+    /**
+     * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     */
+    tagTriggers?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Name of the target image.
      */
