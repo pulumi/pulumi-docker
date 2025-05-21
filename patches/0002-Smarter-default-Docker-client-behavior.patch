@@ -56,7 +56,7 @@ index c2cb41e..9047e9b 100644
 -			client.WithDialContext(helper.Dialer),
 -			client.WithAPIVersionNegotiation(),
 -		)
-+		opts = append(opts, client.WithDialContext(helper.Dialer), client.WithHost(helper.Host))
++		opts = append(opts, client.WithHost(helper.Host), client.WithDialContext(helper.Dialer))
 +	} else if c.Host != "" {
 +		opts = append(opts, client.WithHost(c.Host))
  	}
