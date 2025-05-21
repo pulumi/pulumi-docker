@@ -4992,7 +4992,7 @@ func (o ServiceLabelArrayOutput) Index(i pulumi.IntInput) ServiceLabelOutput {
 }
 
 type ServiceMode struct {
-	// The global service mode. Defaults to `false`
+	// When `true`, tasks will run on every worker node. Conflicts with `replicated`
 	Global *bool `pulumi:"global"`
 	// The replicated service mode
 	Replicated *ServiceModeReplicated `pulumi:"replicated"`
@@ -5010,7 +5010,7 @@ type ServiceModeInput interface {
 }
 
 type ServiceModeArgs struct {
-	// The global service mode. Defaults to `false`
+	// When `true`, tasks will run on every worker node. Conflicts with `replicated`
 	Global pulumi.BoolPtrInput `pulumi:"global"`
 	// The replicated service mode
 	Replicated ServiceModeReplicatedPtrInput `pulumi:"replicated"`
@@ -5093,7 +5093,7 @@ func (o ServiceModeOutput) ToServiceModePtrOutputWithContext(ctx context.Context
 	}).(ServiceModePtrOutput)
 }
 
-// The global service mode. Defaults to `false`
+// When `true`, tasks will run on every worker node. Conflicts with `replicated`
 func (o ServiceModeOutput) Global() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
 }
@@ -5127,7 +5127,7 @@ func (o ServiceModePtrOutput) Elem() ServiceModeOutput {
 	}).(ServiceModeOutput)
 }
 
-// The global service mode. Defaults to `false`
+// When `true`, tasks will run on every worker node. Conflicts with `replicated`
 func (o ServiceModePtrOutput) Global() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ServiceMode) *bool {
 		if v == nil {

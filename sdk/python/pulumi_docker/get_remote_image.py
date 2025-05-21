@@ -77,7 +77,7 @@ class AwaitableGetRemoteImageResult(GetRemoteImageResult):
 def get_remote_image(name: Optional[builtins.str] = None,
                      opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetRemoteImageResult:
     """
-    `RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
+    `RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
 
     ## Example Usage
 
@@ -110,7 +110,7 @@ def get_remote_image(name: Optional[builtins.str] = None,
 def get_remote_image_output(name: Optional[pulumi.Input[builtins.str]] = None,
                             opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetRemoteImageResult]:
     """
-    `RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
+    `RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
 
     ## Example Usage
 

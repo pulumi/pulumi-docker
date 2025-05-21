@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
+ * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
  *
  * ## Example Usage
  *
@@ -66,7 +66,7 @@ export interface GetRemoteImageResult {
     readonly repoDigest: string;
 }
 /**
- * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
+ * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
  *
  * ## Example Usage
  *

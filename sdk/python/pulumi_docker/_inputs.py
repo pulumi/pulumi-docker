@@ -3424,7 +3424,7 @@ if not MYPY:
     class ServiceModeArgsDict(TypedDict):
         global_: NotRequired[pulumi.Input[builtins.bool]]
         """
-        The global service mode. Defaults to `false`
+        When `true`, tasks will run on every worker node. Conflicts with `replicated`
         """
         replicated: NotRequired[pulumi.Input['ServiceModeReplicatedArgsDict']]
         """
@@ -3439,7 +3439,7 @@ class ServiceModeArgs:
                  global_: Optional[pulumi.Input[builtins.bool]] = None,
                  replicated: Optional[pulumi.Input['ServiceModeReplicatedArgs']] = None):
         """
-        :param pulumi.Input[builtins.bool] global_: The global service mode. Defaults to `false`
+        :param pulumi.Input[builtins.bool] global_: When `true`, tasks will run on every worker node. Conflicts with `replicated`
         :param pulumi.Input['ServiceModeReplicatedArgs'] replicated: The replicated service mode
         """
         if global_ is not None:
@@ -3451,7 +3451,7 @@ class ServiceModeArgs:
     @pulumi.getter(name="global")
     def global_(self) -> Optional[pulumi.Input[builtins.bool]]:
         """
-        The global service mode. Defaults to `false`
+        When `true`, tasks will run on every worker node. Conflicts with `replicated`
         """
         return pulumi.get(self, "global_")
 
