@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.docker.inputs.RegistryImageAuthConfigArgs;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Map;
@@ -16,6 +17,21 @@ import javax.annotation.Nullable;
 public final class RegistryImageState extends com.pulumi.resources.ResourceArgs {
 
     public static final RegistryImageState Empty = new RegistryImageState();
+
+    /**
+     * Authentication configuration for the Docker registry. It is only used for this resource.
+     * 
+     */
+    @Import(name="authConfig")
+    private @Nullable Output<RegistryImageAuthConfigArgs> authConfig;
+
+    /**
+     * @return Authentication configuration for the Docker registry. It is only used for this resource.
+     * 
+     */
+    public Optional<Output<RegistryImageAuthConfigArgs>> authConfig() {
+        return Optional.ofNullable(this.authConfig);
+    }
 
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -95,6 +111,7 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
     private RegistryImageState() {}
 
     private RegistryImageState(RegistryImageState $) {
+        this.authConfig = $.authConfig;
         this.insecureSkipVerify = $.insecureSkipVerify;
         this.keepRemotely = $.keepRemotely;
         this.name = $.name;
@@ -118,6 +135,27 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
 
         public Builder(RegistryImageState defaults) {
             $ = new RegistryImageState(Objects.requireNonNull(defaults));
+        }
+
+        /**
+         * @param authConfig Authentication configuration for the Docker registry. It is only used for this resource.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder authConfig(@Nullable Output<RegistryImageAuthConfigArgs> authConfig) {
+            $.authConfig = authConfig;
+            return this;
+        }
+
+        /**
+         * @param authConfig Authentication configuration for the Docker registry. It is only used for this resource.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder authConfig(RegistryImageAuthConfigArgs authConfig) {
+            return authConfig(Output.of(authConfig));
         }
 
         /**

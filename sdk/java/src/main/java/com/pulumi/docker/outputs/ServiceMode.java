@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceMode {
     /**
-     * @return When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * @return The global service mode. Defaults to `false`
      * 
      */
     private @Nullable Boolean global;
@@ -25,7 +25,7 @@ public final class ServiceMode {
 
     private ServiceMode() {}
     /**
-     * @return When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * @return The global service mode. Defaults to `false`
      * 
      */
     public Optional<Boolean> global() {

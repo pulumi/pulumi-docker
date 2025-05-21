@@ -7,7 +7,10 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import javax.annotation.Nullable;
 
 
 public final class TagArgs extends com.pulumi.resources.ResourceArgs {
@@ -30,6 +33,21 @@ public final class TagArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     * 
+     */
+    @Import(name="tagTriggers")
+    private @Nullable Output<List<String>> tagTriggers;
+
+    /**
+     * @return List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     * 
+     */
+    public Optional<Output<List<String>>> tagTriggers() {
+        return Optional.ofNullable(this.tagTriggers);
+    }
+
+    /**
      * Name of the target image.
      * 
      */
@@ -48,6 +66,7 @@ public final class TagArgs extends com.pulumi.resources.ResourceArgs {
 
     private TagArgs(TagArgs $) {
         this.sourceImage = $.sourceImage;
+        this.tagTriggers = $.tagTriggers;
         this.targetImage = $.targetImage;
     }
 
@@ -88,6 +107,37 @@ public final class TagArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder sourceImage(String sourceImage) {
             return sourceImage(Output.of(sourceImage));
+        }
+
+        /**
+         * @param tagTriggers List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder tagTriggers(@Nullable Output<List<String>> tagTriggers) {
+            $.tagTriggers = tagTriggers;
+            return this;
+        }
+
+        /**
+         * @param tagTriggers List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder tagTriggers(List<String> tagTriggers) {
+            return tagTriggers(Output.of(tagTriggers));
+        }
+
+        /**
+         * @param tagTriggers List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder tagTriggers(String... tagTriggers) {
+            return tagTriggers(List.of(tagTriggers));
         }
 
         /**

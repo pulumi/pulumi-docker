@@ -7,6 +7,7 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.inputs.ProviderRegistryAuthArgs;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +62,40 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<String>> certPath() {
         return Optional.ofNullable(this.certPath);
+    }
+
+    /**
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+     * if set.
+     * 
+     */
+    @Import(name="context")
+    private @Nullable Output<String> context;
+
+    /**
+     * @return The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+     * if set.
+     * 
+     */
+    public Optional<Output<String>> context() {
+        return Optional.ofNullable(this.context);
+    }
+
+    /**
+     * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+     * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+     * 
+     */
+    @Import(name="disableDockerDaemonCheck", json=true)
+    private @Nullable Output<Boolean> disableDockerDaemonCheck;
+
+    /**
+     * @return If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+     * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+     * 
+     */
+    public Optional<Output<Boolean>> disableDockerDaemonCheck() {
+        return Optional.ofNullable(this.disableDockerDaemonCheck);
     }
 
     /**
@@ -121,6 +156,8 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         this.caMaterial = $.caMaterial;
         this.certMaterial = $.certMaterial;
         this.certPath = $.certPath;
+        this.context = $.context;
+        this.disableDockerDaemonCheck = $.disableDockerDaemonCheck;
         this.host = $.host;
         this.keyMaterial = $.keyMaterial;
         this.registryAuth = $.registryAuth;
@@ -206,6 +243,52 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder certPath(String certPath) {
             return certPath(Output.of(certPath));
+        }
+
+        /**
+         * @param context The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+         * if set.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder context(@Nullable Output<String> context) {
+            $.context = context;
+            return this;
+        }
+
+        /**
+         * @param context The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
+         * if set.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder context(String context) {
+            return context(Output.of(context));
+        }
+
+        /**
+         * @param disableDockerDaemonCheck If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+         * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder disableDockerDaemonCheck(@Nullable Output<Boolean> disableDockerDaemonCheck) {
+            $.disableDockerDaemonCheck = disableDockerDaemonCheck;
+            return this;
+        }
+
+        /**
+         * @param disableDockerDaemonCheck If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
+         * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder disableDockerDaemonCheck(Boolean disableDockerDaemonCheck) {
+            return disableDockerDaemonCheck(Output.of(disableDockerDaemonCheck));
         }
 
         /**

@@ -19,17 +19,9 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
 
     public static final RemoteImageState Empty = new RemoteImageState();
 
-    /**
-     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-     * 
-     */
     @Import(name="build")
     private @Nullable Output<RemoteImageBuildArgs> build;
 
-    /**
-     * @return Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-     * 
-     */
     public Optional<Output<RemoteImageBuildArgs>> build() {
         return Optional.ofNullable(this.build);
     }
@@ -125,14 +117,14 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
+     * The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.
      * 
      */
     @Import(name="repoDigest")
     private @Nullable Output<String> repoDigest;
 
     /**
-     * @return The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
+     * @return The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.
      * 
      */
     public Optional<Output<String>> repoDigest() {
@@ -186,23 +178,11 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
             $ = new RemoteImageState(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param build Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-         * 
-         * @return builder
-         * 
-         */
         public Builder build(@Nullable Output<RemoteImageBuildArgs> build) {
             $.build = build;
             return this;
         }
 
-        /**
-         * @param build Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-         * 
-         * @return builder
-         * 
-         */
         public Builder build(RemoteImageBuildArgs build) {
             return build(Output.of(build));
         }
@@ -344,7 +324,7 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param repoDigest The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
+         * @param repoDigest The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.
          * 
          * @return builder
          * 
@@ -355,7 +335,7 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param repoDigest The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`.
+         * @param repoDigest The image sha256 digest in the form of `repo[:tag]{@literal @}sha256:&lt;hash&gt;`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.
          * 
          * @return builder
          * 

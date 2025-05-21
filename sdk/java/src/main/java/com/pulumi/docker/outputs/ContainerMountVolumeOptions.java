@@ -35,6 +35,11 @@ public final class ContainerMountVolumeOptions {
      * 
      */
     private @Nullable Boolean noCopy;
+    /**
+     * @return Path within the volume to mount. Requires docker server version 1.45 or higher.
+     * 
+     */
+    private @Nullable String subpath;
 
     private ContainerMountVolumeOptions() {}
     /**
@@ -65,6 +70,13 @@ public final class ContainerMountVolumeOptions {
     public Optional<Boolean> noCopy() {
         return Optional.ofNullable(this.noCopy);
     }
+    /**
+     * @return Path within the volume to mount. Requires docker server version 1.45 or higher.
+     * 
+     */
+    public Optional<String> subpath() {
+        return Optional.ofNullable(this.subpath);
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -79,6 +91,7 @@ public final class ContainerMountVolumeOptions {
         private @Nullable Map<String,String> driverOptions;
         private @Nullable List<ContainerMountVolumeOptionsLabel> labels;
         private @Nullable Boolean noCopy;
+        private @Nullable String subpath;
         public Builder() {}
         public Builder(ContainerMountVolumeOptions defaults) {
     	      Objects.requireNonNull(defaults);
@@ -86,6 +99,7 @@ public final class ContainerMountVolumeOptions {
     	      this.driverOptions = defaults.driverOptions;
     	      this.labels = defaults.labels;
     	      this.noCopy = defaults.noCopy;
+    	      this.subpath = defaults.subpath;
         }
 
         @CustomType.Setter
@@ -115,12 +129,19 @@ public final class ContainerMountVolumeOptions {
             this.noCopy = noCopy;
             return this;
         }
+        @CustomType.Setter
+        public Builder subpath(@Nullable String subpath) {
+
+            this.subpath = subpath;
+            return this;
+        }
         public ContainerMountVolumeOptions build() {
             final var _resultValue = new ContainerMountVolumeOptions();
             _resultValue.driverName = driverName;
             _resultValue.driverOptions = driverOptions;
             _resultValue.labels = labels;
             _resultValue.noCopy = noCopy;
+            _resultValue.subpath = subpath;
             return _resultValue;
         }
     }

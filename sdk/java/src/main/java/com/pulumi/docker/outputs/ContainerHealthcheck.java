@@ -25,6 +25,11 @@ public final class ContainerHealthcheck {
      */
     private @Nullable Integer retries;
     /**
+     * @return Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
+    private @Nullable String startInterval;
+    /**
      * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      * 
      */
@@ -54,6 +59,13 @@ public final class ContainerHealthcheck {
      */
     public Optional<Integer> retries() {
         return Optional.ofNullable(this.retries);
+    }
+    /**
+     * @return Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
+    public Optional<String> startInterval() {
+        return Optional.ofNullable(this.startInterval);
     }
     /**
      * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
@@ -88,6 +100,7 @@ public final class ContainerHealthcheck {
     public static final class Builder {
         private @Nullable String interval;
         private @Nullable Integer retries;
+        private @Nullable String startInterval;
         private @Nullable String startPeriod;
         private List<String> tests;
         private @Nullable String timeout;
@@ -96,6 +109,7 @@ public final class ContainerHealthcheck {
     	      Objects.requireNonNull(defaults);
     	      this.interval = defaults.interval;
     	      this.retries = defaults.retries;
+    	      this.startInterval = defaults.startInterval;
     	      this.startPeriod = defaults.startPeriod;
     	      this.tests = defaults.tests;
     	      this.timeout = defaults.timeout;
@@ -111,6 +125,12 @@ public final class ContainerHealthcheck {
         public Builder retries(@Nullable Integer retries) {
 
             this.retries = retries;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder startInterval(@Nullable String startInterval) {
+
+            this.startInterval = startInterval;
             return this;
         }
         @CustomType.Setter
@@ -140,6 +160,7 @@ public final class ContainerHealthcheck {
             final var _resultValue = new ContainerHealthcheck();
             _resultValue.interval = interval;
             _resultValue.retries = retries;
+            _resultValue.startInterval = startInterval;
             _resultValue.startPeriod = startPeriod;
             _resultValue.tests = tests;
             _resultValue.timeout = timeout;

@@ -5,6 +5,7 @@ package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.RemoteImageBuildAuthConfig;
+import com.pulumi.docker.outputs.RemoteImageBuildSecret;
 import com.pulumi.docker.outputs.RemoteImageBuildUlimit;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
@@ -24,12 +25,7 @@ public final class RemoteImageBuild {
      */
     private @Nullable List<RemoteImageBuildAuthConfig> authConfigs;
     /**
-     * @return Set build-time variables
-     * 
-     */
-    private @Nullable Map<String,String> buildArg;
-    /**
-     * @return Pairs for build-time variables in the form TODO
+     * @return Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
      * 
      */
     private @Nullable Map<String,String> buildArgs;
@@ -38,6 +34,16 @@ public final class RemoteImageBuild {
      * 
      */
     private @Nullable String buildId;
+    /**
+     * @return Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     * 
+     */
+    private @Nullable String buildLogFile;
+    /**
+     * @return Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * 
+     */
+    private @Nullable String builder;
     /**
      * @return Images to consider as cache sources
      * 
@@ -49,7 +55,7 @@ public final class RemoteImageBuild {
      */
     private @Nullable String cgroupParent;
     /**
-     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      * 
      */
     private String context;
@@ -139,7 +145,7 @@ public final class RemoteImageBuild {
      */
     private @Nullable Boolean pullParent;
     /**
-     * @return A Git repository URI or HTTP/HTTPS context URI
+     * @return A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      * 
      */
     private @Nullable String remoteContext;
@@ -148,6 +154,11 @@ public final class RemoteImageBuild {
      * 
      */
     private @Nullable Boolean remove;
+    /**
+     * @return Set build-time secrets. Only available when you use a buildx builder.
+     * 
+     */
+    private @Nullable List<RemoteImageBuildSecret> secrets;
     /**
      * @return The security options
      * 
@@ -203,14 +214,7 @@ public final class RemoteImageBuild {
         return this.authConfigs == null ? List.of() : this.authConfigs;
     }
     /**
-     * @return Set build-time variables
-     * 
-     */
-    public Map<String,String> buildArg() {
-        return this.buildArg == null ? Map.of() : this.buildArg;
-    }
-    /**
-     * @return Pairs for build-time variables in the form TODO
+     * @return Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
      * 
      */
     public Map<String,String> buildArgs() {
@@ -222,6 +226,20 @@ public final class RemoteImageBuild {
      */
     public Optional<String> buildId() {
         return Optional.ofNullable(this.buildId);
+    }
+    /**
+     * @return Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     * 
+     */
+    public Optional<String> buildLogFile() {
+        return Optional.ofNullable(this.buildLogFile);
+    }
+    /**
+     * @return Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * 
+     */
+    public Optional<String> builder_() {
+        return Optional.ofNullable(this.builder);
     }
     /**
      * @return Images to consider as cache sources
@@ -238,7 +256,7 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.cgroupParent);
     }
     /**
-     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      * 
      */
     public String context() {
@@ -364,7 +382,7 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.pullParent);
     }
     /**
-     * @return A Git repository URI or HTTP/HTTPS context URI
+     * @return A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      * 
      */
     public Optional<String> remoteContext() {
@@ -376,6 +394,13 @@ public final class RemoteImageBuild {
      */
     public Optional<Boolean> remove() {
         return Optional.ofNullable(this.remove);
+    }
+    /**
+     * @return Set build-time secrets. Only available when you use a buildx builder.
+     * 
+     */
+    public List<RemoteImageBuildSecret> secrets() {
+        return this.secrets == null ? List.of() : this.secrets;
     }
     /**
      * @return The security options
@@ -451,9 +476,10 @@ public final class RemoteImageBuild {
     @CustomType.Builder
     public static final class Builder {
         private @Nullable List<RemoteImageBuildAuthConfig> authConfigs;
-        private @Nullable Map<String,String> buildArg;
         private @Nullable Map<String,String> buildArgs;
         private @Nullable String buildId;
+        private @Nullable String buildLogFile;
+        private @Nullable String builder;
         private @Nullable List<String> cacheFroms;
         private @Nullable String cgroupParent;
         private String context;
@@ -476,6 +502,7 @@ public final class RemoteImageBuild {
         private @Nullable Boolean pullParent;
         private @Nullable String remoteContext;
         private @Nullable Boolean remove;
+        private @Nullable List<RemoteImageBuildSecret> secrets;
         private @Nullable List<String> securityOpts;
         private @Nullable String sessionId;
         private @Nullable Integer shmSize;
@@ -489,9 +516,10 @@ public final class RemoteImageBuild {
         public Builder(RemoteImageBuild defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.authConfigs = defaults.authConfigs;
-    	      this.buildArg = defaults.buildArg;
     	      this.buildArgs = defaults.buildArgs;
     	      this.buildId = defaults.buildId;
+    	      this.buildLogFile = defaults.buildLogFile;
+    	      this.builder = defaults.builder;
     	      this.cacheFroms = defaults.cacheFroms;
     	      this.cgroupParent = defaults.cgroupParent;
     	      this.context = defaults.context;
@@ -514,6 +542,7 @@ public final class RemoteImageBuild {
     	      this.pullParent = defaults.pullParent;
     	      this.remoteContext = defaults.remoteContext;
     	      this.remove = defaults.remove;
+    	      this.secrets = defaults.secrets;
     	      this.securityOpts = defaults.securityOpts;
     	      this.sessionId = defaults.sessionId;
     	      this.shmSize = defaults.shmSize;
@@ -535,12 +564,6 @@ public final class RemoteImageBuild {
             return authConfigs(List.of(authConfigs));
         }
         @CustomType.Setter
-        public Builder buildArg(@Nullable Map<String,String> buildArg) {
-
-            this.buildArg = buildArg;
-            return this;
-        }
-        @CustomType.Setter
         public Builder buildArgs(@Nullable Map<String,String> buildArgs) {
 
             this.buildArgs = buildArgs;
@@ -550,6 +573,18 @@ public final class RemoteImageBuild {
         public Builder buildId(@Nullable String buildId) {
 
             this.buildId = buildId;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder buildLogFile(@Nullable String buildLogFile) {
+
+            this.buildLogFile = buildLogFile;
+            return this;
+        }
+        @CustomType.Setter("builder")
+        public Builder builder_(@Nullable String builder) {
+
+            this.builder = builder;
             return this;
         }
         @CustomType.Setter
@@ -693,6 +728,15 @@ public final class RemoteImageBuild {
             return this;
         }
         @CustomType.Setter
+        public Builder secrets(@Nullable List<RemoteImageBuildSecret> secrets) {
+
+            this.secrets = secrets;
+            return this;
+        }
+        public Builder secrets(RemoteImageBuildSecret... secrets) {
+            return secrets(List.of(secrets));
+        }
+        @CustomType.Setter
         public Builder securityOpts(@Nullable List<String> securityOpts) {
 
             this.securityOpts = securityOpts;
@@ -758,9 +802,10 @@ public final class RemoteImageBuild {
         public RemoteImageBuild build() {
             final var _resultValue = new RemoteImageBuild();
             _resultValue.authConfigs = authConfigs;
-            _resultValue.buildArg = buildArg;
             _resultValue.buildArgs = buildArgs;
             _resultValue.buildId = buildId;
+            _resultValue.buildLogFile = buildLogFile;
+            _resultValue.builder = builder;
             _resultValue.cacheFroms = cacheFroms;
             _resultValue.cgroupParent = cgroupParent;
             _resultValue.context = context;
@@ -783,6 +828,7 @@ public final class RemoteImageBuild {
             _resultValue.pullParent = pullParent;
             _resultValue.remoteContext = remoteContext;
             _resultValue.remove = remove;
+            _resultValue.secrets = secrets;
             _resultValue.securityOpts = securityOpts;
             _resultValue.sessionId = sessionId;
             _resultValue.shmSize = shmSize;

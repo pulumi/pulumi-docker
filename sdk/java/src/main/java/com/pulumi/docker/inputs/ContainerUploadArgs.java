@@ -78,6 +78,21 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
+     * The permission mode for the file in the container. Has precedence over `executable`.
+     * 
+     */
+    @Import(name="permissions")
+    private @Nullable Output<String> permissions;
+
+    /**
+     * @return The permission mode for the file in the container. Has precedence over `executable`.
+     * 
+     */
+    public Optional<Output<String>> permissions() {
+        return Optional.ofNullable(this.permissions);
+    }
+
+    /**
      * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
      * 
      */
@@ -114,6 +129,7 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         this.contentBase64 = $.contentBase64;
         this.executable = $.executable;
         this.file = $.file;
+        this.permissions = $.permissions;
         this.source = $.source;
         this.sourceHash = $.sourceHash;
     }
@@ -218,6 +234,27 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
          */
         public Builder file(String file) {
             return file(Output.of(file));
+        }
+
+        /**
+         * @param permissions The permission mode for the file in the container. Has precedence over `executable`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder permissions(@Nullable Output<String> permissions) {
+            $.permissions = permissions;
+            return this;
+        }
+
+        /**
+         * @param permissions The permission mode for the file in the container. Has precedence over `executable`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder permissions(String permissions) {
+            return permissions(Output.of(permissions));
         }
 
         /**

@@ -11,6 +11,8 @@ import com.pulumi.docker.TagArgs;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.TagState;
 import java.lang.String;
+import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
@@ -46,6 +48,20 @@ public class Tag extends com.pulumi.resources.CustomResource {
      */
     public Output<String> sourceImageId() {
         return this.sourceImageId;
+    }
+    /**
+     * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     * 
+     */
+    @Export(name="tagTriggers", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> tagTriggers;
+
+    /**
+     * @return List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
+     * 
+     */
+    public Output<Optional<List<String>>> tagTriggers() {
+        return Codegen.optional(this.tagTriggers);
     }
     /**
      * Name of the target image.

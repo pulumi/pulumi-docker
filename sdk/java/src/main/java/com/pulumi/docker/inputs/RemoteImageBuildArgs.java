@@ -6,6 +6,7 @@ package com.pulumi.docker.inputs;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.RemoteImageBuildAuthConfigArgs;
+import com.pulumi.docker.inputs.RemoteImageBuildSecretArgs;
 import com.pulumi.docker.inputs.RemoteImageBuildUlimitArgs;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
@@ -38,29 +39,14 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * Set build-time variables
-     * 
-     */
-    @Import(name="buildArg")
-    private @Nullable Output<Map<String,String>> buildArg;
-
-    /**
-     * @return Set build-time variables
-     * 
-     */
-    public Optional<Output<Map<String,String>>> buildArg() {
-        return Optional.ofNullable(this.buildArg);
-    }
-
-    /**
-     * Pairs for build-time variables in the form TODO
+     * Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
      * 
      */
     @Import(name="buildArgs")
     private @Nullable Output<Map<String,String>> buildArgs;
 
     /**
-     * @return Pairs for build-time variables in the form TODO
+     * @return Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
      * 
      */
     public Optional<Output<Map<String,String>>> buildArgs() {
@@ -80,6 +66,36 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
      */
     public Optional<Output<String>> buildId() {
         return Optional.ofNullable(this.buildId);
+    }
+
+    /**
+     * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     * 
+     */
+    @Import(name="buildLogFile")
+    private @Nullable Output<String> buildLogFile;
+
+    /**
+     * @return Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     * 
+     */
+    public Optional<Output<String>> buildLogFile() {
+        return Optional.ofNullable(this.buildLogFile);
+    }
+
+    /**
+     * Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * 
+     */
+    @Import(name="builder")
+    private @Nullable Output<String> builder;
+
+    /**
+     * @return Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * 
+     */
+    public Optional<Output<String>> builder_() {
+        return Optional.ofNullable(this.builder);
     }
 
     /**
@@ -113,14 +129,14 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      * 
      */
     @Import(name="context", required=true)
     private Output<String> context;
 
     /**
-     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     * @return Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      * 
      */
     public Output<String> context() {
@@ -383,14 +399,14 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * A Git repository URI or HTTP/HTTPS context URI
+     * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      * 
      */
     @Import(name="remoteContext")
     private @Nullable Output<String> remoteContext;
 
     /**
-     * @return A Git repository URI or HTTP/HTTPS context URI
+     * @return A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      * 
      */
     public Optional<Output<String>> remoteContext() {
@@ -410,6 +426,21 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
      */
     public Optional<Output<Boolean>> remove() {
         return Optional.ofNullable(this.remove);
+    }
+
+    /**
+     * Set build-time secrets. Only available when you use a buildx builder.
+     * 
+     */
+    @Import(name="secrets")
+    private @Nullable Output<List<RemoteImageBuildSecretArgs>> secrets;
+
+    /**
+     * @return Set build-time secrets. Only available when you use a buildx builder.
+     * 
+     */
+    public Optional<Output<List<RemoteImageBuildSecretArgs>>> secrets() {
+        return Optional.ofNullable(this.secrets);
     }
 
     /**
@@ -551,9 +582,10 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
 
     private RemoteImageBuildArgs(RemoteImageBuildArgs $) {
         this.authConfigs = $.authConfigs;
-        this.buildArg = $.buildArg;
         this.buildArgs = $.buildArgs;
         this.buildId = $.buildId;
+        this.buildLogFile = $.buildLogFile;
+        this.builder = $.builder;
         this.cacheFroms = $.cacheFroms;
         this.cgroupParent = $.cgroupParent;
         this.context = $.context;
@@ -576,6 +608,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         this.pullParent = $.pullParent;
         this.remoteContext = $.remoteContext;
         this.remove = $.remove;
+        this.secrets = $.secrets;
         this.securityOpts = $.securityOpts;
         this.sessionId = $.sessionId;
         this.shmSize = $.shmSize;
@@ -637,28 +670,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param buildArg Set build-time variables
-         * 
-         * @return builder
-         * 
-         */
-        public Builder buildArg(@Nullable Output<Map<String,String>> buildArg) {
-            $.buildArg = buildArg;
-            return this;
-        }
-
-        /**
-         * @param buildArg Set build-time variables
-         * 
-         * @return builder
-         * 
-         */
-        public Builder buildArg(Map<String,String> buildArg) {
-            return buildArg(Output.of(buildArg));
-        }
-
-        /**
-         * @param buildArgs Pairs for build-time variables in the form TODO
+         * @param buildArgs Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
          * 
          * @return builder
          * 
@@ -669,7 +681,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param buildArgs Pairs for build-time variables in the form TODO
+         * @param buildArgs Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
          * 
          * @return builder
          * 
@@ -697,6 +709,48 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          */
         public Builder buildId(String buildId) {
             return buildId(Output.of(buildId));
+        }
+
+        /**
+         * @param buildLogFile Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildLogFile(@Nullable Output<String> buildLogFile) {
+            $.buildLogFile = buildLogFile;
+            return this;
+        }
+
+        /**
+         * @param buildLogFile Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildLogFile(String buildLogFile) {
+            return buildLogFile(Output.of(buildLogFile));
+        }
+
+        /**
+         * @param builder Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builder_(@Nullable Output<String> builder) {
+            $.builder = builder;
+            return this;
+        }
+
+        /**
+         * @param builder Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builder_(String builder) {
+            return builder_(Output.of(builder));
         }
 
         /**
@@ -752,7 +806,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
          * 
          * @return builder
          * 
@@ -763,7 +817,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+         * @param context Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function &#39;${path.cwd}/context-dir&#39;. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
          * 
          * @return builder
          * 
@@ -1140,7 +1194,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param remoteContext A Git repository URI or HTTP/HTTPS context URI
+         * @param remoteContext A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
          * 
          * @return builder
          * 
@@ -1151,7 +1205,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param remoteContext A Git repository URI or HTTP/HTTPS context URI
+         * @param remoteContext A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
          * 
          * @return builder
          * 
@@ -1179,6 +1233,37 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          */
         public Builder remove(Boolean remove) {
             return remove(Output.of(remove));
+        }
+
+        /**
+         * @param secrets Set build-time secrets. Only available when you use a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secrets(@Nullable Output<List<RemoteImageBuildSecretArgs>> secrets) {
+            $.secrets = secrets;
+            return this;
+        }
+
+        /**
+         * @param secrets Set build-time secrets. Only available when you use a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secrets(List<RemoteImageBuildSecretArgs> secrets) {
+            return secrets(Output.of(secrets));
+        }
+
+        /**
+         * @param secrets Set build-time secrets. Only available when you use a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secrets(RemoteImageBuildSecretArgs... secrets) {
+            return secrets(List.of(secrets));
         }
 
         /**

@@ -16,12 +16,15 @@ import com.pulumi.docker.inputs.GetNetworkPlainArgs;
 import com.pulumi.docker.inputs.GetPluginArgs;
 import com.pulumi.docker.inputs.GetPluginPlainArgs;
 import com.pulumi.docker.inputs.GetRegistryImageArgs;
+import com.pulumi.docker.inputs.GetRegistryImageManifestsArgs;
+import com.pulumi.docker.inputs.GetRegistryImageManifestsPlainArgs;
 import com.pulumi.docker.inputs.GetRegistryImagePlainArgs;
 import com.pulumi.docker.inputs.GetRemoteImageArgs;
 import com.pulumi.docker.inputs.GetRemoteImagePlainArgs;
 import com.pulumi.docker.outputs.GetLogsResult;
 import com.pulumi.docker.outputs.GetNetworkResult;
 import com.pulumi.docker.outputs.GetPluginResult;
+import com.pulumi.docker.outputs.GetRegistryImageManifestsResult;
 import com.pulumi.docker.outputs.GetRegistryImageResult;
 import com.pulumi.docker.outputs.GetRemoteImageResult;
 import java.util.concurrent.CompletableFuture;
@@ -854,7 +857,42 @@ public final class DockerFunctions {
         return Deployment.getInstance().invokeAsync("docker:index/getRegistryImage:getRegistryImage", TypeShape.of(GetRegistryImageResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+     * Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
+     * 
+     */
+    public static Output<GetRegistryImageManifestsResult> getRegistryImageManifests(GetRegistryImageManifestsArgs args) {
+        return getRegistryImageManifests(args, InvokeOptions.Empty);
+    }
+    /**
+     * Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
+     * 
+     */
+    public static CompletableFuture<GetRegistryImageManifestsResult> getRegistryImageManifestsPlain(GetRegistryImageManifestsPlainArgs args) {
+        return getRegistryImageManifestsPlain(args, InvokeOptions.Empty);
+    }
+    /**
+     * Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
+     * 
+     */
+    public static Output<GetRegistryImageManifestsResult> getRegistryImageManifests(GetRegistryImageManifestsArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("docker:index/getRegistryImageManifests:getRegistryImageManifests", TypeShape.of(GetRegistryImageManifestsResult.class), args, Utilities.withVersion(options));
+    }
+    /**
+     * Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
+     * 
+     */
+    public static Output<GetRegistryImageManifestsResult> getRegistryImageManifests(GetRegistryImageManifestsArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("docker:index/getRegistryImageManifests:getRegistryImageManifests", TypeShape.of(GetRegistryImageManifestsResult.class), args, Utilities.withVersion(options));
+    }
+    /**
+     * Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
+     * 
+     */
+    public static CompletableFuture<GetRegistryImageManifestsResult> getRegistryImageManifestsPlain(GetRegistryImageManifestsPlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("docker:index/getRegistryImageManifests:getRegistryImageManifests", TypeShape.of(GetRegistryImageManifestsResult.class), args, Utilities.withVersion(options));
+    }
+    /**
+     * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
      * 
      * ## Example Usage
      * 
@@ -912,7 +950,7 @@ public final class DockerFunctions {
         return getRemoteImage(args, InvokeOptions.Empty);
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
      * 
      * ## Example Usage
      * 
@@ -970,7 +1008,7 @@ public final class DockerFunctions {
         return getRemoteImagePlain(args, InvokeOptions.Empty);
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
      * 
      * ## Example Usage
      * 
@@ -1028,7 +1066,7 @@ public final class DockerFunctions {
         return Deployment.getInstance().invoke("docker:index/getRemoteImage:getRemoteImage", TypeShape.of(GetRemoteImageResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
      * 
      * ## Example Usage
      * 
@@ -1086,7 +1124,7 @@ public final class DockerFunctions {
         return Deployment.getInstance().invoke("docker:index/getRemoteImage:getRemoteImage", TypeShape.of(GetRemoteImageResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
      * 
      * ## Example Usage
      * 
