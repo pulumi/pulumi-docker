@@ -403,7 +403,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 	ctx context.Context, docker *client.Client, imageID string,
 	img Image, urn resource.URN,
 ) (reference.Reference, error) {
-	dist, _, err := docker.ImageInspectWithRaw(ctx, imageID)
+	dist, err := docker.ImageInspect(ctx, imageID)
 	if err != nil {
 		return nil, err
 	}
