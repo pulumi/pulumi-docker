@@ -6,6 +6,192 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 import * as enums from "../types/enums";
 
+export interface BuildxBuilderDockerContainer {
+    /**
+     * Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+     */
+    cgroupParent?: string;
+    /**
+     * Sets the CPU CFS scheduler period for the container.
+     */
+    cpuPeriod?: string;
+    /**
+     * Imposes a CPU CFS quota on the container.
+     */
+    cpuQuota?: string;
+    /**
+     * Configures CPU shares (relative weight) of the container.
+     */
+    cpuShares?: string;
+    /**
+     * Limits the set of CPU cores the container can use.
+     */
+    cpusetCpus?: string;
+    /**
+     * Limits the set of CPU memory nodes the container can use.
+     */
+    cpusetMems?: string;
+    /**
+     * Automatically load images to the Docker Engine image store. Defaults to `false`
+     */
+    defaultLoad?: boolean;
+    /**
+     * Sets environment variables in the container.
+     */
+    env?: {[key: string]: string};
+    /**
+     * Sets the BuildKit image to use for the container.
+     */
+    image?: string;
+    /**
+     * Sets the amount of memory the container can use.
+     */
+    memory?: string;
+    /**
+     * Sets the memory swap limit for the container.
+     */
+    memorySwap?: string;
+    /**
+     * Sets the network mode for the container.
+     */
+    network?: string;
+    /**
+     * Sets the container's restart policy.
+     */
+    restartPolicy?: string;
+}
+
+export interface BuildxBuilderKubernetes {
+    /**
+     * Sets additional annotations on the deployments and pods.
+     */
+    annotations?: string;
+    /**
+     * Automatically load images to the Docker Engine image store. Defaults to `false`
+     */
+    defaultLoad?: boolean;
+    /**
+     * Sets the image to use for running BuildKit.
+     */
+    image?: string;
+    /**
+     * Sets additional labels on the deployments and pods.
+     */
+    labels?: string;
+    /**
+     * Resource limits for CPU, memory, and ephemeral storage.
+     */
+    limits?: outputs.BuildxBuilderKubernetesLimits;
+    /**
+     * Load-balancing strategy (sticky or random).
+     */
+    loadbalance?: string;
+    /**
+     * Sets the Kubernetes namespace.
+     */
+    namespace?: string;
+    /**
+     * Sets the pod's nodeSelector label(s).
+     */
+    nodeselector?: string;
+    /**
+     * QEMU emulation configuration.
+     */
+    qemu?: outputs.BuildxBuilderKubernetesQemu;
+    /**
+     * Sets the number of Pod replicas to create.
+     */
+    replicas?: number;
+    /**
+     * Resource requests for CPU, memory, and ephemeral storage.
+     */
+    requests?: outputs.BuildxBuilderKubernetesRequests;
+    /**
+     * Run the container as a non-root user.
+     */
+    rootless?: boolean;
+    /**
+     * Sets the scheduler responsible for scheduling the pod.
+     */
+    schedulername?: string;
+    /**
+     * Sets the pod's serviceAccountName.
+     */
+    serviceaccount?: string;
+    /**
+     * Set the timeout limit for pod provisioning.
+     */
+    timeout?: string;
+    /**
+     * Configures the pod's taint toleration.
+     */
+    tolerations?: string;
+}
+
+export interface BuildxBuilderKubernetesLimits {
+    /**
+     * CPU limit for the Kubernetes pod.
+     */
+    cpu?: string;
+    /**
+     * Ephemeral storage limit for the Kubernetes pod.
+     */
+    ephemeralStorage?: string;
+    /**
+     * Memory limit for the Kubernetes pod.
+     */
+    memory?: string;
+}
+
+export interface BuildxBuilderKubernetesQemu {
+    /**
+     * Sets the QEMU emulation image.
+     */
+    image?: string;
+    /**
+     * Install QEMU emulation for multi-platform support.
+     */
+    install?: boolean;
+}
+
+export interface BuildxBuilderKubernetesRequests {
+    /**
+     * CPU limit for the Kubernetes pod.
+     */
+    cpu?: string;
+    /**
+     * Ephemeral storage limit for the Kubernetes pod.
+     */
+    ephemeralStorage?: string;
+    /**
+     * Memory limit for the Kubernetes pod.
+     */
+    memory?: string;
+}
+
+export interface BuildxBuilderRemote {
+    /**
+     * Absolute path to the TLS certificate authority used for validation.
+     */
+    cacert?: string;
+    /**
+     * Absolute path to the TLS client certificate to present to buildkitd.
+     */
+    cert?: string;
+    /**
+     * Automatically load images to the Docker Engine image store. Defaults to `false`
+     */
+    defaultLoad?: boolean;
+    /**
+     * Sets the TLS client key.
+     */
+    key?: string;
+    /**
+     * TLS server name used in requests.
+     */
+    servername?: string;
+}
+
 export interface ContainerCapabilities {
     /**
      * List of linux capabilities to add.
@@ -433,7 +619,7 @@ export interface RemoteImageBuild {
      */
     buildLogFile?: string;
     /**
-     * Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
      */
     builder?: string;
     /**
@@ -509,7 +695,7 @@ export interface RemoteImageBuild {
      */
     noCache?: boolean;
     /**
-     * Set platform if server is multi-platform capable
+     * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      */
     platform?: string;
     /**
@@ -798,6 +984,14 @@ export interface ServiceTaskSpecContainerSpec {
      * Arguments to the command
      */
     args?: string[];
+    /**
+     * List of Linux capabilities to add to the container
+     */
+    capAdds?: string[];
+    /**
+     * List of Linux capabilities to drop from the container
+     */
+    capDrops?: string[];
     /**
      * The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
      */

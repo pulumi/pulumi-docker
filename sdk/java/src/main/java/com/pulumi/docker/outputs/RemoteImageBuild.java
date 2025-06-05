@@ -40,7 +40,7 @@ public final class RemoteImageBuild {
      */
     private @Nullable String buildLogFile;
     /**
-     * @return Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * @return Set the name of the buildx builder to use. If not set, the legacy builder is used.
      * 
      */
     private @Nullable String builder;
@@ -135,7 +135,7 @@ public final class RemoteImageBuild {
      */
     private @Nullable Boolean noCache;
     /**
-     * @return Set platform if server is multi-platform capable
+     * @return Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      * 
      */
     private @Nullable String platform;
@@ -235,7 +235,7 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.buildLogFile);
     }
     /**
-     * @return Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * @return Set the name of the buildx builder to use. If not set, the legacy builder is used.
      * 
      */
     public Optional<String> builder_() {
@@ -368,7 +368,7 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.noCache);
     }
     /**
-     * @return Set platform if server is multi-platform capable
+     * @return Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      * 
      */
     public Optional<String> platform() {

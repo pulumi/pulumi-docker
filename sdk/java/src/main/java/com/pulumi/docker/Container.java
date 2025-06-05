@@ -222,6 +222,34 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.containerReadRefreshTimeoutMilliseconds);
     }
     /**
+     * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     * 
+     */
+    @Export(name="cpuPeriod", refs={Integer.class}, tree="[0]")
+    private Output</* @Nullable */ Integer> cpuPeriod;
+
+    /**
+     * @return Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     * 
+     */
+    public Output<Optional<Integer>> cpuPeriod() {
+        return Codegen.optional(this.cpuPeriod);
+    }
+    /**
+     * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     * 
+     */
+    @Export(name="cpuQuota", refs={Integer.class}, tree="[0]")
+    private Output</* @Nullable */ Integer> cpuQuota;
+
+    /**
+     * @return Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     * 
+     */
+    public Output<Optional<Integer>> cpuQuota() {
+        return Codegen.optional(this.cpuQuota);
+    }
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      * 
      */
@@ -250,14 +278,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.cpuShares);
     }
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
      * 
      */
     @Export(name="cpus", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> cpus;
 
     /**
-     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
      * 
      */
     public Output<Optional<String>> cpus() {

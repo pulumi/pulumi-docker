@@ -108,11 +108,15 @@ type Container struct {
 	ContainerLogs pulumi.StringOutput `pulumi:"containerLogs"`
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrOutput `pulumi:"containerReadRefreshTimeoutMilliseconds"`
+	// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+	CpuPeriod pulumi.IntPtrOutput `pulumi:"cpuPeriod"`
+	// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+	CpuQuota pulumi.IntPtrOutput `pulumi:"cpuQuota"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrOutput `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrOutput `pulumi:"cpuShares"`
-	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
 	Cpus pulumi.StringPtrOutput `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrOutput `pulumi:"destroyGraceSeconds"`
@@ -276,11 +280,15 @@ type containerState struct {
 	ContainerLogs *string `pulumi:"containerLogs"`
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds *int `pulumi:"containerReadRefreshTimeoutMilliseconds"`
+	// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+	CpuPeriod *int `pulumi:"cpuPeriod"`
+	// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+	CpuQuota *int `pulumi:"cpuQuota"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares *int `pulumi:"cpuShares"`
-	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
 	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
@@ -412,11 +420,15 @@ type ContainerState struct {
 	ContainerLogs pulumi.StringPtrInput
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrInput
+	// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+	CpuPeriod pulumi.IntPtrInput
+	// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+	CpuQuota pulumi.IntPtrInput
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrInput
-	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
 	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
@@ -548,11 +560,15 @@ type containerArgs struct {
 	Command []string `pulumi:"command"`
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds *int `pulumi:"containerReadRefreshTimeoutMilliseconds"`
+	// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+	CpuPeriod *int `pulumi:"cpuPeriod"`
+	// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+	CpuQuota *int `pulumi:"cpuQuota"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares *int `pulumi:"cpuShares"`
-	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
 	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
@@ -677,11 +693,15 @@ type ContainerArgs struct {
 	Command pulumi.StringArrayInput
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrInput
+	// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+	CpuPeriod pulumi.IntPtrInput
+	// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+	CpuQuota pulumi.IntPtrInput
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrInput
-	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+	// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
 	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
@@ -916,6 +936,16 @@ func (o ContainerOutput) ContainerReadRefreshTimeoutMilliseconds() pulumi.IntPtr
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.ContainerReadRefreshTimeoutMilliseconds }).(pulumi.IntPtrOutput)
 }
 
+// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+func (o ContainerOutput) CpuPeriod() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.CpuPeriod }).(pulumi.IntPtrOutput)
+}
+
+// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+func (o ContainerOutput) CpuQuota() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.CpuQuota }).(pulumi.IntPtrOutput)
+}
+
 // A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 func (o ContainerOutput) CpuSet() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.CpuSet }).(pulumi.StringPtrOutput)
@@ -926,7 +956,7 @@ func (o ContainerOutput) CpuShares() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.CpuShares }).(pulumi.IntPtrOutput)
 }
 
-// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
 func (o ContainerOutput) Cpus() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Cpus }).(pulumi.StringPtrOutput)
 }
