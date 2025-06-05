@@ -29,6 +29,16 @@ public final class ServiceTaskSpecContainerSpec {
      */
     private @Nullable List<String> args;
     /**
+     * @return List of Linux capabilities to add to the container
+     * 
+     */
+    private @Nullable List<String> capAdds;
+    /**
+     * @return List of Linux capabilities to drop from the container
+     * 
+     */
+    private @Nullable List<String> capDrops;
+    /**
      * @return The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
      * 
      */
@@ -136,6 +146,20 @@ public final class ServiceTaskSpecContainerSpec {
      */
     public List<String> args() {
         return this.args == null ? List.of() : this.args;
+    }
+    /**
+     * @return List of Linux capabilities to add to the container
+     * 
+     */
+    public List<String> capAdds() {
+        return this.capAdds == null ? List.of() : this.capAdds;
+    }
+    /**
+     * @return List of Linux capabilities to drop from the container
+     * 
+     */
+    public List<String> capDrops() {
+        return this.capDrops == null ? List.of() : this.capDrops;
     }
     /**
      * @return The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
@@ -288,6 +312,8 @@ public final class ServiceTaskSpecContainerSpec {
     @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> args;
+        private @Nullable List<String> capAdds;
+        private @Nullable List<String> capDrops;
         private @Nullable List<String> commands;
         private @Nullable List<ServiceTaskSpecContainerSpecConfig> configs;
         private @Nullable String dir;
@@ -312,6 +338,8 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder(ServiceTaskSpecContainerSpec defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.args = defaults.args;
+    	      this.capAdds = defaults.capAdds;
+    	      this.capDrops = defaults.capDrops;
     	      this.commands = defaults.commands;
     	      this.configs = defaults.configs;
     	      this.dir = defaults.dir;
@@ -342,6 +370,24 @@ public final class ServiceTaskSpecContainerSpec {
         }
         public Builder args(String... args) {
             return args(List.of(args));
+        }
+        @CustomType.Setter
+        public Builder capAdds(@Nullable List<String> capAdds) {
+
+            this.capAdds = capAdds;
+            return this;
+        }
+        public Builder capAdds(String... capAdds) {
+            return capAdds(List.of(capAdds));
+        }
+        @CustomType.Setter
+        public Builder capDrops(@Nullable List<String> capDrops) {
+
+            this.capDrops = capDrops;
+            return this;
+        }
+        public Builder capDrops(String... capDrops) {
+            return capDrops(List.of(capDrops));
         }
         @CustomType.Setter
         public Builder commands(@Nullable List<String> commands) {
@@ -489,6 +535,8 @@ public final class ServiceTaskSpecContainerSpec {
         public ServiceTaskSpecContainerSpec build() {
             final var _resultValue = new ServiceTaskSpecContainerSpec();
             _resultValue.args = args;
+            _resultValue.capAdds = capAdds;
+            _resultValue.capDrops = capDrops;
             _resultValue.commands = commands;
             _resultValue.configs = configs;
             _resultValue.dir = dir;

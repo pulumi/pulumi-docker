@@ -137,6 +137,36 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     * 
+     */
+    @Import(name="cpuPeriod")
+    private @Nullable Output<Integer> cpuPeriod;
+
+    /**
+     * @return Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     * 
+     */
+    public Optional<Output<Integer>> cpuPeriod() {
+        return Optional.ofNullable(this.cpuPeriod);
+    }
+
+    /**
+     * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     * 
+     */
+    @Import(name="cpuQuota")
+    private @Nullable Output<Integer> cpuQuota;
+
+    /**
+     * @return Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     * 
+     */
+    public Optional<Output<Integer>> cpuQuota() {
+        return Optional.ofNullable(this.cpuQuota);
+    }
+
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      * 
      */
@@ -167,14 +197,14 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
      * 
      */
     @Import(name="cpus")
     private @Nullable Output<String> cpus;
 
     /**
-     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
      * 
      */
     public Optional<Output<String>> cpus() {
@@ -1038,6 +1068,8 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         this.command = $.command;
         this.containerLogs = $.containerLogs;
         this.containerReadRefreshTimeoutMilliseconds = $.containerReadRefreshTimeoutMilliseconds;
+        this.cpuPeriod = $.cpuPeriod;
+        this.cpuQuota = $.cpuQuota;
         this.cpuSet = $.cpuSet;
         this.cpuShares = $.cpuShares;
         this.cpus = $.cpus;
@@ -1276,6 +1308,48 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
+         * @param cpuPeriod Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cpuPeriod(@Nullable Output<Integer> cpuPeriod) {
+            $.cpuPeriod = cpuPeriod;
+            return this;
+        }
+
+        /**
+         * @param cpuPeriod Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cpuPeriod(Integer cpuPeriod) {
+            return cpuPeriod(Output.of(cpuPeriod));
+        }
+
+        /**
+         * @param cpuQuota Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cpuQuota(@Nullable Output<Integer> cpuQuota) {
+            $.cpuQuota = cpuQuota;
+            return this;
+        }
+
+        /**
+         * @param cpuQuota Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cpuQuota(Integer cpuQuota) {
+            return cpuQuota(Output.of(cpuQuota));
+        }
+
+        /**
          * @param cpuSet A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
          * 
          * @return builder
@@ -1318,7 +1392,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
          * 
          * @return builder
          * 
@@ -1329,7 +1403,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
          * 
          * @return builder
          * 

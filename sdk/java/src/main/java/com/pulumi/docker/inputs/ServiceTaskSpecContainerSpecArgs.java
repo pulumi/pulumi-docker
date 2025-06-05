@@ -43,6 +43,36 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
     }
 
     /**
+     * List of Linux capabilities to add to the container
+     * 
+     */
+    @Import(name="capAdds")
+    private @Nullable Output<List<String>> capAdds;
+
+    /**
+     * @return List of Linux capabilities to add to the container
+     * 
+     */
+    public Optional<Output<List<String>>> capAdds() {
+        return Optional.ofNullable(this.capAdds);
+    }
+
+    /**
+     * List of Linux capabilities to drop from the container
+     * 
+     */
+    @Import(name="capDrops")
+    private @Nullable Output<List<String>> capDrops;
+
+    /**
+     * @return List of Linux capabilities to drop from the container
+     * 
+     */
+    public Optional<Output<List<String>>> capDrops() {
+        return Optional.ofNullable(this.capDrops);
+    }
+
+    /**
      * The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
      * 
      */
@@ -346,6 +376,8 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
 
     private ServiceTaskSpecContainerSpecArgs(ServiceTaskSpecContainerSpecArgs $) {
         this.args = $.args;
+        this.capAdds = $.capAdds;
+        this.capDrops = $.capDrops;
         this.commands = $.commands;
         this.configs = $.configs;
         this.dir = $.dir;
@@ -415,6 +447,68 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
          */
         public Builder args(String... args) {
             return args(List.of(args));
+        }
+
+        /**
+         * @param capAdds List of Linux capabilities to add to the container
+         * 
+         * @return builder
+         * 
+         */
+        public Builder capAdds(@Nullable Output<List<String>> capAdds) {
+            $.capAdds = capAdds;
+            return this;
+        }
+
+        /**
+         * @param capAdds List of Linux capabilities to add to the container
+         * 
+         * @return builder
+         * 
+         */
+        public Builder capAdds(List<String> capAdds) {
+            return capAdds(Output.of(capAdds));
+        }
+
+        /**
+         * @param capAdds List of Linux capabilities to add to the container
+         * 
+         * @return builder
+         * 
+         */
+        public Builder capAdds(String... capAdds) {
+            return capAdds(List.of(capAdds));
+        }
+
+        /**
+         * @param capDrops List of Linux capabilities to drop from the container
+         * 
+         * @return builder
+         * 
+         */
+        public Builder capDrops(@Nullable Output<List<String>> capDrops) {
+            $.capDrops = capDrops;
+            return this;
+        }
+
+        /**
+         * @param capDrops List of Linux capabilities to drop from the container
+         * 
+         * @return builder
+         * 
+         */
+        public Builder capDrops(List<String> capDrops) {
+            return capDrops(Output.of(capDrops));
+        }
+
+        /**
+         * @param capDrops List of Linux capabilities to drop from the container
+         * 
+         * @return builder
+         * 
+         */
+        public Builder capDrops(String... capDrops) {
+            return capDrops(List.of(capDrops));
         }
 
         /**
