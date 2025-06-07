@@ -18,6 +18,14 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> Args;
         /// <summary>
+        /// List of Linux capabilities to add to the container
+        /// </summary>
+        public readonly ImmutableArray<string> CapAdds;
+        /// <summary>
+        /// List of Linux capabilities to drop from the container
+        /// </summary>
+        public readonly ImmutableArray<string> CapDrops;
+        /// <summary>
         /// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
         /// </summary>
         public readonly ImmutableArray<string> Commands;
@@ -102,6 +110,10 @@ namespace Pulumi.Docker.Outputs
         private ServiceTaskSpecContainerSpec(
             ImmutableArray<string> args,
 
+            ImmutableArray<string> capAdds,
+
+            ImmutableArray<string> capDrops,
+
             ImmutableArray<string> commands,
 
             ImmutableArray<Outputs.ServiceTaskSpecContainerSpecConfig> configs,
@@ -143,6 +155,8 @@ namespace Pulumi.Docker.Outputs
             string? user)
         {
             Args = args;
+            CapAdds = capAdds;
+            CapDrops = capDrops;
             Commands = commands;
             Configs = configs;
             Dir = dir;
