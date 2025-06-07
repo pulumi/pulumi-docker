@@ -84,14 +84,14 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
      * 
      */
     @Import(name="builder")
     private @Nullable Output<String> builder;
 
     /**
-     * @return Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * @return Set the name of the buildx builder to use. If not set, the legacy builder is used.
      * 
      */
     public Optional<Output<String>> builder_() {
@@ -369,14 +369,14 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * Set platform if server is multi-platform capable
+     * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      * 
      */
     @Import(name="platform")
     private @Nullable Output<String> platform;
 
     /**
-     * @return Set platform if server is multi-platform capable
+     * @return Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      * 
      */
     public Optional<Output<String>> platform() {
@@ -733,7 +733,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param builder Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+         * @param builder Set the name of the buildx builder to use. If not set, the legacy builder is used.
          * 
          * @return builder
          * 
@@ -744,7 +744,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param builder Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+         * @param builder Set the name of the buildx builder to use. If not set, the legacy builder is used.
          * 
          * @return builder
          * 
@@ -1152,7 +1152,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param platform Set platform if server is multi-platform capable
+         * @param platform Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
          * 
          * @return builder
          * 
@@ -1163,7 +1163,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param platform Set platform if server is multi-platform capable
+         * @param platform Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
          * 
          * @return builder
          * 
