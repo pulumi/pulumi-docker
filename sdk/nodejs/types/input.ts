@@ -6,6 +6,192 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 import * as enums from "../types/enums";
 
+export interface BuildxBuilderDockerContainer {
+    /**
+     * Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+     */
+    cgroupParent?: pulumi.Input<string>;
+    /**
+     * Sets the CPU CFS scheduler period for the container.
+     */
+    cpuPeriod?: pulumi.Input<string>;
+    /**
+     * Imposes a CPU CFS quota on the container.
+     */
+    cpuQuota?: pulumi.Input<string>;
+    /**
+     * Configures CPU shares (relative weight) of the container.
+     */
+    cpuShares?: pulumi.Input<string>;
+    /**
+     * Limits the set of CPU cores the container can use.
+     */
+    cpusetCpus?: pulumi.Input<string>;
+    /**
+     * Limits the set of CPU memory nodes the container can use.
+     */
+    cpusetMems?: pulumi.Input<string>;
+    /**
+     * Automatically load images to the Docker Engine image store. Defaults to `false`
+     */
+    defaultLoad?: pulumi.Input<boolean>;
+    /**
+     * Sets environment variables in the container.
+     */
+    env?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * Sets the BuildKit image to use for the container.
+     */
+    image?: pulumi.Input<string>;
+    /**
+     * Sets the amount of memory the container can use.
+     */
+    memory?: pulumi.Input<string>;
+    /**
+     * Sets the memory swap limit for the container.
+     */
+    memorySwap?: pulumi.Input<string>;
+    /**
+     * Sets the network mode for the container.
+     */
+    network?: pulumi.Input<string>;
+    /**
+     * Sets the container's restart policy.
+     */
+    restartPolicy?: pulumi.Input<string>;
+}
+
+export interface BuildxBuilderKubernetes {
+    /**
+     * Sets additional annotations on the deployments and pods.
+     */
+    annotations?: pulumi.Input<string>;
+    /**
+     * Automatically load images to the Docker Engine image store. Defaults to `false`
+     */
+    defaultLoad?: pulumi.Input<boolean>;
+    /**
+     * Sets the image to use for running BuildKit.
+     */
+    image?: pulumi.Input<string>;
+    /**
+     * Sets additional labels on the deployments and pods.
+     */
+    labels?: pulumi.Input<string>;
+    /**
+     * Resource limits for CPU, memory, and ephemeral storage.
+     */
+    limits?: pulumi.Input<inputs.BuildxBuilderKubernetesLimits>;
+    /**
+     * Load-balancing strategy (sticky or random).
+     */
+    loadbalance?: pulumi.Input<string>;
+    /**
+     * Sets the Kubernetes namespace.
+     */
+    namespace?: pulumi.Input<string>;
+    /**
+     * Sets the pod's nodeSelector label(s).
+     */
+    nodeselector?: pulumi.Input<string>;
+    /**
+     * QEMU emulation configuration.
+     */
+    qemu?: pulumi.Input<inputs.BuildxBuilderKubernetesQemu>;
+    /**
+     * Sets the number of Pod replicas to create.
+     */
+    replicas?: pulumi.Input<number>;
+    /**
+     * Resource requests for CPU, memory, and ephemeral storage.
+     */
+    requests?: pulumi.Input<inputs.BuildxBuilderKubernetesRequests>;
+    /**
+     * Run the container as a non-root user.
+     */
+    rootless?: pulumi.Input<boolean>;
+    /**
+     * Sets the scheduler responsible for scheduling the pod.
+     */
+    schedulername?: pulumi.Input<string>;
+    /**
+     * Sets the pod's serviceAccountName.
+     */
+    serviceaccount?: pulumi.Input<string>;
+    /**
+     * Set the timeout limit for pod provisioning.
+     */
+    timeout?: pulumi.Input<string>;
+    /**
+     * Configures the pod's taint toleration.
+     */
+    tolerations?: pulumi.Input<string>;
+}
+
+export interface BuildxBuilderKubernetesLimits {
+    /**
+     * CPU limit for the Kubernetes pod.
+     */
+    cpu?: pulumi.Input<string>;
+    /**
+     * Ephemeral storage limit for the Kubernetes pod.
+     */
+    ephemeralStorage?: pulumi.Input<string>;
+    /**
+     * Memory limit for the Kubernetes pod.
+     */
+    memory?: pulumi.Input<string>;
+}
+
+export interface BuildxBuilderKubernetesQemu {
+    /**
+     * Sets the QEMU emulation image.
+     */
+    image?: pulumi.Input<string>;
+    /**
+     * Install QEMU emulation for multi-platform support.
+     */
+    install?: pulumi.Input<boolean>;
+}
+
+export interface BuildxBuilderKubernetesRequests {
+    /**
+     * CPU limit for the Kubernetes pod.
+     */
+    cpu?: pulumi.Input<string>;
+    /**
+     * Ephemeral storage limit for the Kubernetes pod.
+     */
+    ephemeralStorage?: pulumi.Input<string>;
+    /**
+     * Memory limit for the Kubernetes pod.
+     */
+    memory?: pulumi.Input<string>;
+}
+
+export interface BuildxBuilderRemote {
+    /**
+     * Absolute path to the TLS certificate authority used for validation.
+     */
+    cacert?: pulumi.Input<string>;
+    /**
+     * Absolute path to the TLS client certificate to present to buildkitd.
+     */
+    cert?: pulumi.Input<string>;
+    /**
+     * Automatically load images to the Docker Engine image store. Defaults to `false`
+     */
+    defaultLoad?: pulumi.Input<boolean>;
+    /**
+     * Sets the TLS client key.
+     */
+    key?: pulumi.Input<string>;
+    /**
+     * TLS server name used in requests.
+     */
+    servername?: pulumi.Input<string>;
+}
+
 /**
  * Contains a list of images to reference when building using a cache
  */
@@ -504,7 +690,7 @@ export interface RemoteImageBuild {
      */
     buildLogFile?: pulumi.Input<string>;
     /**
-     * Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
      */
     builder?: pulumi.Input<string>;
     /**
@@ -580,7 +766,7 @@ export interface RemoteImageBuild {
      */
     noCache?: pulumi.Input<boolean>;
     /**
-     * Set platform if server is multi-platform capable
+     * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      */
     platform?: pulumi.Input<string>;
     /**
@@ -869,6 +1055,14 @@ export interface ServiceTaskSpecContainerSpec {
      * Arguments to the command
      */
     args?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * List of Linux capabilities to add to the container
+     */
+    capAdds?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * List of Linux capabilities to drop from the container
+     */
+    capDrops?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
      */

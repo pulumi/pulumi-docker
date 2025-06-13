@@ -30,7 +30,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? BuildLogFile;
         /// <summary>
-        /// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        /// Set the name of the buildx builder to use. If not set, the legacy builder is used.
         /// </summary>
         public readonly string? Builder;
         /// <summary>
@@ -106,7 +106,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly bool? NoCache;
         /// <summary>
-        /// Set platform if server is multi-platform capable
+        /// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
         /// </summary>
         public readonly string? Platform;
         /// <summary>
