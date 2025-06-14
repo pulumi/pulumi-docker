@@ -109,6 +109,10 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly capabilities!: pulumi.Output<outputs.ContainerCapabilities | undefined>;
     /**
+     * Optional parent cgroup for the container
+     */
+    public readonly cgroupParent!: pulumi.Output<string | undefined>;
+    /**
      * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
      */
     public readonly cgroupnsMode!: pulumi.Output<string | undefined>;
@@ -125,6 +129,14 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly containerReadRefreshTimeoutMilliseconds!: pulumi.Output<number | undefined>;
     /**
+     * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     */
+    public readonly cpuPeriod!: pulumi.Output<number | undefined>;
+    /**
+     * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     */
+    public readonly cpuQuota!: pulumi.Output<number | undefined>;
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
     public readonly cpuSet!: pulumi.Output<string | undefined>;
@@ -133,7 +145,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly cpuShares!: pulumi.Output<number | undefined>;
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      */
     public readonly cpus!: pulumi.Output<string | undefined>;
     /**
@@ -378,10 +390,13 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["attach"] = state ? state.attach : undefined;
             resourceInputs["bridge"] = state ? state.bridge : undefined;
             resourceInputs["capabilities"] = state ? state.capabilities : undefined;
+            resourceInputs["cgroupParent"] = state ? state.cgroupParent : undefined;
             resourceInputs["cgroupnsMode"] = state ? state.cgroupnsMode : undefined;
             resourceInputs["command"] = state ? state.command : undefined;
             resourceInputs["containerLogs"] = state ? state.containerLogs : undefined;
             resourceInputs["containerReadRefreshTimeoutMilliseconds"] = state ? state.containerReadRefreshTimeoutMilliseconds : undefined;
+            resourceInputs["cpuPeriod"] = state ? state.cpuPeriod : undefined;
+            resourceInputs["cpuQuota"] = state ? state.cpuQuota : undefined;
             resourceInputs["cpuSet"] = state ? state.cpuSet : undefined;
             resourceInputs["cpuShares"] = state ? state.cpuShares : undefined;
             resourceInputs["cpus"] = state ? state.cpus : undefined;
@@ -449,9 +464,12 @@ export class Container extends pulumi.CustomResource {
             }
             resourceInputs["attach"] = args ? args.attach : undefined;
             resourceInputs["capabilities"] = args ? args.capabilities : undefined;
+            resourceInputs["cgroupParent"] = args ? args.cgroupParent : undefined;
             resourceInputs["cgroupnsMode"] = args ? args.cgroupnsMode : undefined;
             resourceInputs["command"] = args ? args.command : undefined;
             resourceInputs["containerReadRefreshTimeoutMilliseconds"] = args ? args.containerReadRefreshTimeoutMilliseconds : undefined;
+            resourceInputs["cpuPeriod"] = args ? args.cpuPeriod : undefined;
+            resourceInputs["cpuQuota"] = args ? args.cpuQuota : undefined;
             resourceInputs["cpuSet"] = args ? args.cpuSet : undefined;
             resourceInputs["cpuShares"] = args ? args.cpuShares : undefined;
             resourceInputs["cpus"] = args ? args.cpus : undefined;
@@ -537,6 +555,10 @@ export interface ContainerState {
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
+     * Optional parent cgroup for the container
+     */
+    cgroupParent?: pulumi.Input<string>;
+    /**
      * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
      */
     cgroupnsMode?: pulumi.Input<string>;
@@ -553,6 +575,14 @@ export interface ContainerState {
      */
     containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number>;
     /**
+     * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     */
+    cpuPeriod?: pulumi.Input<number>;
+    /**
+     * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     */
+    cpuQuota?: pulumi.Input<number>;
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
     cpuSet?: pulumi.Input<string>;
@@ -561,7 +591,7 @@ export interface ContainerState {
      */
     cpuShares?: pulumi.Input<number>;
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      */
     cpus?: pulumi.Input<string>;
     /**
@@ -804,6 +834,10 @@ export interface ContainerArgs {
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
+     * Optional parent cgroup for the container
+     */
+    cgroupParent?: pulumi.Input<string>;
+    /**
      * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
      */
     cgroupnsMode?: pulumi.Input<string>;
@@ -816,6 +850,14 @@ export interface ContainerArgs {
      */
     containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number>;
     /**
+     * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+     */
+    cpuPeriod?: pulumi.Input<number>;
+    /**
+     * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+     */
+    cpuQuota?: pulumi.Input<number>;
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
     cpuSet?: pulumi.Input<string>;
@@ -824,7 +866,7 @@ export interface ContainerArgs {
      */
     cpuShares?: pulumi.Input<number>;
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      */
     cpus?: pulumi.Input<string>;
     /**
