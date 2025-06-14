@@ -143,6 +143,207 @@
                 }
             }
         },
+        "docker:index/BuildxBuilderDockerContainer:BuildxBuilderDockerContainer": {
+            "properties": {
+                "cgroupParent": {
+                    "type": "string",
+                    "description": "Sets the cgroup parent of the container if Docker is using the \"cgroupfs\" driver.\n"
+                },
+                "cpuPeriod": {
+                    "type": "string",
+                    "description": "Sets the CPU CFS scheduler period for the container.\n"
+                },
+                "cpuQuota": {
+                    "type": "string",
+                    "description": "Imposes a CPU CFS quota on the container.\n"
+                },
+                "cpuShares": {
+                    "type": "string",
+                    "description": "Configures CPU shares (relative weight) of the container.\n"
+                },
+                "cpusetCpus": {
+                    "type": "string",
+                    "description": "Limits the set of CPU cores the container can use.\n"
+                },
+                "cpusetMems": {
+                    "type": "string",
+                    "description": "Limits the set of CPU memory nodes the container can use.\n"
+                },
+                "defaultLoad": {
+                    "type": "boolean",
+                    "description": "Automatically load images to the Docker Engine image store. Defaults to `false`\n"
+                },
+                "env": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Sets environment variables in the container.\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Sets the BuildKit image to use for the container.\n"
+                },
+                "memory": {
+                    "type": "string",
+                    "description": "Sets the amount of memory the container can use.\n"
+                },
+                "memorySwap": {
+                    "type": "string",
+                    "description": "Sets the memory swap limit for the container.\n"
+                },
+                "network": {
+                    "type": "string",
+                    "description": "Sets the network mode for the container.\n"
+                },
+                "restartPolicy": {
+                    "type": "string",
+                    "description": "Sets the container's restart policy.\n"
+                }
+            },
+            "type": "object"
+        },
+        "docker:index/BuildxBuilderKubernetes:BuildxBuilderKubernetes": {
+            "properties": {
+                "annotations": {
+                    "type": "string",
+                    "description": "Sets additional annotations on the deployments and pods.\n"
+                },
+                "defaultLoad": {
+                    "type": "boolean",
+                    "description": "Automatically load images to the Docker Engine image store. Defaults to `false`\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Sets the image to use for running BuildKit.\n"
+                },
+                "labels": {
+                    "type": "string",
+                    "description": "Sets additional labels on the deployments and pods.\n"
+                },
+                "limits": {
+                    "$ref": "#/types/docker:index/BuildxBuilderKubernetesLimits:BuildxBuilderKubernetesLimits",
+                    "description": "Resource limits for CPU, memory, and ephemeral storage.\n"
+                },
+                "loadbalance": {
+                    "type": "string",
+                    "description": "Load-balancing strategy (sticky or random).\n"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Sets the Kubernetes namespace.\n"
+                },
+                "nodeselector": {
+                    "type": "string",
+                    "description": "Sets the pod's nodeSelector label(s).\n"
+                },
+                "qemu": {
+                    "$ref": "#/types/docker:index/BuildxBuilderKubernetesQemu:BuildxBuilderKubernetesQemu",
+                    "description": "QEMU emulation configuration.\n"
+                },
+                "replicas": {
+                    "type": "integer",
+                    "description": "Sets the number of Pod replicas to create.\n"
+                },
+                "requests": {
+                    "$ref": "#/types/docker:index/BuildxBuilderKubernetesRequests:BuildxBuilderKubernetesRequests",
+                    "description": "Resource requests for CPU, memory, and ephemeral storage.\n"
+                },
+                "rootless": {
+                    "type": "boolean",
+                    "description": "Run the container as a non-root user.\n"
+                },
+                "schedulername": {
+                    "type": "string",
+                    "description": "Sets the scheduler responsible for scheduling the pod.\n"
+                },
+                "serviceaccount": {
+                    "type": "string",
+                    "description": "Sets the pod's serviceAccountName.\n"
+                },
+                "timeout": {
+                    "type": "string",
+                    "description": "Set the timeout limit for pod provisioning.\n"
+                },
+                "tolerations": {
+                    "type": "string",
+                    "description": "Configures the pod's taint toleration.\n"
+                }
+            },
+            "type": "object"
+        },
+        "docker:index/BuildxBuilderKubernetesLimits:BuildxBuilderKubernetesLimits": {
+            "properties": {
+                "cpu": {
+                    "type": "string",
+                    "description": "CPU limit for the Kubernetes pod.\n"
+                },
+                "ephemeralStorage": {
+                    "type": "string",
+                    "description": "Ephemeral storage limit for the Kubernetes pod.\n"
+                },
+                "memory": {
+                    "type": "string",
+                    "description": "Memory limit for the Kubernetes pod.\n"
+                }
+            },
+            "type": "object"
+        },
+        "docker:index/BuildxBuilderKubernetesQemu:BuildxBuilderKubernetesQemu": {
+            "properties": {
+                "image": {
+                    "type": "string",
+                    "description": "Sets the QEMU emulation image.\n"
+                },
+                "install": {
+                    "type": "boolean",
+                    "description": "Install QEMU emulation for multi-platform support.\n"
+                }
+            },
+            "type": "object"
+        },
+        "docker:index/BuildxBuilderKubernetesRequests:BuildxBuilderKubernetesRequests": {
+            "properties": {
+                "cpu": {
+                    "type": "string",
+                    "description": "CPU limit for the Kubernetes pod.\n"
+                },
+                "ephemeralStorage": {
+                    "type": "string",
+                    "description": "Ephemeral storage limit for the Kubernetes pod.\n"
+                },
+                "memory": {
+                    "type": "string",
+                    "description": "Memory limit for the Kubernetes pod.\n"
+                }
+            },
+            "type": "object"
+        },
+        "docker:index/BuildxBuilderRemote:BuildxBuilderRemote": {
+            "properties": {
+                "cacert": {
+                    "type": "string",
+                    "description": "Absolute path to the TLS certificate authority used for validation.\n"
+                },
+                "cert": {
+                    "type": "string",
+                    "description": "Absolute path to the TLS client certificate to present to buildkitd.\n"
+                },
+                "defaultLoad": {
+                    "type": "boolean",
+                    "description": "Automatically load images to the Docker Engine image store. Defaults to `false`\n"
+                },
+                "key": {
+                    "type": "string",
+                    "description": "Sets the TLS client key.\n"
+                },
+                "servername": {
+                    "type": "string",
+                    "description": "TLS server name used in requests.\n"
+                }
+            },
+            "type": "object"
+        },
         "docker:index/ContainerCapabilities:ContainerCapabilities": {
             "properties": {
                 "adds": {
@@ -743,7 +944,7 @@
                 },
                 "builder": {
                     "type": "string",
-                    "description": "Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.\n",
+                    "description": "Set the name of the buildx builder to use. If not set, the legacy builder is used.\n",
                     "willReplaceOnChanges": true
                 },
                 "cacheFroms": {
@@ -849,7 +1050,7 @@
                 },
                 "platform": {
                     "type": "string",
-                    "description": "Set platform if server is multi-platform capable\n",
+                    "description": "Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)\n",
                     "willReplaceOnChanges": true
                 },
                 "pullParent": {
@@ -1274,6 +1475,20 @@
                         "type": "string"
                     },
                     "description": "Arguments to the command\n"
+                },
+                "capAdds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of Linux capabilities to add to the container\n"
+                },
+                "capDrops": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of Linux capabilities to drop from the container\n"
                 },
                 "commands": {
                     "type": "array",
@@ -2220,6 +2435,236 @@
         }
     },
     "resources": {
+        "docker:index/buildxBuilder:BuildxBuilder": {
+            "description": "Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation\n",
+            "properties": {
+                "append": {
+                    "type": "boolean",
+                    "description": "Append a node to builder instead of changing it\n"
+                },
+                "bootstrap": {
+                    "type": "boolean",
+                    "description": "Automatically boot the builder after creation. Defaults to `false`\n"
+                },
+                "buildkitConfig": {
+                    "type": "string",
+                    "description": "BuildKit daemon config file\n"
+                },
+                "buildkitFlags": {
+                    "type": "string",
+                    "description": "BuildKit flags to set for the builder.\n"
+                },
+                "dockerContainer": {
+                    "$ref": "#/types/docker:index/BuildxBuilderDockerContainer:BuildxBuilderDockerContainer",
+                    "description": "Configuration block for the Docker-Container driver.\n"
+                },
+                "driver": {
+                    "type": "string",
+                    "description": "The driver to use for the Buildx builder (e.g., docker-container, kubernetes).\n"
+                },
+                "driverOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.\n"
+                },
+                "endpoint": {
+                    "type": "string",
+                    "description": "The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.\n"
+                },
+                "kubernetes": {
+                    "$ref": "#/types/docker:index/BuildxBuilderKubernetes:BuildxBuilderKubernetes",
+                    "description": "Configuration block for the Kubernetes driver.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the Buildx builder. IF not specified, a random name will be generated.\n"
+                },
+                "node": {
+                    "type": "string",
+                    "description": "Create/modify node with given name\n"
+                },
+                "platforms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Fixed platforms for current node\n"
+                },
+                "remote": {
+                    "$ref": "#/types/docker:index/BuildxBuilderRemote:BuildxBuilderRemote",
+                    "description": "Configuration block for the Remote driver.\n"
+                },
+                "use": {
+                    "type": "boolean",
+                    "description": "Set the current builder instance as the default for the current context.\n"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "inputProperties": {
+                "append": {
+                    "type": "boolean",
+                    "description": "Append a node to builder instead of changing it\n",
+                    "willReplaceOnChanges": true
+                },
+                "bootstrap": {
+                    "type": "boolean",
+                    "description": "Automatically boot the builder after creation. Defaults to `false`\n",
+                    "willReplaceOnChanges": true
+                },
+                "buildkitConfig": {
+                    "type": "string",
+                    "description": "BuildKit daemon config file\n",
+                    "willReplaceOnChanges": true
+                },
+                "buildkitFlags": {
+                    "type": "string",
+                    "description": "BuildKit flags to set for the builder.\n",
+                    "willReplaceOnChanges": true
+                },
+                "dockerContainer": {
+                    "$ref": "#/types/docker:index/BuildxBuilderDockerContainer:BuildxBuilderDockerContainer",
+                    "description": "Configuration block for the Docker-Container driver.\n",
+                    "willReplaceOnChanges": true
+                },
+                "driver": {
+                    "type": "string",
+                    "description": "The driver to use for the Buildx builder (e.g., docker-container, kubernetes).\n",
+                    "willReplaceOnChanges": true
+                },
+                "driverOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.\n",
+                    "willReplaceOnChanges": true
+                },
+                "endpoint": {
+                    "type": "string",
+                    "description": "The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.\n",
+                    "willReplaceOnChanges": true
+                },
+                "kubernetes": {
+                    "$ref": "#/types/docker:index/BuildxBuilderKubernetes:BuildxBuilderKubernetes",
+                    "description": "Configuration block for the Kubernetes driver.\n",
+                    "willReplaceOnChanges": true
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the Buildx builder. IF not specified, a random name will be generated.\n",
+                    "willReplaceOnChanges": true
+                },
+                "node": {
+                    "type": "string",
+                    "description": "Create/modify node with given name\n",
+                    "willReplaceOnChanges": true
+                },
+                "platforms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Fixed platforms for current node\n",
+                    "willReplaceOnChanges": true
+                },
+                "remote": {
+                    "$ref": "#/types/docker:index/BuildxBuilderRemote:BuildxBuilderRemote",
+                    "description": "Configuration block for the Remote driver.\n",
+                    "willReplaceOnChanges": true
+                },
+                "use": {
+                    "type": "boolean",
+                    "description": "Set the current builder instance as the default for the current context.\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering BuildxBuilder resources.\n",
+                "properties": {
+                    "append": {
+                        "type": "boolean",
+                        "description": "Append a node to builder instead of changing it\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "bootstrap": {
+                        "type": "boolean",
+                        "description": "Automatically boot the builder after creation. Defaults to `false`\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "buildkitConfig": {
+                        "type": "string",
+                        "description": "BuildKit daemon config file\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "buildkitFlags": {
+                        "type": "string",
+                        "description": "BuildKit flags to set for the builder.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "dockerContainer": {
+                        "$ref": "#/types/docker:index/BuildxBuilderDockerContainer:BuildxBuilderDockerContainer",
+                        "description": "Configuration block for the Docker-Container driver.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "driver": {
+                        "type": "string",
+                        "description": "The driver to use for the Buildx builder (e.g., docker-container, kubernetes).\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "driverOptions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "endpoint": {
+                        "type": "string",
+                        "description": "The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "kubernetes": {
+                        "$ref": "#/types/docker:index/BuildxBuilderKubernetes:BuildxBuilderKubernetes",
+                        "description": "Configuration block for the Kubernetes driver.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the Buildx builder. IF not specified, a random name will be generated.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "node": {
+                        "type": "string",
+                        "description": "Create/modify node with given name\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "platforms": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Fixed platforms for current node\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "remote": {
+                        "$ref": "#/types/docker:index/BuildxBuilderRemote:BuildxBuilderRemote",
+                        "description": "Configuration block for the Remote driver.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "use": {
+                        "type": "boolean",
+                        "description": "Set the current builder instance as the default for the current context.\n",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
         "docker:index/container:Container": {
             "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n## Example Usage\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntu = new docker.Container(\"ubuntu\", {\n    name: \"foo\",\n    image: ubuntuRemoteImage.imageId,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n# Start a container\nubuntu = docker.Container(\"ubuntu\",\n    name=\"foo\",\n    image=ubuntu_remote_image.image_id)\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    // Find the latest Ubuntu precise image.\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntu\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    // Start a container\n    var ubuntu = new Docker.Container(\"ubuntu\", new()\n    {\n        Name = \"foo\",\n        Image = ubuntuRemoteImage.ImageId,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t// Find the latest Ubuntu precise image.\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t// Start a container\n\t\t_, err = docker.NewContainer(ctx, \"ubuntu\", \u0026docker.ContainerArgs{\n\t\t\tName:  pulumi.String(\"foo\"),\n\t\t\tImage: ubuntuRemoteImage.ImageId,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        // Start a container\n        var ubuntu = new Container(\"ubuntu\", ContainerArgs.builder()\n            .name(\"foo\")\n            .image(ubuntuRemoteImage.imageId())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntu:\n    type: docker:Container\n    properties:\n      name: foo\n      image: ${ubuntuRemoteImage.imageId}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    name: ubuntu\n    properties:\n      name: ubuntu:precise\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n## Import\n\n### Example\n\nAssuming you created a `container` as follows\n\n#!/bin/bash\n\ndocker run --name foo -p8080:80 -d nginx \n\nprints the container ID \n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n\nyou provide the definition for the resource as follows\n\nterraform\n\nresource \"docker_container\" \"foo\" {\n\n  name  = \"foo\"\n\n  image = \"nginx\"\n\n  ports {\n\n    internal = \"80\"\n\n    external = \"8080\"\n\n  }\n\n}\n\nthen the import command is as follows\n\n#!/bin/bash\n\n```sh\n$ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n",
             "properties": {
@@ -2234,6 +2679,10 @@
                 "capabilities": {
                     "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
                     "description": "Add or drop certrain linux capabilities.\n"
+                },
+                "cgroupParent": {
+                    "type": "string",
+                    "description": "Optional parent cgroup for the container\n"
                 },
                 "cgroupnsMode": {
                     "type": "string",
@@ -2254,6 +2703,14 @@
                     "type": "integer",
                     "description": "The total number of milliseconds to wait for the container to reach status 'running'\n"
                 },
+                "cpuPeriod": {
+                    "type": "integer",
+                    "description": "Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.\n"
+                },
+                "cpuQuota": {
+                    "type": "integer",
+                    "description": "Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.\n"
+                },
                 "cpuSet": {
                     "type": "string",
                     "description": "A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.\n"
@@ -2264,7 +2721,7 @@
                 },
                 "cpus": {
                     "type": "string",
-                    "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs\n"
+                    "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.\n"
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
@@ -2589,6 +3046,11 @@
                     "description": "Add or drop certrain linux capabilities.\n",
                     "willReplaceOnChanges": true
                 },
+                "cgroupParent": {
+                    "type": "string",
+                    "description": "Optional parent cgroup for the container\n",
+                    "willReplaceOnChanges": true
+                },
                 "cgroupnsMode": {
                     "type": "string",
                     "description": "Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.\n",
@@ -2606,6 +3068,14 @@
                     "type": "integer",
                     "description": "The total number of milliseconds to wait for the container to reach status 'running'\n"
                 },
+                "cpuPeriod": {
+                    "type": "integer",
+                    "description": "Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.\n"
+                },
+                "cpuQuota": {
+                    "type": "integer",
+                    "description": "Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.\n"
+                },
                 "cpuSet": {
                     "type": "string",
                     "description": "A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.\n"
@@ -2616,7 +3086,7 @@
                 },
                 "cpus": {
                     "type": "string",
-                    "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs\n",
+                    "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.\n",
                     "willReplaceOnChanges": true
                 },
                 "destroyGraceSeconds": {
@@ -2958,6 +3428,11 @@
                         "description": "Add or drop certrain linux capabilities.\n",
                         "willReplaceOnChanges": true
                     },
+                    "cgroupParent": {
+                        "type": "string",
+                        "description": "Optional parent cgroup for the container\n",
+                        "willReplaceOnChanges": true
+                    },
                     "cgroupnsMode": {
                         "type": "string",
                         "description": "Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.\n",
@@ -2979,6 +3454,14 @@
                         "type": "integer",
                         "description": "The total number of milliseconds to wait for the container to reach status 'running'\n"
                     },
+                    "cpuPeriod": {
+                        "type": "integer",
+                        "description": "Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.\n"
+                    },
+                    "cpuQuota": {
+                        "type": "integer",
+                        "description": "Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.\n"
+                    },
                     "cpuSet": {
                         "type": "string",
                         "description": "A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.\n"
@@ -2989,7 +3472,7 @@
                     },
                     "cpus": {
                         "type": "string",
-                        "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs\n",
+                        "description": "Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.\n",
                         "willReplaceOnChanges": true
                     },
                     "destroyGraceSeconds": {
@@ -4728,7 +5211,7 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n"
+                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.\n"
                     }
                 },
                 "type": "object",
@@ -4748,7 +5231,7 @@
                         "type": "boolean"
                     },
                     "name": {
-                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n",
+                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.\n",
                         "type": "string"
                     },
                     "sha256Digest": {
