@@ -5,8 +5,8 @@ go 1.22
 toolchain go1.24.3
 
 require (
-	github.com/pulumi/pulumi-azure/sdk/v6 v6.22.1
-	github.com/pulumi/pulumi-docker/sdk/v4 v4.5.1
+	github.com/pulumi/pulumi-azure/sdk/v6 v6.23.0
+	github.com/pulumi/pulumi-docker/sdk/v4 v4.7.0
 	github.com/pulumi/pulumi/sdk/v3 v3.166.0
 )
 
@@ -30,7 +30,6 @@ require (
 	github.com/cyphar/filepath-securejoin v0.3.6 // indirect
 	github.com/djherbis/times v1.5.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
-	github.com/fatih/color v1.15.0 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.6.1 // indirect
 	github.com/go-git/go-git/v5 v5.13.1 // indirect
