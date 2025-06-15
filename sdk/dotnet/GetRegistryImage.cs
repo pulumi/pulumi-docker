@@ -121,7 +121,7 @@ namespace Pulumi.Docker
         public bool? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
+        /// The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
         /// </summary>
         [Input("name", required: true)]
         public string Name { get; set; } = null!;
@@ -141,7 +141,7 @@ namespace Pulumi.Docker
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
+        /// The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
@@ -165,7 +165,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly bool? InsecureSkipVerify;
         /// <summary>
-        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
+        /// The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
         /// </summary>
         public readonly string Name;
         /// <summary>

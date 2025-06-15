@@ -39,7 +39,7 @@ export interface GetRegistryImageArgs {
      */
     insecureSkipVerify?: boolean;
     /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      */
     name: string;
 }
@@ -57,7 +57,7 @@ export interface GetRegistryImageResult {
      */
     readonly insecureSkipVerify?: boolean;
     /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      */
     readonly name: string;
     /**
@@ -100,7 +100,7 @@ export interface GetRegistryImageOutputArgs {
      */
     insecureSkipVerify?: pulumi.Input<boolean>;
     /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      */
     name: pulumi.Input<string>;
 }

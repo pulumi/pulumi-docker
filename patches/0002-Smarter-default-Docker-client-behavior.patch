@@ -5,7 +5,7 @@ Subject: [PATCH] Smarter default Docker client behavior
 
 
 diff --git a/internal/provider/config.go b/internal/provider/config.go
-index c2cb41e..9047e9b 100644
+index c2cb41e..8950d43 100644
 --- a/internal/provider/config.go
 +++ b/internal/provider/config.go
 @@ -83,6 +83,9 @@ func defaultPooledTransport() *http.Transport {
