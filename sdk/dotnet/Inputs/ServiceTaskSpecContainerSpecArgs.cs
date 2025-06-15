@@ -24,6 +24,30 @@ namespace Pulumi.Docker.Inputs
             set => _args = value;
         }
 
+        [Input("capAdds")]
+        private InputList<string>? _capAdds;
+
+        /// <summary>
+        /// List of Linux capabilities to add to the container
+        /// </summary>
+        public InputList<string> CapAdds
+        {
+            get => _capAdds ?? (_capAdds = new InputList<string>());
+            set => _capAdds = value;
+        }
+
+        [Input("capDrops")]
+        private InputList<string>? _capDrops;
+
+        /// <summary>
+        /// List of Linux capabilities to drop from the container
+        /// </summary>
+        public InputList<string> CapDrops
+        {
+            get => _capDrops ?? (_capDrops = new InputList<string>());
+            set => _capDrops = value;
+        }
+
         [Input("commands")]
         private InputList<string>? _commands;
 

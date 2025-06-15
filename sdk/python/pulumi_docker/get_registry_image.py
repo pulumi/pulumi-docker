@@ -61,7 +61,7 @@ class GetRegistryImageResult:
     @pulumi.getter
     def name(self) -> builtins.str:
         """
-        The name of the Docker image, including any tags. e.g. `alpine:latest`
+        The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
         """
         return pulumi.get(self, "name")
 
@@ -106,7 +106,7 @@ def get_registry_image(insecure_skip_verify: Optional[builtins.bool] = None,
 
 
     :param builtins.bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-    :param builtins.str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
+    :param builtins.str name: The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
     """
     __args__ = dict()
     __args__['insecureSkipVerify'] = insecure_skip_verify
@@ -139,7 +139,7 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
 
 
     :param builtins.bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-    :param builtins.str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
+    :param builtins.str name: The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
     """
     __args__ = dict()
     __args__['insecureSkipVerify'] = insecure_skip_verify
