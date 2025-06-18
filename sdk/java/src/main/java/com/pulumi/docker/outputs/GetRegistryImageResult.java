@@ -24,7 +24,7 @@ public final class GetRegistryImageResult {
      */
     private @Nullable Boolean insecureSkipVerify;
     /**
-     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0{@literal @}sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      * 
      */
     private String name;
@@ -50,7 +50,7 @@ public final class GetRegistryImageResult {
         return Optional.ofNullable(this.insecureSkipVerify);
     }
     /**
-     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0{@literal @}sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      * 
      */
     public String name() {

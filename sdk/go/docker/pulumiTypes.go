@@ -13,6 +13,1512 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
+type BuildxBuilderDockerContainer struct {
+	// Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+	CgroupParent *string `pulumi:"cgroupParent"`
+	// Sets the CPU CFS scheduler period for the container.
+	CpuPeriod *string `pulumi:"cpuPeriod"`
+	// Imposes a CPU CFS quota on the container.
+	CpuQuota *string `pulumi:"cpuQuota"`
+	// Configures CPU shares (relative weight) of the container.
+	CpuShares *string `pulumi:"cpuShares"`
+	// Limits the set of CPU cores the container can use.
+	CpusetCpus *string `pulumi:"cpusetCpus"`
+	// Limits the set of CPU memory nodes the container can use.
+	CpusetMems *string `pulumi:"cpusetMems"`
+	// Automatically load images to the Docker Engine image store. Defaults to `false`
+	DefaultLoad *bool `pulumi:"defaultLoad"`
+	// Sets environment variables in the container.
+	Env map[string]string `pulumi:"env"`
+	// Sets the BuildKit image to use for the container.
+	Image *string `pulumi:"image"`
+	// Sets the amount of memory the container can use.
+	Memory *string `pulumi:"memory"`
+	// Sets the memory swap limit for the container.
+	MemorySwap *string `pulumi:"memorySwap"`
+	// Sets the network mode for the container.
+	Network *string `pulumi:"network"`
+	// Sets the container's restart policy.
+	RestartPolicy *string `pulumi:"restartPolicy"`
+}
+
+// BuildxBuilderDockerContainerInput is an input type that accepts BuildxBuilderDockerContainerArgs and BuildxBuilderDockerContainerOutput values.
+// You can construct a concrete instance of `BuildxBuilderDockerContainerInput` via:
+//
+//	BuildxBuilderDockerContainerArgs{...}
+type BuildxBuilderDockerContainerInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderDockerContainerOutput() BuildxBuilderDockerContainerOutput
+	ToBuildxBuilderDockerContainerOutputWithContext(context.Context) BuildxBuilderDockerContainerOutput
+}
+
+type BuildxBuilderDockerContainerArgs struct {
+	// Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+	CgroupParent pulumi.StringPtrInput `pulumi:"cgroupParent"`
+	// Sets the CPU CFS scheduler period for the container.
+	CpuPeriod pulumi.StringPtrInput `pulumi:"cpuPeriod"`
+	// Imposes a CPU CFS quota on the container.
+	CpuQuota pulumi.StringPtrInput `pulumi:"cpuQuota"`
+	// Configures CPU shares (relative weight) of the container.
+	CpuShares pulumi.StringPtrInput `pulumi:"cpuShares"`
+	// Limits the set of CPU cores the container can use.
+	CpusetCpus pulumi.StringPtrInput `pulumi:"cpusetCpus"`
+	// Limits the set of CPU memory nodes the container can use.
+	CpusetMems pulumi.StringPtrInput `pulumi:"cpusetMems"`
+	// Automatically load images to the Docker Engine image store. Defaults to `false`
+	DefaultLoad pulumi.BoolPtrInput `pulumi:"defaultLoad"`
+	// Sets environment variables in the container.
+	Env pulumi.StringMapInput `pulumi:"env"`
+	// Sets the BuildKit image to use for the container.
+	Image pulumi.StringPtrInput `pulumi:"image"`
+	// Sets the amount of memory the container can use.
+	Memory pulumi.StringPtrInput `pulumi:"memory"`
+	// Sets the memory swap limit for the container.
+	MemorySwap pulumi.StringPtrInput `pulumi:"memorySwap"`
+	// Sets the network mode for the container.
+	Network pulumi.StringPtrInput `pulumi:"network"`
+	// Sets the container's restart policy.
+	RestartPolicy pulumi.StringPtrInput `pulumi:"restartPolicy"`
+}
+
+func (BuildxBuilderDockerContainerArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderDockerContainer)(nil)).Elem()
+}
+
+func (i BuildxBuilderDockerContainerArgs) ToBuildxBuilderDockerContainerOutput() BuildxBuilderDockerContainerOutput {
+	return i.ToBuildxBuilderDockerContainerOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderDockerContainerArgs) ToBuildxBuilderDockerContainerOutputWithContext(ctx context.Context) BuildxBuilderDockerContainerOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderDockerContainerOutput)
+}
+
+func (i BuildxBuilderDockerContainerArgs) ToBuildxBuilderDockerContainerPtrOutput() BuildxBuilderDockerContainerPtrOutput {
+	return i.ToBuildxBuilderDockerContainerPtrOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderDockerContainerArgs) ToBuildxBuilderDockerContainerPtrOutputWithContext(ctx context.Context) BuildxBuilderDockerContainerPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderDockerContainerOutput).ToBuildxBuilderDockerContainerPtrOutputWithContext(ctx)
+}
+
+// BuildxBuilderDockerContainerPtrInput is an input type that accepts BuildxBuilderDockerContainerArgs, BuildxBuilderDockerContainerPtr and BuildxBuilderDockerContainerPtrOutput values.
+// You can construct a concrete instance of `BuildxBuilderDockerContainerPtrInput` via:
+//
+//	        BuildxBuilderDockerContainerArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildxBuilderDockerContainerPtrInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderDockerContainerPtrOutput() BuildxBuilderDockerContainerPtrOutput
+	ToBuildxBuilderDockerContainerPtrOutputWithContext(context.Context) BuildxBuilderDockerContainerPtrOutput
+}
+
+type buildxBuilderDockerContainerPtrType BuildxBuilderDockerContainerArgs
+
+func BuildxBuilderDockerContainerPtr(v *BuildxBuilderDockerContainerArgs) BuildxBuilderDockerContainerPtrInput {
+	return (*buildxBuilderDockerContainerPtrType)(v)
+}
+
+func (*buildxBuilderDockerContainerPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderDockerContainer)(nil)).Elem()
+}
+
+func (i *buildxBuilderDockerContainerPtrType) ToBuildxBuilderDockerContainerPtrOutput() BuildxBuilderDockerContainerPtrOutput {
+	return i.ToBuildxBuilderDockerContainerPtrOutputWithContext(context.Background())
+}
+
+func (i *buildxBuilderDockerContainerPtrType) ToBuildxBuilderDockerContainerPtrOutputWithContext(ctx context.Context) BuildxBuilderDockerContainerPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderDockerContainerPtrOutput)
+}
+
+type BuildxBuilderDockerContainerOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderDockerContainerOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderDockerContainer)(nil)).Elem()
+}
+
+func (o BuildxBuilderDockerContainerOutput) ToBuildxBuilderDockerContainerOutput() BuildxBuilderDockerContainerOutput {
+	return o
+}
+
+func (o BuildxBuilderDockerContainerOutput) ToBuildxBuilderDockerContainerOutputWithContext(ctx context.Context) BuildxBuilderDockerContainerOutput {
+	return o
+}
+
+func (o BuildxBuilderDockerContainerOutput) ToBuildxBuilderDockerContainerPtrOutput() BuildxBuilderDockerContainerPtrOutput {
+	return o.ToBuildxBuilderDockerContainerPtrOutputWithContext(context.Background())
+}
+
+func (o BuildxBuilderDockerContainerOutput) ToBuildxBuilderDockerContainerPtrOutputWithContext(ctx context.Context) BuildxBuilderDockerContainerPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildxBuilderDockerContainer) *BuildxBuilderDockerContainer {
+		return &v
+	}).(BuildxBuilderDockerContainerPtrOutput)
+}
+
+// Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+func (o BuildxBuilderDockerContainerOutput) CgroupParent() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.CgroupParent }).(pulumi.StringPtrOutput)
+}
+
+// Sets the CPU CFS scheduler period for the container.
+func (o BuildxBuilderDockerContainerOutput) CpuPeriod() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.CpuPeriod }).(pulumi.StringPtrOutput)
+}
+
+// Imposes a CPU CFS quota on the container.
+func (o BuildxBuilderDockerContainerOutput) CpuQuota() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.CpuQuota }).(pulumi.StringPtrOutput)
+}
+
+// Configures CPU shares (relative weight) of the container.
+func (o BuildxBuilderDockerContainerOutput) CpuShares() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.CpuShares }).(pulumi.StringPtrOutput)
+}
+
+// Limits the set of CPU cores the container can use.
+func (o BuildxBuilderDockerContainerOutput) CpusetCpus() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.CpusetCpus }).(pulumi.StringPtrOutput)
+}
+
+// Limits the set of CPU memory nodes the container can use.
+func (o BuildxBuilderDockerContainerOutput) CpusetMems() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.CpusetMems }).(pulumi.StringPtrOutput)
+}
+
+// Automatically load images to the Docker Engine image store. Defaults to `false`
+func (o BuildxBuilderDockerContainerOutput) DefaultLoad() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *bool { return v.DefaultLoad }).(pulumi.BoolPtrOutput)
+}
+
+// Sets environment variables in the container.
+func (o BuildxBuilderDockerContainerOutput) Env() pulumi.StringMapOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) map[string]string { return v.Env }).(pulumi.StringMapOutput)
+}
+
+// Sets the BuildKit image to use for the container.
+func (o BuildxBuilderDockerContainerOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.Image }).(pulumi.StringPtrOutput)
+}
+
+// Sets the amount of memory the container can use.
+func (o BuildxBuilderDockerContainerOutput) Memory() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.Memory }).(pulumi.StringPtrOutput)
+}
+
+// Sets the memory swap limit for the container.
+func (o BuildxBuilderDockerContainerOutput) MemorySwap() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.MemorySwap }).(pulumi.StringPtrOutput)
+}
+
+// Sets the network mode for the container.
+func (o BuildxBuilderDockerContainerOutput) Network() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.Network }).(pulumi.StringPtrOutput)
+}
+
+// Sets the container's restart policy.
+func (o BuildxBuilderDockerContainerOutput) RestartPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderDockerContainer) *string { return v.RestartPolicy }).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderDockerContainerPtrOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderDockerContainerPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderDockerContainer)(nil)).Elem()
+}
+
+func (o BuildxBuilderDockerContainerPtrOutput) ToBuildxBuilderDockerContainerPtrOutput() BuildxBuilderDockerContainerPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderDockerContainerPtrOutput) ToBuildxBuilderDockerContainerPtrOutputWithContext(ctx context.Context) BuildxBuilderDockerContainerPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderDockerContainerPtrOutput) Elem() BuildxBuilderDockerContainerOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) BuildxBuilderDockerContainer {
+		if v != nil {
+			return *v
+		}
+		var ret BuildxBuilderDockerContainer
+		return ret
+	}).(BuildxBuilderDockerContainerOutput)
+}
+
+// Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+func (o BuildxBuilderDockerContainerPtrOutput) CgroupParent() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CgroupParent
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the CPU CFS scheduler period for the container.
+func (o BuildxBuilderDockerContainerPtrOutput) CpuPeriod() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpuPeriod
+	}).(pulumi.StringPtrOutput)
+}
+
+// Imposes a CPU CFS quota on the container.
+func (o BuildxBuilderDockerContainerPtrOutput) CpuQuota() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpuQuota
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configures CPU shares (relative weight) of the container.
+func (o BuildxBuilderDockerContainerPtrOutput) CpuShares() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpuShares
+	}).(pulumi.StringPtrOutput)
+}
+
+// Limits the set of CPU cores the container can use.
+func (o BuildxBuilderDockerContainerPtrOutput) CpusetCpus() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpusetCpus
+	}).(pulumi.StringPtrOutput)
+}
+
+// Limits the set of CPU memory nodes the container can use.
+func (o BuildxBuilderDockerContainerPtrOutput) CpusetMems() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpusetMems
+	}).(pulumi.StringPtrOutput)
+}
+
+// Automatically load images to the Docker Engine image store. Defaults to `false`
+func (o BuildxBuilderDockerContainerPtrOutput) DefaultLoad() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultLoad
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Sets environment variables in the container.
+func (o BuildxBuilderDockerContainerPtrOutput) Env() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Env
+	}).(pulumi.StringMapOutput)
+}
+
+// Sets the BuildKit image to use for the container.
+func (o BuildxBuilderDockerContainerPtrOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Image
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the amount of memory the container can use.
+func (o BuildxBuilderDockerContainerPtrOutput) Memory() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Memory
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the memory swap limit for the container.
+func (o BuildxBuilderDockerContainerPtrOutput) MemorySwap() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.MemorySwap
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the network mode for the container.
+func (o BuildxBuilderDockerContainerPtrOutput) Network() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Network
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the container's restart policy.
+func (o BuildxBuilderDockerContainerPtrOutput) RestartPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderDockerContainer) *string {
+		if v == nil {
+			return nil
+		}
+		return v.RestartPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderKubernetes struct {
+	// Sets additional annotations on the deployments and pods.
+	Annotations *string `pulumi:"annotations"`
+	// Automatically load images to the Docker Engine image store. Defaults to `false`
+	DefaultLoad *bool `pulumi:"defaultLoad"`
+	// Sets the image to use for running BuildKit.
+	Image *string `pulumi:"image"`
+	// Sets additional labels on the deployments and pods.
+	Labels *string `pulumi:"labels"`
+	// Resource limits for CPU, memory, and ephemeral storage.
+	Limits *BuildxBuilderKubernetesLimits `pulumi:"limits"`
+	// Load-balancing strategy (sticky or random).
+	Loadbalance *string `pulumi:"loadbalance"`
+	// Sets the Kubernetes namespace.
+	Namespace *string `pulumi:"namespace"`
+	// Sets the pod's nodeSelector label(s).
+	Nodeselector *string `pulumi:"nodeselector"`
+	// QEMU emulation configuration.
+	Qemu *BuildxBuilderKubernetesQemu `pulumi:"qemu"`
+	// Sets the number of Pod replicas to create.
+	Replicas *int `pulumi:"replicas"`
+	// Resource requests for CPU, memory, and ephemeral storage.
+	Requests *BuildxBuilderKubernetesRequests `pulumi:"requests"`
+	// Run the container as a non-root user.
+	Rootless *bool `pulumi:"rootless"`
+	// Sets the scheduler responsible for scheduling the pod.
+	Schedulername *string `pulumi:"schedulername"`
+	// Sets the pod's serviceAccountName.
+	Serviceaccount *string `pulumi:"serviceaccount"`
+	// Set the timeout limit for pod provisioning.
+	Timeout *string `pulumi:"timeout"`
+	// Configures the pod's taint toleration.
+	Tolerations *string `pulumi:"tolerations"`
+}
+
+// BuildxBuilderKubernetesInput is an input type that accepts BuildxBuilderKubernetesArgs and BuildxBuilderKubernetesOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesInput` via:
+//
+//	BuildxBuilderKubernetesArgs{...}
+type BuildxBuilderKubernetesInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesOutput() BuildxBuilderKubernetesOutput
+	ToBuildxBuilderKubernetesOutputWithContext(context.Context) BuildxBuilderKubernetesOutput
+}
+
+type BuildxBuilderKubernetesArgs struct {
+	// Sets additional annotations on the deployments and pods.
+	Annotations pulumi.StringPtrInput `pulumi:"annotations"`
+	// Automatically load images to the Docker Engine image store. Defaults to `false`
+	DefaultLoad pulumi.BoolPtrInput `pulumi:"defaultLoad"`
+	// Sets the image to use for running BuildKit.
+	Image pulumi.StringPtrInput `pulumi:"image"`
+	// Sets additional labels on the deployments and pods.
+	Labels pulumi.StringPtrInput `pulumi:"labels"`
+	// Resource limits for CPU, memory, and ephemeral storage.
+	Limits BuildxBuilderKubernetesLimitsPtrInput `pulumi:"limits"`
+	// Load-balancing strategy (sticky or random).
+	Loadbalance pulumi.StringPtrInput `pulumi:"loadbalance"`
+	// Sets the Kubernetes namespace.
+	Namespace pulumi.StringPtrInput `pulumi:"namespace"`
+	// Sets the pod's nodeSelector label(s).
+	Nodeselector pulumi.StringPtrInput `pulumi:"nodeselector"`
+	// QEMU emulation configuration.
+	Qemu BuildxBuilderKubernetesQemuPtrInput `pulumi:"qemu"`
+	// Sets the number of Pod replicas to create.
+	Replicas pulumi.IntPtrInput `pulumi:"replicas"`
+	// Resource requests for CPU, memory, and ephemeral storage.
+	Requests BuildxBuilderKubernetesRequestsPtrInput `pulumi:"requests"`
+	// Run the container as a non-root user.
+	Rootless pulumi.BoolPtrInput `pulumi:"rootless"`
+	// Sets the scheduler responsible for scheduling the pod.
+	Schedulername pulumi.StringPtrInput `pulumi:"schedulername"`
+	// Sets the pod's serviceAccountName.
+	Serviceaccount pulumi.StringPtrInput `pulumi:"serviceaccount"`
+	// Set the timeout limit for pod provisioning.
+	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
+	// Configures the pod's taint toleration.
+	Tolerations pulumi.StringPtrInput `pulumi:"tolerations"`
+}
+
+func (BuildxBuilderKubernetesArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetes)(nil)).Elem()
+}
+
+func (i BuildxBuilderKubernetesArgs) ToBuildxBuilderKubernetesOutput() BuildxBuilderKubernetesOutput {
+	return i.ToBuildxBuilderKubernetesOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesArgs) ToBuildxBuilderKubernetesOutputWithContext(ctx context.Context) BuildxBuilderKubernetesOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesOutput)
+}
+
+func (i BuildxBuilderKubernetesArgs) ToBuildxBuilderKubernetesPtrOutput() BuildxBuilderKubernetesPtrOutput {
+	return i.ToBuildxBuilderKubernetesPtrOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesArgs) ToBuildxBuilderKubernetesPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesOutput).ToBuildxBuilderKubernetesPtrOutputWithContext(ctx)
+}
+
+// BuildxBuilderKubernetesPtrInput is an input type that accepts BuildxBuilderKubernetesArgs, BuildxBuilderKubernetesPtr and BuildxBuilderKubernetesPtrOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesPtrInput` via:
+//
+//	        BuildxBuilderKubernetesArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildxBuilderKubernetesPtrInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesPtrOutput() BuildxBuilderKubernetesPtrOutput
+	ToBuildxBuilderKubernetesPtrOutputWithContext(context.Context) BuildxBuilderKubernetesPtrOutput
+}
+
+type buildxBuilderKubernetesPtrType BuildxBuilderKubernetesArgs
+
+func BuildxBuilderKubernetesPtr(v *BuildxBuilderKubernetesArgs) BuildxBuilderKubernetesPtrInput {
+	return (*buildxBuilderKubernetesPtrType)(v)
+}
+
+func (*buildxBuilderKubernetesPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetes)(nil)).Elem()
+}
+
+func (i *buildxBuilderKubernetesPtrType) ToBuildxBuilderKubernetesPtrOutput() BuildxBuilderKubernetesPtrOutput {
+	return i.ToBuildxBuilderKubernetesPtrOutputWithContext(context.Background())
+}
+
+func (i *buildxBuilderKubernetesPtrType) ToBuildxBuilderKubernetesPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesPtrOutput)
+}
+
+type BuildxBuilderKubernetesOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetes)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesOutput) ToBuildxBuilderKubernetesOutput() BuildxBuilderKubernetesOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesOutput) ToBuildxBuilderKubernetesOutputWithContext(ctx context.Context) BuildxBuilderKubernetesOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesOutput) ToBuildxBuilderKubernetesPtrOutput() BuildxBuilderKubernetesPtrOutput {
+	return o.ToBuildxBuilderKubernetesPtrOutputWithContext(context.Background())
+}
+
+func (o BuildxBuilderKubernetesOutput) ToBuildxBuilderKubernetesPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildxBuilderKubernetes) *BuildxBuilderKubernetes {
+		return &v
+	}).(BuildxBuilderKubernetesPtrOutput)
+}
+
+// Sets additional annotations on the deployments and pods.
+func (o BuildxBuilderKubernetesOutput) Annotations() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Annotations }).(pulumi.StringPtrOutput)
+}
+
+// Automatically load images to the Docker Engine image store. Defaults to `false`
+func (o BuildxBuilderKubernetesOutput) DefaultLoad() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *bool { return v.DefaultLoad }).(pulumi.BoolPtrOutput)
+}
+
+// Sets the image to use for running BuildKit.
+func (o BuildxBuilderKubernetesOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Image }).(pulumi.StringPtrOutput)
+}
+
+// Sets additional labels on the deployments and pods.
+func (o BuildxBuilderKubernetesOutput) Labels() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Labels }).(pulumi.StringPtrOutput)
+}
+
+// Resource limits for CPU, memory, and ephemeral storage.
+func (o BuildxBuilderKubernetesOutput) Limits() BuildxBuilderKubernetesLimitsPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *BuildxBuilderKubernetesLimits { return v.Limits }).(BuildxBuilderKubernetesLimitsPtrOutput)
+}
+
+// Load-balancing strategy (sticky or random).
+func (o BuildxBuilderKubernetesOutput) Loadbalance() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Loadbalance }).(pulumi.StringPtrOutput)
+}
+
+// Sets the Kubernetes namespace.
+func (o BuildxBuilderKubernetesOutput) Namespace() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Namespace }).(pulumi.StringPtrOutput)
+}
+
+// Sets the pod's nodeSelector label(s).
+func (o BuildxBuilderKubernetesOutput) Nodeselector() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Nodeselector }).(pulumi.StringPtrOutput)
+}
+
+// QEMU emulation configuration.
+func (o BuildxBuilderKubernetesOutput) Qemu() BuildxBuilderKubernetesQemuPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *BuildxBuilderKubernetesQemu { return v.Qemu }).(BuildxBuilderKubernetesQemuPtrOutput)
+}
+
+// Sets the number of Pod replicas to create.
+func (o BuildxBuilderKubernetesOutput) Replicas() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *int { return v.Replicas }).(pulumi.IntPtrOutput)
+}
+
+// Resource requests for CPU, memory, and ephemeral storage.
+func (o BuildxBuilderKubernetesOutput) Requests() BuildxBuilderKubernetesRequestsPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *BuildxBuilderKubernetesRequests { return v.Requests }).(BuildxBuilderKubernetesRequestsPtrOutput)
+}
+
+// Run the container as a non-root user.
+func (o BuildxBuilderKubernetesOutput) Rootless() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *bool { return v.Rootless }).(pulumi.BoolPtrOutput)
+}
+
+// Sets the scheduler responsible for scheduling the pod.
+func (o BuildxBuilderKubernetesOutput) Schedulername() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Schedulername }).(pulumi.StringPtrOutput)
+}
+
+// Sets the pod's serviceAccountName.
+func (o BuildxBuilderKubernetesOutput) Serviceaccount() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Serviceaccount }).(pulumi.StringPtrOutput)
+}
+
+// Set the timeout limit for pod provisioning.
+func (o BuildxBuilderKubernetesOutput) Timeout() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+}
+
+// Configures the pod's taint toleration.
+func (o BuildxBuilderKubernetesOutput) Tolerations() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetes) *string { return v.Tolerations }).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderKubernetesPtrOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetes)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesPtrOutput) ToBuildxBuilderKubernetesPtrOutput() BuildxBuilderKubernetesPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesPtrOutput) ToBuildxBuilderKubernetesPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesPtrOutput) Elem() BuildxBuilderKubernetesOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) BuildxBuilderKubernetes {
+		if v != nil {
+			return *v
+		}
+		var ret BuildxBuilderKubernetes
+		return ret
+	}).(BuildxBuilderKubernetesOutput)
+}
+
+// Sets additional annotations on the deployments and pods.
+func (o BuildxBuilderKubernetesPtrOutput) Annotations() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringPtrOutput)
+}
+
+// Automatically load images to the Docker Engine image store. Defaults to `false`
+func (o BuildxBuilderKubernetesPtrOutput) DefaultLoad() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultLoad
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Sets the image to use for running BuildKit.
+func (o BuildxBuilderKubernetesPtrOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Image
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets additional labels on the deployments and pods.
+func (o BuildxBuilderKubernetesPtrOutput) Labels() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(pulumi.StringPtrOutput)
+}
+
+// Resource limits for CPU, memory, and ephemeral storage.
+func (o BuildxBuilderKubernetesPtrOutput) Limits() BuildxBuilderKubernetesLimitsPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *BuildxBuilderKubernetesLimits {
+		if v == nil {
+			return nil
+		}
+		return v.Limits
+	}).(BuildxBuilderKubernetesLimitsPtrOutput)
+}
+
+// Load-balancing strategy (sticky or random).
+func (o BuildxBuilderKubernetesPtrOutput) Loadbalance() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Loadbalance
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the Kubernetes namespace.
+func (o BuildxBuilderKubernetesPtrOutput) Namespace() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Namespace
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the pod's nodeSelector label(s).
+func (o BuildxBuilderKubernetesPtrOutput) Nodeselector() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Nodeselector
+	}).(pulumi.StringPtrOutput)
+}
+
+// QEMU emulation configuration.
+func (o BuildxBuilderKubernetesPtrOutput) Qemu() BuildxBuilderKubernetesQemuPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *BuildxBuilderKubernetesQemu {
+		if v == nil {
+			return nil
+		}
+		return v.Qemu
+	}).(BuildxBuilderKubernetesQemuPtrOutput)
+}
+
+// Sets the number of Pod replicas to create.
+func (o BuildxBuilderKubernetesPtrOutput) Replicas() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Replicas
+	}).(pulumi.IntPtrOutput)
+}
+
+// Resource requests for CPU, memory, and ephemeral storage.
+func (o BuildxBuilderKubernetesPtrOutput) Requests() BuildxBuilderKubernetesRequestsPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *BuildxBuilderKubernetesRequests {
+		if v == nil {
+			return nil
+		}
+		return v.Requests
+	}).(BuildxBuilderKubernetesRequestsPtrOutput)
+}
+
+// Run the container as a non-root user.
+func (o BuildxBuilderKubernetesPtrOutput) Rootless() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Rootless
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Sets the scheduler responsible for scheduling the pod.
+func (o BuildxBuilderKubernetesPtrOutput) Schedulername() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Schedulername
+	}).(pulumi.StringPtrOutput)
+}
+
+// Sets the pod's serviceAccountName.
+func (o BuildxBuilderKubernetesPtrOutput) Serviceaccount() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Serviceaccount
+	}).(pulumi.StringPtrOutput)
+}
+
+// Set the timeout limit for pod provisioning.
+func (o BuildxBuilderKubernetesPtrOutput) Timeout() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Timeout
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configures the pod's taint toleration.
+func (o BuildxBuilderKubernetesPtrOutput) Tolerations() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetes) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Tolerations
+	}).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderKubernetesLimits struct {
+	// CPU limit for the Kubernetes pod.
+	Cpu *string `pulumi:"cpu"`
+	// Ephemeral storage limit for the Kubernetes pod.
+	EphemeralStorage *string `pulumi:"ephemeralStorage"`
+	// Memory limit for the Kubernetes pod.
+	Memory *string `pulumi:"memory"`
+}
+
+// BuildxBuilderKubernetesLimitsInput is an input type that accepts BuildxBuilderKubernetesLimitsArgs and BuildxBuilderKubernetesLimitsOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesLimitsInput` via:
+//
+//	BuildxBuilderKubernetesLimitsArgs{...}
+type BuildxBuilderKubernetesLimitsInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesLimitsOutput() BuildxBuilderKubernetesLimitsOutput
+	ToBuildxBuilderKubernetesLimitsOutputWithContext(context.Context) BuildxBuilderKubernetesLimitsOutput
+}
+
+type BuildxBuilderKubernetesLimitsArgs struct {
+	// CPU limit for the Kubernetes pod.
+	Cpu pulumi.StringPtrInput `pulumi:"cpu"`
+	// Ephemeral storage limit for the Kubernetes pod.
+	EphemeralStorage pulumi.StringPtrInput `pulumi:"ephemeralStorage"`
+	// Memory limit for the Kubernetes pod.
+	Memory pulumi.StringPtrInput `pulumi:"memory"`
+}
+
+func (BuildxBuilderKubernetesLimitsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetesLimits)(nil)).Elem()
+}
+
+func (i BuildxBuilderKubernetesLimitsArgs) ToBuildxBuilderKubernetesLimitsOutput() BuildxBuilderKubernetesLimitsOutput {
+	return i.ToBuildxBuilderKubernetesLimitsOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesLimitsArgs) ToBuildxBuilderKubernetesLimitsOutputWithContext(ctx context.Context) BuildxBuilderKubernetesLimitsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesLimitsOutput)
+}
+
+func (i BuildxBuilderKubernetesLimitsArgs) ToBuildxBuilderKubernetesLimitsPtrOutput() BuildxBuilderKubernetesLimitsPtrOutput {
+	return i.ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesLimitsArgs) ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesLimitsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesLimitsOutput).ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(ctx)
+}
+
+// BuildxBuilderKubernetesLimitsPtrInput is an input type that accepts BuildxBuilderKubernetesLimitsArgs, BuildxBuilderKubernetesLimitsPtr and BuildxBuilderKubernetesLimitsPtrOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesLimitsPtrInput` via:
+//
+//	        BuildxBuilderKubernetesLimitsArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildxBuilderKubernetesLimitsPtrInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesLimitsPtrOutput() BuildxBuilderKubernetesLimitsPtrOutput
+	ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(context.Context) BuildxBuilderKubernetesLimitsPtrOutput
+}
+
+type buildxBuilderKubernetesLimitsPtrType BuildxBuilderKubernetesLimitsArgs
+
+func BuildxBuilderKubernetesLimitsPtr(v *BuildxBuilderKubernetesLimitsArgs) BuildxBuilderKubernetesLimitsPtrInput {
+	return (*buildxBuilderKubernetesLimitsPtrType)(v)
+}
+
+func (*buildxBuilderKubernetesLimitsPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetesLimits)(nil)).Elem()
+}
+
+func (i *buildxBuilderKubernetesLimitsPtrType) ToBuildxBuilderKubernetesLimitsPtrOutput() BuildxBuilderKubernetesLimitsPtrOutput {
+	return i.ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(context.Background())
+}
+
+func (i *buildxBuilderKubernetesLimitsPtrType) ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesLimitsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesLimitsPtrOutput)
+}
+
+type BuildxBuilderKubernetesLimitsOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesLimitsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetesLimits)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesLimitsOutput) ToBuildxBuilderKubernetesLimitsOutput() BuildxBuilderKubernetesLimitsOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesLimitsOutput) ToBuildxBuilderKubernetesLimitsOutputWithContext(ctx context.Context) BuildxBuilderKubernetesLimitsOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesLimitsOutput) ToBuildxBuilderKubernetesLimitsPtrOutput() BuildxBuilderKubernetesLimitsPtrOutput {
+	return o.ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(context.Background())
+}
+
+func (o BuildxBuilderKubernetesLimitsOutput) ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesLimitsPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildxBuilderKubernetesLimits) *BuildxBuilderKubernetesLimits {
+		return &v
+	}).(BuildxBuilderKubernetesLimitsPtrOutput)
+}
+
+// CPU limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesLimitsOutput) Cpu() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesLimits) *string { return v.Cpu }).(pulumi.StringPtrOutput)
+}
+
+// Ephemeral storage limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesLimitsOutput) EphemeralStorage() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesLimits) *string { return v.EphemeralStorage }).(pulumi.StringPtrOutput)
+}
+
+// Memory limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesLimitsOutput) Memory() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesLimits) *string { return v.Memory }).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderKubernetesLimitsPtrOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesLimitsPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetesLimits)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesLimitsPtrOutput) ToBuildxBuilderKubernetesLimitsPtrOutput() BuildxBuilderKubernetesLimitsPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesLimitsPtrOutput) ToBuildxBuilderKubernetesLimitsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesLimitsPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesLimitsPtrOutput) Elem() BuildxBuilderKubernetesLimitsOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesLimits) BuildxBuilderKubernetesLimits {
+		if v != nil {
+			return *v
+		}
+		var ret BuildxBuilderKubernetesLimits
+		return ret
+	}).(BuildxBuilderKubernetesLimitsOutput)
+}
+
+// CPU limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesLimitsPtrOutput) Cpu() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesLimits) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Cpu
+	}).(pulumi.StringPtrOutput)
+}
+
+// Ephemeral storage limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesLimitsPtrOutput) EphemeralStorage() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesLimits) *string {
+		if v == nil {
+			return nil
+		}
+		return v.EphemeralStorage
+	}).(pulumi.StringPtrOutput)
+}
+
+// Memory limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesLimitsPtrOutput) Memory() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesLimits) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Memory
+	}).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderKubernetesQemu struct {
+	// Sets the QEMU emulation image.
+	Image *string `pulumi:"image"`
+	// Install QEMU emulation for multi-platform support.
+	Install *bool `pulumi:"install"`
+}
+
+// BuildxBuilderKubernetesQemuInput is an input type that accepts BuildxBuilderKubernetesQemuArgs and BuildxBuilderKubernetesQemuOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesQemuInput` via:
+//
+//	BuildxBuilderKubernetesQemuArgs{...}
+type BuildxBuilderKubernetesQemuInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesQemuOutput() BuildxBuilderKubernetesQemuOutput
+	ToBuildxBuilderKubernetesQemuOutputWithContext(context.Context) BuildxBuilderKubernetesQemuOutput
+}
+
+type BuildxBuilderKubernetesQemuArgs struct {
+	// Sets the QEMU emulation image.
+	Image pulumi.StringPtrInput `pulumi:"image"`
+	// Install QEMU emulation for multi-platform support.
+	Install pulumi.BoolPtrInput `pulumi:"install"`
+}
+
+func (BuildxBuilderKubernetesQemuArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetesQemu)(nil)).Elem()
+}
+
+func (i BuildxBuilderKubernetesQemuArgs) ToBuildxBuilderKubernetesQemuOutput() BuildxBuilderKubernetesQemuOutput {
+	return i.ToBuildxBuilderKubernetesQemuOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesQemuArgs) ToBuildxBuilderKubernetesQemuOutputWithContext(ctx context.Context) BuildxBuilderKubernetesQemuOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesQemuOutput)
+}
+
+func (i BuildxBuilderKubernetesQemuArgs) ToBuildxBuilderKubernetesQemuPtrOutput() BuildxBuilderKubernetesQemuPtrOutput {
+	return i.ToBuildxBuilderKubernetesQemuPtrOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesQemuArgs) ToBuildxBuilderKubernetesQemuPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesQemuPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesQemuOutput).ToBuildxBuilderKubernetesQemuPtrOutputWithContext(ctx)
+}
+
+// BuildxBuilderKubernetesQemuPtrInput is an input type that accepts BuildxBuilderKubernetesQemuArgs, BuildxBuilderKubernetesQemuPtr and BuildxBuilderKubernetesQemuPtrOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesQemuPtrInput` via:
+//
+//	        BuildxBuilderKubernetesQemuArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildxBuilderKubernetesQemuPtrInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesQemuPtrOutput() BuildxBuilderKubernetesQemuPtrOutput
+	ToBuildxBuilderKubernetesQemuPtrOutputWithContext(context.Context) BuildxBuilderKubernetesQemuPtrOutput
+}
+
+type buildxBuilderKubernetesQemuPtrType BuildxBuilderKubernetesQemuArgs
+
+func BuildxBuilderKubernetesQemuPtr(v *BuildxBuilderKubernetesQemuArgs) BuildxBuilderKubernetesQemuPtrInput {
+	return (*buildxBuilderKubernetesQemuPtrType)(v)
+}
+
+func (*buildxBuilderKubernetesQemuPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetesQemu)(nil)).Elem()
+}
+
+func (i *buildxBuilderKubernetesQemuPtrType) ToBuildxBuilderKubernetesQemuPtrOutput() BuildxBuilderKubernetesQemuPtrOutput {
+	return i.ToBuildxBuilderKubernetesQemuPtrOutputWithContext(context.Background())
+}
+
+func (i *buildxBuilderKubernetesQemuPtrType) ToBuildxBuilderKubernetesQemuPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesQemuPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesQemuPtrOutput)
+}
+
+type BuildxBuilderKubernetesQemuOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesQemuOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetesQemu)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesQemuOutput) ToBuildxBuilderKubernetesQemuOutput() BuildxBuilderKubernetesQemuOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesQemuOutput) ToBuildxBuilderKubernetesQemuOutputWithContext(ctx context.Context) BuildxBuilderKubernetesQemuOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesQemuOutput) ToBuildxBuilderKubernetesQemuPtrOutput() BuildxBuilderKubernetesQemuPtrOutput {
+	return o.ToBuildxBuilderKubernetesQemuPtrOutputWithContext(context.Background())
+}
+
+func (o BuildxBuilderKubernetesQemuOutput) ToBuildxBuilderKubernetesQemuPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesQemuPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildxBuilderKubernetesQemu) *BuildxBuilderKubernetesQemu {
+		return &v
+	}).(BuildxBuilderKubernetesQemuPtrOutput)
+}
+
+// Sets the QEMU emulation image.
+func (o BuildxBuilderKubernetesQemuOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesQemu) *string { return v.Image }).(pulumi.StringPtrOutput)
+}
+
+// Install QEMU emulation for multi-platform support.
+func (o BuildxBuilderKubernetesQemuOutput) Install() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesQemu) *bool { return v.Install }).(pulumi.BoolPtrOutput)
+}
+
+type BuildxBuilderKubernetesQemuPtrOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesQemuPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetesQemu)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesQemuPtrOutput) ToBuildxBuilderKubernetesQemuPtrOutput() BuildxBuilderKubernetesQemuPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesQemuPtrOutput) ToBuildxBuilderKubernetesQemuPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesQemuPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesQemuPtrOutput) Elem() BuildxBuilderKubernetesQemuOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesQemu) BuildxBuilderKubernetesQemu {
+		if v != nil {
+			return *v
+		}
+		var ret BuildxBuilderKubernetesQemu
+		return ret
+	}).(BuildxBuilderKubernetesQemuOutput)
+}
+
+// Sets the QEMU emulation image.
+func (o BuildxBuilderKubernetesQemuPtrOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesQemu) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Image
+	}).(pulumi.StringPtrOutput)
+}
+
+// Install QEMU emulation for multi-platform support.
+func (o BuildxBuilderKubernetesQemuPtrOutput) Install() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesQemu) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Install
+	}).(pulumi.BoolPtrOutput)
+}
+
+type BuildxBuilderKubernetesRequests struct {
+	// CPU limit for the Kubernetes pod.
+	Cpu *string `pulumi:"cpu"`
+	// Ephemeral storage limit for the Kubernetes pod.
+	EphemeralStorage *string `pulumi:"ephemeralStorage"`
+	// Memory limit for the Kubernetes pod.
+	Memory *string `pulumi:"memory"`
+}
+
+// BuildxBuilderKubernetesRequestsInput is an input type that accepts BuildxBuilderKubernetesRequestsArgs and BuildxBuilderKubernetesRequestsOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesRequestsInput` via:
+//
+//	BuildxBuilderKubernetesRequestsArgs{...}
+type BuildxBuilderKubernetesRequestsInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesRequestsOutput() BuildxBuilderKubernetesRequestsOutput
+	ToBuildxBuilderKubernetesRequestsOutputWithContext(context.Context) BuildxBuilderKubernetesRequestsOutput
+}
+
+type BuildxBuilderKubernetesRequestsArgs struct {
+	// CPU limit for the Kubernetes pod.
+	Cpu pulumi.StringPtrInput `pulumi:"cpu"`
+	// Ephemeral storage limit for the Kubernetes pod.
+	EphemeralStorage pulumi.StringPtrInput `pulumi:"ephemeralStorage"`
+	// Memory limit for the Kubernetes pod.
+	Memory pulumi.StringPtrInput `pulumi:"memory"`
+}
+
+func (BuildxBuilderKubernetesRequestsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetesRequests)(nil)).Elem()
+}
+
+func (i BuildxBuilderKubernetesRequestsArgs) ToBuildxBuilderKubernetesRequestsOutput() BuildxBuilderKubernetesRequestsOutput {
+	return i.ToBuildxBuilderKubernetesRequestsOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesRequestsArgs) ToBuildxBuilderKubernetesRequestsOutputWithContext(ctx context.Context) BuildxBuilderKubernetesRequestsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesRequestsOutput)
+}
+
+func (i BuildxBuilderKubernetesRequestsArgs) ToBuildxBuilderKubernetesRequestsPtrOutput() BuildxBuilderKubernetesRequestsPtrOutput {
+	return i.ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderKubernetesRequestsArgs) ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesRequestsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesRequestsOutput).ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(ctx)
+}
+
+// BuildxBuilderKubernetesRequestsPtrInput is an input type that accepts BuildxBuilderKubernetesRequestsArgs, BuildxBuilderKubernetesRequestsPtr and BuildxBuilderKubernetesRequestsPtrOutput values.
+// You can construct a concrete instance of `BuildxBuilderKubernetesRequestsPtrInput` via:
+//
+//	        BuildxBuilderKubernetesRequestsArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildxBuilderKubernetesRequestsPtrInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderKubernetesRequestsPtrOutput() BuildxBuilderKubernetesRequestsPtrOutput
+	ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(context.Context) BuildxBuilderKubernetesRequestsPtrOutput
+}
+
+type buildxBuilderKubernetesRequestsPtrType BuildxBuilderKubernetesRequestsArgs
+
+func BuildxBuilderKubernetesRequestsPtr(v *BuildxBuilderKubernetesRequestsArgs) BuildxBuilderKubernetesRequestsPtrInput {
+	return (*buildxBuilderKubernetesRequestsPtrType)(v)
+}
+
+func (*buildxBuilderKubernetesRequestsPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetesRequests)(nil)).Elem()
+}
+
+func (i *buildxBuilderKubernetesRequestsPtrType) ToBuildxBuilderKubernetesRequestsPtrOutput() BuildxBuilderKubernetesRequestsPtrOutput {
+	return i.ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(context.Background())
+}
+
+func (i *buildxBuilderKubernetesRequestsPtrType) ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesRequestsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderKubernetesRequestsPtrOutput)
+}
+
+type BuildxBuilderKubernetesRequestsOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesRequestsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderKubernetesRequests)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesRequestsOutput) ToBuildxBuilderKubernetesRequestsOutput() BuildxBuilderKubernetesRequestsOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesRequestsOutput) ToBuildxBuilderKubernetesRequestsOutputWithContext(ctx context.Context) BuildxBuilderKubernetesRequestsOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesRequestsOutput) ToBuildxBuilderKubernetesRequestsPtrOutput() BuildxBuilderKubernetesRequestsPtrOutput {
+	return o.ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(context.Background())
+}
+
+func (o BuildxBuilderKubernetesRequestsOutput) ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesRequestsPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildxBuilderKubernetesRequests) *BuildxBuilderKubernetesRequests {
+		return &v
+	}).(BuildxBuilderKubernetesRequestsPtrOutput)
+}
+
+// CPU limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesRequestsOutput) Cpu() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesRequests) *string { return v.Cpu }).(pulumi.StringPtrOutput)
+}
+
+// Ephemeral storage limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesRequestsOutput) EphemeralStorage() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesRequests) *string { return v.EphemeralStorage }).(pulumi.StringPtrOutput)
+}
+
+// Memory limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesRequestsOutput) Memory() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderKubernetesRequests) *string { return v.Memory }).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderKubernetesRequestsPtrOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderKubernetesRequestsPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderKubernetesRequests)(nil)).Elem()
+}
+
+func (o BuildxBuilderKubernetesRequestsPtrOutput) ToBuildxBuilderKubernetesRequestsPtrOutput() BuildxBuilderKubernetesRequestsPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesRequestsPtrOutput) ToBuildxBuilderKubernetesRequestsPtrOutputWithContext(ctx context.Context) BuildxBuilderKubernetesRequestsPtrOutput {
+	return o
+}
+
+func (o BuildxBuilderKubernetesRequestsPtrOutput) Elem() BuildxBuilderKubernetesRequestsOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesRequests) BuildxBuilderKubernetesRequests {
+		if v != nil {
+			return *v
+		}
+		var ret BuildxBuilderKubernetesRequests
+		return ret
+	}).(BuildxBuilderKubernetesRequestsOutput)
+}
+
+// CPU limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesRequestsPtrOutput) Cpu() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesRequests) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Cpu
+	}).(pulumi.StringPtrOutput)
+}
+
+// Ephemeral storage limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesRequestsPtrOutput) EphemeralStorage() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesRequests) *string {
+		if v == nil {
+			return nil
+		}
+		return v.EphemeralStorage
+	}).(pulumi.StringPtrOutput)
+}
+
+// Memory limit for the Kubernetes pod.
+func (o BuildxBuilderKubernetesRequestsPtrOutput) Memory() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderKubernetesRequests) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Memory
+	}).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderRemote struct {
+	// Absolute path to the TLS certificate authority used for validation.
+	Cacert *string `pulumi:"cacert"`
+	// Absolute path to the TLS client certificate to present to buildkitd.
+	Cert *string `pulumi:"cert"`
+	// Automatically load images to the Docker Engine image store. Defaults to `false`
+	DefaultLoad *bool `pulumi:"defaultLoad"`
+	// Sets the TLS client key.
+	Key *string `pulumi:"key"`
+	// TLS server name used in requests.
+	Servername *string `pulumi:"servername"`
+}
+
+// BuildxBuilderRemoteInput is an input type that accepts BuildxBuilderRemoteArgs and BuildxBuilderRemoteOutput values.
+// You can construct a concrete instance of `BuildxBuilderRemoteInput` via:
+//
+//	BuildxBuilderRemoteArgs{...}
+type BuildxBuilderRemoteInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderRemoteOutput() BuildxBuilderRemoteOutput
+	ToBuildxBuilderRemoteOutputWithContext(context.Context) BuildxBuilderRemoteOutput
+}
+
+type BuildxBuilderRemoteArgs struct {
+	// Absolute path to the TLS certificate authority used for validation.
+	Cacert pulumi.StringPtrInput `pulumi:"cacert"`
+	// Absolute path to the TLS client certificate to present to buildkitd.
+	Cert pulumi.StringPtrInput `pulumi:"cert"`
+	// Automatically load images to the Docker Engine image store. Defaults to `false`
+	DefaultLoad pulumi.BoolPtrInput `pulumi:"defaultLoad"`
+	// Sets the TLS client key.
+	Key pulumi.StringPtrInput `pulumi:"key"`
+	// TLS server name used in requests.
+	Servername pulumi.StringPtrInput `pulumi:"servername"`
+}
+
+func (BuildxBuilderRemoteArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderRemote)(nil)).Elem()
+}
+
+func (i BuildxBuilderRemoteArgs) ToBuildxBuilderRemoteOutput() BuildxBuilderRemoteOutput {
+	return i.ToBuildxBuilderRemoteOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderRemoteArgs) ToBuildxBuilderRemoteOutputWithContext(ctx context.Context) BuildxBuilderRemoteOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderRemoteOutput)
+}
+
+func (i BuildxBuilderRemoteArgs) ToBuildxBuilderRemotePtrOutput() BuildxBuilderRemotePtrOutput {
+	return i.ToBuildxBuilderRemotePtrOutputWithContext(context.Background())
+}
+
+func (i BuildxBuilderRemoteArgs) ToBuildxBuilderRemotePtrOutputWithContext(ctx context.Context) BuildxBuilderRemotePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderRemoteOutput).ToBuildxBuilderRemotePtrOutputWithContext(ctx)
+}
+
+// BuildxBuilderRemotePtrInput is an input type that accepts BuildxBuilderRemoteArgs, BuildxBuilderRemotePtr and BuildxBuilderRemotePtrOutput values.
+// You can construct a concrete instance of `BuildxBuilderRemotePtrInput` via:
+//
+//	        BuildxBuilderRemoteArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildxBuilderRemotePtrInput interface {
+	pulumi.Input
+
+	ToBuildxBuilderRemotePtrOutput() BuildxBuilderRemotePtrOutput
+	ToBuildxBuilderRemotePtrOutputWithContext(context.Context) BuildxBuilderRemotePtrOutput
+}
+
+type buildxBuilderRemotePtrType BuildxBuilderRemoteArgs
+
+func BuildxBuilderRemotePtr(v *BuildxBuilderRemoteArgs) BuildxBuilderRemotePtrInput {
+	return (*buildxBuilderRemotePtrType)(v)
+}
+
+func (*buildxBuilderRemotePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderRemote)(nil)).Elem()
+}
+
+func (i *buildxBuilderRemotePtrType) ToBuildxBuilderRemotePtrOutput() BuildxBuilderRemotePtrOutput {
+	return i.ToBuildxBuilderRemotePtrOutputWithContext(context.Background())
+}
+
+func (i *buildxBuilderRemotePtrType) ToBuildxBuilderRemotePtrOutputWithContext(ctx context.Context) BuildxBuilderRemotePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildxBuilderRemotePtrOutput)
+}
+
+type BuildxBuilderRemoteOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderRemoteOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildxBuilderRemote)(nil)).Elem()
+}
+
+func (o BuildxBuilderRemoteOutput) ToBuildxBuilderRemoteOutput() BuildxBuilderRemoteOutput {
+	return o
+}
+
+func (o BuildxBuilderRemoteOutput) ToBuildxBuilderRemoteOutputWithContext(ctx context.Context) BuildxBuilderRemoteOutput {
+	return o
+}
+
+func (o BuildxBuilderRemoteOutput) ToBuildxBuilderRemotePtrOutput() BuildxBuilderRemotePtrOutput {
+	return o.ToBuildxBuilderRemotePtrOutputWithContext(context.Background())
+}
+
+func (o BuildxBuilderRemoteOutput) ToBuildxBuilderRemotePtrOutputWithContext(ctx context.Context) BuildxBuilderRemotePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildxBuilderRemote) *BuildxBuilderRemote {
+		return &v
+	}).(BuildxBuilderRemotePtrOutput)
+}
+
+// Absolute path to the TLS certificate authority used for validation.
+func (o BuildxBuilderRemoteOutput) Cacert() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderRemote) *string { return v.Cacert }).(pulumi.StringPtrOutput)
+}
+
+// Absolute path to the TLS client certificate to present to buildkitd.
+func (o BuildxBuilderRemoteOutput) Cert() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderRemote) *string { return v.Cert }).(pulumi.StringPtrOutput)
+}
+
+// Automatically load images to the Docker Engine image store. Defaults to `false`
+func (o BuildxBuilderRemoteOutput) DefaultLoad() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderRemote) *bool { return v.DefaultLoad }).(pulumi.BoolPtrOutput)
+}
+
+// Sets the TLS client key.
+func (o BuildxBuilderRemoteOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderRemote) *string { return v.Key }).(pulumi.StringPtrOutput)
+}
+
+// TLS server name used in requests.
+func (o BuildxBuilderRemoteOutput) Servername() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuildxBuilderRemote) *string { return v.Servername }).(pulumi.StringPtrOutput)
+}
+
+type BuildxBuilderRemotePtrOutput struct{ *pulumi.OutputState }
+
+func (BuildxBuilderRemotePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildxBuilderRemote)(nil)).Elem()
+}
+
+func (o BuildxBuilderRemotePtrOutput) ToBuildxBuilderRemotePtrOutput() BuildxBuilderRemotePtrOutput {
+	return o
+}
+
+func (o BuildxBuilderRemotePtrOutput) ToBuildxBuilderRemotePtrOutputWithContext(ctx context.Context) BuildxBuilderRemotePtrOutput {
+	return o
+}
+
+func (o BuildxBuilderRemotePtrOutput) Elem() BuildxBuilderRemoteOutput {
+	return o.ApplyT(func(v *BuildxBuilderRemote) BuildxBuilderRemote {
+		if v != nil {
+			return *v
+		}
+		var ret BuildxBuilderRemote
+		return ret
+	}).(BuildxBuilderRemoteOutput)
+}
+
+// Absolute path to the TLS certificate authority used for validation.
+func (o BuildxBuilderRemotePtrOutput) Cacert() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderRemote) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Cacert
+	}).(pulumi.StringPtrOutput)
+}
+
+// Absolute path to the TLS client certificate to present to buildkitd.
+func (o BuildxBuilderRemotePtrOutput) Cert() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderRemote) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Cert
+	}).(pulumi.StringPtrOutput)
+}
+
+// Automatically load images to the Docker Engine image store. Defaults to `false`
+func (o BuildxBuilderRemotePtrOutput) DefaultLoad() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderRemote) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.DefaultLoad
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Sets the TLS client key.
+func (o BuildxBuilderRemotePtrOutput) Key() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderRemote) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Key
+	}).(pulumi.StringPtrOutput)
+}
+
+// TLS server name used in requests.
+func (o BuildxBuilderRemotePtrOutput) Servername() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildxBuilderRemote) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Servername
+	}).(pulumi.StringPtrOutput)
+}
+
 type ContainerCapabilities struct {
 	// List of linux capabilities to add.
 	Adds []string `pulumi:"adds"`
@@ -2957,7 +4463,7 @@ type RemoteImageBuild struct {
 	BuildId *string `pulumi:"buildId"`
 	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
 	BuildLogFile *string `pulumi:"buildLogFile"`
-	// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
 	Builder *string `pulumi:"builder"`
 	// Images to consider as cache sources
 	CacheFroms []string `pulumi:"cacheFroms"`
@@ -2995,7 +4501,7 @@ type RemoteImageBuild struct {
 	NetworkMode *string `pulumi:"networkMode"`
 	// Do not use the cache when building the image
 	NoCache *bool `pulumi:"noCache"`
-	// Set platform if server is multi-platform capable
+	// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
 	Platform *string `pulumi:"platform"`
 	// Attempt to pull the image even if an older image exists locally
 	PullParent *bool `pulumi:"pullParent"`
@@ -3045,7 +4551,7 @@ type RemoteImageBuildArgs struct {
 	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
 	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
 	BuildLogFile pulumi.StringPtrInput `pulumi:"buildLogFile"`
-	// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
 	Builder pulumi.StringPtrInput `pulumi:"builder"`
 	// Images to consider as cache sources
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
@@ -3083,7 +4589,7 @@ type RemoteImageBuildArgs struct {
 	NetworkMode pulumi.StringPtrInput `pulumi:"networkMode"`
 	// Do not use the cache when building the image
 	NoCache pulumi.BoolPtrInput `pulumi:"noCache"`
-	// Set platform if server is multi-platform capable
+	// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
 	Platform pulumi.StringPtrInput `pulumi:"platform"`
 	// Attempt to pull the image even if an older image exists locally
 	PullParent pulumi.BoolPtrInput `pulumi:"pullParent"`
@@ -3210,7 +4716,7 @@ func (o RemoteImageBuildOutput) BuildLogFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.BuildLogFile }).(pulumi.StringPtrOutput)
 }
 
-// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+// Set the name of the buildx builder to use. If not set, the legacy builder is used.
 func (o RemoteImageBuildOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Builder }).(pulumi.StringPtrOutput)
 }
@@ -3305,7 +4811,7 @@ func (o RemoteImageBuildOutput) NoCache() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.NoCache }).(pulumi.BoolPtrOutput)
 }
 
-// Set platform if server is multi-platform capable
+// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
 func (o RemoteImageBuildOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Platform }).(pulumi.StringPtrOutput)
 }
@@ -3439,7 +4945,7 @@ func (o RemoteImageBuildPtrOutput) BuildLogFile() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+// Set the name of the buildx builder to use. If not set, the legacy builder is used.
 func (o RemoteImageBuildPtrOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -3629,7 +5135,7 @@ func (o RemoteImageBuildPtrOutput) NoCache() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Set platform if server is multi-platform capable
+// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
 func (o RemoteImageBuildPtrOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -5789,6 +7295,10 @@ func (o ServiceTaskSpecPtrOutput) Runtime() pulumi.StringPtrOutput {
 type ServiceTaskSpecContainerSpec struct {
 	// Arguments to the command
 	Args []string `pulumi:"args"`
+	// List of Linux capabilities to add to the container
+	CapAdds []string `pulumi:"capAdds"`
+	// List of Linux capabilities to drop from the container
+	CapDrops []string `pulumi:"capDrops"`
 	// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
 	Commands []string `pulumi:"commands"`
 	// References to zero or more configs that will be exposed to the service
@@ -5845,6 +7355,10 @@ type ServiceTaskSpecContainerSpecInput interface {
 type ServiceTaskSpecContainerSpecArgs struct {
 	// Arguments to the command
 	Args pulumi.StringArrayInput `pulumi:"args"`
+	// List of Linux capabilities to add to the container
+	CapAdds pulumi.StringArrayInput `pulumi:"capAdds"`
+	// List of Linux capabilities to drop from the container
+	CapDrops pulumi.StringArrayInput `pulumi:"capDrops"`
 	// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
 	Commands pulumi.StringArrayInput `pulumi:"commands"`
 	// References to zero or more configs that will be exposed to the service
@@ -5967,6 +7481,16 @@ func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecPtrOut
 // Arguments to the command
 func (o ServiceTaskSpecContainerSpecOutput) Args() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.Args }).(pulumi.StringArrayOutput)
+}
+
+// List of Linux capabilities to add to the container
+func (o ServiceTaskSpecContainerSpecOutput) CapAdds() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.CapAdds }).(pulumi.StringArrayOutput)
+}
+
+// List of Linux capabilities to drop from the container
+func (o ServiceTaskSpecContainerSpecOutput) CapDrops() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.CapDrops }).(pulumi.StringArrayOutput)
 }
 
 // The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
@@ -6100,6 +7624,26 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) Args() pulumi.StringArrayOutput {
 			return nil
 		}
 		return v.Args
+	}).(pulumi.StringArrayOutput)
+}
+
+// List of Linux capabilities to add to the container
+func (o ServiceTaskSpecContainerSpecPtrOutput) CapAdds() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []string {
+		if v == nil {
+			return nil
+		}
+		return v.CapAdds
+	}).(pulumi.StringArrayOutput)
+}
+
+// List of Linux capabilities to drop from the container
+func (o ServiceTaskSpecContainerSpecPtrOutput) CapDrops() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []string {
+		if v == nil {
+			return nil
+		}
+		return v.CapDrops
 	}).(pulumi.StringArrayOutput)
 }
 
@@ -11250,6 +12794,18 @@ func (o RegistryPtrOutput) Username() pulumi.StringPtrOutput {
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderDockerContainerInput)(nil)).Elem(), BuildxBuilderDockerContainerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderDockerContainerPtrInput)(nil)).Elem(), BuildxBuilderDockerContainerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesInput)(nil)).Elem(), BuildxBuilderKubernetesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesPtrInput)(nil)).Elem(), BuildxBuilderKubernetesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesLimitsInput)(nil)).Elem(), BuildxBuilderKubernetesLimitsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesLimitsPtrInput)(nil)).Elem(), BuildxBuilderKubernetesLimitsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesQemuInput)(nil)).Elem(), BuildxBuilderKubernetesQemuArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesQemuPtrInput)(nil)).Elem(), BuildxBuilderKubernetesQemuArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesRequestsInput)(nil)).Elem(), BuildxBuilderKubernetesRequestsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderKubernetesRequestsPtrInput)(nil)).Elem(), BuildxBuilderKubernetesRequestsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderRemoteInput)(nil)).Elem(), BuildxBuilderRemoteArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildxBuilderRemotePtrInput)(nil)).Elem(), BuildxBuilderRemoteArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerCapabilitiesInput)(nil)).Elem(), ContainerCapabilitiesArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerCapabilitiesPtrInput)(nil)).Elem(), ContainerCapabilitiesArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceInput)(nil)).Elem(), ContainerDeviceArgs{})
@@ -11384,6 +12940,18 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*GetRegistryImageManifestsManifestArrayInput)(nil)).Elem(), GetRegistryImageManifestsManifestArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryInput)(nil)).Elem(), RegistryArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryPtrInput)(nil)).Elem(), RegistryArgs{})
+	pulumi.RegisterOutputType(BuildxBuilderDockerContainerOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderDockerContainerPtrOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesPtrOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesLimitsOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesLimitsPtrOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesQemuOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesQemuPtrOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesRequestsOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderKubernetesRequestsPtrOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderRemoteOutput{})
+	pulumi.RegisterOutputType(BuildxBuilderRemotePtrOutput{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesOutput{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesPtrOutput{})
 	pulumi.RegisterOutputType(ContainerDeviceOutput{})

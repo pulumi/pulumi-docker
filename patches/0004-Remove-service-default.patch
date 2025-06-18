@@ -5,10 +5,10 @@ Subject: [PATCH] Remove service default
 
 
 diff --git a/docs/resources/service.md b/docs/resources/service.md
-index 496c93b..704e640 100644
+index 24aa8fa..ef4f805 100644
 --- a/docs/resources/service.md
 +++ b/docs/resources/service.md
-@@ -698,7 +698,7 @@ Required:
+@@ -700,7 +700,7 @@ Required:
  
  Optional:
  
@@ -18,10 +18,10 @@ index 496c93b..704e640 100644
  
  <a id="nestedblock--mode--replicated"></a>
 diff --git a/internal/provider/resource_docker_service.go b/internal/provider/resource_docker_service.go
-index 577e81f..3e034a7 100644
+index 8b80e32..9a1433a 100644
 --- a/internal/provider/resource_docker_service.go
 +++ b/internal/provider/resource_docker_service.go
-@@ -764,8 +764,7 @@ func resourceDockerService() *schema.Resource {
+@@ -776,8 +776,7 @@ func resourceDockerService() *schema.Resource {
  						},
  						"global": {
  							Type:          schema.TypeBool,

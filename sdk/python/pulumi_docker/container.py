@@ -25,9 +25,12 @@ class ContainerArgs:
                  image: pulumi.Input[builtins.str],
                  attach: Optional[pulumi.Input[builtins.bool]] = None,
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
+                 cgroup_parent: Optional[pulumi.Input[builtins.str]] = None,
                  cgroupns_mode: Optional[pulumi.Input[builtins.str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_period: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_quota: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
                  cpus: Optional[pulumi.Input[builtins.str]] = None,
@@ -90,12 +93,15 @@ class ContainerArgs:
         :param pulumi.Input[builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input[builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
+        :param pulumi.Input[builtins.int] cpu_period: Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        :param pulumi.Input[builtins.int] cpu_quota: Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
-        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
@@ -155,12 +161,18 @@ class ContainerArgs:
             pulumi.set(__self__, "attach", attach)
         if capabilities is not None:
             pulumi.set(__self__, "capabilities", capabilities)
+        if cgroup_parent is not None:
+            pulumi.set(__self__, "cgroup_parent", cgroup_parent)
         if cgroupns_mode is not None:
             pulumi.set(__self__, "cgroupns_mode", cgroupns_mode)
         if command is not None:
             pulumi.set(__self__, "command", command)
         if container_read_refresh_timeout_milliseconds is not None:
             pulumi.set(__self__, "container_read_refresh_timeout_milliseconds", container_read_refresh_timeout_milliseconds)
+        if cpu_period is not None:
+            pulumi.set(__self__, "cpu_period", cpu_period)
+        if cpu_quota is not None:
+            pulumi.set(__self__, "cpu_quota", cpu_quota)
         if cpu_set is not None:
             pulumi.set(__self__, "cpu_set", cpu_set)
         if cpu_shares is not None:
@@ -313,6 +325,18 @@ class ContainerArgs:
         pulumi.set(self, "capabilities", value)
 
     @property
+    @pulumi.getter(name="cgroupParent")
+    def cgroup_parent(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Optional parent cgroup for the container
+        """
+        return pulumi.get(self, "cgroup_parent")
+
+    @cgroup_parent.setter
+    def cgroup_parent(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cgroup_parent", value)
+
+    @property
     @pulumi.getter(name="cgroupnsMode")
     def cgroupns_mode(self) -> Optional[pulumi.Input[builtins.str]]:
         """
@@ -349,6 +373,30 @@ class ContainerArgs:
         pulumi.set(self, "container_read_refresh_timeout_milliseconds", value)
 
     @property
+    @pulumi.getter(name="cpuPeriod")
+    def cpu_period(self) -> Optional[pulumi.Input[builtins.int]]:
+        """
+        Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        """
+        return pulumi.get(self, "cpu_period")
+
+    @cpu_period.setter
+    def cpu_period(self, value: Optional[pulumi.Input[builtins.int]]):
+        pulumi.set(self, "cpu_period", value)
+
+    @property
+    @pulumi.getter(name="cpuQuota")
+    def cpu_quota(self) -> Optional[pulumi.Input[builtins.int]]:
+        """
+        Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        """
+        return pulumi.get(self, "cpu_quota")
+
+    @cpu_quota.setter
+    def cpu_quota(self, value: Optional[pulumi.Input[builtins.int]]):
+        pulumi.set(self, "cpu_quota", value)
+
+    @property
     @pulumi.getter(name="cpuSet")
     def cpu_set(self) -> Optional[pulumi.Input[builtins.str]]:
         """
@@ -376,7 +424,7 @@ class ContainerArgs:
     @pulumi.getter
     def cpus(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         """
         return pulumi.get(self, "cpus")
 
@@ -1036,10 +1084,13 @@ class _ContainerState:
                  attach: Optional[pulumi.Input[builtins.bool]] = None,
                  bridge: Optional[pulumi.Input[builtins.str]] = None,
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
+                 cgroup_parent: Optional[pulumi.Input[builtins.str]] = None,
                  cgroupns_mode: Optional[pulumi.Input[builtins.str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
                  container_logs: Optional[pulumi.Input[builtins.str]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_period: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_quota: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
                  cpus: Optional[pulumi.Input[builtins.str]] = None,
@@ -1105,13 +1156,16 @@ class _ContainerState:
         :param pulumi.Input[builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input[builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
+        :param pulumi.Input[builtins.int] cpu_period: Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        :param pulumi.Input[builtins.int] cpu_quota: Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
-        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
@@ -1175,6 +1229,8 @@ class _ContainerState:
             pulumi.set(__self__, "bridge", bridge)
         if capabilities is not None:
             pulumi.set(__self__, "capabilities", capabilities)
+        if cgroup_parent is not None:
+            pulumi.set(__self__, "cgroup_parent", cgroup_parent)
         if cgroupns_mode is not None:
             pulumi.set(__self__, "cgroupns_mode", cgroupns_mode)
         if command is not None:
@@ -1183,6 +1239,10 @@ class _ContainerState:
             pulumi.set(__self__, "container_logs", container_logs)
         if container_read_refresh_timeout_milliseconds is not None:
             pulumi.set(__self__, "container_read_refresh_timeout_milliseconds", container_read_refresh_timeout_milliseconds)
+        if cpu_period is not None:
+            pulumi.set(__self__, "cpu_period", cpu_period)
+        if cpu_quota is not None:
+            pulumi.set(__self__, "cpu_quota", cpu_quota)
         if cpu_set is not None:
             pulumi.set(__self__, "cpu_set", cpu_set)
         if cpu_shares is not None:
@@ -1341,6 +1401,18 @@ class _ContainerState:
         pulumi.set(self, "capabilities", value)
 
     @property
+    @pulumi.getter(name="cgroupParent")
+    def cgroup_parent(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Optional parent cgroup for the container
+        """
+        return pulumi.get(self, "cgroup_parent")
+
+    @cgroup_parent.setter
+    def cgroup_parent(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cgroup_parent", value)
+
+    @property
     @pulumi.getter(name="cgroupnsMode")
     def cgroupns_mode(self) -> Optional[pulumi.Input[builtins.str]]:
         """
@@ -1389,6 +1461,30 @@ class _ContainerState:
         pulumi.set(self, "container_read_refresh_timeout_milliseconds", value)
 
     @property
+    @pulumi.getter(name="cpuPeriod")
+    def cpu_period(self) -> Optional[pulumi.Input[builtins.int]]:
+        """
+        Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        """
+        return pulumi.get(self, "cpu_period")
+
+    @cpu_period.setter
+    def cpu_period(self, value: Optional[pulumi.Input[builtins.int]]):
+        pulumi.set(self, "cpu_period", value)
+
+    @property
+    @pulumi.getter(name="cpuQuota")
+    def cpu_quota(self) -> Optional[pulumi.Input[builtins.int]]:
+        """
+        Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        """
+        return pulumi.get(self, "cpu_quota")
+
+    @cpu_quota.setter
+    def cpu_quota(self, value: Optional[pulumi.Input[builtins.int]]):
+        pulumi.set(self, "cpu_quota", value)
+
+    @property
     @pulumi.getter(name="cpuSet")
     def cpu_set(self) -> Optional[pulumi.Input[builtins.str]]:
         """
@@ -1416,7 +1512,7 @@ class _ContainerState:
     @pulumi.getter
     def cpus(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         """
         return pulumi.get(self, "cpus")
 
@@ -2114,9 +2210,12 @@ class Container(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attach: Optional[pulumi.Input[builtins.bool]] = None,
                  capabilities: Optional[pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']]] = None,
+                 cgroup_parent: Optional[pulumi.Input[builtins.str]] = None,
                  cgroupns_mode: Optional[pulumi.Input[builtins.str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_period: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_quota: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
                  cpus: Optional[pulumi.Input[builtins.str]] = None,
@@ -2240,12 +2339,15 @@ class Container(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input[builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
+        :param pulumi.Input[builtins.int] cpu_period: Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        :param pulumi.Input[builtins.int] cpu_quota: Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
-        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
@@ -2384,9 +2486,12 @@ class Container(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attach: Optional[pulumi.Input[builtins.bool]] = None,
                  capabilities: Optional[pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']]] = None,
+                 cgroup_parent: Optional[pulumi.Input[builtins.str]] = None,
                  cgroupns_mode: Optional[pulumi.Input[builtins.str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_period: Optional[pulumi.Input[builtins.int]] = None,
+                 cpu_quota: Optional[pulumi.Input[builtins.int]] = None,
                  cpu_set: Optional[pulumi.Input[builtins.str]] = None,
                  cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
                  cpus: Optional[pulumi.Input[builtins.str]] = None,
@@ -2456,9 +2561,12 @@ class Container(pulumi.CustomResource):
 
             __props__.__dict__["attach"] = attach
             __props__.__dict__["capabilities"] = capabilities
+            __props__.__dict__["cgroup_parent"] = cgroup_parent
             __props__.__dict__["cgroupns_mode"] = cgroupns_mode
             __props__.__dict__["command"] = command
             __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
+            __props__.__dict__["cpu_period"] = cpu_period
+            __props__.__dict__["cpu_quota"] = cpu_quota
             __props__.__dict__["cpu_set"] = cpu_set
             __props__.__dict__["cpu_shares"] = cpu_shares
             __props__.__dict__["cpus"] = cpus
@@ -2536,10 +2644,13 @@ class Container(pulumi.CustomResource):
             attach: Optional[pulumi.Input[builtins.bool]] = None,
             bridge: Optional[pulumi.Input[builtins.str]] = None,
             capabilities: Optional[pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']]] = None,
+            cgroup_parent: Optional[pulumi.Input[builtins.str]] = None,
             cgroupns_mode: Optional[pulumi.Input[builtins.str]] = None,
             command: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
             container_logs: Optional[pulumi.Input[builtins.str]] = None,
             container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[builtins.int]] = None,
+            cpu_period: Optional[pulumi.Input[builtins.int]] = None,
+            cpu_quota: Optional[pulumi.Input[builtins.int]] = None,
             cpu_set: Optional[pulumi.Input[builtins.str]] = None,
             cpu_shares: Optional[pulumi.Input[builtins.int]] = None,
             cpus: Optional[pulumi.Input[builtins.str]] = None,
@@ -2610,13 +2721,16 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input[builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
         :param pulumi.Input[builtins.str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[builtins.int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
+        :param pulumi.Input[builtins.int] cpu_period: Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        :param pulumi.Input[builtins.int] cpu_quota: Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
         :param pulumi.Input[builtins.str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[builtins.int] cpu_shares: CPU shares (relative weight) for the container.
-        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        :param pulumi.Input[builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind devices to the container.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] dns: DNS servers to use.
@@ -2681,10 +2795,13 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["attach"] = attach
         __props__.__dict__["bridge"] = bridge
         __props__.__dict__["capabilities"] = capabilities
+        __props__.__dict__["cgroup_parent"] = cgroup_parent
         __props__.__dict__["cgroupns_mode"] = cgroupns_mode
         __props__.__dict__["command"] = command
         __props__.__dict__["container_logs"] = container_logs
         __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
+        __props__.__dict__["cpu_period"] = cpu_period
+        __props__.__dict__["cpu_quota"] = cpu_quota
         __props__.__dict__["cpu_set"] = cpu_set
         __props__.__dict__["cpu_shares"] = cpu_shares
         __props__.__dict__["cpus"] = cpus
@@ -2772,6 +2889,14 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "capabilities")
 
     @property
+    @pulumi.getter(name="cgroupParent")
+    def cgroup_parent(self) -> pulumi.Output[Optional[builtins.str]]:
+        """
+        Optional parent cgroup for the container
+        """
+        return pulumi.get(self, "cgroup_parent")
+
+    @property
     @pulumi.getter(name="cgroupnsMode")
     def cgroupns_mode(self) -> pulumi.Output[Optional[builtins.str]]:
         """
@@ -2804,6 +2929,22 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "container_read_refresh_timeout_milliseconds")
 
     @property
+    @pulumi.getter(name="cpuPeriod")
+    def cpu_period(self) -> pulumi.Output[Optional[builtins.int]]:
+        """
+        Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        """
+        return pulumi.get(self, "cpu_period")
+
+    @property
+    @pulumi.getter(name="cpuQuota")
+    def cpu_quota(self) -> pulumi.Output[Optional[builtins.int]]:
+        """
+        Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        """
+        return pulumi.get(self, "cpu_quota")
+
+    @property
     @pulumi.getter(name="cpuSet")
     def cpu_set(self) -> pulumi.Output[Optional[builtins.str]]:
         """
@@ -2823,7 +2964,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def cpus(self) -> pulumi.Output[Optional[builtins.str]]:
         """
-        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         """
         return pulumi.get(self, "cpus")
 
