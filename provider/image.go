@@ -30,8 +30,6 @@ import (
 	imgtypes "github.com/docker/docker/api/types/image"
 	regtypes "github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
-	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/jsonmessage"
 	"github.com/docker/docker/registry"
 	structpb "github.com/golang/protobuf/ptypes/struct"
@@ -39,6 +37,7 @@ import (
 	"github.com/moby/buildkit/identity"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
+	"github.com/moby/go-archive"
 	"github.com/opencontainers/go-digest"
 	"github.com/spf13/afero"
 
@@ -164,7 +163,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
-		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
+		ChownOpts:       &archive.ChownOpts{UID: 0, GID: 0},
 	})
 	if err != nil {
 		return "", nil, err
