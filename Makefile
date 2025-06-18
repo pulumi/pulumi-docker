@@ -7,7 +7,6 @@ PROVIDER_PATH := provider/v4
 VERSION_PATH := $(PROVIDER_PATH)/pkg/version.Version
 CODEGEN := pulumi-tfgen-$(PACK)
 PROVIDER := pulumi-resource-$(PACK)
-JAVA_GEN := pulumi-java-gen
 TESTPARALLELISM := 10
 GOTESTARGS := ""
 WORKING_DIR := $(shell pwd)
@@ -18,6 +17,7 @@ PULUMI_MISSING_DOCS_ERROR := false
 # Override during CI using `make [TARGET] PROVIDER_VERSION=""` or by setting a PROVIDER_VERSION environment variable
 # Local & branch builds will just used this fixed default version unless specified
 PROVIDER_VERSION ?= 4.0.0-alpha.0+dev
+VERSION_GENERIC = $(shell pulumictl convert-version --language generic --version "$(PROVIDER_VERSION)")
 
 # Check version doesn't start with a "v" - this is a common mistake
 ifeq ($(shell echo $(PROVIDER_VERSION) | cut -c1),v)
@@ -124,11 +124,12 @@ build_go: .make/build_go
 generate_java: .make/generate_java
 build_java: .make/build_java
 .make/generate_java: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
-.make/generate_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
-.make/generate_java: .make/install_plugins bin/pulumi-java-gen .make/schema
-	PULUMI_HOME=$(GEN_PULUMI_HOME) PULUMI_CONVERT_EXAMPLES_CACHE_DIR=$(GEN_PULUMI_CONVERT_EXAMPLES_CACHE_DIR) bin/$(JAVA_GEN) generate --schema provider/cmd/$(PROVIDER)/schema.json --out sdk/java  --build gradle-nexus
+.make/generate_java: PACKAGE_VERSION := $(shell pulumictl convert-version --language generic -v "$(VERSION_GENERIC)")
+.make/generate_java: .make/install_plugins .make/schema
+	pulumi package gen-sdk --language java -o sdk provider/cmd/$(PROVIDER)/schema.json
 	printf "module fake_java_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/java/go.mod
 	@touch $@
+
 .make/build_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
 .make/build_java: .make/generate_java
 	cd sdk/java/ && \
@@ -267,13 +268,6 @@ upstream: .make/upstream
 	./scripts/upstream.sh init
 	@touch $@
 .PHONY: upstream
-
-bin/pulumi-java-gen: PULUMI_JAVA_VERSION := $(shell cat .pulumi-java-gen.version)
-bin/pulumi-java-gen: PLAT := $(shell go version | sed -En "s/go version go.* (.*)\/(.*)/\1-\2/p")
-bin/pulumi-java-gen: PULUMI_JAVA_URL := "https://github.com/pulumi/pulumi-java/releases/download/v$(PULUMI_JAVA_VERSION)/pulumi-language-java-v$(PULUMI_JAVA_VERSION)-$(PLAT).tar.gz"
-bin/pulumi-java-gen:
-	wget -q -O - "$(PULUMI_JAVA_URL)" | tar -xzf - -C $(WORKING_DIR)/bin pulumi-java-gen
-	@touch bin/pulumi-language-java
 
 # To make an immediately observable change to .ci-mgmt.yaml:
 #
