@@ -21,6 +21,8 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
+	case "docker:index/buildxBuilder:BuildxBuilder":
+		r = &BuildxBuilder{}
 	case "docker:index/container:Container":
 		r = &Container{}
 	case "docker:index/image:Image":
@@ -74,6 +76,11 @@ func init() {
 	if err != nil {
 		version = semver.Version{Major: 1}
 	}
+	pulumi.RegisterResourceModule(
+		"docker",
+		"index/buildxBuilder",
+		&module{version},
+	)
 	pulumi.RegisterResourceModule(
 		"docker",
 		"index/container",

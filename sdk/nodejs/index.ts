@@ -5,6 +5,11 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export { BuildxBuilderArgs, BuildxBuilderState } from "./buildxBuilder";
+export type BuildxBuilder = import("./buildxBuilder").BuildxBuilder;
+export const BuildxBuilder: typeof import("./buildxBuilder").BuildxBuilder = null as any;
+utilities.lazyLoad(exports, ["BuildxBuilder"], () => require("./buildxBuilder"));
+
 export { ContainerArgs, ContainerState } from "./container";
 export type Container = import("./container").Container;
 export const Container: typeof import("./container").Container = null as any;
@@ -110,6 +115,8 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "docker:index/buildxBuilder:BuildxBuilder":
+                return new BuildxBuilder(name, <any>undefined, { urn })
             case "docker:index/container:Container":
                 return new Container(name, <any>undefined, { urn })
             case "docker:index/image:Image":
@@ -137,6 +144,7 @@ const _module = {
         }
     },
 };
+pulumi.runtime.registerResourceModule("docker", "index/buildxBuilder", _module)
 pulumi.runtime.registerResourceModule("docker", "index/container", _module)
 pulumi.runtime.registerResourceModule("docker", "index/image", _module)
 pulumi.runtime.registerResourceModule("docker", "index/network", _module)

@@ -17,6 +17,18 @@ from . import _utilities
 from ._enums import *
 
 __all__ = [
+    'BuildxBuilderDockerContainerArgs',
+    'BuildxBuilderDockerContainerArgsDict',
+    'BuildxBuilderKubernetesArgs',
+    'BuildxBuilderKubernetesArgsDict',
+    'BuildxBuilderKubernetesLimitsArgs',
+    'BuildxBuilderKubernetesLimitsArgsDict',
+    'BuildxBuilderKubernetesQemuArgs',
+    'BuildxBuilderKubernetesQemuArgsDict',
+    'BuildxBuilderKubernetesRequestsArgs',
+    'BuildxBuilderKubernetesRequestsArgsDict',
+    'BuildxBuilderRemoteArgs',
+    'BuildxBuilderRemoteArgsDict',
     'ContainerCapabilitiesArgs',
     'ContainerCapabilitiesArgsDict',
     'ContainerDeviceArgs',
@@ -150,6 +162,918 @@ __all__ = [
 ]
 
 MYPY = False
+
+if not MYPY:
+    class BuildxBuilderDockerContainerArgsDict(TypedDict):
+        cgroup_parent: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+        """
+        cpu_period: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the CPU CFS scheduler period for the container.
+        """
+        cpu_quota: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Imposes a CPU CFS quota on the container.
+        """
+        cpu_shares: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Configures CPU shares (relative weight) of the container.
+        """
+        cpuset_cpus: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Limits the set of CPU cores the container can use.
+        """
+        cpuset_mems: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Limits the set of CPU memory nodes the container can use.
+        """
+        default_load: NotRequired[pulumi.Input[builtins.bool]]
+        """
+        Automatically load images to the Docker Engine image store. Defaults to `false`
+        """
+        env: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]]]
+        """
+        Sets environment variables in the container.
+        """
+        image: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the BuildKit image to use for the container.
+        """
+        memory: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the amount of memory the container can use.
+        """
+        memory_swap: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the memory swap limit for the container.
+        """
+        network: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the network mode for the container.
+        """
+        restart_policy: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the container's restart policy.
+        """
+elif False:
+    BuildxBuilderDockerContainerArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class BuildxBuilderDockerContainerArgs:
+    def __init__(__self__, *,
+                 cgroup_parent: Optional[pulumi.Input[builtins.str]] = None,
+                 cpu_period: Optional[pulumi.Input[builtins.str]] = None,
+                 cpu_quota: Optional[pulumi.Input[builtins.str]] = None,
+                 cpu_shares: Optional[pulumi.Input[builtins.str]] = None,
+                 cpuset_cpus: Optional[pulumi.Input[builtins.str]] = None,
+                 cpuset_mems: Optional[pulumi.Input[builtins.str]] = None,
+                 default_load: Optional[pulumi.Input[builtins.bool]] = None,
+                 env: Optional[pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]]] = None,
+                 image: Optional[pulumi.Input[builtins.str]] = None,
+                 memory: Optional[pulumi.Input[builtins.str]] = None,
+                 memory_swap: Optional[pulumi.Input[builtins.str]] = None,
+                 network: Optional[pulumi.Input[builtins.str]] = None,
+                 restart_policy: Optional[pulumi.Input[builtins.str]] = None):
+        """
+        :param pulumi.Input[builtins.str] cgroup_parent: Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+        :param pulumi.Input[builtins.str] cpu_period: Sets the CPU CFS scheduler period for the container.
+        :param pulumi.Input[builtins.str] cpu_quota: Imposes a CPU CFS quota on the container.
+        :param pulumi.Input[builtins.str] cpu_shares: Configures CPU shares (relative weight) of the container.
+        :param pulumi.Input[builtins.str] cpuset_cpus: Limits the set of CPU cores the container can use.
+        :param pulumi.Input[builtins.str] cpuset_mems: Limits the set of CPU memory nodes the container can use.
+        :param pulumi.Input[builtins.bool] default_load: Automatically load images to the Docker Engine image store. Defaults to `false`
+        :param pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]] env: Sets environment variables in the container.
+        :param pulumi.Input[builtins.str] image: Sets the BuildKit image to use for the container.
+        :param pulumi.Input[builtins.str] memory: Sets the amount of memory the container can use.
+        :param pulumi.Input[builtins.str] memory_swap: Sets the memory swap limit for the container.
+        :param pulumi.Input[builtins.str] network: Sets the network mode for the container.
+        :param pulumi.Input[builtins.str] restart_policy: Sets the container's restart policy.
+        """
+        if cgroup_parent is not None:
+            pulumi.set(__self__, "cgroup_parent", cgroup_parent)
+        if cpu_period is not None:
+            pulumi.set(__self__, "cpu_period", cpu_period)
+        if cpu_quota is not None:
+            pulumi.set(__self__, "cpu_quota", cpu_quota)
+        if cpu_shares is not None:
+            pulumi.set(__self__, "cpu_shares", cpu_shares)
+        if cpuset_cpus is not None:
+            pulumi.set(__self__, "cpuset_cpus", cpuset_cpus)
+        if cpuset_mems is not None:
+            pulumi.set(__self__, "cpuset_mems", cpuset_mems)
+        if default_load is not None:
+            pulumi.set(__self__, "default_load", default_load)
+        if env is not None:
+            pulumi.set(__self__, "env", env)
+        if image is not None:
+            pulumi.set(__self__, "image", image)
+        if memory is not None:
+            pulumi.set(__self__, "memory", memory)
+        if memory_swap is not None:
+            pulumi.set(__self__, "memory_swap", memory_swap)
+        if network is not None:
+            pulumi.set(__self__, "network", network)
+        if restart_policy is not None:
+            pulumi.set(__self__, "restart_policy", restart_policy)
+
+    @property
+    @pulumi.getter(name="cgroupParent")
+    def cgroup_parent(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
+        """
+        return pulumi.get(self, "cgroup_parent")
+
+    @cgroup_parent.setter
+    def cgroup_parent(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cgroup_parent", value)
+
+    @property
+    @pulumi.getter(name="cpuPeriod")
+    def cpu_period(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the CPU CFS scheduler period for the container.
+        """
+        return pulumi.get(self, "cpu_period")
+
+    @cpu_period.setter
+    def cpu_period(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpu_period", value)
+
+    @property
+    @pulumi.getter(name="cpuQuota")
+    def cpu_quota(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Imposes a CPU CFS quota on the container.
+        """
+        return pulumi.get(self, "cpu_quota")
+
+    @cpu_quota.setter
+    def cpu_quota(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpu_quota", value)
+
+    @property
+    @pulumi.getter(name="cpuShares")
+    def cpu_shares(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Configures CPU shares (relative weight) of the container.
+        """
+        return pulumi.get(self, "cpu_shares")
+
+    @cpu_shares.setter
+    def cpu_shares(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpu_shares", value)
+
+    @property
+    @pulumi.getter(name="cpusetCpus")
+    def cpuset_cpus(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Limits the set of CPU cores the container can use.
+        """
+        return pulumi.get(self, "cpuset_cpus")
+
+    @cpuset_cpus.setter
+    def cpuset_cpus(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpuset_cpus", value)
+
+    @property
+    @pulumi.getter(name="cpusetMems")
+    def cpuset_mems(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Limits the set of CPU memory nodes the container can use.
+        """
+        return pulumi.get(self, "cpuset_mems")
+
+    @cpuset_mems.setter
+    def cpuset_mems(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpuset_mems", value)
+
+    @property
+    @pulumi.getter(name="defaultLoad")
+    def default_load(self) -> Optional[pulumi.Input[builtins.bool]]:
+        """
+        Automatically load images to the Docker Engine image store. Defaults to `false`
+        """
+        return pulumi.get(self, "default_load")
+
+    @default_load.setter
+    def default_load(self, value: Optional[pulumi.Input[builtins.bool]]):
+        pulumi.set(self, "default_load", value)
+
+    @property
+    @pulumi.getter
+    def env(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]]]:
+        """
+        Sets environment variables in the container.
+        """
+        return pulumi.get(self, "env")
+
+    @env.setter
+    def env(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]]]):
+        pulumi.set(self, "env", value)
+
+    @property
+    @pulumi.getter
+    def image(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the BuildKit image to use for the container.
+        """
+        return pulumi.get(self, "image")
+
+    @image.setter
+    def image(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "image", value)
+
+    @property
+    @pulumi.getter
+    def memory(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the amount of memory the container can use.
+        """
+        return pulumi.get(self, "memory")
+
+    @memory.setter
+    def memory(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "memory", value)
+
+    @property
+    @pulumi.getter(name="memorySwap")
+    def memory_swap(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the memory swap limit for the container.
+        """
+        return pulumi.get(self, "memory_swap")
+
+    @memory_swap.setter
+    def memory_swap(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "memory_swap", value)
+
+    @property
+    @pulumi.getter
+    def network(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the network mode for the container.
+        """
+        return pulumi.get(self, "network")
+
+    @network.setter
+    def network(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "network", value)
+
+    @property
+    @pulumi.getter(name="restartPolicy")
+    def restart_policy(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the container's restart policy.
+        """
+        return pulumi.get(self, "restart_policy")
+
+    @restart_policy.setter
+    def restart_policy(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "restart_policy", value)
+
+
+if not MYPY:
+    class BuildxBuilderKubernetesArgsDict(TypedDict):
+        annotations: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets additional annotations on the deployments and pods.
+        """
+        default_load: NotRequired[pulumi.Input[builtins.bool]]
+        """
+        Automatically load images to the Docker Engine image store. Defaults to `false`
+        """
+        image: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the image to use for running BuildKit.
+        """
+        labels: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets additional labels on the deployments and pods.
+        """
+        limits: NotRequired[pulumi.Input['BuildxBuilderKubernetesLimitsArgsDict']]
+        """
+        Resource limits for CPU, memory, and ephemeral storage.
+        """
+        loadbalance: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Load-balancing strategy (sticky or random).
+        """
+        namespace: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the Kubernetes namespace.
+        """
+        nodeselector: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the pod's nodeSelector label(s).
+        """
+        qemu: NotRequired[pulumi.Input['BuildxBuilderKubernetesQemuArgsDict']]
+        """
+        QEMU emulation configuration.
+        """
+        replicas: NotRequired[pulumi.Input[builtins.int]]
+        """
+        Sets the number of Pod replicas to create.
+        """
+        requests: NotRequired[pulumi.Input['BuildxBuilderKubernetesRequestsArgsDict']]
+        """
+        Resource requests for CPU, memory, and ephemeral storage.
+        """
+        rootless: NotRequired[pulumi.Input[builtins.bool]]
+        """
+        Run the container as a non-root user.
+        """
+        schedulername: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the scheduler responsible for scheduling the pod.
+        """
+        serviceaccount: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the pod's serviceAccountName.
+        """
+        timeout: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Set the timeout limit for pod provisioning.
+        """
+        tolerations: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Configures the pod's taint toleration.
+        """
+elif False:
+    BuildxBuilderKubernetesArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class BuildxBuilderKubernetesArgs:
+    def __init__(__self__, *,
+                 annotations: Optional[pulumi.Input[builtins.str]] = None,
+                 default_load: Optional[pulumi.Input[builtins.bool]] = None,
+                 image: Optional[pulumi.Input[builtins.str]] = None,
+                 labels: Optional[pulumi.Input[builtins.str]] = None,
+                 limits: Optional[pulumi.Input['BuildxBuilderKubernetesLimitsArgs']] = None,
+                 loadbalance: Optional[pulumi.Input[builtins.str]] = None,
+                 namespace: Optional[pulumi.Input[builtins.str]] = None,
+                 nodeselector: Optional[pulumi.Input[builtins.str]] = None,
+                 qemu: Optional[pulumi.Input['BuildxBuilderKubernetesQemuArgs']] = None,
+                 replicas: Optional[pulumi.Input[builtins.int]] = None,
+                 requests: Optional[pulumi.Input['BuildxBuilderKubernetesRequestsArgs']] = None,
+                 rootless: Optional[pulumi.Input[builtins.bool]] = None,
+                 schedulername: Optional[pulumi.Input[builtins.str]] = None,
+                 serviceaccount: Optional[pulumi.Input[builtins.str]] = None,
+                 timeout: Optional[pulumi.Input[builtins.str]] = None,
+                 tolerations: Optional[pulumi.Input[builtins.str]] = None):
+        """
+        :param pulumi.Input[builtins.str] annotations: Sets additional annotations on the deployments and pods.
+        :param pulumi.Input[builtins.bool] default_load: Automatically load images to the Docker Engine image store. Defaults to `false`
+        :param pulumi.Input[builtins.str] image: Sets the image to use for running BuildKit.
+        :param pulumi.Input[builtins.str] labels: Sets additional labels on the deployments and pods.
+        :param pulumi.Input['BuildxBuilderKubernetesLimitsArgs'] limits: Resource limits for CPU, memory, and ephemeral storage.
+        :param pulumi.Input[builtins.str] loadbalance: Load-balancing strategy (sticky or random).
+        :param pulumi.Input[builtins.str] namespace: Sets the Kubernetes namespace.
+        :param pulumi.Input[builtins.str] nodeselector: Sets the pod's nodeSelector label(s).
+        :param pulumi.Input['BuildxBuilderKubernetesQemuArgs'] qemu: QEMU emulation configuration.
+        :param pulumi.Input[builtins.int] replicas: Sets the number of Pod replicas to create.
+        :param pulumi.Input['BuildxBuilderKubernetesRequestsArgs'] requests: Resource requests for CPU, memory, and ephemeral storage.
+        :param pulumi.Input[builtins.bool] rootless: Run the container as a non-root user.
+        :param pulumi.Input[builtins.str] schedulername: Sets the scheduler responsible for scheduling the pod.
+        :param pulumi.Input[builtins.str] serviceaccount: Sets the pod's serviceAccountName.
+        :param pulumi.Input[builtins.str] timeout: Set the timeout limit for pod provisioning.
+        :param pulumi.Input[builtins.str] tolerations: Configures the pod's taint toleration.
+        """
+        if annotations is not None:
+            pulumi.set(__self__, "annotations", annotations)
+        if default_load is not None:
+            pulumi.set(__self__, "default_load", default_load)
+        if image is not None:
+            pulumi.set(__self__, "image", image)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if limits is not None:
+            pulumi.set(__self__, "limits", limits)
+        if loadbalance is not None:
+            pulumi.set(__self__, "loadbalance", loadbalance)
+        if namespace is not None:
+            pulumi.set(__self__, "namespace", namespace)
+        if nodeselector is not None:
+            pulumi.set(__self__, "nodeselector", nodeselector)
+        if qemu is not None:
+            pulumi.set(__self__, "qemu", qemu)
+        if replicas is not None:
+            pulumi.set(__self__, "replicas", replicas)
+        if requests is not None:
+            pulumi.set(__self__, "requests", requests)
+        if rootless is not None:
+            pulumi.set(__self__, "rootless", rootless)
+        if schedulername is not None:
+            pulumi.set(__self__, "schedulername", schedulername)
+        if serviceaccount is not None:
+            pulumi.set(__self__, "serviceaccount", serviceaccount)
+        if timeout is not None:
+            pulumi.set(__self__, "timeout", timeout)
+        if tolerations is not None:
+            pulumi.set(__self__, "tolerations", tolerations)
+
+    @property
+    @pulumi.getter
+    def annotations(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets additional annotations on the deployments and pods.
+        """
+        return pulumi.get(self, "annotations")
+
+    @annotations.setter
+    def annotations(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "annotations", value)
+
+    @property
+    @pulumi.getter(name="defaultLoad")
+    def default_load(self) -> Optional[pulumi.Input[builtins.bool]]:
+        """
+        Automatically load images to the Docker Engine image store. Defaults to `false`
+        """
+        return pulumi.get(self, "default_load")
+
+    @default_load.setter
+    def default_load(self, value: Optional[pulumi.Input[builtins.bool]]):
+        pulumi.set(self, "default_load", value)
+
+    @property
+    @pulumi.getter
+    def image(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the image to use for running BuildKit.
+        """
+        return pulumi.get(self, "image")
+
+    @image.setter
+    def image(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "image", value)
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets additional labels on the deployments and pods.
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def limits(self) -> Optional[pulumi.Input['BuildxBuilderKubernetesLimitsArgs']]:
+        """
+        Resource limits for CPU, memory, and ephemeral storage.
+        """
+        return pulumi.get(self, "limits")
+
+    @limits.setter
+    def limits(self, value: Optional[pulumi.Input['BuildxBuilderKubernetesLimitsArgs']]):
+        pulumi.set(self, "limits", value)
+
+    @property
+    @pulumi.getter
+    def loadbalance(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Load-balancing strategy (sticky or random).
+        """
+        return pulumi.get(self, "loadbalance")
+
+    @loadbalance.setter
+    def loadbalance(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "loadbalance", value)
+
+    @property
+    @pulumi.getter
+    def namespace(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the Kubernetes namespace.
+        """
+        return pulumi.get(self, "namespace")
+
+    @namespace.setter
+    def namespace(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "namespace", value)
+
+    @property
+    @pulumi.getter
+    def nodeselector(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the pod's nodeSelector label(s).
+        """
+        return pulumi.get(self, "nodeselector")
+
+    @nodeselector.setter
+    def nodeselector(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "nodeselector", value)
+
+    @property
+    @pulumi.getter
+    def qemu(self) -> Optional[pulumi.Input['BuildxBuilderKubernetesQemuArgs']]:
+        """
+        QEMU emulation configuration.
+        """
+        return pulumi.get(self, "qemu")
+
+    @qemu.setter
+    def qemu(self, value: Optional[pulumi.Input['BuildxBuilderKubernetesQemuArgs']]):
+        pulumi.set(self, "qemu", value)
+
+    @property
+    @pulumi.getter
+    def replicas(self) -> Optional[pulumi.Input[builtins.int]]:
+        """
+        Sets the number of Pod replicas to create.
+        """
+        return pulumi.get(self, "replicas")
+
+    @replicas.setter
+    def replicas(self, value: Optional[pulumi.Input[builtins.int]]):
+        pulumi.set(self, "replicas", value)
+
+    @property
+    @pulumi.getter
+    def requests(self) -> Optional[pulumi.Input['BuildxBuilderKubernetesRequestsArgs']]:
+        """
+        Resource requests for CPU, memory, and ephemeral storage.
+        """
+        return pulumi.get(self, "requests")
+
+    @requests.setter
+    def requests(self, value: Optional[pulumi.Input['BuildxBuilderKubernetesRequestsArgs']]):
+        pulumi.set(self, "requests", value)
+
+    @property
+    @pulumi.getter
+    def rootless(self) -> Optional[pulumi.Input[builtins.bool]]:
+        """
+        Run the container as a non-root user.
+        """
+        return pulumi.get(self, "rootless")
+
+    @rootless.setter
+    def rootless(self, value: Optional[pulumi.Input[builtins.bool]]):
+        pulumi.set(self, "rootless", value)
+
+    @property
+    @pulumi.getter
+    def schedulername(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the scheduler responsible for scheduling the pod.
+        """
+        return pulumi.get(self, "schedulername")
+
+    @schedulername.setter
+    def schedulername(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "schedulername", value)
+
+    @property
+    @pulumi.getter
+    def serviceaccount(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the pod's serviceAccountName.
+        """
+        return pulumi.get(self, "serviceaccount")
+
+    @serviceaccount.setter
+    def serviceaccount(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "serviceaccount", value)
+
+    @property
+    @pulumi.getter
+    def timeout(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Set the timeout limit for pod provisioning.
+        """
+        return pulumi.get(self, "timeout")
+
+    @timeout.setter
+    def timeout(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "timeout", value)
+
+    @property
+    @pulumi.getter
+    def tolerations(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Configures the pod's taint toleration.
+        """
+        return pulumi.get(self, "tolerations")
+
+    @tolerations.setter
+    def tolerations(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "tolerations", value)
+
+
+if not MYPY:
+    class BuildxBuilderKubernetesLimitsArgsDict(TypedDict):
+        cpu: NotRequired[pulumi.Input[builtins.str]]
+        """
+        CPU limit for the Kubernetes pod.
+        """
+        ephemeral_storage: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Ephemeral storage limit for the Kubernetes pod.
+        """
+        memory: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Memory limit for the Kubernetes pod.
+        """
+elif False:
+    BuildxBuilderKubernetesLimitsArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class BuildxBuilderKubernetesLimitsArgs:
+    def __init__(__self__, *,
+                 cpu: Optional[pulumi.Input[builtins.str]] = None,
+                 ephemeral_storage: Optional[pulumi.Input[builtins.str]] = None,
+                 memory: Optional[pulumi.Input[builtins.str]] = None):
+        """
+        :param pulumi.Input[builtins.str] cpu: CPU limit for the Kubernetes pod.
+        :param pulumi.Input[builtins.str] ephemeral_storage: Ephemeral storage limit for the Kubernetes pod.
+        :param pulumi.Input[builtins.str] memory: Memory limit for the Kubernetes pod.
+        """
+        if cpu is not None:
+            pulumi.set(__self__, "cpu", cpu)
+        if ephemeral_storage is not None:
+            pulumi.set(__self__, "ephemeral_storage", ephemeral_storage)
+        if memory is not None:
+            pulumi.set(__self__, "memory", memory)
+
+    @property
+    @pulumi.getter
+    def cpu(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        CPU limit for the Kubernetes pod.
+        """
+        return pulumi.get(self, "cpu")
+
+    @cpu.setter
+    def cpu(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpu", value)
+
+    @property
+    @pulumi.getter(name="ephemeralStorage")
+    def ephemeral_storage(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Ephemeral storage limit for the Kubernetes pod.
+        """
+        return pulumi.get(self, "ephemeral_storage")
+
+    @ephemeral_storage.setter
+    def ephemeral_storage(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "ephemeral_storage", value)
+
+    @property
+    @pulumi.getter
+    def memory(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Memory limit for the Kubernetes pod.
+        """
+        return pulumi.get(self, "memory")
+
+    @memory.setter
+    def memory(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "memory", value)
+
+
+if not MYPY:
+    class BuildxBuilderKubernetesQemuArgsDict(TypedDict):
+        image: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the QEMU emulation image.
+        """
+        install: NotRequired[pulumi.Input[builtins.bool]]
+        """
+        Install QEMU emulation for multi-platform support.
+        """
+elif False:
+    BuildxBuilderKubernetesQemuArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class BuildxBuilderKubernetesQemuArgs:
+    def __init__(__self__, *,
+                 image: Optional[pulumi.Input[builtins.str]] = None,
+                 install: Optional[pulumi.Input[builtins.bool]] = None):
+        """
+        :param pulumi.Input[builtins.str] image: Sets the QEMU emulation image.
+        :param pulumi.Input[builtins.bool] install: Install QEMU emulation for multi-platform support.
+        """
+        if image is not None:
+            pulumi.set(__self__, "image", image)
+        if install is not None:
+            pulumi.set(__self__, "install", install)
+
+    @property
+    @pulumi.getter
+    def image(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the QEMU emulation image.
+        """
+        return pulumi.get(self, "image")
+
+    @image.setter
+    def image(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "image", value)
+
+    @property
+    @pulumi.getter
+    def install(self) -> Optional[pulumi.Input[builtins.bool]]:
+        """
+        Install QEMU emulation for multi-platform support.
+        """
+        return pulumi.get(self, "install")
+
+    @install.setter
+    def install(self, value: Optional[pulumi.Input[builtins.bool]]):
+        pulumi.set(self, "install", value)
+
+
+if not MYPY:
+    class BuildxBuilderKubernetesRequestsArgsDict(TypedDict):
+        cpu: NotRequired[pulumi.Input[builtins.str]]
+        """
+        CPU limit for the Kubernetes pod.
+        """
+        ephemeral_storage: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Ephemeral storage limit for the Kubernetes pod.
+        """
+        memory: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Memory limit for the Kubernetes pod.
+        """
+elif False:
+    BuildxBuilderKubernetesRequestsArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class BuildxBuilderKubernetesRequestsArgs:
+    def __init__(__self__, *,
+                 cpu: Optional[pulumi.Input[builtins.str]] = None,
+                 ephemeral_storage: Optional[pulumi.Input[builtins.str]] = None,
+                 memory: Optional[pulumi.Input[builtins.str]] = None):
+        """
+        :param pulumi.Input[builtins.str] cpu: CPU limit for the Kubernetes pod.
+        :param pulumi.Input[builtins.str] ephemeral_storage: Ephemeral storage limit for the Kubernetes pod.
+        :param pulumi.Input[builtins.str] memory: Memory limit for the Kubernetes pod.
+        """
+        if cpu is not None:
+            pulumi.set(__self__, "cpu", cpu)
+        if ephemeral_storage is not None:
+            pulumi.set(__self__, "ephemeral_storage", ephemeral_storage)
+        if memory is not None:
+            pulumi.set(__self__, "memory", memory)
+
+    @property
+    @pulumi.getter
+    def cpu(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        CPU limit for the Kubernetes pod.
+        """
+        return pulumi.get(self, "cpu")
+
+    @cpu.setter
+    def cpu(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cpu", value)
+
+    @property
+    @pulumi.getter(name="ephemeralStorage")
+    def ephemeral_storage(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Ephemeral storage limit for the Kubernetes pod.
+        """
+        return pulumi.get(self, "ephemeral_storage")
+
+    @ephemeral_storage.setter
+    def ephemeral_storage(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "ephemeral_storage", value)
+
+    @property
+    @pulumi.getter
+    def memory(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Memory limit for the Kubernetes pod.
+        """
+        return pulumi.get(self, "memory")
+
+    @memory.setter
+    def memory(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "memory", value)
+
+
+if not MYPY:
+    class BuildxBuilderRemoteArgsDict(TypedDict):
+        cacert: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Absolute path to the TLS certificate authority used for validation.
+        """
+        cert: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Absolute path to the TLS client certificate to present to buildkitd.
+        """
+        default_load: NotRequired[pulumi.Input[builtins.bool]]
+        """
+        Automatically load images to the Docker Engine image store. Defaults to `false`
+        """
+        key: NotRequired[pulumi.Input[builtins.str]]
+        """
+        Sets the TLS client key.
+        """
+        servername: NotRequired[pulumi.Input[builtins.str]]
+        """
+        TLS server name used in requests.
+        """
+elif False:
+    BuildxBuilderRemoteArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class BuildxBuilderRemoteArgs:
+    def __init__(__self__, *,
+                 cacert: Optional[pulumi.Input[builtins.str]] = None,
+                 cert: Optional[pulumi.Input[builtins.str]] = None,
+                 default_load: Optional[pulumi.Input[builtins.bool]] = None,
+                 key: Optional[pulumi.Input[builtins.str]] = None,
+                 servername: Optional[pulumi.Input[builtins.str]] = None):
+        """
+        :param pulumi.Input[builtins.str] cacert: Absolute path to the TLS certificate authority used for validation.
+        :param pulumi.Input[builtins.str] cert: Absolute path to the TLS client certificate to present to buildkitd.
+        :param pulumi.Input[builtins.bool] default_load: Automatically load images to the Docker Engine image store. Defaults to `false`
+        :param pulumi.Input[builtins.str] key: Sets the TLS client key.
+        :param pulumi.Input[builtins.str] servername: TLS server name used in requests.
+        """
+        if cacert is not None:
+            pulumi.set(__self__, "cacert", cacert)
+        if cert is not None:
+            pulumi.set(__self__, "cert", cert)
+        if default_load is not None:
+            pulumi.set(__self__, "default_load", default_load)
+        if key is not None:
+            pulumi.set(__self__, "key", key)
+        if servername is not None:
+            pulumi.set(__self__, "servername", servername)
+
+    @property
+    @pulumi.getter
+    def cacert(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Absolute path to the TLS certificate authority used for validation.
+        """
+        return pulumi.get(self, "cacert")
+
+    @cacert.setter
+    def cacert(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cacert", value)
+
+    @property
+    @pulumi.getter
+    def cert(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Absolute path to the TLS client certificate to present to buildkitd.
+        """
+        return pulumi.get(self, "cert")
+
+    @cert.setter
+    def cert(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "cert", value)
+
+    @property
+    @pulumi.getter(name="defaultLoad")
+    def default_load(self) -> Optional[pulumi.Input[builtins.bool]]:
+        """
+        Automatically load images to the Docker Engine image store. Defaults to `false`
+        """
+        return pulumi.get(self, "default_load")
+
+    @default_load.setter
+    def default_load(self, value: Optional[pulumi.Input[builtins.bool]]):
+        pulumi.set(self, "default_load", value)
+
+    @property
+    @pulumi.getter
+    def key(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        Sets the TLS client key.
+        """
+        return pulumi.get(self, "key")
+
+    @key.setter
+    def key(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "key", value)
+
+    @property
+    @pulumi.getter
+    def servername(self) -> Optional[pulumi.Input[builtins.str]]:
+        """
+        TLS server name used in requests.
+        """
+        return pulumi.get(self, "servername")
+
+    @servername.setter
+    def servername(self, value: Optional[pulumi.Input[builtins.str]]):
+        pulumi.set(self, "servername", value)
+
 
 if not MYPY:
     class ContainerCapabilitiesArgsDict(TypedDict):
@@ -1996,7 +2920,7 @@ if not MYPY:
         """
         builder: NotRequired[pulumi.Input[builtins.str]]
         """
-        Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        Set the name of the buildx builder to use. If not set, the legacy builder is used.
         """
         cache_froms: NotRequired[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]
         """
@@ -2068,7 +2992,7 @@ if not MYPY:
         """
         platform: NotRequired[pulumi.Input[builtins.str]]
         """
-        Set platform if server is multi-platform capable
+        Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
         """
         pull_parent: NotRequired[pulumi.Input[builtins.bool]]
         """
@@ -2171,7 +3095,7 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[Mapping[str, pulumi.Input[builtins.str]]] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         :param pulumi.Input[builtins.str] build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param pulumi.Input[builtins.str] build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
-        :param pulumi.Input[builtins.str] builder: Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        :param pulumi.Input[builtins.str] builder: Set the name of the buildx builder to use. If not set, the legacy builder is used.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] cache_froms: Images to consider as cache sources
         :param pulumi.Input[builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[builtins.int] cpu_period: The length of a CPU period in microseconds
@@ -2189,7 +3113,7 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[builtins.int] memory_swap: Total memory (memory + swap), -1 to enable unlimited swap
         :param pulumi.Input[builtins.str] network_mode: Set the networking mode for the RUN instructions during build
         :param pulumi.Input[builtins.bool] no_cache: Do not use the cache when building the image
-        :param pulumi.Input[builtins.str] platform: Set platform if server is multi-platform capable
+        :param pulumi.Input[builtins.str] platform: Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
         :param pulumi.Input[builtins.bool] pull_parent: Attempt to pull the image even if an older image exists locally
         :param pulumi.Input[builtins.str] remote_context: A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         :param pulumi.Input[builtins.bool] remove: Remove intermediate containers after a successful build. Defaults to `true`.
@@ -2342,7 +3266,7 @@ class RemoteImageBuildArgs:
     @pulumi.getter
     def builder(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        Set the name of the buildx builder to use. If not set or empty, the legacy builder will be used.
+        Set the name of the buildx builder to use. If not set, the legacy builder is used.
         """
         return pulumi.get(self, "builder")
 
@@ -2558,7 +3482,7 @@ class RemoteImageBuildArgs:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[builtins.str]]:
         """
-        Set platform if server is multi-platform capable
+        Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
         """
         return pulumi.get(self, "platform")
 
@@ -3817,6 +4741,14 @@ if not MYPY:
         """
         Arguments to the command
         """
+        cap_adds: NotRequired[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]
+        """
+        List of Linux capabilities to add to the container
+        """
+        cap_drops: NotRequired[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]
+        """
+        List of Linux capabilities to drop from the container
+        """
         commands: NotRequired[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]
         """
         The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
@@ -3901,6 +4833,8 @@ class ServiceTaskSpecContainerSpecArgs:
     def __init__(__self__, *,
                  image: pulumi.Input[builtins.str],
                  args: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
+                 cap_adds: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
+                 cap_drops: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
                  commands: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]] = None,
                  configs: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]] = None,
                  dir: Optional[pulumi.Input[builtins.str]] = None,
@@ -3923,6 +4857,8 @@ class ServiceTaskSpecContainerSpecArgs:
         """
         :param pulumi.Input[builtins.str] image: The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repo_digest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] args: Arguments to the command
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] cap_adds: List of Linux capabilities to add to the container
+        :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] cap_drops: List of Linux capabilities to drop from the container
         :param pulumi.Input[Sequence[pulumi.Input[builtins.str]]] commands: The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
         :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]] configs: References to zero or more configs that will be exposed to the service
         :param pulumi.Input[builtins.str] dir: The working directory for commands to run in
@@ -3946,6 +4882,10 @@ class ServiceTaskSpecContainerSpecArgs:
         pulumi.set(__self__, "image", image)
         if args is not None:
             pulumi.set(__self__, "args", args)
+        if cap_adds is not None:
+            pulumi.set(__self__, "cap_adds", cap_adds)
+        if cap_drops is not None:
+            pulumi.set(__self__, "cap_drops", cap_drops)
         if commands is not None:
             pulumi.set(__self__, "commands", commands)
         if configs is not None:
@@ -4008,6 +4948,30 @@ class ServiceTaskSpecContainerSpecArgs:
     @args.setter
     def args(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]):
         pulumi.set(self, "args", value)
+
+    @property
+    @pulumi.getter(name="capAdds")
+    def cap_adds(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]:
+        """
+        List of Linux capabilities to add to the container
+        """
+        return pulumi.get(self, "cap_adds")
+
+    @cap_adds.setter
+    def cap_adds(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]):
+        pulumi.set(self, "cap_adds", value)
+
+    @property
+    @pulumi.getter(name="capDrops")
+    def cap_drops(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]:
+        """
+        List of Linux capabilities to drop from the container
+        """
+        return pulumi.get(self, "cap_drops")
+
+    @cap_drops.setter
+    def cap_drops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[builtins.str]]]]):
+        pulumi.set(self, "cap_drops", value)
 
     @property
     @pulumi.getter
