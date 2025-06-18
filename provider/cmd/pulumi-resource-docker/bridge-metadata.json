@@ -1,6 +1,36 @@
 {
     "auto-aliasing": {
         "resources": {
+            "docker_buildx_builder": {
+                "current": "docker:index/buildxBuilder:BuildxBuilder",
+                "fields": {
+                    "docker_container": {
+                        "maxItemsOne": true
+                    },
+                    "kubernetes": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "limits": {
+                                    "maxItemsOne": true
+                                },
+                                "qemu": {
+                                    "maxItemsOne": true
+                                },
+                                "requests": {
+                                    "maxItemsOne": true
+                                }
+                            }
+                        }
+                    },
+                    "platform": {
+                        "maxItemsOne": false
+                    },
+                    "remote": {
+                        "maxItemsOne": true
+                    }
+                }
+            },
             "docker_config": {
                 "current": "docker:index/serviceConfig:ServiceConfig"
             },
@@ -238,6 +268,12 @@
                                     "elem": {
                                         "fields": {
                                             "args": {
+                                                "maxItemsOne": false
+                                            },
+                                            "cap_add": {
+                                                "maxItemsOne": false
+                                            },
+                                            "cap_drop": {
                                                 "maxItemsOne": false
                                             },
                                             "command": {
