@@ -1,7 +1,0 @@
-# Ignore everything!
-*
-
-# Except changes to source data in this set of directories:
-!projects/*/src
-
-# This should therefore IGNORE projects/*/dist
