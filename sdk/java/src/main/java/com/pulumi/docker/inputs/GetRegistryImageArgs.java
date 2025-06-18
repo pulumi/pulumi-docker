@@ -33,14 +33,14 @@ public final class GetRegistryImageArgs extends com.pulumi.resources.InvokeArgs 
     }
 
     /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0{@literal @}sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0{@literal @}sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
      * 
      */
     public Output<String> name() {
@@ -94,7 +94,7 @@ public final class GetRegistryImageArgs extends com.pulumi.resources.InvokeArgs 
         }
 
         /**
-         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`
+         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0{@literal @}sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
          * 
          * @return builder
          * 
@@ -105,7 +105,7 @@ public final class GetRegistryImageArgs extends com.pulumi.resources.InvokeArgs 
         }
 
         /**
-         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`
+         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`. You can also specify a digest, e.g. `nginx:1.28.0{@literal @}sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f`.
          * 
          * @return builder
          * 

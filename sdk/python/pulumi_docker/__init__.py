@@ -7,6 +7,7 @@ from . import _utilities
 import typing
 # Export this package's modules as members:
 from ._enums import *
+from .buildx_builder import *
 from .container import *
 from .get_logs import *
 from .get_network import *
@@ -38,6 +39,14 @@ else:
 _utilities.register(
     resource_modules="""
 [
+ {
+  "pkg": "docker",
+  "mod": "index/buildxBuilder",
+  "fqn": "pulumi_docker",
+  "classes": {
+   "docker:index/buildxBuilder:BuildxBuilder": "BuildxBuilder"
+  }
+ },
  {
   "pkg": "docker",
   "mod": "index/container",

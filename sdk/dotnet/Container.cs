@@ -103,6 +103,12 @@ namespace Pulumi.Docker
         public Output<Outputs.ContainerCapabilities?> Capabilities { get; private set; } = null!;
 
         /// <summary>
+        /// Optional parent cgroup for the container
+        /// </summary>
+        [Output("cgroupParent")]
+        public Output<string?> CgroupParent { get; private set; } = null!;
+
+        /// <summary>
         /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         /// </summary>
         [Output("cgroupnsMode")]
@@ -127,6 +133,18 @@ namespace Pulumi.Docker
         public Output<int?> ContainerReadRefreshTimeoutMilliseconds { get; private set; } = null!;
 
         /// <summary>
+        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        /// </summary>
+        [Output("cpuPeriod")]
+        public Output<int?> CpuPeriod { get; private set; } = null!;
+
+        /// <summary>
+        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        /// </summary>
+        [Output("cpuQuota")]
+        public Output<int?> CpuQuota { get; private set; } = null!;
+
+        /// <summary>
         /// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         /// </summary>
         [Output("cpuSet")]
@@ -139,7 +157,7 @@ namespace Pulumi.Docker
         public Output<int?> CpuShares { get; private set; } = null!;
 
         /// <summary>
-        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         /// </summary>
         [Output("cpus")]
         public Output<string?> Cpus { get; private set; } = null!;
@@ -542,6 +560,12 @@ namespace Pulumi.Docker
         public Input<Inputs.ContainerCapabilitiesArgs>? Capabilities { get; set; }
 
         /// <summary>
+        /// Optional parent cgroup for the container
+        /// </summary>
+        [Input("cgroupParent")]
+        public Input<string>? CgroupParent { get; set; }
+
+        /// <summary>
         /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         /// </summary>
         [Input("cgroupnsMode")]
@@ -566,6 +590,18 @@ namespace Pulumi.Docker
         public Input<int>? ContainerReadRefreshTimeoutMilliseconds { get; set; }
 
         /// <summary>
+        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        /// </summary>
+        [Input("cpuPeriod")]
+        public Input<int>? CpuPeriod { get; set; }
+
+        /// <summary>
+        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        /// </summary>
+        [Input("cpuQuota")]
+        public Input<int>? CpuQuota { get; set; }
+
+        /// <summary>
         /// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         /// </summary>
         [Input("cpuSet")]
@@ -578,7 +614,7 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         /// </summary>
         [Input("cpus")]
         public Input<string>? Cpus { get; set; }
@@ -1057,6 +1093,12 @@ namespace Pulumi.Docker
         public Input<Inputs.ContainerCapabilitiesGetArgs>? Capabilities { get; set; }
 
         /// <summary>
+        /// Optional parent cgroup for the container
+        /// </summary>
+        [Input("cgroupParent")]
+        public Input<string>? CgroupParent { get; set; }
+
+        /// <summary>
         /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         /// </summary>
         [Input("cgroupnsMode")]
@@ -1087,6 +1129,18 @@ namespace Pulumi.Docker
         public Input<int>? ContainerReadRefreshTimeoutMilliseconds { get; set; }
 
         /// <summary>
+        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        /// </summary>
+        [Input("cpuPeriod")]
+        public Input<int>? CpuPeriod { get; set; }
+
+        /// <summary>
+        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        /// </summary>
+        [Input("cpuQuota")]
+        public Input<int>? CpuQuota { get; set; }
+
+        /// <summary>
         /// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         /// </summary>
         [Input("cpuSet")]
@@ -1099,7 +1153,7 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         /// </summary>
         [Input("cpus")]
         public Input<string>? Cpus { get; set; }
