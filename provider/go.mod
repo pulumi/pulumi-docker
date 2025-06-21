@@ -15,7 +15,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.110.0
-	github.com/pulumi/pulumi/pkg/v3 v3.175.0
+	github.com/pulumi/pulumi/pkg/v3 v3.178.0
 	github.com/pulumi/pulumi/sdk/v3 v3.175.0
 	github.com/spf13/afero v1.12.0
 	github.com/stretchr/testify v1.10.0
@@ -27,7 +27,7 @@ require (
 )
 
 replace (
-	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20250530111747-935112552988
+	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 7ac578ce47fc
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
 )
 
