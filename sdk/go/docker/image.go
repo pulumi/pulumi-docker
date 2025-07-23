@@ -5,9 +5,9 @@ package docker
 
 import (
 	"context"
-	"errors"
 	"reflect"
 
+	"errors"
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -193,8 +193,7 @@ type Image struct {
 
 // NewImage registers a new resource with the given unique name, arguments, and options.
 func NewImage(ctx *pulumi.Context,
-	name string, args *ImageArgs, opts ...pulumi.ResourceOption,
-) (*Image, error) {
+	name string, args *ImageArgs, opts ...pulumi.ResourceOption) (*Image, error) {
 	if args == nil {
 		return nil, errors.New("missing one or more required arguments")
 	}
@@ -226,8 +225,7 @@ func NewImage(ctx *pulumi.Context,
 // GetImage gets an existing Image resource's state with the given name, ID, and optional
 // state properties that are used to uniquely qualify the lookup (nil if not required).
 func GetImage(ctx *pulumi.Context,
-	name string, id pulumi.IDInput, state *ImageState, opts ...pulumi.ResourceOption,
-) (*Image, error) {
+	name string, id pulumi.IDInput, state *ImageState, opts ...pulumi.ResourceOption) (*Image, error) {
 	var resource Image
 	err := ctx.ReadResource("docker:index/image:Image", name, id, state, &resource, opts...)
 	if err != nil {
@@ -237,9 +235,11 @@ func GetImage(ctx *pulumi.Context,
 }
 
 // Input properties used for looking up and filtering Image resources.
-type imageState struct{}
+type imageState struct {
+}
 
-type ImageState struct{}
+type ImageState struct {
+}
 
 func (ImageState) ElementType() reflect.Type {
 	return reflect.TypeOf((*imageState)(nil)).Elem()
