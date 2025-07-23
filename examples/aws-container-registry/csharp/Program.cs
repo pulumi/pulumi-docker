@@ -20,7 +20,7 @@ class Program
         var imageName = repo.RepositoryUrl;
         var registryInfo = repo.RegistryId.Apply(async (id) =>
         {
-            var creds = GetAuthorizationToken.Invoke(new GetAuthorizationTokenInvokeArgs { RegistryId =id })
+            var creds = GetAuthorizationToken.Invoke(new GetAuthorizationTokenInvokeArgs { RegistryId =id });
             return new Pulumi.Docker.Inputs.RegistryArgs
             {
                 Server = creds.Apply(credentials => credentials.ProxyEndpoint),

@@ -12,7 +12,7 @@ repo = aws.ecr.Repository(
 
 # Get registry info (creds and endpoint) so we can build/publish to it.
 def getRegistryInfo(rid):
-    creds = aws.ecr.get_credentials(registry_id=rid)
+    creds = aws.ecr.get_authorization_token(registry_id=rid)
 
     return RegistryArgs(
         server=creds.proxy_endpoint,
