@@ -20,21 +20,12 @@ class Program
         var imageName = repo.RepositoryUrl;
         var registryInfo = repo.RegistryId.Apply(async (id) =>
         {
-            var creds = await GetCredentials.InvokeAsync(new GetCredentialsArgs { RegistryId = id });
-            var decodedData = Convert.FromBase64String(creds.AuthorizationToken);
-            var decoded = ASCIIEncoding.ASCII.GetString(decodedData);
-
-            var parts = decoded.Split(':');
-            if (parts.Length != 2)
-            {
-                throw new Exception("Invalid credentials");
-            }
-
+            var creds = GetAuthorizationToken.Invoke(new GetAuthorizationTokenInvokeArgs { RegistryId =id });
             return new Pulumi.Docker.Inputs.RegistryArgs
             {
-                Server = creds.ProxyEndpoint,
-                Username = parts[0],
-                Password = parts[1],
+                Server = creds.Apply(credentials => credentials.ProxyEndpoint),
+                Username = creds.Apply(credentials => credentials.UserName),
+                Password = creds.Apply(credentials => credentials.Password),
             };
         });
 

@@ -9,7 +9,7 @@ const repo = new aws.ecr.Repository("my-repo",{
 
 // Get registry info (creds and endpoint) so we can build/publish to it.
 const registryInfo = repo.registryId.apply(async id => {
-    const credentials = await aws.ecr.getCredentials({ registryId: id });
+    const credentials = await aws.ecr.getAuthorizationToken({ registryId: id });
     const decodedCredentials = Buffer.from(credentials.authorizationToken, "base64").toString();
     const [username, password] = decodedCredentials.split(":");
     if (!password || !username) {
@@ -17,8 +17,8 @@ const registryInfo = repo.registryId.apply(async id => {
     }
     return {
         server: credentials.proxyEndpoint,
-        username: username,
-        password: password,
+        username: credentials.userName,
+        password: credentials.password,
     };
 });
 
