@@ -38,19 +38,19 @@ export class Tag extends pulumi.CustomResource {
     /**
      * Name of the source image.
      */
-    public readonly sourceImage!: pulumi.Output<string>;
+    declare public readonly sourceImage: pulumi.Output<string>;
     /**
      * ImageID of the source image in the format of `sha256:<<ID>>`
      */
-    public /*out*/ readonly sourceImageId!: pulumi.Output<string>;
+    declare public /*out*/ readonly sourceImageId: pulumi.Output<string>;
     /**
      * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
      */
-    public readonly tagTriggers!: pulumi.Output<string[] | undefined>;
+    declare public readonly tagTriggers: pulumi.Output<string[] | undefined>;
     /**
      * Name of the target image.
      */
-    public readonly targetImage!: pulumi.Output<string>;
+    declare public readonly targetImage: pulumi.Output<string>;
 
     /**
      * Create a Tag resource with the given unique name, arguments, and options.
@@ -65,21 +65,21 @@ export class Tag extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as TagState | undefined;
-            resourceInputs["sourceImage"] = state ? state.sourceImage : undefined;
-            resourceInputs["sourceImageId"] = state ? state.sourceImageId : undefined;
-            resourceInputs["tagTriggers"] = state ? state.tagTriggers : undefined;
-            resourceInputs["targetImage"] = state ? state.targetImage : undefined;
+            resourceInputs["sourceImage"] = state?.sourceImage;
+            resourceInputs["sourceImageId"] = state?.sourceImageId;
+            resourceInputs["tagTriggers"] = state?.tagTriggers;
+            resourceInputs["targetImage"] = state?.targetImage;
         } else {
             const args = argsOrState as TagArgs | undefined;
-            if ((!args || args.sourceImage === undefined) && !opts.urn) {
+            if (args?.sourceImage === undefined && !opts.urn) {
                 throw new Error("Missing required property 'sourceImage'");
             }
-            if ((!args || args.targetImage === undefined) && !opts.urn) {
+            if (args?.targetImage === undefined && !opts.urn) {
                 throw new Error("Missing required property 'targetImage'");
             }
-            resourceInputs["sourceImage"] = args ? args.sourceImage : undefined;
-            resourceInputs["tagTriggers"] = args ? args.tagTriggers : undefined;
-            resourceInputs["targetImage"] = args ? args.targetImage : undefined;
+            resourceInputs["sourceImage"] = args?.sourceImage;
+            resourceInputs["tagTriggers"] = args?.tagTriggers;
+            resourceInputs["targetImage"] = args?.targetImage;
             resourceInputs["sourceImageId"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);

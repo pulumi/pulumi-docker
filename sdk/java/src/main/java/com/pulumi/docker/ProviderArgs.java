@@ -65,16 +65,14 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-     * if set.
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
      * 
      */
     @Import(name="context")
     private @Nullable Output<String> context;
 
     /**
-     * @return The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-     * if set.
+     * @return The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
      * 
      */
     public Optional<Output<String>> context() {
@@ -82,16 +80,14 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-     * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+     * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
      * 
      */
     @Import(name="disableDockerDaemonCheck", json=true)
     private @Nullable Output<Boolean> disableDockerDaemonCheck;
 
     /**
-     * @return If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-     * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+     * @return If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
      * 
      */
     public Optional<Output<Boolean>> disableDockerDaemonCheck() {
@@ -246,8 +242,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-         * if set.
+         * @param context The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
          * 
          * @return builder
          * 
@@ -258,8 +253,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-         * if set.
+         * @param context The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
          * 
          * @return builder
          * 
@@ -269,8 +263,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param disableDockerDaemonCheck If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-         * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+         * @param disableDockerDaemonCheck If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
          * 
          * @return builder
          * 
@@ -281,8 +274,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param disableDockerDaemonCheck If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-         * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+         * @param disableDockerDaemonCheck If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
          * 
          * @return builder
          * 

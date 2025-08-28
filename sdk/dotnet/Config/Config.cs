@@ -64,8 +64,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _context = new __Value<string?>(() => __config.Get("context"));
         /// <summary>
-        /// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-        /// if set.
+        /// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
         /// </summary>
         public static string? Context
         {
@@ -75,8 +74,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<bool?> _disableDockerDaemonCheck = new __Value<bool?>(() => __config.GetBoolean("disableDockerDaemonCheck"));
         /// <summary>
-        /// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-        /// resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+        /// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
         /// </summary>
         public static bool? DisableDockerDaemonCheck
         {

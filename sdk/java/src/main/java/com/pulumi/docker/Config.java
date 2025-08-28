@@ -36,16 +36,14 @@ public final class Config {
         return Codegen.stringProp("certPath").config(config).get();
     }
 /**
- * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
- * if set.
+ * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
  * 
  */
     public Optional<String> context() {
         return Codegen.stringProp("context").config(config).get();
     }
 /**
- * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
- * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+ * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
  * 
  */
     public Optional<Boolean> disableDockerDaemonCheck() {

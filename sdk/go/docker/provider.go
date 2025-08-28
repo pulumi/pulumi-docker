@@ -24,8 +24,7 @@ type Provider struct {
 	CertMaterial pulumi.StringPtrOutput `pulumi:"certMaterial"`
 	// Path to directory with Docker TLS config
 	CertPath pulumi.StringPtrOutput `pulumi:"certPath"`
-	// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-	// if set.
+	// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 	Context pulumi.StringPtrOutput `pulumi:"context"`
 	// The Docker daemon address
 	Host pulumi.StringPtrOutput `pulumi:"host"`
@@ -61,11 +60,9 @@ type providerArgs struct {
 	CertMaterial *string `pulumi:"certMaterial"`
 	// Path to directory with Docker TLS config
 	CertPath *string `pulumi:"certPath"`
-	// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-	// if set.
+	// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 	Context *string `pulumi:"context"`
-	// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-	// resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
+	// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
 	DisableDockerDaemonCheck *bool `pulumi:"disableDockerDaemonCheck"`
 	// The Docker daemon address
 	Host *string `pulumi:"host"`
@@ -84,11 +81,9 @@ type ProviderArgs struct {
 	CertMaterial pulumi.StringPtrInput
 	// Path to directory with Docker TLS config
 	CertPath pulumi.StringPtrInput
-	// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-	// if set.
+	// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 	Context pulumi.StringPtrInput
-	// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-	// resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
+	// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
 	DisableDockerDaemonCheck pulumi.BoolPtrInput
 	// The Docker daemon address
 	Host pulumi.StringPtrInput
@@ -174,8 +169,7 @@ func (o ProviderOutput) CertPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.CertPath }).(pulumi.StringPtrOutput)
 }
 
-// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-// if set.
+// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 func (o ProviderOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
 }

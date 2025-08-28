@@ -134,27 +134,27 @@ export class Image extends pulumi.CustomResource {
     /**
      * The fully qualified image name that was pushed to the registry.
      */
-    public /*out*/ readonly baseImageName!: pulumi.Output<string>;
+    declare public /*out*/ readonly baseImageName: pulumi.Output<string>;
     /**
      * The path to the build context to use.
      */
-    public /*out*/ readonly context!: pulumi.Output<string>;
+    declare public /*out*/ readonly context: pulumi.Output<string>;
     /**
      * The location of the Dockerfile relative to the docker build context.
      */
-    public /*out*/ readonly dockerfile!: pulumi.Output<string>;
+    declare public /*out*/ readonly dockerfile: pulumi.Output<string>;
     /**
      * The fully qualified image name
      */
-    public readonly imageName!: pulumi.Output<string>;
+    declare public readonly imageName: pulumi.Output<string>;
     /**
      * The image's architecture and OS
      */
-    public /*out*/ readonly platform!: pulumi.Output<string | undefined>;
+    declare public /*out*/ readonly platform: pulumi.Output<string | undefined>;
     /**
      * The name of the registry server hosting the image.
      */
-    public /*out*/ readonly registryServer!: pulumi.Output<string>;
+    declare public /*out*/ readonly registryServer: pulumi.Output<string>;
     /**
      * **For pushed images:**
      * The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
@@ -164,7 +164,7 @@ export class Image extends pulumi.CustomResource {
      *
      * **Local-only images**For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` 
      */
-    public /*out*/ readonly repoDigest!: pulumi.Output<string>;
+    declare public /*out*/ readonly repoDigest: pulumi.Output<string>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -177,14 +177,14 @@ export class Image extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.imageName === undefined) && !opts.urn) {
+            if (args?.imageName === undefined && !opts.urn) {
                 throw new Error("Missing required property 'imageName'");
             }
-            resourceInputs["build"] = args ? args.build : undefined;
-            resourceInputs["buildOnPreview"] = (args ? args.buildOnPreview : undefined) ?? false;
-            resourceInputs["imageName"] = args ? args.imageName : undefined;
-            resourceInputs["registry"] = args ? args.registry : undefined;
-            resourceInputs["skipPush"] = (args ? args.skipPush : undefined) ?? false;
+            resourceInputs["build"] = args?.build;
+            resourceInputs["buildOnPreview"] = (args?.buildOnPreview) ?? false;
+            resourceInputs["imageName"] = args?.imageName;
+            resourceInputs["registry"] = args?.registry;
+            resourceInputs["skipPush"] = (args?.skipPush) ?? false;
             resourceInputs["baseImageName"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["dockerfile"] = undefined /*out*/;

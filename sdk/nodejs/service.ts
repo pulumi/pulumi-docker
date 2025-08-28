@@ -93,39 +93,39 @@ export class Service extends pulumi.CustomResource {
     /**
      * Configuration for the authentication for pulling the images of the service
      */
-    public readonly auth!: pulumi.Output<outputs.ServiceAuth | undefined>;
+    declare public readonly auth: pulumi.Output<outputs.ServiceAuth | undefined>;
     /**
      * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
-    public readonly convergeConfig!: pulumi.Output<outputs.ServiceConvergeConfig | undefined>;
+    declare public readonly convergeConfig: pulumi.Output<outputs.ServiceConvergeConfig | undefined>;
     /**
      * Properties that can be configured to access and load balance a service
      */
-    public readonly endpointSpec!: pulumi.Output<outputs.ServiceEndpointSpec>;
+    declare public readonly endpointSpec: pulumi.Output<outputs.ServiceEndpointSpec>;
     /**
      * User-defined key/value metadata
      */
-    public readonly labels!: pulumi.Output<outputs.ServiceLabel[]>;
+    declare public readonly labels: pulumi.Output<outputs.ServiceLabel[]>;
     /**
      * Scheduling mode for the service
      */
-    public readonly mode!: pulumi.Output<outputs.ServiceMode>;
+    declare public readonly mode: pulumi.Output<outputs.ServiceMode>;
     /**
      * Name of the service
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * Specification for the rollback strategy of the service
      */
-    public readonly rollbackConfig!: pulumi.Output<outputs.ServiceRollbackConfig | undefined>;
+    declare public readonly rollbackConfig: pulumi.Output<outputs.ServiceRollbackConfig | undefined>;
     /**
      * User modifiable task configuration
      */
-    public readonly taskSpec!: pulumi.Output<outputs.ServiceTaskSpec>;
+    declare public readonly taskSpec: pulumi.Output<outputs.ServiceTaskSpec>;
     /**
      * Specification for the update strategy of the service
      */
-    public readonly updateConfig!: pulumi.Output<outputs.ServiceUpdateConfig | undefined>;
+    declare public readonly updateConfig: pulumi.Output<outputs.ServiceUpdateConfig | undefined>;
 
     /**
      * Create a Service resource with the given unique name, arguments, and options.
@@ -140,29 +140,29 @@ export class Service extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as ServiceState | undefined;
-            resourceInputs["auth"] = state ? state.auth : undefined;
-            resourceInputs["convergeConfig"] = state ? state.convergeConfig : undefined;
-            resourceInputs["endpointSpec"] = state ? state.endpointSpec : undefined;
-            resourceInputs["labels"] = state ? state.labels : undefined;
-            resourceInputs["mode"] = state ? state.mode : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["rollbackConfig"] = state ? state.rollbackConfig : undefined;
-            resourceInputs["taskSpec"] = state ? state.taskSpec : undefined;
-            resourceInputs["updateConfig"] = state ? state.updateConfig : undefined;
+            resourceInputs["auth"] = state?.auth;
+            resourceInputs["convergeConfig"] = state?.convergeConfig;
+            resourceInputs["endpointSpec"] = state?.endpointSpec;
+            resourceInputs["labels"] = state?.labels;
+            resourceInputs["mode"] = state?.mode;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["rollbackConfig"] = state?.rollbackConfig;
+            resourceInputs["taskSpec"] = state?.taskSpec;
+            resourceInputs["updateConfig"] = state?.updateConfig;
         } else {
             const args = argsOrState as ServiceArgs | undefined;
-            if ((!args || args.taskSpec === undefined) && !opts.urn) {
+            if (args?.taskSpec === undefined && !opts.urn) {
                 throw new Error("Missing required property 'taskSpec'");
             }
-            resourceInputs["auth"] = args ? args.auth : undefined;
-            resourceInputs["convergeConfig"] = args ? args.convergeConfig : undefined;
-            resourceInputs["endpointSpec"] = args ? args.endpointSpec : undefined;
-            resourceInputs["labels"] = args ? args.labels : undefined;
-            resourceInputs["mode"] = args ? args.mode : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["rollbackConfig"] = args ? args.rollbackConfig : undefined;
-            resourceInputs["taskSpec"] = args ? args.taskSpec : undefined;
-            resourceInputs["updateConfig"] = args ? args.updateConfig : undefined;
+            resourceInputs["auth"] = args?.auth;
+            resourceInputs["convergeConfig"] = args?.convergeConfig;
+            resourceInputs["endpointSpec"] = args?.endpointSpec;
+            resourceInputs["labels"] = args?.labels;
+            resourceInputs["mode"] = args?.mode;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["rollbackConfig"] = args?.rollbackConfig;
+            resourceInputs["taskSpec"] = args?.taskSpec;
+            resourceInputs["updateConfig"] = args?.updateConfig;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Service.__pulumiType, name, resourceInputs, opts);

@@ -31,28 +31,27 @@ export class Provider extends pulumi.ProviderResource {
     /**
      * PEM-encoded content of Docker host CA certificate
      */
-    public readonly caMaterial!: pulumi.Output<string | undefined>;
+    declare public readonly caMaterial: pulumi.Output<string | undefined>;
     /**
      * PEM-encoded content of Docker client certificate
      */
-    public readonly certMaterial!: pulumi.Output<string | undefined>;
+    declare public readonly certMaterial: pulumi.Output<string | undefined>;
     /**
      * Path to directory with Docker TLS config
      */
-    public readonly certPath!: pulumi.Output<string | undefined>;
+    declare public readonly certPath: pulumi.Output<string | undefined>;
     /**
-     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-     * if set.
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
      */
-    public readonly context!: pulumi.Output<string | undefined>;
+    declare public readonly context: pulumi.Output<string | undefined>;
     /**
      * The Docker daemon address
      */
-    public readonly host!: pulumi.Output<string | undefined>;
+    declare public readonly host: pulumi.Output<string | undefined>;
     /**
      * PEM-encoded content of Docker client private key
      */
-    public readonly keyMaterial!: pulumi.Output<string | undefined>;
+    declare public readonly keyMaterial: pulumi.Output<string | undefined>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -65,15 +64,15 @@ export class Provider extends pulumi.ProviderResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
-            resourceInputs["caMaterial"] = args ? args.caMaterial : undefined;
-            resourceInputs["certMaterial"] = args ? args.certMaterial : undefined;
-            resourceInputs["certPath"] = args ? args.certPath : undefined;
-            resourceInputs["context"] = args ? args.context : undefined;
-            resourceInputs["disableDockerDaemonCheck"] = pulumi.output(args ? args.disableDockerDaemonCheck : undefined).apply(JSON.stringify);
-            resourceInputs["host"] = (args ? args.host : undefined) ?? utilities.getEnv("DOCKER_HOST");
-            resourceInputs["keyMaterial"] = args ? args.keyMaterial : undefined;
-            resourceInputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
-            resourceInputs["sshOpts"] = pulumi.output(args ? args.sshOpts : undefined).apply(JSON.stringify);
+            resourceInputs["caMaterial"] = args?.caMaterial;
+            resourceInputs["certMaterial"] = args?.certMaterial;
+            resourceInputs["certPath"] = args?.certPath;
+            resourceInputs["context"] = args?.context;
+            resourceInputs["disableDockerDaemonCheck"] = pulumi.output(args?.disableDockerDaemonCheck).apply(JSON.stringify);
+            resourceInputs["host"] = (args?.host) ?? utilities.getEnv("DOCKER_HOST");
+            resourceInputs["keyMaterial"] = args?.keyMaterial;
+            resourceInputs["registryAuth"] = pulumi.output(args?.registryAuth).apply(JSON.stringify);
+            resourceInputs["sshOpts"] = pulumi.output(args?.sshOpts).apply(JSON.stringify);
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Provider.__pulumiType, name, resourceInputs, opts);
@@ -106,13 +105,11 @@ export interface ProviderArgs {
      */
     certPath?: pulumi.Input<string>;
     /**
-     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-     * if set.
+     * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
      */
     context?: pulumi.Input<string>;
     /**
-     * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-     * resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+     * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
      */
     disableDockerDaemonCheck?: pulumi.Input<boolean>;
     /**
