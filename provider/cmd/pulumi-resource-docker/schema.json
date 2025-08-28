@@ -56,27 +56,27 @@
         "variables": {
             "caMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker host CA certificate\n"
+                "description": "PEM-encoded content of Docker host CA certificate"
             },
             "certMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client certificate\n"
+                "description": "PEM-encoded content of Docker client certificate"
             },
             "certPath": {
                 "type": "string",
-                "description": "Path to directory with Docker TLS config\n"
+                "description": "Path to directory with Docker TLS config"
             },
             "context": {
                 "type": "string",
-                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`\nif set.\n"
+                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set."
             },
             "disableDockerDaemonCheck": {
                 "type": "boolean",
-                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for\nresources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.\n"
+                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`."
             },
             "host": {
                 "type": "string",
-                "description": "The Docker daemon address\n",
+                "description": "The Docker daemon address",
                 "defaultInfo": {
                     "environment": [
                         "DOCKER_HOST"
@@ -85,7 +85,7 @@
             },
             "keyMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client private key\n"
+                "description": "PEM-encoded content of Docker client private key"
             },
             "registryAuth": {
                 "type": "array",
@@ -98,7 +98,7 @@
                 "items": {
                     "type": "string"
                 },
-                "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
+                "description": "Additional SSH option flags to be appended when using `ssh://` protocol"
             }
         },
         "defaults": [
@@ -2342,31 +2342,31 @@
         "properties": {
             "caMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker host CA certificate\n"
+                "description": "PEM-encoded content of Docker host CA certificate"
             },
             "certMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client certificate\n"
+                "description": "PEM-encoded content of Docker client certificate"
             },
             "certPath": {
                 "type": "string",
-                "description": "Path to directory with Docker TLS config\n"
+                "description": "Path to directory with Docker TLS config"
             },
             "context": {
                 "type": "string",
-                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`\nif set.\n"
+                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set."
             },
             "disableDockerDaemonCheck": {
                 "type": "boolean",
-                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for\nresources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.\n"
+                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`."
             },
             "host": {
                 "type": "string",
-                "description": "The Docker daemon address\n"
+                "description": "The Docker daemon address"
             },
             "keyMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client private key\n"
+                "description": "PEM-encoded content of Docker client private key"
             },
             "registryAuth": {
                 "type": "array",
@@ -2379,33 +2379,33 @@
                 "items": {
                     "type": "string"
                 },
-                "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
+                "description": "Additional SSH option flags to be appended when using `ssh://` protocol"
             }
         },
         "inputProperties": {
             "caMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker host CA certificate\n"
+                "description": "PEM-encoded content of Docker host CA certificate"
             },
             "certMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client certificate\n"
+                "description": "PEM-encoded content of Docker client certificate"
             },
             "certPath": {
                 "type": "string",
-                "description": "Path to directory with Docker TLS config\n"
+                "description": "Path to directory with Docker TLS config"
             },
             "context": {
                 "type": "string",
-                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`\nif set.\n"
+                "description": "The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set."
             },
             "disableDockerDaemonCheck": {
                 "type": "boolean",
-                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for\nresources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.\n"
+                "description": "If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`."
             },
             "host": {
                 "type": "string",
-                "description": "The Docker daemon address\n",
+                "description": "The Docker daemon address",
                 "defaultInfo": {
                     "environment": [
                         "DOCKER_HOST"
@@ -2414,7 +2414,7 @@
             },
             "keyMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client private key\n"
+                "description": "PEM-encoded content of Docker client private key"
             },
             "registryAuth": {
                 "type": "array",
@@ -2427,7 +2427,7 @@
                 "items": {
                     "type": "string"
                 },
-                "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
+                "description": "Additional SSH option flags to be appended when using `ssh://` protocol"
             }
         },
         "methods": {
@@ -5029,7 +5029,7 @@
                         "type": "boolean"
                     },
                     "id": {
-                        "description": "The provider-assigned unique ID for this managed resource.\n",
+                        "description": "The provider-assigned unique ID for this managed resource.",
                         "type": "string"
                     },
                     "logsListStringEnabled": {
@@ -5223,7 +5223,7 @@
                 "description": "A collection of values returned by getRegistryImage.\n",
                 "properties": {
                     "id": {
-                        "description": "The provider-assigned unique ID for this managed resource.\n",
+                        "description": "The provider-assigned unique ID for this managed resource.",
                         "type": "string"
                     },
                     "insecureSkipVerify": {
@@ -5278,7 +5278,7 @@
                         "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
                     },
                     "id": {
-                        "description": "The provider-assigned unique ID for this managed resource.\n",
+                        "description": "The provider-assigned unique ID for this managed resource.",
                         "type": "string"
                     },
                     "insecureSkipVerify": {
@@ -5324,7 +5324,7 @@
                 "description": "A collection of values returned by getRemoteImage.\n",
                 "properties": {
                     "id": {
-                        "description": "The provider-assigned unique ID for this managed resource.\n",
+                        "description": "The provider-assigned unique ID for this managed resource.",
                         "type": "string"
                     },
                     "name": {
