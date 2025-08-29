@@ -42,27 +42,27 @@ export class RegistryImage extends pulumi.CustomResource {
     /**
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
-    public readonly authConfig!: pulumi.Output<outputs.RegistryImageAuthConfig | undefined>;
+    declare public readonly authConfig: pulumi.Output<outputs.RegistryImageAuthConfig | undefined>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
-    public readonly insecureSkipVerify!: pulumi.Output<boolean | undefined>;
+    declare public readonly insecureSkipVerify: pulumi.Output<boolean | undefined>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      */
-    public readonly keepRemotely!: pulumi.Output<boolean | undefined>;
+    declare public readonly keepRemotely: pulumi.Output<boolean | undefined>;
     /**
      * The name of the Docker image.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * The sha256 digest of the image.
      */
-    public /*out*/ readonly sha256Digest!: pulumi.Output<string>;
+    declare public /*out*/ readonly sha256Digest: pulumi.Output<string>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */
-    public readonly triggers!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly triggers: pulumi.Output<{[key: string]: string} | undefined>;
 
     /**
      * Create a RegistryImage resource with the given unique name, arguments, and options.
@@ -77,19 +77,19 @@ export class RegistryImage extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RegistryImageState | undefined;
-            resourceInputs["authConfig"] = state ? state.authConfig : undefined;
-            resourceInputs["insecureSkipVerify"] = state ? state.insecureSkipVerify : undefined;
-            resourceInputs["keepRemotely"] = state ? state.keepRemotely : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["sha256Digest"] = state ? state.sha256Digest : undefined;
-            resourceInputs["triggers"] = state ? state.triggers : undefined;
+            resourceInputs["authConfig"] = state?.authConfig;
+            resourceInputs["insecureSkipVerify"] = state?.insecureSkipVerify;
+            resourceInputs["keepRemotely"] = state?.keepRemotely;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["sha256Digest"] = state?.sha256Digest;
+            resourceInputs["triggers"] = state?.triggers;
         } else {
             const args = argsOrState as RegistryImageArgs | undefined;
-            resourceInputs["authConfig"] = args ? args.authConfig : undefined;
-            resourceInputs["insecureSkipVerify"] = args ? args.insecureSkipVerify : undefined;
-            resourceInputs["keepRemotely"] = args ? args.keepRemotely : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["triggers"] = args ? args.triggers : undefined;
+            resourceInputs["authConfig"] = args?.authConfig;
+            resourceInputs["insecureSkipVerify"] = args?.insecureSkipVerify;
+            resourceInputs["keepRemotely"] = args?.keepRemotely;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["triggers"] = args?.triggers;
             resourceInputs["sha256Digest"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);

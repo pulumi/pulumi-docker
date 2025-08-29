@@ -35,39 +35,39 @@ export class RemoteImage extends pulumi.CustomResource {
         return obj['__pulumiType'] === RemoteImage.__pulumiType;
     }
 
-    public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
+    declare public readonly build: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
      * If true, then the image is removed forcibly when the resource is destroyed.
      */
-    public readonly forceRemove!: pulumi.Output<boolean | undefined>;
+    declare public readonly forceRemove: pulumi.Output<boolean | undefined>;
     /**
      * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
      */
-    public /*out*/ readonly imageId!: pulumi.Output<string>;
+    declare public /*out*/ readonly imageId: pulumi.Output<string>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
-    public readonly keepLocally!: pulumi.Output<boolean | undefined>;
+    declare public readonly keepLocally: pulumi.Output<boolean | undefined>;
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
-    public readonly platform!: pulumi.Output<string | undefined>;
+    declare public readonly platform: pulumi.Output<string | undefined>;
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
-    public readonly pullTriggers!: pulumi.Output<string[] | undefined>;
+    declare public readonly pullTriggers: pulumi.Output<string[] | undefined>;
     /**
      * The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.
      */
-    public /*out*/ readonly repoDigest!: pulumi.Output<string>;
+    declare public /*out*/ readonly repoDigest: pulumi.Output<string>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      */
-    public readonly triggers!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly triggers: pulumi.Output<{[key: string]: string} | undefined>;
 
     /**
      * Create a RemoteImage resource with the given unique name, arguments, and options.
@@ -82,27 +82,27 @@ export class RemoteImage extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RemoteImageState | undefined;
-            resourceInputs["build"] = state ? state.build : undefined;
-            resourceInputs["forceRemove"] = state ? state.forceRemove : undefined;
-            resourceInputs["imageId"] = state ? state.imageId : undefined;
-            resourceInputs["keepLocally"] = state ? state.keepLocally : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["platform"] = state ? state.platform : undefined;
-            resourceInputs["pullTriggers"] = state ? state.pullTriggers : undefined;
-            resourceInputs["repoDigest"] = state ? state.repoDigest : undefined;
-            resourceInputs["triggers"] = state ? state.triggers : undefined;
+            resourceInputs["build"] = state?.build;
+            resourceInputs["forceRemove"] = state?.forceRemove;
+            resourceInputs["imageId"] = state?.imageId;
+            resourceInputs["keepLocally"] = state?.keepLocally;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["platform"] = state?.platform;
+            resourceInputs["pullTriggers"] = state?.pullTriggers;
+            resourceInputs["repoDigest"] = state?.repoDigest;
+            resourceInputs["triggers"] = state?.triggers;
         } else {
             const args = argsOrState as RemoteImageArgs | undefined;
-            if ((!args || args.name === undefined) && !opts.urn) {
+            if (args?.name === undefined && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            resourceInputs["build"] = args ? args.build : undefined;
-            resourceInputs["forceRemove"] = args ? args.forceRemove : undefined;
-            resourceInputs["keepLocally"] = args ? args.keepLocally : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["platform"] = args ? args.platform : undefined;
-            resourceInputs["pullTriggers"] = args ? args.pullTriggers : undefined;
-            resourceInputs["triggers"] = args ? args.triggers : undefined;
+            resourceInputs["build"] = args?.build;
+            resourceInputs["forceRemove"] = args?.forceRemove;
+            resourceInputs["keepLocally"] = args?.keepLocally;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["platform"] = args?.platform;
+            resourceInputs["pullTriggers"] = args?.pullTriggers;
+            resourceInputs["triggers"] = args?.triggers;
             resourceInputs["imageId"] = undefined /*out*/;
             resourceInputs["repoDigest"] = undefined /*out*/;
         }

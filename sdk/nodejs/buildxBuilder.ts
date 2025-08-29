@@ -41,59 +41,59 @@ export class BuildxBuilder extends pulumi.CustomResource {
     /**
      * Append a node to builder instead of changing it
      */
-    public readonly append!: pulumi.Output<boolean | undefined>;
+    declare public readonly append: pulumi.Output<boolean | undefined>;
     /**
      * Automatically boot the builder after creation. Defaults to `false`
      */
-    public readonly bootstrap!: pulumi.Output<boolean | undefined>;
+    declare public readonly bootstrap: pulumi.Output<boolean | undefined>;
     /**
      * BuildKit daemon config file
      */
-    public readonly buildkitConfig!: pulumi.Output<string | undefined>;
+    declare public readonly buildkitConfig: pulumi.Output<string | undefined>;
     /**
      * BuildKit flags to set for the builder.
      */
-    public readonly buildkitFlags!: pulumi.Output<string | undefined>;
+    declare public readonly buildkitFlags: pulumi.Output<string | undefined>;
     /**
      * Configuration block for the Docker-Container driver.
      */
-    public readonly dockerContainer!: pulumi.Output<outputs.BuildxBuilderDockerContainer | undefined>;
+    declare public readonly dockerContainer: pulumi.Output<outputs.BuildxBuilderDockerContainer | undefined>;
     /**
      * The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
      */
-    public readonly driver!: pulumi.Output<string | undefined>;
+    declare public readonly driver: pulumi.Output<string | undefined>;
     /**
      * Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
      */
-    public readonly driverOptions!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly driverOptions: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
      */
-    public readonly endpoint!: pulumi.Output<string | undefined>;
+    declare public readonly endpoint: pulumi.Output<string | undefined>;
     /**
      * Configuration block for the Kubernetes driver.
      */
-    public readonly kubernetes!: pulumi.Output<outputs.BuildxBuilderKubernetes | undefined>;
+    declare public readonly kubernetes: pulumi.Output<outputs.BuildxBuilderKubernetes | undefined>;
     /**
      * The name of the Buildx builder. IF not specified, a random name will be generated.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * Create/modify node with given name
      */
-    public readonly node!: pulumi.Output<string | undefined>;
+    declare public readonly node: pulumi.Output<string | undefined>;
     /**
      * Fixed platforms for current node
      */
-    public readonly platforms!: pulumi.Output<string[] | undefined>;
+    declare public readonly platforms: pulumi.Output<string[] | undefined>;
     /**
      * Configuration block for the Remote driver.
      */
-    public readonly remote!: pulumi.Output<outputs.BuildxBuilderRemote | undefined>;
+    declare public readonly remote: pulumi.Output<outputs.BuildxBuilderRemote | undefined>;
     /**
      * Set the current builder instance as the default for the current context.
      */
-    public readonly use!: pulumi.Output<boolean | undefined>;
+    declare public readonly use: pulumi.Output<boolean | undefined>;
 
     /**
      * Create a BuildxBuilder resource with the given unique name, arguments, and options.
@@ -108,36 +108,36 @@ export class BuildxBuilder extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as BuildxBuilderState | undefined;
-            resourceInputs["append"] = state ? state.append : undefined;
-            resourceInputs["bootstrap"] = state ? state.bootstrap : undefined;
-            resourceInputs["buildkitConfig"] = state ? state.buildkitConfig : undefined;
-            resourceInputs["buildkitFlags"] = state ? state.buildkitFlags : undefined;
-            resourceInputs["dockerContainer"] = state ? state.dockerContainer : undefined;
-            resourceInputs["driver"] = state ? state.driver : undefined;
-            resourceInputs["driverOptions"] = state ? state.driverOptions : undefined;
-            resourceInputs["endpoint"] = state ? state.endpoint : undefined;
-            resourceInputs["kubernetes"] = state ? state.kubernetes : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["node"] = state ? state.node : undefined;
-            resourceInputs["platforms"] = state ? state.platforms : undefined;
-            resourceInputs["remote"] = state ? state.remote : undefined;
-            resourceInputs["use"] = state ? state.use : undefined;
+            resourceInputs["append"] = state?.append;
+            resourceInputs["bootstrap"] = state?.bootstrap;
+            resourceInputs["buildkitConfig"] = state?.buildkitConfig;
+            resourceInputs["buildkitFlags"] = state?.buildkitFlags;
+            resourceInputs["dockerContainer"] = state?.dockerContainer;
+            resourceInputs["driver"] = state?.driver;
+            resourceInputs["driverOptions"] = state?.driverOptions;
+            resourceInputs["endpoint"] = state?.endpoint;
+            resourceInputs["kubernetes"] = state?.kubernetes;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["node"] = state?.node;
+            resourceInputs["platforms"] = state?.platforms;
+            resourceInputs["remote"] = state?.remote;
+            resourceInputs["use"] = state?.use;
         } else {
             const args = argsOrState as BuildxBuilderArgs | undefined;
-            resourceInputs["append"] = args ? args.append : undefined;
-            resourceInputs["bootstrap"] = args ? args.bootstrap : undefined;
-            resourceInputs["buildkitConfig"] = args ? args.buildkitConfig : undefined;
-            resourceInputs["buildkitFlags"] = args ? args.buildkitFlags : undefined;
-            resourceInputs["dockerContainer"] = args ? args.dockerContainer : undefined;
-            resourceInputs["driver"] = args ? args.driver : undefined;
-            resourceInputs["driverOptions"] = args ? args.driverOptions : undefined;
-            resourceInputs["endpoint"] = args ? args.endpoint : undefined;
-            resourceInputs["kubernetes"] = args ? args.kubernetes : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["node"] = args ? args.node : undefined;
-            resourceInputs["platforms"] = args ? args.platforms : undefined;
-            resourceInputs["remote"] = args ? args.remote : undefined;
-            resourceInputs["use"] = args ? args.use : undefined;
+            resourceInputs["append"] = args?.append;
+            resourceInputs["bootstrap"] = args?.bootstrap;
+            resourceInputs["buildkitConfig"] = args?.buildkitConfig;
+            resourceInputs["buildkitFlags"] = args?.buildkitFlags;
+            resourceInputs["dockerContainer"] = args?.dockerContainer;
+            resourceInputs["driver"] = args?.driver;
+            resourceInputs["driverOptions"] = args?.driverOptions;
+            resourceInputs["endpoint"] = args?.endpoint;
+            resourceInputs["kubernetes"] = args?.kubernetes;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["node"] = args?.node;
+            resourceInputs["platforms"] = args?.platforms;
+            resourceInputs["remote"] = args?.remote;
+            resourceInputs["use"] = args?.use;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(BuildxBuilder.__pulumiType, name, resourceInputs, opts);

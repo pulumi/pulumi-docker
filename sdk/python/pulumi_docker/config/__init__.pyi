@@ -32,14 +32,12 @@ Path to directory with Docker TLS config
 
 context: Optional[str]
 """
-The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-if set.
+The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 """
 
 disableDockerDaemonCheck: Optional[bool]
 """
-If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
+If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
 """
 
 host: Optional[str]

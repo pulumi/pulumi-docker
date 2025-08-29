@@ -26,14 +26,12 @@ func GetCertPath(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:certPath")
 }
 
-// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host`
-// if set.
+// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 func GetContext(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:context")
 }
 
-// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for
-// resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
+// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
 func GetDisableDockerDaemonCheck(ctx *pulumi.Context) bool {
 	return config.GetBool(ctx, "docker:disableDockerDaemonCheck")
 }

@@ -83,23 +83,23 @@ export class Volume extends pulumi.CustomResource {
     /**
      * Driver type for the volume. Defaults to `local`.
      */
-    public readonly driver!: pulumi.Output<string>;
+    declare public readonly driver: pulumi.Output<string>;
     /**
      * Options specific to the driver.
      */
-    public readonly driverOpts!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly driverOpts: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * User-defined key/value metadata
      */
-    public readonly labels!: pulumi.Output<outputs.VolumeLabel[] | undefined>;
+    declare public readonly labels: pulumi.Output<outputs.VolumeLabel[] | undefined>;
     /**
      * The mountpoint of the volume.
      */
-    public /*out*/ readonly mountpoint!: pulumi.Output<string>;
+    declare public /*out*/ readonly mountpoint: pulumi.Output<string>;
     /**
      * The name of the Docker volume (will be generated if not provided).
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
 
     /**
      * Create a Volume resource with the given unique name, arguments, and options.
@@ -114,17 +114,17 @@ export class Volume extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as VolumeState | undefined;
-            resourceInputs["driver"] = state ? state.driver : undefined;
-            resourceInputs["driverOpts"] = state ? state.driverOpts : undefined;
-            resourceInputs["labels"] = state ? state.labels : undefined;
-            resourceInputs["mountpoint"] = state ? state.mountpoint : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
+            resourceInputs["driver"] = state?.driver;
+            resourceInputs["driverOpts"] = state?.driverOpts;
+            resourceInputs["labels"] = state?.labels;
+            resourceInputs["mountpoint"] = state?.mountpoint;
+            resourceInputs["name"] = state?.name;
         } else {
             const args = argsOrState as VolumeArgs | undefined;
-            resourceInputs["driver"] = args ? args.driver : undefined;
-            resourceInputs["driverOpts"] = args ? args.driverOpts : undefined;
-            resourceInputs["labels"] = args ? args.labels : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["driver"] = args?.driver;
+            resourceInputs["driverOpts"] = args?.driverOpts;
+            resourceInputs["labels"] = args?.labels;
+            resourceInputs["name"] = args?.name;
             resourceInputs["mountpoint"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
