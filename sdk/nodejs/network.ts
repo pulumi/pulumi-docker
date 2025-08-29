@@ -83,57 +83,57 @@ export class Network extends pulumi.CustomResource {
     /**
      * Enable manual container attachment to the network.
      */
-    public readonly attachable!: pulumi.Output<boolean | undefined>;
+    declare public readonly attachable: pulumi.Output<boolean | undefined>;
     /**
      * Requests daemon to check for networks with same name.
      *
      * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
      */
-    public readonly checkDuplicate!: pulumi.Output<boolean | undefined>;
+    declare public readonly checkDuplicate: pulumi.Output<boolean | undefined>;
     /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
-    public readonly driver!: pulumi.Output<string>;
+    declare public readonly driver: pulumi.Output<string>;
     /**
      * Create swarm routing-mesh network. Defaults to `false`.
      */
-    public readonly ingress!: pulumi.Output<boolean | undefined>;
+    declare public readonly ingress: pulumi.Output<boolean | undefined>;
     /**
      * Whether the network is internal.
      */
-    public readonly internal!: pulumi.Output<boolean>;
+    declare public readonly internal: pulumi.Output<boolean>;
     /**
      * The IPAM configuration options
      */
-    public readonly ipamConfigs!: pulumi.Output<outputs.NetworkIpamConfig[]>;
+    declare public readonly ipamConfigs: pulumi.Output<outputs.NetworkIpamConfig[]>;
     /**
      * Driver used by the custom IP scheme of the network. Defaults to `default`
      */
-    public readonly ipamDriver!: pulumi.Output<string | undefined>;
+    declare public readonly ipamDriver: pulumi.Output<string | undefined>;
     /**
      * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
      */
-    public readonly ipamOptions!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly ipamOptions: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
-    public readonly ipv6!: pulumi.Output<boolean | undefined>;
+    declare public readonly ipv6: pulumi.Output<boolean | undefined>;
     /**
      * User-defined key/value metadata
      */
-    public readonly labels!: pulumi.Output<outputs.NetworkLabel[] | undefined>;
+    declare public readonly labels: pulumi.Output<outputs.NetworkLabel[] | undefined>;
     /**
      * The name of the Docker network.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    public readonly options!: pulumi.Output<{[key: string]: string}>;
+    declare public readonly options: pulumi.Output<{[key: string]: string}>;
     /**
      * Scope of the network. One of `swarm`, `global`, or `local`.
      */
-    public /*out*/ readonly scope!: pulumi.Output<string>;
+    declare public /*out*/ readonly scope: pulumi.Output<string>;
 
     /**
      * Create a Network resource with the given unique name, arguments, and options.
@@ -148,33 +148,33 @@ export class Network extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as NetworkState | undefined;
-            resourceInputs["attachable"] = state ? state.attachable : undefined;
-            resourceInputs["checkDuplicate"] = state ? state.checkDuplicate : undefined;
-            resourceInputs["driver"] = state ? state.driver : undefined;
-            resourceInputs["ingress"] = state ? state.ingress : undefined;
-            resourceInputs["internal"] = state ? state.internal : undefined;
-            resourceInputs["ipamConfigs"] = state ? state.ipamConfigs : undefined;
-            resourceInputs["ipamDriver"] = state ? state.ipamDriver : undefined;
-            resourceInputs["ipamOptions"] = state ? state.ipamOptions : undefined;
-            resourceInputs["ipv6"] = state ? state.ipv6 : undefined;
-            resourceInputs["labels"] = state ? state.labels : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["options"] = state ? state.options : undefined;
-            resourceInputs["scope"] = state ? state.scope : undefined;
+            resourceInputs["attachable"] = state?.attachable;
+            resourceInputs["checkDuplicate"] = state?.checkDuplicate;
+            resourceInputs["driver"] = state?.driver;
+            resourceInputs["ingress"] = state?.ingress;
+            resourceInputs["internal"] = state?.internal;
+            resourceInputs["ipamConfigs"] = state?.ipamConfigs;
+            resourceInputs["ipamDriver"] = state?.ipamDriver;
+            resourceInputs["ipamOptions"] = state?.ipamOptions;
+            resourceInputs["ipv6"] = state?.ipv6;
+            resourceInputs["labels"] = state?.labels;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["options"] = state?.options;
+            resourceInputs["scope"] = state?.scope;
         } else {
             const args = argsOrState as NetworkArgs | undefined;
-            resourceInputs["attachable"] = args ? args.attachable : undefined;
-            resourceInputs["checkDuplicate"] = args ? args.checkDuplicate : undefined;
-            resourceInputs["driver"] = args ? args.driver : undefined;
-            resourceInputs["ingress"] = args ? args.ingress : undefined;
-            resourceInputs["internal"] = args ? args.internal : undefined;
-            resourceInputs["ipamConfigs"] = args ? args.ipamConfigs : undefined;
-            resourceInputs["ipamDriver"] = args ? args.ipamDriver : undefined;
-            resourceInputs["ipamOptions"] = args ? args.ipamOptions : undefined;
-            resourceInputs["ipv6"] = args ? args.ipv6 : undefined;
-            resourceInputs["labels"] = args ? args.labels : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["options"] = args ? args.options : undefined;
+            resourceInputs["attachable"] = args?.attachable;
+            resourceInputs["checkDuplicate"] = args?.checkDuplicate;
+            resourceInputs["driver"] = args?.driver;
+            resourceInputs["ingress"] = args?.ingress;
+            resourceInputs["internal"] = args?.internal;
+            resourceInputs["ipamConfigs"] = args?.ipamConfigs;
+            resourceInputs["ipamDriver"] = args?.ipamDriver;
+            resourceInputs["ipamOptions"] = args?.ipamOptions;
+            resourceInputs["ipv6"] = args?.ipv6;
+            resourceInputs["labels"] = args?.labels;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["options"] = args?.options;
             resourceInputs["scope"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);

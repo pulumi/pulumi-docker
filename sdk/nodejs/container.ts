@@ -99,280 +99,280 @@ export class Container extends pulumi.CustomResource {
     /**
      * If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
      */
-    public readonly attach!: pulumi.Output<boolean | undefined>;
+    declare public readonly attach: pulumi.Output<boolean | undefined>;
     /**
      * The network bridge of the container as read from its NetworkSettings.
      */
-    public /*out*/ readonly bridge!: pulumi.Output<string>;
+    declare public /*out*/ readonly bridge: pulumi.Output<string>;
     /**
      * Add or drop certrain linux capabilities.
      */
-    public readonly capabilities!: pulumi.Output<outputs.ContainerCapabilities | undefined>;
+    declare public readonly capabilities: pulumi.Output<outputs.ContainerCapabilities | undefined>;
     /**
      * Optional parent cgroup for the container
      */
-    public readonly cgroupParent!: pulumi.Output<string | undefined>;
+    declare public readonly cgroupParent: pulumi.Output<string | undefined>;
     /**
      * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
      */
-    public readonly cgroupnsMode!: pulumi.Output<string | undefined>;
+    declare public readonly cgroupnsMode: pulumi.Output<string | undefined>;
     /**
      * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
      */
-    public readonly command!: pulumi.Output<string[]>;
+    declare public readonly command: pulumi.Output<string[]>;
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
-    public /*out*/ readonly containerLogs!: pulumi.Output<string>;
+    declare public /*out*/ readonly containerLogs: pulumi.Output<string>;
     /**
      * The total number of milliseconds to wait for the container to reach status 'running'
      */
-    public readonly containerReadRefreshTimeoutMilliseconds!: pulumi.Output<number | undefined>;
+    declare public readonly containerReadRefreshTimeoutMilliseconds: pulumi.Output<number | undefined>;
     /**
      * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
      */
-    public readonly cpuPeriod!: pulumi.Output<number | undefined>;
+    declare public readonly cpuPeriod: pulumi.Output<number | undefined>;
     /**
      * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
      */
-    public readonly cpuQuota!: pulumi.Output<number | undefined>;
+    declare public readonly cpuQuota: pulumi.Output<number | undefined>;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
-    public readonly cpuSet!: pulumi.Output<string | undefined>;
+    declare public readonly cpuSet: pulumi.Output<string | undefined>;
     /**
      * CPU shares (relative weight) for the container.
      */
-    public readonly cpuShares!: pulumi.Output<number | undefined>;
+    declare public readonly cpuShares: pulumi.Output<number | undefined>;
     /**
      * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      */
-    public readonly cpus!: pulumi.Output<string | undefined>;
+    declare public readonly cpus: pulumi.Output<string | undefined>;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
-    public readonly destroyGraceSeconds!: pulumi.Output<number | undefined>;
+    declare public readonly destroyGraceSeconds: pulumi.Output<number | undefined>;
     /**
      * Bind devices to the container.
      */
-    public readonly devices!: pulumi.Output<outputs.ContainerDevice[] | undefined>;
+    declare public readonly devices: pulumi.Output<outputs.ContainerDevice[] | undefined>;
     /**
      * DNS servers to use.
      */
-    public readonly dns!: pulumi.Output<string[] | undefined>;
+    declare public readonly dns: pulumi.Output<string[] | undefined>;
     /**
      * DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    public readonly dnsOpts!: pulumi.Output<string[] | undefined>;
+    declare public readonly dnsOpts: pulumi.Output<string[] | undefined>;
     /**
      * DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
-    public readonly dnsSearches!: pulumi.Output<string[] | undefined>;
+    declare public readonly dnsSearches: pulumi.Output<string[] | undefined>;
     /**
      * Domain name of the container.
      */
-    public readonly domainname!: pulumi.Output<string | undefined>;
+    declare public readonly domainname: pulumi.Output<string | undefined>;
     /**
      * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
      */
-    public readonly entrypoints!: pulumi.Output<string[]>;
+    declare public readonly entrypoints: pulumi.Output<string[]>;
     /**
      * Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      */
-    public readonly envs!: pulumi.Output<string[]>;
+    declare public readonly envs: pulumi.Output<string[]>;
     /**
      * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
-    public /*out*/ readonly exitCode!: pulumi.Output<number>;
+    declare public /*out*/ readonly exitCode: pulumi.Output<number>;
     /**
      * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      */
-    public readonly gpus!: pulumi.Output<string | undefined>;
+    declare public readonly gpus: pulumi.Output<string | undefined>;
     /**
      * Additional groups for the container user
      */
-    public readonly groupAdds!: pulumi.Output<string[] | undefined>;
+    declare public readonly groupAdds: pulumi.Output<string[] | undefined>;
     /**
      * A test to perform to check that the container is healthy
      */
-    public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck>;
+    declare public readonly healthcheck: pulumi.Output<outputs.ContainerHealthcheck>;
     /**
      * Hostname of the container.
      */
-    public readonly hostname!: pulumi.Output<string>;
+    declare public readonly hostname: pulumi.Output<string>;
     /**
      * Additional hosts to add to the container.
      */
-    public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
+    declare public readonly hosts: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
      * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      */
-    public readonly image!: pulumi.Output<string>;
+    declare public readonly image: pulumi.Output<string>;
     /**
      * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      */
-    public readonly init!: pulumi.Output<boolean>;
+    declare public readonly init: pulumi.Output<boolean>;
     /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
-    public readonly ipcMode!: pulumi.Output<string>;
+    declare public readonly ipcMode: pulumi.Output<string>;
     /**
      * User-defined key/value metadata
      */
-    public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
+    declare public readonly labels: pulumi.Output<outputs.ContainerLabel[]>;
     /**
      * The logging driver to use for the container.
      */
-    public readonly logDriver!: pulumi.Output<string>;
+    declare public readonly logDriver: pulumi.Output<string>;
     /**
      * Key/value pairs to use as options for the logging driver.
      */
-    public readonly logOpts!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly logOpts: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * Save the container logs (`attach` must be enabled). Defaults to `false`.
      */
-    public readonly logs!: pulumi.Output<boolean | undefined>;
+    declare public readonly logs: pulumi.Output<boolean | undefined>;
     /**
      * The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
      */
-    public readonly maxRetryCount!: pulumi.Output<number | undefined>;
+    declare public readonly maxRetryCount: pulumi.Output<number | undefined>;
     /**
      * The memory limit for the container in MBs.
      */
-    public readonly memory!: pulumi.Output<number | undefined>;
+    declare public readonly memory: pulumi.Output<number | undefined>;
     /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
-    public readonly memorySwap!: pulumi.Output<number | undefined>;
+    declare public readonly memorySwap: pulumi.Output<number | undefined>;
     /**
      * Specification for mounts to be added to containers created as part of the service.
      */
-    public readonly mounts!: pulumi.Output<outputs.ContainerMount[] | undefined>;
-    public readonly mustRun!: pulumi.Output<boolean | undefined>;
+    declare public readonly mounts: pulumi.Output<outputs.ContainerMount[] | undefined>;
+    declare public readonly mustRun: pulumi.Output<boolean | undefined>;
     /**
      * The name of the container.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * The data of the networks the container is connected to.
      */
-    public /*out*/ readonly networkDatas!: pulumi.Output<outputs.ContainerNetworkData[]>;
+    declare public /*out*/ readonly networkDatas: pulumi.Output<outputs.ContainerNetworkData[]>;
     /**
      * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
      */
-    public readonly networkMode!: pulumi.Output<string | undefined>;
+    declare public readonly networkMode: pulumi.Output<string | undefined>;
     /**
      * The networks the container is attached to
      */
-    public readonly networksAdvanced!: pulumi.Output<outputs.ContainerNetworksAdvanced[] | undefined>;
+    declare public readonly networksAdvanced: pulumi.Output<outputs.ContainerNetworksAdvanced[] | undefined>;
     /**
      * he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
-    public readonly pidMode!: pulumi.Output<string | undefined>;
+    declare public readonly pidMode: pulumi.Output<string | undefined>;
     /**
      * Publish a container's port(s) to the host.
      */
-    public readonly ports!: pulumi.Output<outputs.ContainerPort[] | undefined>;
+    declare public readonly ports: pulumi.Output<outputs.ContainerPort[] | undefined>;
     /**
      * If `true`, the container runs in privileged mode.
      */
-    public readonly privileged!: pulumi.Output<boolean | undefined>;
+    declare public readonly privileged: pulumi.Output<boolean | undefined>;
     /**
      * Publish all ports of the container.
      */
-    public readonly publishAllPorts!: pulumi.Output<boolean | undefined>;
+    declare public readonly publishAllPorts: pulumi.Output<boolean | undefined>;
     /**
      * If `true`, the container will be started as readonly. Defaults to `false`.
      */
-    public readonly readOnly!: pulumi.Output<boolean | undefined>;
+    declare public readonly readOnly: pulumi.Output<boolean | undefined>;
     /**
      * If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
      */
-    public readonly removeVolumes!: pulumi.Output<boolean | undefined>;
+    declare public readonly removeVolumes: pulumi.Output<boolean | undefined>;
     /**
      * The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
      */
-    public readonly restart!: pulumi.Output<string | undefined>;
+    declare public readonly restart: pulumi.Output<string | undefined>;
     /**
      * If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
      */
-    public readonly rm!: pulumi.Output<boolean | undefined>;
+    declare public readonly rm: pulumi.Output<boolean | undefined>;
     /**
      * Runtime to use for the container.
      */
-    public readonly runtime!: pulumi.Output<string>;
+    declare public readonly runtime: pulumi.Output<string>;
     /**
      * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      */
-    public readonly securityOpts!: pulumi.Output<string[]>;
+    declare public readonly securityOpts: pulumi.Output<string[]>;
     /**
      * Size of `/dev/shm` in MBs.
      */
-    public readonly shmSize!: pulumi.Output<number>;
+    declare public readonly shmSize: pulumi.Output<number>;
     /**
      * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      */
-    public readonly start!: pulumi.Output<boolean | undefined>;
+    declare public readonly start: pulumi.Output<boolean | undefined>;
     /**
      * If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
      */
-    public readonly stdinOpen!: pulumi.Output<boolean | undefined>;
+    declare public readonly stdinOpen: pulumi.Output<boolean | undefined>;
     /**
      * Signal to stop a container (default `SIGTERM`).
      */
-    public readonly stopSignal!: pulumi.Output<string>;
+    declare public readonly stopSignal: pulumi.Output<string>;
     /**
      * Timeout (in seconds) to stop a container.
      */
-    public readonly stopTimeout!: pulumi.Output<number>;
+    declare public readonly stopTimeout: pulumi.Output<number>;
     /**
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      */
-    public readonly storageOpts!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly storageOpts: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
-    public readonly sysctls!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly sysctls: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
-    public readonly tmpfs!: pulumi.Output<{[key: string]: string} | undefined>;
+    declare public readonly tmpfs: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      * If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
      */
-    public readonly tty!: pulumi.Output<boolean | undefined>;
+    declare public readonly tty: pulumi.Output<boolean | undefined>;
     /**
      * Ulimit options to add.
      */
-    public readonly ulimits!: pulumi.Output<outputs.ContainerUlimit[] | undefined>;
+    declare public readonly ulimits: pulumi.Output<outputs.ContainerUlimit[] | undefined>;
     /**
      * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      */
-    public readonly uploads!: pulumi.Output<outputs.ContainerUpload[] | undefined>;
+    declare public readonly uploads: pulumi.Output<outputs.ContainerUpload[] | undefined>;
     /**
      * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
      */
-    public readonly user!: pulumi.Output<string | undefined>;
+    declare public readonly user: pulumi.Output<string | undefined>;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
-    public readonly usernsMode!: pulumi.Output<string | undefined>;
+    declare public readonly usernsMode: pulumi.Output<string | undefined>;
     /**
      * Spec for mounting volumes in the container.
      */
-    public readonly volumes!: pulumi.Output<outputs.ContainerVolume[] | undefined>;
+    declare public readonly volumes: pulumi.Output<outputs.ContainerVolume[] | undefined>;
     /**
      * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      */
-    public readonly wait!: pulumi.Output<boolean | undefined>;
+    declare public readonly wait: pulumi.Output<boolean | undefined>;
     /**
      * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
      */
-    public readonly waitTimeout!: pulumi.Output<number | undefined>;
+    declare public readonly waitTimeout: pulumi.Output<number | undefined>;
     /**
      * The working directory for commands to run in.
      */
-    public readonly workingDir!: pulumi.Output<string | undefined>;
+    declare public readonly workingDir: pulumi.Output<string | undefined>;
 
     /**
      * Create a Container resource with the given unique name, arguments, and options.
@@ -387,147 +387,147 @@ export class Container extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as ContainerState | undefined;
-            resourceInputs["attach"] = state ? state.attach : undefined;
-            resourceInputs["bridge"] = state ? state.bridge : undefined;
-            resourceInputs["capabilities"] = state ? state.capabilities : undefined;
-            resourceInputs["cgroupParent"] = state ? state.cgroupParent : undefined;
-            resourceInputs["cgroupnsMode"] = state ? state.cgroupnsMode : undefined;
-            resourceInputs["command"] = state ? state.command : undefined;
-            resourceInputs["containerLogs"] = state ? state.containerLogs : undefined;
-            resourceInputs["containerReadRefreshTimeoutMilliseconds"] = state ? state.containerReadRefreshTimeoutMilliseconds : undefined;
-            resourceInputs["cpuPeriod"] = state ? state.cpuPeriod : undefined;
-            resourceInputs["cpuQuota"] = state ? state.cpuQuota : undefined;
-            resourceInputs["cpuSet"] = state ? state.cpuSet : undefined;
-            resourceInputs["cpuShares"] = state ? state.cpuShares : undefined;
-            resourceInputs["cpus"] = state ? state.cpus : undefined;
-            resourceInputs["destroyGraceSeconds"] = state ? state.destroyGraceSeconds : undefined;
-            resourceInputs["devices"] = state ? state.devices : undefined;
-            resourceInputs["dns"] = state ? state.dns : undefined;
-            resourceInputs["dnsOpts"] = state ? state.dnsOpts : undefined;
-            resourceInputs["dnsSearches"] = state ? state.dnsSearches : undefined;
-            resourceInputs["domainname"] = state ? state.domainname : undefined;
-            resourceInputs["entrypoints"] = state ? state.entrypoints : undefined;
-            resourceInputs["envs"] = state ? state.envs : undefined;
-            resourceInputs["exitCode"] = state ? state.exitCode : undefined;
-            resourceInputs["gpus"] = state ? state.gpus : undefined;
-            resourceInputs["groupAdds"] = state ? state.groupAdds : undefined;
-            resourceInputs["healthcheck"] = state ? state.healthcheck : undefined;
-            resourceInputs["hostname"] = state ? state.hostname : undefined;
-            resourceInputs["hosts"] = state ? state.hosts : undefined;
-            resourceInputs["image"] = state ? state.image : undefined;
-            resourceInputs["init"] = state ? state.init : undefined;
-            resourceInputs["ipcMode"] = state ? state.ipcMode : undefined;
-            resourceInputs["labels"] = state ? state.labels : undefined;
-            resourceInputs["logDriver"] = state ? state.logDriver : undefined;
-            resourceInputs["logOpts"] = state ? state.logOpts : undefined;
-            resourceInputs["logs"] = state ? state.logs : undefined;
-            resourceInputs["maxRetryCount"] = state ? state.maxRetryCount : undefined;
-            resourceInputs["memory"] = state ? state.memory : undefined;
-            resourceInputs["memorySwap"] = state ? state.memorySwap : undefined;
-            resourceInputs["mounts"] = state ? state.mounts : undefined;
-            resourceInputs["mustRun"] = state ? state.mustRun : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["networkDatas"] = state ? state.networkDatas : undefined;
-            resourceInputs["networkMode"] = state ? state.networkMode : undefined;
-            resourceInputs["networksAdvanced"] = state ? state.networksAdvanced : undefined;
-            resourceInputs["pidMode"] = state ? state.pidMode : undefined;
-            resourceInputs["ports"] = state ? state.ports : undefined;
-            resourceInputs["privileged"] = state ? state.privileged : undefined;
-            resourceInputs["publishAllPorts"] = state ? state.publishAllPorts : undefined;
-            resourceInputs["readOnly"] = state ? state.readOnly : undefined;
-            resourceInputs["removeVolumes"] = state ? state.removeVolumes : undefined;
-            resourceInputs["restart"] = state ? state.restart : undefined;
-            resourceInputs["rm"] = state ? state.rm : undefined;
-            resourceInputs["runtime"] = state ? state.runtime : undefined;
-            resourceInputs["securityOpts"] = state ? state.securityOpts : undefined;
-            resourceInputs["shmSize"] = state ? state.shmSize : undefined;
-            resourceInputs["start"] = state ? state.start : undefined;
-            resourceInputs["stdinOpen"] = state ? state.stdinOpen : undefined;
-            resourceInputs["stopSignal"] = state ? state.stopSignal : undefined;
-            resourceInputs["stopTimeout"] = state ? state.stopTimeout : undefined;
-            resourceInputs["storageOpts"] = state ? state.storageOpts : undefined;
-            resourceInputs["sysctls"] = state ? state.sysctls : undefined;
-            resourceInputs["tmpfs"] = state ? state.tmpfs : undefined;
-            resourceInputs["tty"] = state ? state.tty : undefined;
-            resourceInputs["ulimits"] = state ? state.ulimits : undefined;
-            resourceInputs["uploads"] = state ? state.uploads : undefined;
-            resourceInputs["user"] = state ? state.user : undefined;
-            resourceInputs["usernsMode"] = state ? state.usernsMode : undefined;
-            resourceInputs["volumes"] = state ? state.volumes : undefined;
-            resourceInputs["wait"] = state ? state.wait : undefined;
-            resourceInputs["waitTimeout"] = state ? state.waitTimeout : undefined;
-            resourceInputs["workingDir"] = state ? state.workingDir : undefined;
+            resourceInputs["attach"] = state?.attach;
+            resourceInputs["bridge"] = state?.bridge;
+            resourceInputs["capabilities"] = state?.capabilities;
+            resourceInputs["cgroupParent"] = state?.cgroupParent;
+            resourceInputs["cgroupnsMode"] = state?.cgroupnsMode;
+            resourceInputs["command"] = state?.command;
+            resourceInputs["containerLogs"] = state?.containerLogs;
+            resourceInputs["containerReadRefreshTimeoutMilliseconds"] = state?.containerReadRefreshTimeoutMilliseconds;
+            resourceInputs["cpuPeriod"] = state?.cpuPeriod;
+            resourceInputs["cpuQuota"] = state?.cpuQuota;
+            resourceInputs["cpuSet"] = state?.cpuSet;
+            resourceInputs["cpuShares"] = state?.cpuShares;
+            resourceInputs["cpus"] = state?.cpus;
+            resourceInputs["destroyGraceSeconds"] = state?.destroyGraceSeconds;
+            resourceInputs["devices"] = state?.devices;
+            resourceInputs["dns"] = state?.dns;
+            resourceInputs["dnsOpts"] = state?.dnsOpts;
+            resourceInputs["dnsSearches"] = state?.dnsSearches;
+            resourceInputs["domainname"] = state?.domainname;
+            resourceInputs["entrypoints"] = state?.entrypoints;
+            resourceInputs["envs"] = state?.envs;
+            resourceInputs["exitCode"] = state?.exitCode;
+            resourceInputs["gpus"] = state?.gpus;
+            resourceInputs["groupAdds"] = state?.groupAdds;
+            resourceInputs["healthcheck"] = state?.healthcheck;
+            resourceInputs["hostname"] = state?.hostname;
+            resourceInputs["hosts"] = state?.hosts;
+            resourceInputs["image"] = state?.image;
+            resourceInputs["init"] = state?.init;
+            resourceInputs["ipcMode"] = state?.ipcMode;
+            resourceInputs["labels"] = state?.labels;
+            resourceInputs["logDriver"] = state?.logDriver;
+            resourceInputs["logOpts"] = state?.logOpts;
+            resourceInputs["logs"] = state?.logs;
+            resourceInputs["maxRetryCount"] = state?.maxRetryCount;
+            resourceInputs["memory"] = state?.memory;
+            resourceInputs["memorySwap"] = state?.memorySwap;
+            resourceInputs["mounts"] = state?.mounts;
+            resourceInputs["mustRun"] = state?.mustRun;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["networkDatas"] = state?.networkDatas;
+            resourceInputs["networkMode"] = state?.networkMode;
+            resourceInputs["networksAdvanced"] = state?.networksAdvanced;
+            resourceInputs["pidMode"] = state?.pidMode;
+            resourceInputs["ports"] = state?.ports;
+            resourceInputs["privileged"] = state?.privileged;
+            resourceInputs["publishAllPorts"] = state?.publishAllPorts;
+            resourceInputs["readOnly"] = state?.readOnly;
+            resourceInputs["removeVolumes"] = state?.removeVolumes;
+            resourceInputs["restart"] = state?.restart;
+            resourceInputs["rm"] = state?.rm;
+            resourceInputs["runtime"] = state?.runtime;
+            resourceInputs["securityOpts"] = state?.securityOpts;
+            resourceInputs["shmSize"] = state?.shmSize;
+            resourceInputs["start"] = state?.start;
+            resourceInputs["stdinOpen"] = state?.stdinOpen;
+            resourceInputs["stopSignal"] = state?.stopSignal;
+            resourceInputs["stopTimeout"] = state?.stopTimeout;
+            resourceInputs["storageOpts"] = state?.storageOpts;
+            resourceInputs["sysctls"] = state?.sysctls;
+            resourceInputs["tmpfs"] = state?.tmpfs;
+            resourceInputs["tty"] = state?.tty;
+            resourceInputs["ulimits"] = state?.ulimits;
+            resourceInputs["uploads"] = state?.uploads;
+            resourceInputs["user"] = state?.user;
+            resourceInputs["usernsMode"] = state?.usernsMode;
+            resourceInputs["volumes"] = state?.volumes;
+            resourceInputs["wait"] = state?.wait;
+            resourceInputs["waitTimeout"] = state?.waitTimeout;
+            resourceInputs["workingDir"] = state?.workingDir;
         } else {
             const args = argsOrState as ContainerArgs | undefined;
-            if ((!args || args.image === undefined) && !opts.urn) {
+            if (args?.image === undefined && !opts.urn) {
                 throw new Error("Missing required property 'image'");
             }
-            resourceInputs["attach"] = args ? args.attach : undefined;
-            resourceInputs["capabilities"] = args ? args.capabilities : undefined;
-            resourceInputs["cgroupParent"] = args ? args.cgroupParent : undefined;
-            resourceInputs["cgroupnsMode"] = args ? args.cgroupnsMode : undefined;
-            resourceInputs["command"] = args ? args.command : undefined;
-            resourceInputs["containerReadRefreshTimeoutMilliseconds"] = args ? args.containerReadRefreshTimeoutMilliseconds : undefined;
-            resourceInputs["cpuPeriod"] = args ? args.cpuPeriod : undefined;
-            resourceInputs["cpuQuota"] = args ? args.cpuQuota : undefined;
-            resourceInputs["cpuSet"] = args ? args.cpuSet : undefined;
-            resourceInputs["cpuShares"] = args ? args.cpuShares : undefined;
-            resourceInputs["cpus"] = args ? args.cpus : undefined;
-            resourceInputs["destroyGraceSeconds"] = args ? args.destroyGraceSeconds : undefined;
-            resourceInputs["devices"] = args ? args.devices : undefined;
-            resourceInputs["dns"] = args ? args.dns : undefined;
-            resourceInputs["dnsOpts"] = args ? args.dnsOpts : undefined;
-            resourceInputs["dnsSearches"] = args ? args.dnsSearches : undefined;
-            resourceInputs["domainname"] = args ? args.domainname : undefined;
-            resourceInputs["entrypoints"] = args ? args.entrypoints : undefined;
-            resourceInputs["envs"] = args ? args.envs : undefined;
-            resourceInputs["gpus"] = args ? args.gpus : undefined;
-            resourceInputs["groupAdds"] = args ? args.groupAdds : undefined;
-            resourceInputs["healthcheck"] = args ? args.healthcheck : undefined;
-            resourceInputs["hostname"] = args ? args.hostname : undefined;
-            resourceInputs["hosts"] = args ? args.hosts : undefined;
-            resourceInputs["image"] = args ? args.image : undefined;
-            resourceInputs["init"] = args ? args.init : undefined;
-            resourceInputs["ipcMode"] = args ? args.ipcMode : undefined;
-            resourceInputs["labels"] = args ? args.labels : undefined;
-            resourceInputs["logDriver"] = args ? args.logDriver : undefined;
-            resourceInputs["logOpts"] = args ? args.logOpts : undefined;
-            resourceInputs["logs"] = args ? args.logs : undefined;
-            resourceInputs["maxRetryCount"] = args ? args.maxRetryCount : undefined;
-            resourceInputs["memory"] = args ? args.memory : undefined;
-            resourceInputs["memorySwap"] = args ? args.memorySwap : undefined;
-            resourceInputs["mounts"] = args ? args.mounts : undefined;
-            resourceInputs["mustRun"] = args ? args.mustRun : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["networkMode"] = args ? args.networkMode : undefined;
-            resourceInputs["networksAdvanced"] = args ? args.networksAdvanced : undefined;
-            resourceInputs["pidMode"] = args ? args.pidMode : undefined;
-            resourceInputs["ports"] = args ? args.ports : undefined;
-            resourceInputs["privileged"] = args ? args.privileged : undefined;
-            resourceInputs["publishAllPorts"] = args ? args.publishAllPorts : undefined;
-            resourceInputs["readOnly"] = args ? args.readOnly : undefined;
-            resourceInputs["removeVolumes"] = args ? args.removeVolumes : undefined;
-            resourceInputs["restart"] = args ? args.restart : undefined;
-            resourceInputs["rm"] = args ? args.rm : undefined;
-            resourceInputs["runtime"] = args ? args.runtime : undefined;
-            resourceInputs["securityOpts"] = args ? args.securityOpts : undefined;
-            resourceInputs["shmSize"] = args ? args.shmSize : undefined;
-            resourceInputs["start"] = args ? args.start : undefined;
-            resourceInputs["stdinOpen"] = args ? args.stdinOpen : undefined;
-            resourceInputs["stopSignal"] = args ? args.stopSignal : undefined;
-            resourceInputs["stopTimeout"] = args ? args.stopTimeout : undefined;
-            resourceInputs["storageOpts"] = args ? args.storageOpts : undefined;
-            resourceInputs["sysctls"] = args ? args.sysctls : undefined;
-            resourceInputs["tmpfs"] = args ? args.tmpfs : undefined;
-            resourceInputs["tty"] = args ? args.tty : undefined;
-            resourceInputs["ulimits"] = args ? args.ulimits : undefined;
-            resourceInputs["uploads"] = args ? args.uploads : undefined;
-            resourceInputs["user"] = args ? args.user : undefined;
-            resourceInputs["usernsMode"] = args ? args.usernsMode : undefined;
-            resourceInputs["volumes"] = args ? args.volumes : undefined;
-            resourceInputs["wait"] = args ? args.wait : undefined;
-            resourceInputs["waitTimeout"] = args ? args.waitTimeout : undefined;
-            resourceInputs["workingDir"] = args ? args.workingDir : undefined;
+            resourceInputs["attach"] = args?.attach;
+            resourceInputs["capabilities"] = args?.capabilities;
+            resourceInputs["cgroupParent"] = args?.cgroupParent;
+            resourceInputs["cgroupnsMode"] = args?.cgroupnsMode;
+            resourceInputs["command"] = args?.command;
+            resourceInputs["containerReadRefreshTimeoutMilliseconds"] = args?.containerReadRefreshTimeoutMilliseconds;
+            resourceInputs["cpuPeriod"] = args?.cpuPeriod;
+            resourceInputs["cpuQuota"] = args?.cpuQuota;
+            resourceInputs["cpuSet"] = args?.cpuSet;
+            resourceInputs["cpuShares"] = args?.cpuShares;
+            resourceInputs["cpus"] = args?.cpus;
+            resourceInputs["destroyGraceSeconds"] = args?.destroyGraceSeconds;
+            resourceInputs["devices"] = args?.devices;
+            resourceInputs["dns"] = args?.dns;
+            resourceInputs["dnsOpts"] = args?.dnsOpts;
+            resourceInputs["dnsSearches"] = args?.dnsSearches;
+            resourceInputs["domainname"] = args?.domainname;
+            resourceInputs["entrypoints"] = args?.entrypoints;
+            resourceInputs["envs"] = args?.envs;
+            resourceInputs["gpus"] = args?.gpus;
+            resourceInputs["groupAdds"] = args?.groupAdds;
+            resourceInputs["healthcheck"] = args?.healthcheck;
+            resourceInputs["hostname"] = args?.hostname;
+            resourceInputs["hosts"] = args?.hosts;
+            resourceInputs["image"] = args?.image;
+            resourceInputs["init"] = args?.init;
+            resourceInputs["ipcMode"] = args?.ipcMode;
+            resourceInputs["labels"] = args?.labels;
+            resourceInputs["logDriver"] = args?.logDriver;
+            resourceInputs["logOpts"] = args?.logOpts;
+            resourceInputs["logs"] = args?.logs;
+            resourceInputs["maxRetryCount"] = args?.maxRetryCount;
+            resourceInputs["memory"] = args?.memory;
+            resourceInputs["memorySwap"] = args?.memorySwap;
+            resourceInputs["mounts"] = args?.mounts;
+            resourceInputs["mustRun"] = args?.mustRun;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["networkMode"] = args?.networkMode;
+            resourceInputs["networksAdvanced"] = args?.networksAdvanced;
+            resourceInputs["pidMode"] = args?.pidMode;
+            resourceInputs["ports"] = args?.ports;
+            resourceInputs["privileged"] = args?.privileged;
+            resourceInputs["publishAllPorts"] = args?.publishAllPorts;
+            resourceInputs["readOnly"] = args?.readOnly;
+            resourceInputs["removeVolumes"] = args?.removeVolumes;
+            resourceInputs["restart"] = args?.restart;
+            resourceInputs["rm"] = args?.rm;
+            resourceInputs["runtime"] = args?.runtime;
+            resourceInputs["securityOpts"] = args?.securityOpts;
+            resourceInputs["shmSize"] = args?.shmSize;
+            resourceInputs["start"] = args?.start;
+            resourceInputs["stdinOpen"] = args?.stdinOpen;
+            resourceInputs["stopSignal"] = args?.stopSignal;
+            resourceInputs["stopTimeout"] = args?.stopTimeout;
+            resourceInputs["storageOpts"] = args?.storageOpts;
+            resourceInputs["sysctls"] = args?.sysctls;
+            resourceInputs["tmpfs"] = args?.tmpfs;
+            resourceInputs["tty"] = args?.tty;
+            resourceInputs["ulimits"] = args?.ulimits;
+            resourceInputs["uploads"] = args?.uploads;
+            resourceInputs["user"] = args?.user;
+            resourceInputs["usernsMode"] = args?.usernsMode;
+            resourceInputs["volumes"] = args?.volumes;
+            resourceInputs["wait"] = args?.wait;
+            resourceInputs["waitTimeout"] = args?.waitTimeout;
+            resourceInputs["workingDir"] = args?.workingDir;
             resourceInputs["bridge"] = undefined /*out*/;
             resourceInputs["containerLogs"] = undefined /*out*/;
             resourceInputs["exitCode"] = undefined /*out*/;

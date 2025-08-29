@@ -50,43 +50,43 @@ export class Plugin extends pulumi.CustomResource {
     /**
      * Docker Plugin alias
      */
-    public readonly alias!: pulumi.Output<string>;
+    declare public readonly alias: pulumi.Output<string>;
     /**
      * HTTP client timeout to enable the plugin
      */
-    public readonly enableTimeout!: pulumi.Output<number | undefined>;
+    declare public readonly enableTimeout: pulumi.Output<number | undefined>;
     /**
      * If `true` the plugin is enabled. Defaults to `true`
      */
-    public readonly enabled!: pulumi.Output<boolean | undefined>;
+    declare public readonly enabled: pulumi.Output<boolean | undefined>;
     /**
      * The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      */
-    public readonly envs!: pulumi.Output<string[]>;
+    declare public readonly envs: pulumi.Output<string[]>;
     /**
      * If true, then the plugin is destroyed forcibly
      */
-    public readonly forceDestroy!: pulumi.Output<boolean | undefined>;
+    declare public readonly forceDestroy: pulumi.Output<boolean | undefined>;
     /**
      * If true, then the plugin is disabled forcibly
      */
-    public readonly forceDisable!: pulumi.Output<boolean | undefined>;
+    declare public readonly forceDisable: pulumi.Output<boolean | undefined>;
     /**
      * If true, grant all permissions necessary to run the plugin
      */
-    public readonly grantAllPermissions!: pulumi.Output<boolean | undefined>;
+    declare public readonly grantAllPermissions: pulumi.Output<boolean | undefined>;
     /**
      * Grant specific permissions only
      */
-    public readonly grantPermissions!: pulumi.Output<outputs.PluginGrantPermission[] | undefined>;
+    declare public readonly grantPermissions: pulumi.Output<outputs.PluginGrantPermission[] | undefined>;
     /**
      * Docker Plugin name
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * Docker Plugin Reference
      */
-    public /*out*/ readonly pluginReference!: pulumi.Output<string>;
+    declare public /*out*/ readonly pluginReference: pulumi.Output<string>;
 
     /**
      * Create a Plugin resource with the given unique name, arguments, and options.
@@ -101,27 +101,27 @@ export class Plugin extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as PluginState | undefined;
-            resourceInputs["alias"] = state ? state.alias : undefined;
-            resourceInputs["enableTimeout"] = state ? state.enableTimeout : undefined;
-            resourceInputs["enabled"] = state ? state.enabled : undefined;
-            resourceInputs["envs"] = state ? state.envs : undefined;
-            resourceInputs["forceDestroy"] = state ? state.forceDestroy : undefined;
-            resourceInputs["forceDisable"] = state ? state.forceDisable : undefined;
-            resourceInputs["grantAllPermissions"] = state ? state.grantAllPermissions : undefined;
-            resourceInputs["grantPermissions"] = state ? state.grantPermissions : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["pluginReference"] = state ? state.pluginReference : undefined;
+            resourceInputs["alias"] = state?.alias;
+            resourceInputs["enableTimeout"] = state?.enableTimeout;
+            resourceInputs["enabled"] = state?.enabled;
+            resourceInputs["envs"] = state?.envs;
+            resourceInputs["forceDestroy"] = state?.forceDestroy;
+            resourceInputs["forceDisable"] = state?.forceDisable;
+            resourceInputs["grantAllPermissions"] = state?.grantAllPermissions;
+            resourceInputs["grantPermissions"] = state?.grantPermissions;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["pluginReference"] = state?.pluginReference;
         } else {
             const args = argsOrState as PluginArgs | undefined;
-            resourceInputs["alias"] = args ? args.alias : undefined;
-            resourceInputs["enableTimeout"] = args ? args.enableTimeout : undefined;
-            resourceInputs["enabled"] = args ? args.enabled : undefined;
-            resourceInputs["envs"] = args ? args.envs : undefined;
-            resourceInputs["forceDestroy"] = args ? args.forceDestroy : undefined;
-            resourceInputs["forceDisable"] = args ? args.forceDisable : undefined;
-            resourceInputs["grantAllPermissions"] = args ? args.grantAllPermissions : undefined;
-            resourceInputs["grantPermissions"] = args ? args.grantPermissions : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["alias"] = args?.alias;
+            resourceInputs["enableTimeout"] = args?.enableTimeout;
+            resourceInputs["enabled"] = args?.enabled;
+            resourceInputs["envs"] = args?.envs;
+            resourceInputs["forceDestroy"] = args?.forceDestroy;
+            resourceInputs["forceDisable"] = args?.forceDisable;
+            resourceInputs["grantAllPermissions"] = args?.grantAllPermissions;
+            resourceInputs["grantPermissions"] = args?.grantPermissions;
+            resourceInputs["name"] = args?.name;
             resourceInputs["pluginReference"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
