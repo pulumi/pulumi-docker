@@ -22,16 +22,34 @@ on:
     # 3 AM UTC ~ 8 PM PDT / 7 PM PST daily. Time chosen to run during off hours.
     - cron: 0 3 * * *
 
+env:
+  ARM_CLIENT_ID: 30e520fa-12b4-4e21-b473-9426c5ac2e1e
+  ARM_SUBSCRIPTION_ID: 0282681f-7a9e-424b-80b2-96babd57a8a1
+  ARM_TENANT_ID: 706143bc-e1d4-4593-aee2-c9dc60ab9be7
+  AWS_REGION: us-west-2
+  AZURE_LOCATION: westus
+  GOOGLE_CI_SERVICE_ACCOUNT_EMAIL: pulumi-ci@pulumi-ci-gcp-provider.iam.gserviceaccount.com
+  GOOGLE_CI_WORKLOAD_IDENTITY_POOL: pulumi-ci
+  GOOGLE_CI_WORKLOAD_IDENTITY_PROVIDER: pulumi-ci
+  GOOGLE_PROJECT: pulumi-ci-gcp-provider
+  GOOGLE_PROJECT_NUMBER: "895284651812"
+  GOOGLE_REGION: us-central1
+  GOOGLE_ZONE: us-central1-a
+  PULUMI_API: https://api.pulumi-staging.io
+  PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
+  PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
+  TF_APPEND_USER_AGENT: pulumi
+
 permissions:
   contents: write
   issues: write
   pull-requests: write
+  id-token: write # For ESC secrets.
 
 jobs:
   upgrade_provider:
     name: upgrade-provider
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout Repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -40,6 +58,7 @@ jobs:
           persist-credentials: true      
       - env:
           ESC_ACTION_ENVIRONMENT: github-secrets/${{ github.repository_owner }}-${{ github.event.repository.name }}
+          ESC_ACTION_EXPORT_ENVIRONMENT_VARIABLES: "false"
           ESC_ACTION_OIDC_AUTH: "true"
           ESC_ACTION_OIDC_ORGANIZATION: pulumi
           ESC_ACTION_OIDC_REQUESTED_TOKEN_TYPE: urn:pulumi:token-type:access_token:organization
