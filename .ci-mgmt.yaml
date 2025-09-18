@@ -23,7 +23,6 @@ env:
     GOOGLE_ZONE: us-central1-a
     DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
     PRIVATE_SSH_KEY_FOR_DIGITALOCEAN: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
-    MISE_JOBS: 1
     MISE_DEBUG: 1
     RUST_BACKTRACE: full
 makeTemplate: bridged
