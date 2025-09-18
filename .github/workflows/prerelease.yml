@@ -14,6 +14,7 @@ env:
   GOOGLE_PROJECT_NUMBER: "895284651812"
   GOOGLE_REGION: us-central1
   GOOGLE_ZONE: us-central1-a
+  MISE_DEBUG: "1"
   MISE_JOBS: "4"
   PULUMI_API: https://api.pulumi-staging.io
   PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
