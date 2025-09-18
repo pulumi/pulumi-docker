@@ -25,6 +25,7 @@ env:
     PRIVATE_SSH_KEY_FOR_DIGITALOCEAN: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
     MISE_JOBS: 4
     MISE_DEBUG: 1
+    RUST_BACKTRACE: full
 makeTemplate: bridged
 docsCmd: "cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./"
 hybrid: true
