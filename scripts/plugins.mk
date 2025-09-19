@@ -1,7 +1,7 @@
 # Install Pulumi and plugins required at build time.
 install_plugins: .make/install_plugins
 .make/install_plugins: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
-.make/install_plugins: .pulumi/bin/pulumi
+.make/install_plugins:
 	pulumi plugin install converter terraform 1.0.16
 	pulumi plugin install resource aws 6.8.0
 	@touch $@
@@ -13,15 +13,15 @@ install_plugins: .make/install_plugins
 # This logic compares the version of .pulumi/bin/pulumi already installed. If it matches
 # the desired version, we just print. Otherwise we (re)install pulumi at the desired
 # version.
-.pulumi/bin/pulumi: .pulumi/version
-	@if [ -x .pulumi/bin/pulumi ] && [ "v$$(cat .pulumi/version)" = "$$(.pulumi/bin/pulumi version)" ]; then \
-		echo "pulumi/bin/pulumi version: v$$(cat .pulumi/version)"; \
-		touch $@; \
-	else \
-		curl -fsSL https://get.pulumi.com | \
-			HOME=$(WORKING_DIR) sh -s -- --version "$$(cat .pulumi/version)"; \
-	fi
-
-# Compute the version of Pulumi to use by inspecting the Go dependencies of the provider.
-.pulumi/version: provider/go.mod
-	(cd provider && go list -f "{{slice .Version 1}}" -m github.com/pulumi/pulumi/pkg/v3) | tee $@
+# .pulumi/bin/pulumi: .pulumi/version
+# 	@if [ -x .pulumi/bin/pulumi ] && [ "v$$(cat .pulumi/version)" = "$$(.pulumi/bin/pulumi version)" ]; then \
+# 		echo "pulumi/bin/pulumi version: v$$(cat .pulumi/version)"; \
+# 		touch $@; \
+# 	else \
+# 		curl -fsSL https://get.pulumi.com | \
+# 			HOME=$(WORKING_DIR) sh -s -- --version "$$(cat .pulumi/version)"; \
+# 	fi
+#
+# # Compute the version of Pulumi to use by inspecting the Go dependencies of the provider.
+# .pulumi/version: provider/go.mod
+# 	(cd provider && go list -f "{{slice .Version 1}}" -m github.com/pulumi/pulumi/pkg/v3) | tee $@
