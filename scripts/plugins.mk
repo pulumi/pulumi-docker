@@ -3,8 +3,8 @@ install_plugins: .make/install_plugins
 .make/install_plugins: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
 # .make/install_plugins: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/install_plugins:# .pulumi/bin/pulumi
-	.pulumi/bin/pulumi plugin install converter terraform 1.0.16
-	.pulumi/bin/pulumi plugin install resource aws 6.8.0
+	pulumi plugin install converter terraform 1.0.16
+	pulumi plugin install resource aws 6.8.0
 	@touch $@
 .PHONY: install_plugins
 
