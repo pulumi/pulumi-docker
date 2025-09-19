@@ -4,6 +4,7 @@ install_plugins: .make/install_plugins
 .make/install_plugins: .pulumi/bin/pulumi
 	pulumi plugin install converter terraform 1.0.16
 	pulumi plugin install resource aws 6.8.0
+	ln -s ./.pulumi ~/.pulumi
 	@touch $@
 .PHONY: install_plugins
 
