@@ -98,6 +98,7 @@ GEN_ENVS := PULUMI_HOME=$(GEN_PULUMI_HOME) PULUMI_CONVERT_EXAMPLES_CACHE_DIR=$(G
 generate_dotnet: .make/generate_dotnet
 build_dotnet: .make/build_dotnet
 .make/generate_dotnet: .make/install_plugins bin/$(CODEGEN)
+	$(GEN_ENVS) cd provider && go run ./cmd/get-plugins/main.go
 	$(GEN_ENVS) pulumi plugin ls
 	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) dotnet --out sdk/dotnet/
@@ -114,6 +115,7 @@ build_dotnet: .make/build_dotnet
 generate_go: .make/generate_go
 build_go: .make/build_go
 .make/generate_go: .make/install_plugins bin/$(CODEGEN)
+	$(GEN_ENVS) cd provider && go run ./cmd/get-plugins/main.go
 	$(GEN_ENVS) pulumi plugin ls
 	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) go --out sdk/go/
@@ -127,6 +129,7 @@ generate_java: .make/generate_java
 build_java: .make/build_java
 .make/generate_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
 .make/generate_java: .make/install_plugins bin/$(CODEGEN)
+	$(GEN_ENVS) cd provider && go run ./cmd/get-plugins/main.go
 	$(GEN_ENVS) pulumi plugin ls
 	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) java --out sdk/java/
@@ -143,6 +146,7 @@ build_java: .make/build_java
 generate_nodejs: .make/generate_nodejs
 build_nodejs: .make/build_nodejs
 .make/generate_nodejs: .make/install_plugins bin/$(CODEGEN)
+	$(GEN_ENVS) cd provider && go run ./cmd/get-plugins/main.go
 	$(GEN_ENVS) pulumi plugin ls
 	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) nodejs --out sdk/nodejs/
@@ -159,6 +163,7 @@ build_nodejs: .make/build_nodejs
 generate_python: .make/generate_python
 build_python: .make/build_python
 .make/generate_python: .make/install_plugins bin/$(CODEGEN)
+	$(GEN_ENVS) cd provider && go run ./cmd/get-plugins/main.go
 	$(GEN_ENVS) pulumi plugin ls
 	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) python --out sdk/python/
