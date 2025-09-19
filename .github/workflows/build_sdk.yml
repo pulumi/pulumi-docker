@@ -25,6 +25,7 @@ env:
   PULUMI_API: https://api.pulumi-staging.io
   PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
   PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
+  RUST_BACKTRACE: full
   TF_APPEND_USER_AGENT: pulumi
   PROVIDER_VERSION: ${{ inputs.version }}
 
@@ -66,10 +67,22 @@ jobs:
           path: |
             .pulumi/examples-cache
           key: ${{ runner.os }}-${{ hashFiles('provider/go.sum') }}
-      - name: Setup tools
-        uses: ./.github/actions/setup-tools
+      - name: Setup mise
+        uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
         with:
-          tools: pulumictl, pulumicli, ${{ matrix.language }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_key: "mise-{{platform}}-{{file_hash}}"
+          cache_save: false
+      - name: Setup Go Cache
+        if: matrix.language == 'go' || contains(matrix.language, 'go')
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        with:
+          cache-dependency-path: |
+            provider/*.sum
+            upstream/*.sum
+            sdk/go/*.sum
+            sdk/*.sum
+            *.sum
       - name: Prepare local workspace
         run: make prepare_local_workspace
         env:
