@@ -37,7 +37,7 @@ LDFLAGS=$(LDFLAGS_PROJ_VERSION) $(LDFLAGS_UPSTREAM_VERSION) $(LDFLAGS_EXTRAS) $(
 # At the end of each internal target we run `@touch $@` to update the file which is the name of the target.
 
 # Ensure all directories exist before evaluating targets to avoid issues with `touch` creating directories.
-_ := $(shell mkdir -p .make bin .pulumi/bin)
+_ := $(shell mkdir -p .make bin)
 
 # Build the provider and all SDKs and install ready for testing
 build: install_plugins provider build_sdks install_sdks build_registry_docs
@@ -97,7 +97,7 @@ GEN_ENVS := PULUMI_HOME=$(GEN_PULUMI_HOME) PULUMI_CONVERT_EXAMPLES_CACHE_DIR=$(G
 
 generate_dotnet: .make/generate_dotnet
 build_dotnet: .make/build_dotnet
-.make/generate_dotnet: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
+.make/generate_dotnet:#export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/generate_dotnet: .make/install_plugins bin/$(CODEGEN)
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) dotnet --out sdk/dotnet/
 	cd sdk/dotnet/ && \
@@ -111,7 +111,7 @@ build_dotnet: .make/build_dotnet
 
 generate_go: .make/generate_go
 build_go: .make/build_go
-.make/generate_go: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
+.make/generate_go:#export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/generate_go: .make/install_plugins bin/$(CODEGEN)
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) go --out sdk/go/
 	@touch $@
@@ -122,7 +122,7 @@ build_go: .make/build_go
 
 generate_java: .make/generate_java
 build_java: .make/build_java
-.make/generate_java: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
+.make/generate_java:#export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/generate_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
 .make/generate_java: .make/install_plugins bin/$(CODEGEN)
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) java --out sdk/java/
@@ -138,7 +138,7 @@ build_java: .make/build_java
 
 generate_nodejs: .make/generate_nodejs
 build_nodejs: .make/build_nodejs
-.make/generate_nodejs: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
+.make/generate_nodejs:#export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/generate_nodejs: .make/install_plugins bin/$(CODEGEN)
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) nodejs --out sdk/nodejs/
 	printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/nodejs/go.mod
@@ -153,7 +153,7 @@ build_nodejs: .make/build_nodejs
 
 generate_python: .make/generate_python
 build_python: .make/build_python
-.make/generate_python: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
+.make/generate_python:#export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/generate_python: .make/install_plugins bin/$(CODEGEN)
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) python --out sdk/python/
 	printf "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/python/go.mod
