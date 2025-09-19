@@ -256,7 +256,7 @@ tfgen_no_deps: .make/schema
 .make/schema: export PULUMI_DISABLE_AUTOMATIC_PLUGIN_ACQUISITION := $(PULUMI_CONVERT)
 .make/schema: export PULUMI_MISSING_DOCS_ERROR := $(PULUMI_MISSING_DOCS_ERROR)
 .make/schema: bin/$(CODEGEN) .make/install_plugins .make/upstream
-	$(GEN_ENVS) (cd provider && go run ./cmd/get-plugins/main.go)
+	$(GEN_ENVS) cd provider && go run ./cmd/get-plugins/main.go
 	pulumi version
 	which pulumi
 	$(WORKING_DIR)/bin/$(CODEGEN) schema --out provider/cmd/$(PROVIDER)
