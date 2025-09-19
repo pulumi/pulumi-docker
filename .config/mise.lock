@@ -23,13 +23,13 @@ version = "20.19.4"
 backend = "core:node"
 
 [[tools.pulumi]]
-version = "3.190.0"
+version = "3.195.0"
 backend = "aqua:pulumi/pulumi"
 
 [tools.pulumi.platforms.macos-arm64]
-checksum = "sha512:b318c51ce2ed982acff5b3bf55d52b64c7fb477436832ec66e85f5ffda08084273f7e484fb7055b9f21c8840e4c2451eaafe90ef0a11d3498f8438d3e66eb651"
-size = 84664371
-url = "https://github.com/pulumi/pulumi/releases/download/v3.190.0/pulumi-v3.190.0-darwin-arm64.tar.gz"
+checksum = "sha512:b9a3a926d70a0f83b58ee5bba1ba660316fd490aef52cfb562cda432509d5b0a6a39c14052c9275dc9899e9c981238e6f30d2421a0e7a122016cde8f4eeb3881"
+size = 85373762
+url = "https://github.com/pulumi/pulumi/releases/download/v3.195.0/pulumi-v3.195.0-darwin-arm64.tar.gz"
 
 [[tools.python]]
 version = "3.11.8"
