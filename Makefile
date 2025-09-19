@@ -99,6 +99,7 @@ generate_dotnet: .make/generate_dotnet
 build_dotnet: .make/build_dotnet
 .make/generate_dotnet:#export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/generate_dotnet: .make/install_plugins bin/$(CODEGEN)
+	pulumi plugin ls
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) dotnet --out sdk/dotnet/
 	cd sdk/dotnet/ && \
 		printf "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
