@@ -37,7 +37,7 @@ LDFLAGS=$(LDFLAGS_PROJ_VERSION) $(LDFLAGS_UPSTREAM_VERSION) $(LDFLAGS_EXTRAS) $(
 # At the end of each internal target we run `@touch $@` to update the file which is the name of the target.
 
 # Ensure all directories exist before evaluating targets to avoid issues with `touch` creating directories.
-_ := $(shell mkdir -p .make bin)
+_ := $(shell mkdir -p .make bin .pulumi/bin)
 
 # Build the provider and all SDKs and install ready for testing
 build: install_plugins provider build_sdks install_sdks build_registry_docs
