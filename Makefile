@@ -98,11 +98,10 @@ GEN_ENVS := PULUMI_HOME=$(GEN_PULUMI_HOME) PULUMI_CONVERT_EXAMPLES_CACHE_DIR=$(G
 generate_dotnet: .make/generate_dotnet
 build_dotnet: .make/build_dotnet
 .make/generate_dotnet: .make/install_plugins bin/$(CODEGEN)
-	which pulumi
-	pulumi plugin ls
-	echo $$PULUMI_HOME
-	ls -la ./.pulumi/plugins
+	$(GEN_ENVS) pulumi plugin ls
+	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) dotnet --out sdk/dotnet/
+	ls -la ./.pulumi/plugins
 	cd sdk/dotnet/ && \
 		printf "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		echo "$(PROVIDER_VERSION)" >version.txt
@@ -115,10 +114,8 @@ build_dotnet: .make/build_dotnet
 generate_go: .make/generate_go
 build_go: .make/build_go
 .make/generate_go: .make/install_plugins bin/$(CODEGEN)
-	which pulumi
-	echo $$PULUMI_HOME
-	ls -la ./.pulumi/plugins
-	pulumi plugin ls
+	$(GEN_ENVS) pulumi plugin ls
+	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) go --out sdk/go/
 	@touch $@
 .make/build_go: .make/generate_go
@@ -130,10 +127,8 @@ generate_java: .make/generate_java
 build_java: .make/build_java
 .make/generate_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
 .make/generate_java: .make/install_plugins bin/$(CODEGEN)
-	which pulumi
-	pulumi plugin ls
-	echo $$PULUMI_HOME
-	ls -la ./.pulumi/plugins
+	$(GEN_ENVS) pulumi plugin ls
+	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) java --out sdk/java/
 	printf "module fake_java_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/java/go.mod
 	@touch $@
@@ -148,10 +143,8 @@ build_java: .make/build_java
 generate_nodejs: .make/generate_nodejs
 build_nodejs: .make/build_nodejs
 .make/generate_nodejs: .make/install_plugins bin/$(CODEGEN)
-	which pulumi
-	pulumi plugin ls
-	echo $$PULUMI_HOME
-	ls -la ./.pulumi/plugins
+	$(GEN_ENVS) pulumi plugin ls
+	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) nodejs --out sdk/nodejs/
 	printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/nodejs/go.mod
 	@touch $@
@@ -166,10 +159,8 @@ build_nodejs: .make/build_nodejs
 generate_python: .make/generate_python
 build_python: .make/build_python
 .make/generate_python: .make/install_plugins bin/$(CODEGEN)
-	which pulumi
-	pulumi plugin ls
-	echo $$PULUMI_HOME
-	ls -la ./.pulumi/plugins
+	$(GEN_ENVS) pulumi plugin ls
+	$(GEN_ENVS) echo $$PULUMI_HOME
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) python --out sdk/python/
 	printf "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/python/go.mod
 	cp README.md sdk/python/
@@ -260,7 +251,6 @@ schema: .make/schema  .make/docs
 # This does actually have dependencies, but we're keeping it around for backwards compatibility for now
 tfgen_no_deps: .make/schema
 .make/schema: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
-# .make/schema: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
 .make/schema: export PULUMI_CONVERT := $(PULUMI_CONVERT)
 .make/schema: export PULUMI_CONVERT_EXAMPLES_CACHE_DIR := $(WORKING_DIR)/.pulumi/examples-cache
 .make/schema: export PULUMI_DISABLE_AUTOMATIC_PLUGIN_ACQUISITION := $(PULUMI_CONVERT)
