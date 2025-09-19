@@ -4,7 +4,6 @@
 [env]
 _.source = "{{config_root}}/scripts/pulumi-version.sh"
 
-
 [tools]
 
 # Runtimes
@@ -16,12 +15,10 @@ dotnet = '8.0'
 java = 'corretto-11'
 
 # Executable tools
-# pulumi = "{{env.PULUMI_VERSION}}"
-# pulumi = "{{ exec(command='echo $PULUMI_VERSION') }}"
-# pulumi = "{{ get_env(name='PULUMI_VERSION', default='latest') }}"
 pulumi = "{{ get_env(name='PULUMI_VERSION', default='latest') }}"
 "go:github.com/pulumi/pulumictl/cmd/pulumictl" = 'latest'
 gradle = '7.6'
 
 [settings]
 experimental = true # Required for Go binaries (e.g. pulumictl).
+lockfile = true
