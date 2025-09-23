@@ -86,7 +86,10 @@ jobs:
         id: esc-secrets
         name: Fetch secrets from ESC
         uses: pulumi/esc-action@9eb774255b1a4afb7855678ae8d4a77359da0d9b
-      - name: Setup tools
-        uses: ./.github/actions/setup-tools
+      - name: Setup mise
+        uses: jdx/mise-action@v3
         with:
-          tools: pulumicli, nodejs, python, dotnet, go, java
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_key: "mise-{{platform}}-{{file_hash}}"
+          # only saving the cache in the prerequisites job
+          cache_save: false
