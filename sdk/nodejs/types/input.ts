@@ -694,9 +694,13 @@ export interface RemoteImageBuild {
      */
     builder?: pulumi.Input<string>;
     /**
-     * Images to consider as cache sources
+     * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      */
     cacheFroms?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     */
+    cacheTos?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Optional parent cgroup for the container
      */

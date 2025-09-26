@@ -527,6 +527,21 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn&#39;t guarantee that the container doesn&#39;t exceed the limit.
+     * 
+     */
+    @Import(name="memoryReservation")
+    private @Nullable Output<Integer> memoryReservation;
+
+    /**
+     * @return The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn&#39;t guarantee that the container doesn&#39;t exceed the limit.
+     * 
+     */
+    public Optional<Output<Integer>> memoryReservation() {
+        return Optional.ofNullable(this.memoryReservation);
+    }
+
+    /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
      * 
      */
@@ -579,14 +594,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+     * Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      * 
      */
     @Import(name="networkMode")
     private @Nullable Output<String> networkMode;
 
     /**
-     * @return Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+     * @return Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      * 
      */
     public Optional<Output<String>> networkMode() {
@@ -1049,6 +1064,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.logs = $.logs;
         this.maxRetryCount = $.maxRetryCount;
         this.memory = $.memory;
+        this.memoryReservation = $.memoryReservation;
         this.memorySwap = $.memorySwap;
         this.mounts = $.mounts;
         this.mustRun = $.mustRun;
@@ -1896,6 +1912,27 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
+         * @param memoryReservation The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn&#39;t guarantee that the container doesn&#39;t exceed the limit.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder memoryReservation(@Nullable Output<Integer> memoryReservation) {
+            $.memoryReservation = memoryReservation;
+            return this;
+        }
+
+        /**
+         * @param memoryReservation The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn&#39;t guarantee that the container doesn&#39;t exceed the limit.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder memoryReservation(Integer memoryReservation) {
+            return memoryReservation(Output.of(memoryReservation));
+        }
+
+        /**
          * @param memorySwap The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
          * 
          * @return builder
@@ -1978,7 +2015,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networkMode Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+         * @param networkMode Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
          * 
          * @return builder
          * 
@@ -1989,7 +2026,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networkMode Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+         * @param networkMode Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
          * 
          * @return builder
          * 

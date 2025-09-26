@@ -4465,8 +4465,10 @@ type RemoteImageBuild struct {
 	BuildLogFile *string `pulumi:"buildLogFile"`
 	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
 	Builder *string `pulumi:"builder"`
-	// Images to consider as cache sources
+	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 	CacheFroms []string `pulumi:"cacheFroms"`
+	// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+	CacheTos []string `pulumi:"cacheTos"`
 	// Optional parent cgroup for the container
 	CgroupParent *string `pulumi:"cgroupParent"`
 	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
@@ -4553,8 +4555,10 @@ type RemoteImageBuildArgs struct {
 	BuildLogFile pulumi.StringPtrInput `pulumi:"buildLogFile"`
 	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
 	Builder pulumi.StringPtrInput `pulumi:"builder"`
-	// Images to consider as cache sources
+	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
+	// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+	CacheTos pulumi.StringArrayInput `pulumi:"cacheTos"`
 	// Optional parent cgroup for the container
 	CgroupParent pulumi.StringPtrInput `pulumi:"cgroupParent"`
 	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
@@ -4721,9 +4725,14 @@ func (o RemoteImageBuildOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Builder }).(pulumi.StringPtrOutput)
 }
 
-// Images to consider as cache sources
+// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 func (o RemoteImageBuildOutput) CacheFroms() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v RemoteImageBuild) []string { return v.CacheFroms }).(pulumi.StringArrayOutput)
+}
+
+// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+func (o RemoteImageBuildOutput) CacheTos() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RemoteImageBuild) []string { return v.CacheTos }).(pulumi.StringArrayOutput)
 }
 
 // Optional parent cgroup for the container
@@ -4955,13 +4964,23 @@ func (o RemoteImageBuildPtrOutput) Builder() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Images to consider as cache sources
+// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 func (o RemoteImageBuildPtrOutput) CacheFroms() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) []string {
 		if v == nil {
 			return nil
 		}
 		return v.CacheFroms
+	}).(pulumi.StringArrayOutput)
+}
+
+// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+func (o RemoteImageBuildPtrOutput) CacheTos() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RemoteImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.CacheTos
 	}).(pulumi.StringArrayOutput)
 }
 

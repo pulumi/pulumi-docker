@@ -623,9 +623,13 @@ export interface RemoteImageBuild {
      */
     builder?: string;
     /**
-     * Images to consider as cache sources
+     * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      */
     cacheFroms?: string[];
+    /**
+     * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     */
+    cacheTos?: string[];
     /**
      * Optional parent cgroup for the container
      */

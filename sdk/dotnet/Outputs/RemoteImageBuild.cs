@@ -34,9 +34,13 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Builder;
         /// <summary>
-        /// Images to consider as cache sources
+        /// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
         /// </summary>
         public readonly ImmutableArray<string> CacheFroms;
+        /// <summary>
+        /// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        /// </summary>
+        public readonly ImmutableArray<string> CacheTos;
         /// <summary>
         /// Optional parent cgroup for the container
         /// </summary>
@@ -176,6 +180,8 @@ namespace Pulumi.Docker.Outputs
 
             ImmutableArray<string> cacheFroms,
 
+            ImmutableArray<string> cacheTos,
+
             string? cgroupParent,
 
             string context,
@@ -244,6 +250,7 @@ namespace Pulumi.Docker.Outputs
             BuildLogFile = buildLogFile;
             Builder = builder;
             CacheFroms = cacheFroms;
+            CacheTos = cacheTos;
             CgroupParent = cgroupParent;
             Context = context;
             CpuPeriod = cpuPeriod;
