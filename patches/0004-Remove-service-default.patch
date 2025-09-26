@@ -5,7 +5,7 @@ Subject: [PATCH] Remove service default
 
 
 diff --git a/docs/resources/service.md b/docs/resources/service.md
-index 24aa8fa..ef4f805 100644
+index 7005156..aa9dbe8 100644
 --- a/docs/resources/service.md
 +++ b/docs/resources/service.md
 @@ -700,7 +700,7 @@ Required:
