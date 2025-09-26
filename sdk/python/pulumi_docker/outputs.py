@@ -1965,6 +1965,8 @@ class RemoteImageBuild(dict):
             suggest = "build_log_file"
         elif key == "cacheFroms":
             suggest = "cache_froms"
+        elif key == "cacheTos":
+            suggest = "cache_tos"
         elif key == "cgroupParent":
             suggest = "cgroup_parent"
         elif key == "cpuPeriod":
@@ -2019,6 +2021,7 @@ class RemoteImageBuild(dict):
                  build_log_file: Optional[_builtins.str] = None,
                  builder: Optional[_builtins.str] = None,
                  cache_froms: Optional[Sequence[_builtins.str]] = None,
+                 cache_tos: Optional[Sequence[_builtins.str]] = None,
                  cgroup_parent: Optional[_builtins.str] = None,
                  cpu_period: Optional[_builtins.int] = None,
                  cpu_quota: Optional[_builtins.int] = None,
@@ -2056,7 +2059,8 @@ class RemoteImageBuild(dict):
         :param _builtins.str build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param _builtins.str build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
         :param _builtins.str builder: Set the name of the buildx builder to use. If not set, the legacy builder is used.
-        :param Sequence[_builtins.str] cache_froms: Images to consider as cache sources
+        :param Sequence[_builtins.str] cache_froms: External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+        :param Sequence[_builtins.str] cache_tos: Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
         :param _builtins.str cgroup_parent: Optional parent cgroup for the container
         :param _builtins.int cpu_period: The length of a CPU period in microseconds
         :param _builtins.int cpu_quota: Microseconds of CPU time that the container can get in a CPU period
@@ -2101,6 +2105,8 @@ class RemoteImageBuild(dict):
             pulumi.set(__self__, "builder", builder)
         if cache_froms is not None:
             pulumi.set(__self__, "cache_froms", cache_froms)
+        if cache_tos is not None:
+            pulumi.set(__self__, "cache_tos", cache_tos)
         if cgroup_parent is not None:
             pulumi.set(__self__, "cgroup_parent", cgroup_parent)
         if cpu_period is not None:
@@ -2214,9 +2220,17 @@ class RemoteImageBuild(dict):
     @pulumi.getter(name="cacheFroms")
     def cache_froms(self) -> Optional[Sequence[_builtins.str]]:
         """
-        Images to consider as cache sources
+        External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
         """
         return pulumi.get(self, "cache_froms")
+
+    @_builtins.property
+    @pulumi.getter(name="cacheTos")
+    def cache_tos(self) -> Optional[Sequence[_builtins.str]]:
+        """
+        Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        """
+        return pulumi.get(self, "cache_tos")
 
     @_builtins.property
     @pulumi.getter(name="cgroupParent")

@@ -54,6 +54,7 @@ class ContainerArgs:
                  logs: Optional[pulumi.Input[_builtins.bool]] = None,
                  max_retry_count: Optional[pulumi.Input[_builtins.int]] = None,
                  memory: Optional[pulumi.Input[_builtins.int]] = None,
+                 memory_reservation: Optional[pulumi.Input[_builtins.int]] = None,
                  memory_swap: Optional[pulumi.Input[_builtins.int]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]]] = None,
                  must_run: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -122,10 +123,11 @@ class ContainerArgs:
         :param pulumi.Input[_builtins.bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[_builtins.int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[_builtins.int] memory: The memory limit for the container in MBs.
+        :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[_builtins.str] name: The name of the container.
-        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
@@ -220,6 +222,8 @@ class ContainerArgs:
             pulumi.set(__self__, "max_retry_count", max_retry_count)
         if memory is not None:
             pulumi.set(__self__, "memory", memory)
+        if memory_reservation is not None:
+            pulumi.set(__self__, "memory_reservation", memory_reservation)
         if memory_swap is not None:
             pulumi.set(__self__, "memory_swap", memory_swap)
         if mounts is not None:
@@ -684,6 +688,18 @@ class ContainerArgs:
         pulumi.set(self, "memory", value)
 
     @_builtins.property
+    @pulumi.getter(name="memoryReservation")
+    def memory_reservation(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        """
+        return pulumi.get(self, "memory_reservation")
+
+    @memory_reservation.setter
+    def memory_reservation(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "memory_reservation", value)
+
+    @_builtins.property
     @pulumi.getter(name="memorySwap")
     def memory_swap(self) -> Optional[pulumi.Input[_builtins.int]]:
         """
@@ -732,7 +748,7 @@ class ContainerArgs:
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         """
         return pulumi.get(self, "network_mode")
 
@@ -1116,6 +1132,7 @@ class _ContainerState:
                  logs: Optional[pulumi.Input[_builtins.bool]] = None,
                  max_retry_count: Optional[pulumi.Input[_builtins.int]] = None,
                  memory: Optional[pulumi.Input[_builtins.int]] = None,
+                 memory_reservation: Optional[pulumi.Input[_builtins.int]] = None,
                  memory_swap: Optional[pulumi.Input[_builtins.int]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]]] = None,
                  must_run: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -1188,11 +1205,12 @@ class _ContainerState:
         :param pulumi.Input[_builtins.bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[_builtins.int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[_builtins.int] memory: The memory limit for the container in MBs.
+        :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]] network_datas: The data of the networks the container is connected to.
-        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
@@ -1294,6 +1312,8 @@ class _ContainerState:
             pulumi.set(__self__, "max_retry_count", max_retry_count)
         if memory is not None:
             pulumi.set(__self__, "memory", memory)
+        if memory_reservation is not None:
+            pulumi.set(__self__, "memory_reservation", memory_reservation)
         if memory_swap is not None:
             pulumi.set(__self__, "memory_swap", memory_swap)
         if mounts is not None:
@@ -1796,6 +1816,18 @@ class _ContainerState:
         pulumi.set(self, "memory", value)
 
     @_builtins.property
+    @pulumi.getter(name="memoryReservation")
+    def memory_reservation(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        """
+        return pulumi.get(self, "memory_reservation")
+
+    @memory_reservation.setter
+    def memory_reservation(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "memory_reservation", value)
+
+    @_builtins.property
     @pulumi.getter(name="memorySwap")
     def memory_swap(self) -> Optional[pulumi.Input[_builtins.int]]:
         """
@@ -1856,7 +1888,7 @@ class _ContainerState:
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         """
         return pulumi.get(self, "network_mode")
 
@@ -2240,6 +2272,7 @@ class Container(pulumi.CustomResource):
                  logs: Optional[pulumi.Input[_builtins.bool]] = None,
                  max_retry_count: Optional[pulumi.Input[_builtins.int]] = None,
                  memory: Optional[pulumi.Input[_builtins.int]] = None,
+                 memory_reservation: Optional[pulumi.Input[_builtins.int]] = None,
                  memory_swap: Optional[pulumi.Input[_builtins.int]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]]] = None,
                  must_run: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -2369,10 +2402,11 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[_builtins.int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[_builtins.int] memory: The memory limit for the container in MBs.
+        :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[_builtins.str] name: The name of the container.
-        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]] ports: Publish a container's port(s) to the host.
@@ -2516,6 +2550,7 @@ class Container(pulumi.CustomResource):
                  logs: Optional[pulumi.Input[_builtins.bool]] = None,
                  max_retry_count: Optional[pulumi.Input[_builtins.int]] = None,
                  memory: Optional[pulumi.Input[_builtins.int]] = None,
+                 memory_reservation: Optional[pulumi.Input[_builtins.int]] = None,
                  memory_swap: Optional[pulumi.Input[_builtins.int]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]]] = None,
                  must_run: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -2593,6 +2628,7 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["logs"] = logs
             __props__.__dict__["max_retry_count"] = max_retry_count
             __props__.__dict__["memory"] = memory
+            __props__.__dict__["memory_reservation"] = memory_reservation
             __props__.__dict__["memory_swap"] = memory_swap
             __props__.__dict__["mounts"] = mounts
             __props__.__dict__["must_run"] = must_run
@@ -2676,6 +2712,7 @@ class Container(pulumi.CustomResource):
             logs: Optional[pulumi.Input[_builtins.bool]] = None,
             max_retry_count: Optional[pulumi.Input[_builtins.int]] = None,
             memory: Optional[pulumi.Input[_builtins.int]] = None,
+            memory_reservation: Optional[pulumi.Input[_builtins.int]] = None,
             memory_swap: Optional[pulumi.Input[_builtins.int]] = None,
             mounts: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]]] = None,
             must_run: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -2753,11 +2790,12 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[_builtins.int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[_builtins.int] memory: The memory limit for the container in MBs.
+        :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworkDataArgs', 'ContainerNetworkDataArgsDict']]]] network_datas: The data of the networks the container is connected to.
-        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]] ports: Publish a container's port(s) to the host.
@@ -2827,6 +2865,7 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["logs"] = logs
         __props__.__dict__["max_retry_count"] = max_retry_count
         __props__.__dict__["memory"] = memory
+        __props__.__dict__["memory_reservation"] = memory_reservation
         __props__.__dict__["memory_swap"] = memory_swap
         __props__.__dict__["mounts"] = mounts
         __props__.__dict__["must_run"] = must_run
@@ -3152,6 +3191,14 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "memory")
 
     @_builtins.property
+    @pulumi.getter(name="memoryReservation")
+    def memory_reservation(self) -> pulumi.Output[Optional[_builtins.int]]:
+        """
+        The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        """
+        return pulumi.get(self, "memory_reservation")
+
+    @_builtins.property
     @pulumi.getter(name="memorySwap")
     def memory_swap(self) -> pulumi.Output[Optional[_builtins.int]]:
         """
@@ -3192,7 +3239,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
-        Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         """
         return pulumi.get(self, "network_mode")
 

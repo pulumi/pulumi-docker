@@ -58,12 +58,24 @@ namespace Pulumi.Docker.Inputs
         private InputList<string>? _cacheFroms;
 
         /// <summary>
-        /// Images to consider as cache sources
+        /// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
         /// </summary>
         public InputList<string> CacheFroms
         {
             get => _cacheFroms ?? (_cacheFroms = new InputList<string>());
             set => _cacheFroms = value;
+        }
+
+        [Input("cacheTos")]
+        private InputList<string>? _cacheTos;
+
+        /// <summary>
+        /// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        /// </summary>
+        public InputList<string> CacheTos
+        {
+            get => _cacheTos ?? (_cacheTos = new InputList<string>());
+            set => _cacheTos = value;
         }
 
         /// <summary>

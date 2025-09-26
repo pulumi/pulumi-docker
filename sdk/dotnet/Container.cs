@@ -301,6 +301,12 @@ namespace Pulumi.Docker
         public Output<int?> Memory { get; private set; } = null!;
 
         /// <summary>
+        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        /// </summary>
+        [Output("memoryReservation")]
+        public Output<int?> MemoryReservation { get; private set; } = null!;
+
+        /// <summary>
         /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         /// </summary>
         [Output("memorySwap")]
@@ -328,7 +334,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerNetworkData>> NetworkDatas { get; private set; } = null!;
 
         /// <summary>
-        /// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        /// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Output("networkMode")]
         public Output<string?> NetworkMode { get; private set; } = null!;
@@ -812,6 +818,12 @@ namespace Pulumi.Docker
         public Input<int>? Memory { get; set; }
 
         /// <summary>
+        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        /// </summary>
+        [Input("memoryReservation")]
+        public Input<int>? MemoryReservation { get; set; }
+
+        /// <summary>
         /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         /// </summary>
         [Input("memorySwap")]
@@ -839,7 +851,7 @@ namespace Pulumi.Docker
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        /// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
@@ -1357,6 +1369,12 @@ namespace Pulumi.Docker
         public Input<int>? Memory { get; set; }
 
         /// <summary>
+        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        /// </summary>
+        [Input("memoryReservation")]
+        public Input<int>? MemoryReservation { get; set; }
+
+        /// <summary>
         /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         /// </summary>
         [Input("memorySwap")]
@@ -1396,7 +1414,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+        /// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }

@@ -241,6 +241,10 @@ export class Container extends pulumi.CustomResource {
      */
     declare public readonly memory: pulumi.Output<number | undefined>;
     /**
+     * The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+     */
+    declare public readonly memoryReservation: pulumi.Output<number | undefined>;
+    /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
     declare public readonly memorySwap: pulumi.Output<number | undefined>;
@@ -258,7 +262,7 @@ export class Container extends pulumi.CustomResource {
      */
     declare public /*out*/ readonly networkDatas: pulumi.Output<outputs.ContainerNetworkData[]>;
     /**
-     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+     * Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      */
     declare public readonly networkMode: pulumi.Output<string | undefined>;
     /**
@@ -423,6 +427,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["logs"] = state?.logs;
             resourceInputs["maxRetryCount"] = state?.maxRetryCount;
             resourceInputs["memory"] = state?.memory;
+            resourceInputs["memoryReservation"] = state?.memoryReservation;
             resourceInputs["memorySwap"] = state?.memorySwap;
             resourceInputs["mounts"] = state?.mounts;
             resourceInputs["mustRun"] = state?.mustRun;
@@ -495,6 +500,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["logs"] = args?.logs;
             resourceInputs["maxRetryCount"] = args?.maxRetryCount;
             resourceInputs["memory"] = args?.memory;
+            resourceInputs["memoryReservation"] = args?.memoryReservation;
             resourceInputs["memorySwap"] = args?.memorySwap;
             resourceInputs["mounts"] = args?.mounts;
             resourceInputs["mustRun"] = args?.mustRun;
@@ -687,6 +693,10 @@ export interface ContainerState {
      */
     memory?: pulumi.Input<number>;
     /**
+     * The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+     */
+    memoryReservation?: pulumi.Input<number>;
+    /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
     memorySwap?: pulumi.Input<number>;
@@ -704,7 +714,7 @@ export interface ContainerState {
      */
     networkDatas?: pulumi.Input<pulumi.Input<inputs.ContainerNetworkData>[]>;
     /**
-     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+     * Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      */
     networkMode?: pulumi.Input<string>;
     /**
@@ -958,6 +968,10 @@ export interface ContainerArgs {
      */
     memory?: pulumi.Input<number>;
     /**
+     * The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+     */
+    memoryReservation?: pulumi.Input<number>;
+    /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
     memorySwap?: pulumi.Input<number>;
@@ -971,7 +985,7 @@ export interface ContainerArgs {
      */
     name?: pulumi.Input<string>;
     /**
-     * Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+     * Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      */
     networkMode?: pulumi.Input<string>;
     /**

@@ -5,7 +5,7 @@ Subject: [PATCH] Fix typos
 
 
 diff --git a/docs/data-sources/image.md b/docs/data-sources/image.md
-index fd40c2b..a11d6c5 100644
+index 1b0cd45..ba10cc3 100644
 --- a/docs/data-sources/image.md
 +++ b/docs/data-sources/image.md
 @@ -3,12 +3,12 @@

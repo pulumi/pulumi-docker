@@ -2923,7 +2923,11 @@ if not MYPY:
         """
         cache_froms: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
         """
-        Images to consider as cache sources
+        External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+        """
+        cache_tos: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
         """
         cgroup_parent: NotRequired[pulumi.Input[_builtins.str]]
         """
@@ -3058,6 +3062,7 @@ class RemoteImageBuildArgs:
                  build_log_file: Optional[pulumi.Input[_builtins.str]] = None,
                  builder: Optional[pulumi.Input[_builtins.str]] = None,
                  cache_froms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 cache_tos: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  cgroup_parent: Optional[pulumi.Input[_builtins.str]] = None,
                  cpu_period: Optional[pulumi.Input[_builtins.int]] = None,
                  cpu_quota: Optional[pulumi.Input[_builtins.int]] = None,
@@ -3095,7 +3100,8 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[_builtins.str] build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param pulumi.Input[_builtins.str] build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
         :param pulumi.Input[_builtins.str] builder: Set the name of the buildx builder to use. If not set, the legacy builder is used.
-        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_froms: Images to consider as cache sources
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_froms: External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_tos: Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[_builtins.int] cpu_period: The length of a CPU period in microseconds
         :param pulumi.Input[_builtins.int] cpu_quota: Microseconds of CPU time that the container can get in a CPU period
@@ -3140,6 +3146,8 @@ class RemoteImageBuildArgs:
             pulumi.set(__self__, "builder", builder)
         if cache_froms is not None:
             pulumi.set(__self__, "cache_froms", cache_froms)
+        if cache_tos is not None:
+            pulumi.set(__self__, "cache_tos", cache_tos)
         if cgroup_parent is not None:
             pulumi.set(__self__, "cgroup_parent", cgroup_parent)
         if cpu_period is not None:
@@ -3277,13 +3285,25 @@ class RemoteImageBuildArgs:
     @pulumi.getter(name="cacheFroms")
     def cache_froms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
         """
-        Images to consider as cache sources
+        External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
         """
         return pulumi.get(self, "cache_froms")
 
     @cache_froms.setter
     def cache_froms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "cache_froms", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cacheTos")
+    def cache_tos(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        """
+        return pulumi.get(self, "cache_tos")
+
+    @cache_tos.setter
+    def cache_tos(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "cache_tos", value)
 
     @_builtins.property
     @pulumi.getter(name="cgroupParent")

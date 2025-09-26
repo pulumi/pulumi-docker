@@ -45,10 +45,15 @@ public final class RemoteImageBuild {
      */
     private @Nullable String builder;
     /**
-     * @return Images to consider as cache sources
+     * @return External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      * 
      */
     private @Nullable List<String> cacheFroms;
+    /**
+     * @return Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     * 
+     */
+    private @Nullable List<String> cacheTos;
     /**
      * @return Optional parent cgroup for the container
      * 
@@ -242,11 +247,18 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.builder);
     }
     /**
-     * @return Images to consider as cache sources
+     * @return External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      * 
      */
     public List<String> cacheFroms() {
         return this.cacheFroms == null ? List.of() : this.cacheFroms;
+    }
+    /**
+     * @return Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     * 
+     */
+    public List<String> cacheTos() {
+        return this.cacheTos == null ? List.of() : this.cacheTos;
     }
     /**
      * @return Optional parent cgroup for the container
@@ -481,6 +493,7 @@ public final class RemoteImageBuild {
         private @Nullable String buildLogFile;
         private @Nullable String builder;
         private @Nullable List<String> cacheFroms;
+        private @Nullable List<String> cacheTos;
         private @Nullable String cgroupParent;
         private String context;
         private @Nullable Integer cpuPeriod;
@@ -521,6 +534,7 @@ public final class RemoteImageBuild {
     	      this.buildLogFile = defaults.buildLogFile;
     	      this.builder = defaults.builder;
     	      this.cacheFroms = defaults.cacheFroms;
+    	      this.cacheTos = defaults.cacheTos;
     	      this.cgroupParent = defaults.cgroupParent;
     	      this.context = defaults.context;
     	      this.cpuPeriod = defaults.cpuPeriod;
@@ -595,6 +609,15 @@ public final class RemoteImageBuild {
         }
         public Builder cacheFroms(String... cacheFroms) {
             return cacheFroms(List.of(cacheFroms));
+        }
+        @CustomType.Setter
+        public Builder cacheTos(@Nullable List<String> cacheTos) {
+
+            this.cacheTos = cacheTos;
+            return this;
+        }
+        public Builder cacheTos(String... cacheTos) {
+            return cacheTos(List.of(cacheTos));
         }
         @CustomType.Setter
         public Builder cgroupParent(@Nullable String cgroupParent) {
@@ -807,6 +830,7 @@ public final class RemoteImageBuild {
             _resultValue.buildLogFile = buildLogFile;
             _resultValue.builder = builder;
             _resultValue.cacheFroms = cacheFroms;
+            _resultValue.cacheTos = cacheTos;
             _resultValue.cgroupParent = cgroupParent;
             _resultValue.context = context;
             _resultValue.cpuPeriod = cpuPeriod;

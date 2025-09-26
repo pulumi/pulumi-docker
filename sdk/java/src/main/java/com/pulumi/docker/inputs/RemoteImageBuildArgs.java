@@ -99,18 +99,33 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * Images to consider as cache sources
+     * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      * 
      */
     @Import(name="cacheFroms")
     private @Nullable Output<List<String>> cacheFroms;
 
     /**
-     * @return Images to consider as cache sources
+     * @return External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      * 
      */
     public Optional<Output<List<String>>> cacheFroms() {
         return Optional.ofNullable(this.cacheFroms);
+    }
+
+    /**
+     * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     * 
+     */
+    @Import(name="cacheTos")
+    private @Nullable Output<List<String>> cacheTos;
+
+    /**
+     * @return Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     * 
+     */
+    public Optional<Output<List<String>>> cacheTos() {
+        return Optional.ofNullable(this.cacheTos);
     }
 
     /**
@@ -587,6 +602,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         this.buildLogFile = $.buildLogFile;
         this.builder = $.builder;
         this.cacheFroms = $.cacheFroms;
+        this.cacheTos = $.cacheTos;
         this.cgroupParent = $.cgroupParent;
         this.context = $.context;
         this.cpuPeriod = $.cpuPeriod;
@@ -754,7 +770,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param cacheFroms Images to consider as cache sources
+         * @param cacheFroms External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
          * 
          * @return builder
          * 
@@ -765,7 +781,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param cacheFroms Images to consider as cache sources
+         * @param cacheFroms External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
          * 
          * @return builder
          * 
@@ -775,13 +791,44 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param cacheFroms Images to consider as cache sources
+         * @param cacheFroms External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
          * 
          * @return builder
          * 
          */
         public Builder cacheFroms(String... cacheFroms) {
             return cacheFroms(List.of(cacheFroms));
+        }
+
+        /**
+         * @param cacheTos Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheTos(@Nullable Output<List<String>> cacheTos) {
+            $.cacheTos = cacheTos;
+            return this;
+        }
+
+        /**
+         * @param cacheTos Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheTos(List<String> cacheTos) {
+            return cacheTos(Output.of(cacheTos));
+        }
+
+        /**
+         * @param cacheTos Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheTos(String... cacheTos) {
+            return cacheTos(List.of(cacheTos));
         }
 
         /**

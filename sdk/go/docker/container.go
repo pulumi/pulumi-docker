@@ -166,6 +166,8 @@ type Container struct {
 	MaxRetryCount pulumi.IntPtrOutput `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory pulumi.IntPtrOutput `pulumi:"memory"`
+	// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+	MemoryReservation pulumi.IntPtrOutput `pulumi:"memoryReservation"`
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrOutput `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
@@ -175,7 +177,7 @@ type Container struct {
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayOutput `pulumi:"networkDatas"`
-	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrOutput `pulumi:"networkMode"`
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayOutput `pulumi:"networksAdvanced"`
@@ -340,6 +342,8 @@ type containerState struct {
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory *int `pulumi:"memory"`
+	// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+	MemoryReservation *int `pulumi:"memoryReservation"`
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
@@ -349,7 +353,7 @@ type containerState struct {
 	Name *string `pulumi:"name"`
 	// The data of the networks the container is connected to.
 	NetworkDatas []ContainerNetworkData `pulumi:"networkDatas"`
-	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode *string `pulumi:"networkMode"`
 	// The networks the container is attached to
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
@@ -482,6 +486,8 @@ type ContainerState struct {
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
 	Memory pulumi.IntPtrInput
+	// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+	MemoryReservation pulumi.IntPtrInput
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
@@ -491,7 +497,7 @@ type ContainerState struct {
 	Name pulumi.StringPtrInput
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayInput
-	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrInput
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
@@ -622,6 +628,8 @@ type containerArgs struct {
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory *int `pulumi:"memory"`
+	// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+	MemoryReservation *int `pulumi:"memoryReservation"`
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
@@ -629,7 +637,7 @@ type containerArgs struct {
 	MustRun *bool            `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
-	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode *string `pulumi:"networkMode"`
 	// The networks the container is attached to
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
@@ -757,6 +765,8 @@ type ContainerArgs struct {
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
 	Memory pulumi.IntPtrInput
+	// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+	MemoryReservation pulumi.IntPtrInput
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
@@ -764,7 +774,7 @@ type ContainerArgs struct {
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
-	// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrInput
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
@@ -1091,6 +1101,11 @@ func (o ContainerOutput) Memory() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.Memory }).(pulumi.IntPtrOutput)
 }
 
+// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+func (o ContainerOutput) MemoryReservation() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.MemoryReservation }).(pulumi.IntPtrOutput)
+}
+
 // The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 func (o ContainerOutput) MemorySwap() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.MemorySwap }).(pulumi.IntPtrOutput)
@@ -1115,7 +1130,7 @@ func (o ContainerOutput) NetworkDatas() ContainerNetworkDataArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerNetworkDataArrayOutput { return v.NetworkDatas }).(ContainerNetworkDataArrayOutput)
 }
 
-// Network mode of the container. See https://docs.docker.com/engine/network/ for more information.
+// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 func (o ContainerOutput) NetworkMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.NetworkMode }).(pulumi.StringPtrOutput)
 }
