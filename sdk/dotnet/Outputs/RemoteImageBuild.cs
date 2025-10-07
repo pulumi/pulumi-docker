@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? BuildId;
         /// <summary>
-        /// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        /// Path to a file where the buildx log are written to. Only available when `Builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
         /// </summary>
         public readonly string? BuildLogFile;
         /// <summary>
@@ -118,11 +118,11 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly bool? PullParent;
         /// <summary>
-        /// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+        /// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `Builder` is set.
         /// </summary>
         public readonly string? RemoteContext;
         /// <summary>
-        /// Remove intermediate containers after a successful build. Defaults to `true`.
+        /// Remove intermediate containers after a successful build. Defaults to `True`.
         /// </summary>
         public readonly bool? Remove;
         /// <summary>

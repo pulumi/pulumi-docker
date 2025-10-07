@@ -85,7 +85,7 @@ namespace Pulumi.Docker
     public partial class Container : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
+        /// If `True` attach to the container after its creation and waits the end of its execution. Defaults to `False`.
         /// </summary>
         [Output("attach")]
         public Output<bool?> Attach { get; private set; } = null!;
@@ -109,7 +109,7 @@ namespace Pulumi.Docker
         public Output<string?> CgroupParent { get; private set; } = null!;
 
         /// <summary>
-        /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        /// Cgroup namespace mode to use for the container. Possible values are: `Private`, `Host`.
         /// </summary>
         [Output("cgroupnsMode")]
         public Output<string?> CgroupnsMode { get; private set; } = null!;
@@ -121,7 +121,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<string>> Command { get; private set; } = null!;
 
         /// <summary>
-        /// The logs of the container if its execution is done (`attach` must be disabled).
+        /// The logs of the container if its execution is done (`Attach` must be disabled).
         /// </summary>
         [Output("containerLogs")]
         public Output<string> ContainerLogs { get; private set; } = null!;
@@ -133,13 +133,13 @@ namespace Pulumi.Docker
         public Output<int?> ContainerReadRefreshTimeoutMilliseconds { get; private set; } = null!;
 
         /// <summary>
-        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `Cpus` is set.
         /// </summary>
         [Output("cpuPeriod")]
         public Output<int?> CpuPeriod { get; private set; } = null!;
 
         /// <summary>
-        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `Cpus` is set.
         /// </summary>
         [Output("cpuQuota")]
         public Output<int?> CpuQuota { get; private set; } = null!;
@@ -157,13 +157,13 @@ namespace Pulumi.Docker
         public Output<int?> CpuShares { get; private set; } = null!;
 
         /// <summary>
-        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `CpuPeriod` and `CpuQuota`.
         /// </summary>
         [Output("cpus")]
         public Output<string?> Cpus { get; private set; } = null!;
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `N` seconds or on successful stop.
         /// </summary>
         [Output("destroyGraceSeconds")]
         public Output<int?> DestroyGraceSeconds { get; private set; } = null!;
@@ -211,13 +211,13 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<string>> Envs { get; private set; } = null!;
 
         /// <summary>
-        /// The exit code of the container if its execution is done (`must_run` must be disabled).
+        /// The exit code of the container if its execution is done (`MustRun` must be disabled).
         /// </summary>
         [Output("exitCode")]
         public Output<int> ExitCode { get; private set; } = null!;
 
         /// <summary>
-        /// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        /// GPU devices to add to the container. Currently, only the value `All` is supported. Passing any other value will result in unexpected behavior.
         /// </summary>
         [Output("gpus")]
         public Output<string?> Gpus { get; private set; } = null!;
@@ -247,19 +247,19 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerHost>> Hosts { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `ImageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Output("image")]
         public Output<string> Image { get; private set; } = null!;
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `Dockerd` defaults.
         /// </summary>
         [Output("init")]
         public Output<bool> Init { get; private set; } = null!;
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+        /// IPC sharing mode for the container. Possible values are: `None`, `Private`, `Shareable`, `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Output("ipcMode")]
         public Output<string> IpcMode { get; private set; } = null!;
@@ -283,13 +283,13 @@ namespace Pulumi.Docker
         public Output<ImmutableDictionary<string, string>?> LogOpts { get; private set; } = null!;
 
         /// <summary>
-        /// Save the container logs (`attach` must be enabled). Defaults to `false`.
+        /// Save the container logs (`Attach` must be enabled). Defaults to `False`.
         /// </summary>
         [Output("logs")]
         public Output<bool?> Logs { get; private set; } = null!;
 
         /// <summary>
-        /// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
+        /// The maximum amount of times to an attempt a restart when `Restart` is set to 'on-failure'.
         /// </summary>
         [Output("maxRetryCount")]
         public Output<int?> MaxRetryCount { get; private set; } = null!;
@@ -301,7 +301,7 @@ namespace Pulumi.Docker
         public Output<int?> Memory { get; private set; } = null!;
 
         /// <summary>
-        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `Memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `Memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         /// </summary>
         [Output("memoryReservation")]
         public Output<int?> MemoryReservation { get; private set; } = null!;
@@ -334,7 +334,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerNetworkData>> NetworkDatas { get; private set; } = null!;
 
         /// <summary>
-        /// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
+        /// Network mode of the container. Defaults to `Bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `Nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Output("networkMode")]
         public Output<string?> NetworkMode { get; private set; } = null!;
@@ -346,7 +346,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerNetworksAdvanced>> NetworksAdvanced { get; private set; } = null!;
 
         /// <summary>
-        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Output("pidMode")]
         public Output<string?> PidMode { get; private set; } = null!;
@@ -358,7 +358,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerPort>> Ports { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, the container runs in privileged mode.
+        /// If `True`, the container runs in privileged mode.
         /// </summary>
         [Output("privileged")]
         public Output<bool?> Privileged { get; private set; } = null!;
@@ -370,25 +370,25 @@ namespace Pulumi.Docker
         public Output<bool?> PublishAllPorts { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, the container will be started as readonly. Defaults to `false`.
+        /// If `True`, the container will be started as readonly. Defaults to `False`.
         /// </summary>
         [Output("readOnly")]
         public Output<bool?> ReadOnly { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
+        /// If `True`, it will remove anonymous volumes associated with the container. Defaults to `True`.
         /// </summary>
         [Output("removeVolumes")]
         public Output<bool?> RemoveVolumes { get; private set; } = null!;
 
         /// <summary>
-        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
+        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `No`.
         /// </summary>
         [Output("restart")]
         public Output<string?> Restart { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
+        /// If `True`, then the container will be automatically removed when it exits. Defaults to `False`.
         /// </summary>
         [Output("rm")]
         public Output<bool?> Rm { get; private set; } = null!;
@@ -412,13 +412,13 @@ namespace Pulumi.Docker
         public Output<int> ShmSize { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+        /// If `True`, then the Docker container will be started after creation. If `False`, then the container is only created. Defaults to `True`.
         /// </summary>
         [Output("start")]
         public Output<bool?> Start { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
+        /// If `True`, keep STDIN open even if not attached (`docker run -i`). Defaults to `False`.
         /// </summary>
         [Output("stdinOpen")]
         public Output<bool?> StdinOpen { get; private set; } = null!;
@@ -436,7 +436,7 @@ namespace Pulumi.Docker
         public Output<int> StopTimeout { get; private set; } = null!;
 
         /// <summary>
-        /// Key/value pairs for the storage driver options, e.g. `size`: `120G`
+        /// Key/value pairs for the storage driver options, e.g. `Size`: `120G`
         /// </summary>
         [Output("storageOpts")]
         public Output<ImmutableDictionary<string, string>?> StorageOpts { get; private set; } = null!;
@@ -454,7 +454,7 @@ namespace Pulumi.Docker
         public Output<ImmutableDictionary<string, string>?> Tmpfs { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
+        /// If `True`, allocate a pseudo-tty (`docker run -t`). Defaults to `False`.
         /// </summary>
         [Output("tty")]
         public Output<bool?> Tty { get; private set; } = null!;
@@ -466,13 +466,13 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerUlimit>> Ulimits { get; private set; } = null!;
 
         /// <summary>
-        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+        /// Specifies files to upload to the container before starting it. Only one of `Content` or `ContentBase64` can be set and at least one of them has to be set.
         /// </summary>
         [Output("uploads")]
         public Output<ImmutableArray<Outputs.ContainerUpload>> Uploads { get; private set; } = null!;
 
         /// <summary>
-        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literraly or by name.
         /// </summary>
         [Output("user")]
         public Output<string?> User { get; private set; } = null!;
@@ -490,7 +490,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerVolume>> Volumes { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// If `True`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `False`, then the container health state is not checked. Defaults to `False`.
         /// </summary>
         [Output("wait")]
         public Output<bool?> Wait { get; private set; } = null!;
@@ -554,7 +554,7 @@ namespace Pulumi.Docker
     public sealed class ContainerArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
+        /// If `True` attach to the container after its creation and waits the end of its execution. Defaults to `False`.
         /// </summary>
         [Input("attach")]
         public Input<bool>? Attach { get; set; }
@@ -572,7 +572,7 @@ namespace Pulumi.Docker
         public Input<string>? CgroupParent { get; set; }
 
         /// <summary>
-        /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        /// Cgroup namespace mode to use for the container. Possible values are: `Private`, `Host`.
         /// </summary>
         [Input("cgroupnsMode")]
         public Input<string>? CgroupnsMode { get; set; }
@@ -596,13 +596,13 @@ namespace Pulumi.Docker
         public Input<int>? ContainerReadRefreshTimeoutMilliseconds { get; set; }
 
         /// <summary>
-        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `Cpus` is set.
         /// </summary>
         [Input("cpuPeriod")]
         public Input<int>? CpuPeriod { get; set; }
 
         /// <summary>
-        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `Cpus` is set.
         /// </summary>
         [Input("cpuQuota")]
         public Input<int>? CpuQuota { get; set; }
@@ -620,13 +620,13 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `CpuPeriod` and `CpuQuota`.
         /// </summary>
         [Input("cpus")]
         public Input<string>? Cpus { get; set; }
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `N` seconds or on successful stop.
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
@@ -710,7 +710,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        /// GPU devices to add to the container. Currently, only the value `All` is supported. Passing any other value will result in unexpected behavior.
         /// </summary>
         [Input("gpus")]
         public Input<string>? Gpus { get; set; }
@@ -752,19 +752,19 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `ImageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `Dockerd` defaults.
         /// </summary>
         [Input("init")]
         public Input<bool>? Init { get; set; }
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+        /// IPC sharing mode for the container. Possible values are: `None`, `Private`, `Shareable`, `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Input("ipcMode")]
         public Input<string>? IpcMode { get; set; }
@@ -800,13 +800,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Save the container logs (`attach` must be enabled). Defaults to `false`.
+        /// Save the container logs (`Attach` must be enabled). Defaults to `False`.
         /// </summary>
         [Input("logs")]
         public Input<bool>? Logs { get; set; }
 
         /// <summary>
-        /// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
+        /// The maximum amount of times to an attempt a restart when `Restart` is set to 'on-failure'.
         /// </summary>
         [Input("maxRetryCount")]
         public Input<int>? MaxRetryCount { get; set; }
@@ -818,7 +818,7 @@ namespace Pulumi.Docker
         public Input<int>? Memory { get; set; }
 
         /// <summary>
-        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `Memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `Memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         /// </summary>
         [Input("memoryReservation")]
         public Input<int>? MemoryReservation { get; set; }
@@ -851,7 +851,7 @@ namespace Pulumi.Docker
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
+        /// Network mode of the container. Defaults to `Bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `Nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
@@ -869,7 +869,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Input("pidMode")]
         public Input<string>? PidMode { get; set; }
@@ -887,7 +887,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, the container runs in privileged mode.
+        /// If `True`, the container runs in privileged mode.
         /// </summary>
         [Input("privileged")]
         public Input<bool>? Privileged { get; set; }
@@ -899,25 +899,25 @@ namespace Pulumi.Docker
         public Input<bool>? PublishAllPorts { get; set; }
 
         /// <summary>
-        /// If `true`, the container will be started as readonly. Defaults to `false`.
+        /// If `True`, the container will be started as readonly. Defaults to `False`.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
-        /// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
+        /// If `True`, it will remove anonymous volumes associated with the container. Defaults to `True`.
         /// </summary>
         [Input("removeVolumes")]
         public Input<bool>? RemoveVolumes { get; set; }
 
         /// <summary>
-        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
+        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `No`.
         /// </summary>
         [Input("restart")]
         public Input<string>? Restart { get; set; }
 
         /// <summary>
-        /// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
+        /// If `True`, then the container will be automatically removed when it exits. Defaults to `False`.
         /// </summary>
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
@@ -947,13 +947,13 @@ namespace Pulumi.Docker
         public Input<int>? ShmSize { get; set; }
 
         /// <summary>
-        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+        /// If `True`, then the Docker container will be started after creation. If `False`, then the container is only created. Defaults to `True`.
         /// </summary>
         [Input("start")]
         public Input<bool>? Start { get; set; }
 
         /// <summary>
-        /// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
+        /// If `True`, keep STDIN open even if not attached (`docker run -i`). Defaults to `False`.
         /// </summary>
         [Input("stdinOpen")]
         public Input<bool>? StdinOpen { get; set; }
@@ -974,7 +974,7 @@ namespace Pulumi.Docker
         private InputMap<string>? _storageOpts;
 
         /// <summary>
-        /// Key/value pairs for the storage driver options, e.g. `size`: `120G`
+        /// Key/value pairs for the storage driver options, e.g. `Size`: `120G`
         /// </summary>
         public InputMap<string> StorageOpts
         {
@@ -1007,7 +1007,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
+        /// If `True`, allocate a pseudo-tty (`docker run -t`). Defaults to `False`.
         /// </summary>
         [Input("tty")]
         public Input<bool>? Tty { get; set; }
@@ -1028,7 +1028,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUploadArgs>? _uploads;
 
         /// <summary>
-        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+        /// Specifies files to upload to the container before starting it. Only one of `Content` or `ContentBase64` can be set and at least one of them has to be set.
         /// </summary>
         public InputList<Inputs.ContainerUploadArgs> Uploads
         {
@@ -1037,7 +1037,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literraly or by name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
@@ -1061,7 +1061,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// If `True`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `False`, then the container health state is not checked. Defaults to `False`.
         /// </summary>
         [Input("wait")]
         public Input<bool>? Wait { get; set; }
@@ -1087,7 +1087,7 @@ namespace Pulumi.Docker
     public sealed class ContainerState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
+        /// If `True` attach to the container after its creation and waits the end of its execution. Defaults to `False`.
         /// </summary>
         [Input("attach")]
         public Input<bool>? Attach { get; set; }
@@ -1111,7 +1111,7 @@ namespace Pulumi.Docker
         public Input<string>? CgroupParent { get; set; }
 
         /// <summary>
-        /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        /// Cgroup namespace mode to use for the container. Possible values are: `Private`, `Host`.
         /// </summary>
         [Input("cgroupnsMode")]
         public Input<string>? CgroupnsMode { get; set; }
@@ -1129,7 +1129,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The logs of the container if its execution is done (`attach` must be disabled).
+        /// The logs of the container if its execution is done (`Attach` must be disabled).
         /// </summary>
         [Input("containerLogs")]
         public Input<string>? ContainerLogs { get; set; }
@@ -1141,13 +1141,13 @@ namespace Pulumi.Docker
         public Input<int>? ContainerReadRefreshTimeoutMilliseconds { get; set; }
 
         /// <summary>
-        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
+        /// Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `Cpus` is set.
         /// </summary>
         [Input("cpuPeriod")]
         public Input<int>? CpuPeriod { get; set; }
 
         /// <summary>
-        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
+        /// Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `Cpus` is set.
         /// </summary>
         [Input("cpuQuota")]
         public Input<int>? CpuQuota { get; set; }
@@ -1165,13 +1165,13 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+        /// Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `CpuPeriod` and `CpuQuota`.
         /// </summary>
         [Input("cpus")]
         public Input<string>? Cpus { get; set; }
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `N` seconds or on successful stop.
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
@@ -1255,13 +1255,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The exit code of the container if its execution is done (`must_run` must be disabled).
+        /// The exit code of the container if its execution is done (`MustRun` must be disabled).
         /// </summary>
         [Input("exitCode")]
         public Input<int>? ExitCode { get; set; }
 
         /// <summary>
-        /// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        /// GPU devices to add to the container. Currently, only the value `All` is supported. Passing any other value will result in unexpected behavior.
         /// </summary>
         [Input("gpus")]
         public Input<string>? Gpus { get; set; }
@@ -1303,19 +1303,19 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `ImageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Input("image")]
         public Input<string>? Image { get; set; }
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `Dockerd` defaults.
         /// </summary>
         [Input("init")]
         public Input<bool>? Init { get; set; }
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+        /// IPC sharing mode for the container. Possible values are: `None`, `Private`, `Shareable`, `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Input("ipcMode")]
         public Input<string>? IpcMode { get; set; }
@@ -1351,13 +1351,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Save the container logs (`attach` must be enabled). Defaults to `false`.
+        /// Save the container logs (`Attach` must be enabled). Defaults to `False`.
         /// </summary>
         [Input("logs")]
         public Input<bool>? Logs { get; set; }
 
         /// <summary>
-        /// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
+        /// The maximum amount of times to an attempt a restart when `Restart` is set to 'on-failure'.
         /// </summary>
         [Input("maxRetryCount")]
         public Input<int>? MaxRetryCount { get; set; }
@@ -1369,7 +1369,7 @@ namespace Pulumi.Docker
         public Input<int>? Memory { get; set; }
 
         /// <summary>
-        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
+        /// The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `Memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `Memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         /// </summary>
         [Input("memoryReservation")]
         public Input<int>? MemoryReservation { get; set; }
@@ -1414,7 +1414,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
+        /// Network mode of the container. Defaults to `Bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `Nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
@@ -1432,7 +1432,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Input("pidMode")]
         public Input<string>? PidMode { get; set; }
@@ -1450,7 +1450,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, the container runs in privileged mode.
+        /// If `True`, the container runs in privileged mode.
         /// </summary>
         [Input("privileged")]
         public Input<bool>? Privileged { get; set; }
@@ -1462,25 +1462,25 @@ namespace Pulumi.Docker
         public Input<bool>? PublishAllPorts { get; set; }
 
         /// <summary>
-        /// If `true`, the container will be started as readonly. Defaults to `false`.
+        /// If `True`, the container will be started as readonly. Defaults to `False`.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
-        /// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
+        /// If `True`, it will remove anonymous volumes associated with the container. Defaults to `True`.
         /// </summary>
         [Input("removeVolumes")]
         public Input<bool>? RemoveVolumes { get; set; }
 
         /// <summary>
-        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
+        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `No`.
         /// </summary>
         [Input("restart")]
         public Input<string>? Restart { get; set; }
 
         /// <summary>
-        /// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
+        /// If `True`, then the container will be automatically removed when it exits. Defaults to `False`.
         /// </summary>
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
@@ -1510,13 +1510,13 @@ namespace Pulumi.Docker
         public Input<int>? ShmSize { get; set; }
 
         /// <summary>
-        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+        /// If `True`, then the Docker container will be started after creation. If `False`, then the container is only created. Defaults to `True`.
         /// </summary>
         [Input("start")]
         public Input<bool>? Start { get; set; }
 
         /// <summary>
-        /// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
+        /// If `True`, keep STDIN open even if not attached (`docker run -i`). Defaults to `False`.
         /// </summary>
         [Input("stdinOpen")]
         public Input<bool>? StdinOpen { get; set; }
@@ -1537,7 +1537,7 @@ namespace Pulumi.Docker
         private InputMap<string>? _storageOpts;
 
         /// <summary>
-        /// Key/value pairs for the storage driver options, e.g. `size`: `120G`
+        /// Key/value pairs for the storage driver options, e.g. `Size`: `120G`
         /// </summary>
         public InputMap<string> StorageOpts
         {
@@ -1570,7 +1570,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
+        /// If `True`, allocate a pseudo-tty (`docker run -t`). Defaults to `False`.
         /// </summary>
         [Input("tty")]
         public Input<bool>? Tty { get; set; }
@@ -1591,7 +1591,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUploadGetArgs>? _uploads;
 
         /// <summary>
-        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+        /// Specifies files to upload to the container before starting it. Only one of `Content` or `ContentBase64` can be set and at least one of them has to be set.
         /// </summary>
         public InputList<Inputs.ContainerUploadGetArgs> Uploads
         {
@@ -1600,7 +1600,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literraly or by name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
@@ -1624,7 +1624,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// If `True`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `False`, then the container health state is not checked. Defaults to `False`.
         /// </summary>
         [Input("wait")]
         public Input<bool>? Wait { get; set; }

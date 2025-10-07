@@ -194,14 +194,14 @@ public class Network extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.ipamDriver);
     }
     /**
-     * Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+     * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver&#39;s documentation for more details.
      * 
      */
     @Export(name="ipamOptions", refs={Map.class,String.class}, tree="[0,1,1]")
     private Output</* @Nullable */ Map<String,String>> ipamOptions;
 
     /**
-     * @return Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+     * @return Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver&#39;s documentation for more details.
      * 
      */
     public Output<Optional<Map<String,String>>> ipamOptions() {
