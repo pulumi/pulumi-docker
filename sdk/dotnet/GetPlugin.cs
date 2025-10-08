@@ -115,7 +115,7 @@ namespace Pulumi.Docker
         public string? Alias { get; set; }
 
         /// <summary>
-        /// The ID of the plugin, which has precedence over the `alias` of both are given
+        /// The ID of the plugin, which has precedence over the `Alias` of both are given
         /// </summary>
         [Input("id")]
         public string? Id { get; set; }
@@ -135,7 +135,7 @@ namespace Pulumi.Docker
         public Input<string>? Alias { get; set; }
 
         /// <summary>
-        /// The ID of the plugin, which has precedence over the `alias` of both are given
+        /// The ID of the plugin, which has precedence over the `Alias` of both are given
         /// </summary>
         [Input("id")]
         public Input<string>? Id { get; set; }
@@ -155,7 +155,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly string? Alias;
         /// <summary>
-        /// If `true` the plugin is enabled
+        /// If `True` the plugin is enabled
         /// </summary>
         public readonly bool Enabled;
         /// <summary>
@@ -167,7 +167,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly bool GrantAllPermissions;
         /// <summary>
-        /// The ID of the plugin, which has precedence over the `alias` of both are given
+        /// The ID of the plugin, which has precedence over the `Alias` of both are given
         /// </summary>
         public readonly string? Id;
         /// <summary>

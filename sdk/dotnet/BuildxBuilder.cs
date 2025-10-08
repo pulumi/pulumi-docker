@@ -22,7 +22,7 @@ namespace Pulumi.Docker
         public Output<bool?> Append { get; private set; } = null!;
 
         /// <summary>
-        /// Automatically boot the builder after creation. Defaults to `false`
+        /// Automatically boot the builder after creation. Defaults to `False`
         /// </summary>
         [Output("bootstrap")]
         public Output<bool?> Bootstrap { get; private set; } = null!;
@@ -152,7 +152,7 @@ namespace Pulumi.Docker
         public Input<bool>? Append { get; set; }
 
         /// <summary>
-        /// Automatically boot the builder after creation. Defaults to `false`
+        /// Automatically boot the builder after creation. Defaults to `False`
         /// </summary>
         [Input("bootstrap")]
         public Input<bool>? Bootstrap { get; set; }
@@ -256,7 +256,7 @@ namespace Pulumi.Docker
         public Input<bool>? Append { get; set; }
 
         /// <summary>
-        /// Automatically boot the builder after creation. Defaults to `false`
+        /// Automatically boot the builder after creation. Defaults to `False`
         /// </summary>
         [Input("bootstrap")]
         public Input<bool>? Bootstrap { get; set; }

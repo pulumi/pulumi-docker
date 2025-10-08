@@ -31,7 +31,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Ip { get; set; }
 
         /// <summary>
-        /// Protocol that can be used over this port. Defaults to `tcp`.
+        /// Protocol that can be used over this port. Defaults to `Tcp`.
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }
