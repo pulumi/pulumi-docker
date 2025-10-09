@@ -31,7 +31,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? HostPath { get; set; }
 
         /// <summary>
-        /// If `true`, this volume will be readonly. Defaults to `false`.
+        /// If `True`, this volume will be readonly. Defaults to `False`.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }

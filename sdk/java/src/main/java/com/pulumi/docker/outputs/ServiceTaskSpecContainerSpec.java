@@ -84,7 +84,7 @@ public final class ServiceTaskSpecContainerSpec {
      */
     private @Nullable List<ServiceTaskSpecContainerSpecHost> hosts;
     /**
-     * @return The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
+     * @return The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repoDigest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
      * 
      */
     private String image;
@@ -225,7 +225,7 @@ public final class ServiceTaskSpecContainerSpec {
         return this.hosts == null ? List.of() : this.hosts;
     }
     /**
-     * @return The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
+     * @return The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repoDigest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
      * 
      */
     public String image() {
