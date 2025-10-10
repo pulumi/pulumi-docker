@@ -115,7 +115,7 @@ namespace Pulumi.Docker
     public sealed class GetRegistryImageArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// If `True`, the verification of TLS certificates of the server/registry is disabled. Defaults to `False`
         /// </summary>
         [Input("insecureSkipVerify")]
         public bool? InsecureSkipVerify { get; set; }
@@ -135,7 +135,7 @@ namespace Pulumi.Docker
     public sealed class GetRegistryImageInvokeArgs : global::Pulumi.InvokeArgs
     {
         /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// If `True`, the verification of TLS certificates of the server/registry is disabled. Defaults to `False`
         /// </summary>
         [Input("insecureSkipVerify")]
         public Input<bool>? InsecureSkipVerify { get; set; }
@@ -161,7 +161,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly string Id;
         /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// If `True`, the verification of TLS certificates of the server/registry is disabled. Defaults to `False`
         /// </summary>
         public readonly bool? InsecureSkipVerify;
         /// <summary>

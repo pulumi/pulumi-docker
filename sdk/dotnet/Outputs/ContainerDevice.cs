@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string HostPath;
         /// <summary>
-        /// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+        /// The cgroup permissions given to the container to access the device. Defaults to `Rwm`.
         /// </summary>
         public readonly string? Permissions;
 

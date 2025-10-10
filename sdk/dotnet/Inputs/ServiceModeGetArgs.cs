@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceModeGetArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        /// When `True`, tasks will run on every worker node. Conflicts with `Replicated`
         /// </summary>
         [Input("global")]
         public Input<bool>? Global { get; set; }

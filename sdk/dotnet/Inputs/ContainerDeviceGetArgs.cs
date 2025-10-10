@@ -25,7 +25,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string> HostPath { get; set; } = null!;
 
         /// <summary>
-        /// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+        /// The cgroup permissions given to the container to access the device. Defaults to `Rwm`.
         /// </summary>
         [Input("permissions")]
         public Input<string>? Permissions { get; set; }

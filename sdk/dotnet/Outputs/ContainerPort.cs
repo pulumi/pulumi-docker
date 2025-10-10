@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Ip;
         /// <summary>
-        /// Protocol that can be used over this port. Defaults to `tcp`.
+        /// Protocol that can be used over this port. Defaults to `Tcp`.
         /// </summary>
         public readonly string? Protocol;
 

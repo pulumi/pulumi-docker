@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ContainerUpload {
     /**
-     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` &amp; `source`
      * 
      */
     private @Nullable String content;
@@ -39,7 +39,7 @@ public final class ContainerUpload {
      */
     private @Nullable String permissions;
     /**
-     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `contentBase64`
      * 
      */
     private @Nullable String source;
@@ -51,7 +51,7 @@ public final class ContainerUpload {
 
     private ContainerUpload() {}
     /**
-     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` &amp; `source`
      * 
      */
     public Optional<String> content() {
@@ -86,7 +86,7 @@ public final class ContainerUpload {
         return Optional.ofNullable(this.permissions);
     }
     /**
-     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `contentBase64`
      * 
      */
     public Optional<String> source() {

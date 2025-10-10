@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? HostPath;
         /// <summary>
-        /// If `true`, this volume will be readonly. Defaults to `false`.
+        /// If `True`, this volume will be readonly. Defaults to `False`.
         /// </summary>
         public readonly bool? ReadOnly;
         /// <summary>

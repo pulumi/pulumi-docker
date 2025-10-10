@@ -18,14 +18,14 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
     public static final ContainerUploadArgs Empty = new ContainerUploadArgs();
 
     /**
-     * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` &amp; `source`
      * 
      */
     @Import(name="content")
     private @Nullable Output<String> content;
 
     /**
-     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` &amp; `source`
      * 
      */
     public Optional<Output<String>> content() {
@@ -93,14 +93,14 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
-     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `contentBase64`
      * 
      */
     @Import(name="source")
     private @Nullable Output<String> source;
 
     /**
-     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `contentBase64`
      * 
      */
     public Optional<Output<String>> source() {
@@ -153,7 +153,7 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param content Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+         * @param content Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` &amp; `source`
          * 
          * @return builder
          * 
@@ -164,7 +164,7 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param content Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+         * @param content Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` &amp; `source`
          * 
          * @return builder
          * 
@@ -258,7 +258,7 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param source A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+         * @param source A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `contentBase64`
          * 
          * @return builder
          * 
@@ -269,7 +269,7 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param source A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+         * @param source A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `contentBase64`
          * 
          * @return builder
          * 

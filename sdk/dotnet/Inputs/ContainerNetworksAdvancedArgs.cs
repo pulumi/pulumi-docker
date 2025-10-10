@@ -37,7 +37,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Ipv6Address { get; set; }
 
         /// <summary>
-        /// The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+        /// The name or id of the network to use. You can use `Name` or `Id` attribute from a `docker.Network` resource.
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
