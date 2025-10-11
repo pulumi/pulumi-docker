@@ -27,7 +27,7 @@ public final class GetLogsResult {
      */
     private String id;
     /**
-     * @return If true populate computed value `logs_list_string`
+     * @return If true populate computed value `logsListString`
      * 
      */
     private @Nullable Boolean logsListStringEnabled;
@@ -70,7 +70,7 @@ public final class GetLogsResult {
         return this.id;
     }
     /**
-     * @return If true populate computed value `logs_list_string`
+     * @return If true populate computed value `logsListString`
      * 
      */
     public Optional<Boolean> logsListStringEnabled() {

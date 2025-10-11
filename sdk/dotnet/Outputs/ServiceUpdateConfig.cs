@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Delay;
         /// <summary>
-        /// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
+        /// Action on update failure: `Pause`, `Continue` or `Rollback`. Defaults to `Pause`.
         /// </summary>
         public readonly string? FailureAction;
         /// <summary>

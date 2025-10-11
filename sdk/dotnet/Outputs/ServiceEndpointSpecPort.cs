@@ -18,11 +18,11 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Name;
         /// <summary>
-        /// Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+        /// Rrepresents the protocol of a port: `Tcp`, `Udp` or `Sctp`. Defaults to `Tcp`.
         /// </summary>
         public readonly string? Protocol;
         /// <summary>
-        /// Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
+        /// Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `Ingress`.
         /// </summary>
         public readonly string? PublishMode;
         /// <summary>

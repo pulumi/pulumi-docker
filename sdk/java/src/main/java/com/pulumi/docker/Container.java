@@ -290,14 +290,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.cpuShares);
     }
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      * 
      */
     @Export(name="cpus", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> cpus;
 
     /**
-     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      * 
      */
     public Output<Optional<String>> cpus() {
@@ -416,14 +416,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.envs;
     }
     /**
-     * The exit code of the container if its execution is done (`must_run` must be disabled).
+     * The exit code of the container if its execution is done (`mustRun` must be disabled).
      * 
      */
     @Export(name="exitCode", refs={Integer.class}, tree="[0]")
     private Output<Integer> exitCode;
 
     /**
-     * @return The exit code of the container if its execution is done (`must_run` must be disabled).
+     * @return The exit code of the container if its execution is done (`mustRun` must be disabled).
      * 
      */
     public Output<Integer> exitCode() {
@@ -500,14 +500,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.hosts);
     }
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     @Export(name="image", refs={String.class}, tree="[0]")
     private Output<String> image;
 
     /**
-     * @return The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+     * @return The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     public Output<String> image() {
@@ -1010,14 +1010,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.ulimits);
     }
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      * 
      */
     @Export(name="uploads", refs={List.class,ContainerUpload.class}, tree="[0,1]")
     private Output</* @Nullable */ List<ContainerUpload>> uploads;
 
     /**
-     * @return Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+     * @return Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      * 
      */
     public Output<Optional<List<ContainerUpload>>> uploads() {

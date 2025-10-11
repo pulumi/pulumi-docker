@@ -182,14 +182,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+     * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      * 
      */
     @Import(name="cpus")
     private @Nullable Output<String> cpus;
 
     /**
-     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+     * @return Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      * 
      */
     public Optional<Output<String>> cpus() {
@@ -392,14 +392,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     @Import(name="image", required=true)
     private Output<String> image;
 
     /**
-     * @return The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+     * @return The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     public Output<String> image() {
@@ -924,14 +924,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      * 
      */
     @Import(name="uploads")
     private @Nullable Output<List<ContainerUploadArgs>> uploads;
 
     /**
-     * @return Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+     * @return Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      * 
      */
     public Optional<Output<List<ContainerUploadArgs>>> uploads() {
@@ -1339,7 +1339,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
          * 
          * @return builder
          * 
@@ -1350,7 +1350,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
+         * @param cpus Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
          * 
          * @return builder
          * 
@@ -1713,7 +1713,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
          * 
          * @return builder
          * 
@@ -1724,7 +1724,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `docker.RemoteImage` resource as is shown in the example.
+         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
          * 
          * @return builder
          * 
@@ -2517,7 +2517,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
          * 
          * @return builder
          * 
@@ -2528,7 +2528,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
          * 
          * @return builder
          * 
@@ -2538,7 +2538,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
          * 
          * @return builder
          * 

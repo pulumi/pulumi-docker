@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Delay { get; set; }
 
         /// <summary>
-        /// Action on rollback failure: pause | continue. Defaults to `pause`.
+        /// Action on rollback failure: pause | continue. Defaults to `Pause`.
         /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }

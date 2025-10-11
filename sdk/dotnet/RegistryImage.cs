@@ -23,13 +23,13 @@ namespace Pulumi.Docker
         public Output<Outputs.RegistryImageAuthConfig?> AuthConfig { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// If `True`, the verification of TLS certificates of the server/registry is disabled. Defaults to `False`
         /// </summary>
         [Output("insecureSkipVerify")]
         public Output<bool?> InsecureSkipVerify { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `False`
         /// </summary>
         [Output("keepRemotely")]
         public Output<bool?> KeepRemotely { get; private set; } = null!;
@@ -105,13 +105,13 @@ namespace Pulumi.Docker
         public Input<Inputs.RegistryImageAuthConfigArgs>? AuthConfig { get; set; }
 
         /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// If `True`, the verification of TLS certificates of the server/registry is disabled. Defaults to `False`
         /// </summary>
         [Input("insecureSkipVerify")]
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `False`
         /// </summary>
         [Input("keepRemotely")]
         public Input<bool>? KeepRemotely { get; set; }
@@ -149,13 +149,13 @@ namespace Pulumi.Docker
         public Input<Inputs.RegistryImageAuthConfigGetArgs>? AuthConfig { get; set; }
 
         /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// If `True`, the verification of TLS certificates of the server/registry is disabled. Defaults to `False`
         /// </summary>
         [Input("insecureSkipVerify")]
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `False`
         /// </summary>
         [Input("keepRemotely")]
         public Input<bool>? KeepRemotely { get; set; }
