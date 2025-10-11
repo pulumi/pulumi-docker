@@ -83,17 +83,19 @@ func TestBuildOnPreviewYAML(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	var outputBuf bytes.Buffer
+	var stdoutBuf, stderrBuf bytes.Buffer
+
 	integration.ProgramTest(t, &integration.ProgramTestOptions{
 		Dir:                      path.Join(cwd, "test-build-on-preview", "yaml"),
 		SkipUpdate:               true, //only run Preview
 		SkipExportImport:         true,
 		Verbose:                  true, //we need this to verify the build output logs
 		AllowEmptyPreviewChanges: true,
-		Stdout:                   &outputBuf,
+		Stdout:                   &stdoutBuf,
+		Stderr:                   &stderrBuf,
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-			assert.Contains(t, outputBuf.String(), "Image built successfully, local id")
-			assert.Contains(t, outputBuf.String(), "repoDigest:")
+			assert.Contains(t, stderrBuf.String(), "Image built successfully, local id")
+			assert.Contains(t, stdoutBuf.String(), "repoDigest: ")
 		},
 	})
 }
