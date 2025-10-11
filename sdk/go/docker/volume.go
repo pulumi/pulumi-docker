@@ -74,6 +74,8 @@ import (
 type Volume struct {
 	pulumi.CustomResourceState
 
+	// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+	Cluster VolumeClusterPtrOutput `pulumi:"cluster"`
 	// Driver type for the volume. Defaults to `local`.
 	Driver pulumi.StringOutput `pulumi:"driver"`
 	// Options specific to the driver.
@@ -116,6 +118,8 @@ func GetVolume(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Volume resources.
 type volumeState struct {
+	// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+	Cluster *VolumeCluster `pulumi:"cluster"`
 	// Driver type for the volume. Defaults to `local`.
 	Driver *string `pulumi:"driver"`
 	// Options specific to the driver.
@@ -129,6 +133,8 @@ type volumeState struct {
 }
 
 type VolumeState struct {
+	// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+	Cluster VolumeClusterPtrInput
 	// Driver type for the volume. Defaults to `local`.
 	Driver pulumi.StringPtrInput
 	// Options specific to the driver.
@@ -146,6 +152,8 @@ func (VolumeState) ElementType() reflect.Type {
 }
 
 type volumeArgs struct {
+	// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+	Cluster *VolumeCluster `pulumi:"cluster"`
 	// Driver type for the volume. Defaults to `local`.
 	Driver *string `pulumi:"driver"`
 	// Options specific to the driver.
@@ -158,6 +166,8 @@ type volumeArgs struct {
 
 // The set of arguments for constructing a Volume resource.
 type VolumeArgs struct {
+	// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+	Cluster VolumeClusterPtrInput
 	// Driver type for the volume. Defaults to `local`.
 	Driver pulumi.StringPtrInput
 	// Options specific to the driver.
@@ -253,6 +263,11 @@ func (o VolumeOutput) ToVolumeOutput() VolumeOutput {
 
 func (o VolumeOutput) ToVolumeOutputWithContext(ctx context.Context) VolumeOutput {
 	return o
+}
+
+// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+func (o VolumeOutput) Cluster() VolumeClusterPtrOutput {
+	return o.ApplyT(func(v *Volume) VolumeClusterPtrOutput { return v.Cluster }).(VolumeClusterPtrOutput)
 }
 
 // Driver type for the volume. Defaults to `local`.
