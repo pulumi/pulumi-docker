@@ -40,14 +40,14 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
     }
 
     /**
-     * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+     * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
      * 
      */
     @Import(name="configFile")
     private @Nullable Output<String> configFile;
 
     /**
-     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
      * 
      */
     public Optional<Output<String>> configFile() {
@@ -55,14 +55,14 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
     }
 
     /**
-     * Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+     * Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
      * 
      */
     @Import(name="configFileContent")
     private @Nullable Output<String> configFileContent;
 
     /**
-     * @return Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+     * @return Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
      * 
      */
     public Optional<Output<String>> configFileContent() {
@@ -159,7 +159,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param configFile Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+         * @param configFile Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
          * 
          * @return builder
          * 
@@ -170,7 +170,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param configFile Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+         * @param configFile Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
          * 
          * @return builder
          * 
@@ -180,7 +180,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param configFileContent Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+         * @param configFileContent Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
          * 
          * @return builder
          * 
@@ -191,7 +191,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param configFileContent Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+         * @param configFileContent Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
          * 
          * @return builder
          * 

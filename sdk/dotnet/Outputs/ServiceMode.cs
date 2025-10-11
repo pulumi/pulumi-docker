@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceMode
     {
         /// <summary>
-        /// When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        /// When `True`, tasks will run on every worker node. Conflicts with `Replicated`
         /// </summary>
         public readonly bool? Global;
         /// <summary>

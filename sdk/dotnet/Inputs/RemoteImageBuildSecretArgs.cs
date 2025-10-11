@@ -25,7 +25,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string> Id { get; set; } = null!;
 
         /// <summary>
-        /// File source of the secret. Takes precedence over `env`
+        /// File source of the secret. Takes precedence over `Env`
         /// </summary>
         [Input("src")]
         public Input<string>? Src { get; set; }

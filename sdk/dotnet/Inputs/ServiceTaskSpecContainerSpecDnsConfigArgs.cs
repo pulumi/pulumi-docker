@@ -28,7 +28,7 @@ namespace Pulumi.Docker.Inputs
         private InputList<string>? _options;
 
         /// <summary>
-        /// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        /// A list of internal resolver variables to be modified (e.g., `Debug`, `ndots:3`, etc.)
         /// </summary>
         public InputList<string> Options
         {

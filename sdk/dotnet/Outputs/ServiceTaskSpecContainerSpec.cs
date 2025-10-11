@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> CapDrops;
         /// <summary>
-        /// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
+        /// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `Command` property and there is no `Entrypoint` attribute in the `ContainerSpec` of the service.
         /// </summary>
         public readonly ImmutableArray<string> Commands;
         /// <summary>
@@ -62,11 +62,11 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecHost> Hosts;
         /// <summary>
-        /// The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
+        /// The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `RepoDigest` or `docker.RegistryImage` with the `Name` attribute for this, as shown in the examples.
         /// </summary>
         public readonly string Image;
         /// <summary>
-        /// Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
+        /// Isolation technology of the containers running the service. (Windows only). Defaults to `Default`.
         /// </summary>
         public readonly string? Isolation;
         /// <summary>

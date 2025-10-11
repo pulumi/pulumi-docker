@@ -134,14 +134,14 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+     * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver&#39;s documentation for more details.
      * 
      */
     @Import(name="ipamOptions")
     private @Nullable Output<Map<String,String>> ipamOptions;
 
     /**
-     * @return Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+     * @return Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver&#39;s documentation for more details.
      * 
      */
     public Optional<Output<Map<String,String>>> ipamOptions() {
@@ -425,7 +425,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param ipamOptions Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+         * @param ipamOptions Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver&#39;s documentation for more details.
          * 
          * @return builder
          * 
@@ -436,7 +436,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param ipamOptions Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+         * @param ipamOptions Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver&#39;s documentation for more details.
          * 
          * @return builder
          * 

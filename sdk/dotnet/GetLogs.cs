@@ -46,7 +46,7 @@ namespace Pulumi.Docker
         public bool? Follow { get; set; }
 
         /// <summary>
-        /// If true populate computed value `logs_list_string`
+        /// If true populate computed value `LogsListString`
         /// </summary>
         [Input("logsListStringEnabled")]
         public bool? LogsListStringEnabled { get; set; }
@@ -96,7 +96,7 @@ namespace Pulumi.Docker
         public Input<bool>? Follow { get; set; }
 
         /// <summary>
-        /// If true populate computed value `logs_list_string`
+        /// If true populate computed value `LogsListString`
         /// </summary>
         [Input("logsListStringEnabled")]
         public Input<bool>? LogsListStringEnabled { get; set; }
@@ -146,7 +146,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly string Id;
         /// <summary>
-        /// If true populate computed value `logs_list_string`
+        /// If true populate computed value `LogsListString`
         /// </summary>
         public readonly bool? LogsListStringEnabled;
         /// <summary>

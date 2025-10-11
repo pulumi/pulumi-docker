@@ -13,19 +13,19 @@ namespace Pulumi.Docker.Inputs
     public sealed class ContainerUploadArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+        /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `ContentBase64` &amp; `Source`
         /// </summary>
         [Input("content")]
         public Input<string>? Content { get; set; }
 
         /// <summary>
-        /// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+        /// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `Base64encode` interpolation function. See here for the reason. Conflicts with `Content` &amp; `Source`
         /// </summary>
         [Input("contentBase64")]
         public Input<string>? ContentBase64 { get; set; }
 
         /// <summary>
-        /// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+        /// If `True`, the file will be uploaded with user executable permission. Defaults to `False`.
         /// </summary>
         [Input("executable")]
         public Input<bool>? Executable { get; set; }
@@ -37,19 +37,19 @@ namespace Pulumi.Docker.Inputs
         public Input<string> File { get; set; } = null!;
 
         /// <summary>
-        /// The permission mode for the file in the container. Has precedence over `executable`.
+        /// The permission mode for the file in the container. Has precedence over `Executable`.
         /// </summary>
         [Input("permissions")]
         public Input<string>? Permissions { get; set; }
 
         /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `Content` &amp; `ContentBase64`
         /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
 
         /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not.
+        /// If using `Source`, this will force an update if the file content has updated but the filename has not.
         /// </summary>
         [Input("sourceHash")]
         public Input<string>? SourceHash { get; set; }

@@ -52,7 +52,7 @@ namespace Pulumi.Docker.Inputs
         private InputList<string>? _commands;
 
         /// <summary>
-        /// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
+        /// The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `Command` property and there is no `Entrypoint` attribute in the `ContainerSpec` of the service.
         /// </summary>
         public InputList<string> Commands
         {
@@ -133,13 +133,13 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
+        /// The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `RepoDigest` or `docker.RegistryImage` with the `Name` attribute for this, as shown in the examples.
         /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
         /// <summary>
-        /// Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
+        /// Isolation technology of the containers running the service. (Windows only). Defaults to `Default`.
         /// </summary>
         [Input("isolation")]
         public Input<string>? Isolation { get; set; }

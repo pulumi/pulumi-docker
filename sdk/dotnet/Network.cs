@@ -79,13 +79,13 @@ namespace Pulumi.Docker
         public Output<bool?> CheckDuplicate { get; private set; } = null!;
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Output("driver")]
         public Output<string> Driver { get; private set; } = null!;
 
         /// <summary>
-        /// Create swarm routing-mesh network. Defaults to `false`.
+        /// Create swarm routing-mesh network. Defaults to `False`.
         /// </summary>
         [Output("ingress")]
         public Output<bool?> Ingress { get; private set; } = null!;
@@ -103,19 +103,19 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.NetworkIpamConfig>> IpamConfigs { get; private set; } = null!;
 
         /// <summary>
-        /// Driver used by the custom IP scheme of the network. Defaults to `default`
+        /// Driver used by the custom IP scheme of the network. Defaults to `Default`
         /// </summary>
         [Output("ipamDriver")]
         public Output<string?> IpamDriver { get; private set; } = null!;
 
         /// <summary>
-        /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        /// Provide explicit options to the IPAM driver. Valid options vary with `IpamDriver` and refer to that driver's documentation for more details.
         /// </summary>
         [Output("ipamOptions")]
         public Output<ImmutableDictionary<string, string>?> IpamOptions { get; private set; } = null!;
 
         /// <summary>
-        /// Enable IPv6 networking. Defaults to `false`.
+        /// Enable IPv6 networking. Defaults to `False`.
         /// </summary>
         [Output("ipv6")]
         public Output<bool?> Ipv6 { get; private set; } = null!;
@@ -139,7 +139,7 @@ namespace Pulumi.Docker
         public Output<ImmutableDictionary<string, string>> Options { get; private set; } = null!;
 
         /// <summary>
-        /// Scope of the network. One of `swarm`, `global`, or `local`.
+        /// Scope of the network. One of `Swarm`, `Global`, or `Local`.
         /// </summary>
         [Output("scope")]
         public Output<string> Scope { get; private set; } = null!;
@@ -203,13 +203,13 @@ namespace Pulumi.Docker
         public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
 
         /// <summary>
-        /// Create swarm routing-mesh network. Defaults to `false`.
+        /// Create swarm routing-mesh network. Defaults to `False`.
         /// </summary>
         [Input("ingress")]
         public Input<bool>? Ingress { get; set; }
@@ -233,7 +233,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Driver used by the custom IP scheme of the network. Defaults to `default`
+        /// Driver used by the custom IP scheme of the network. Defaults to `Default`
         /// </summary>
         [Input("ipamDriver")]
         public Input<string>? IpamDriver { get; set; }
@@ -242,7 +242,7 @@ namespace Pulumi.Docker
         private InputMap<string>? _ipamOptions;
 
         /// <summary>
-        /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        /// Provide explicit options to the IPAM driver. Valid options vary with `IpamDriver` and refer to that driver's documentation for more details.
         /// </summary>
         public InputMap<string> IpamOptions
         {
@@ -251,7 +251,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Enable IPv6 networking. Defaults to `false`.
+        /// Enable IPv6 networking. Defaults to `False`.
         /// </summary>
         [Input("ipv6")]
         public Input<bool>? Ipv6 { get; set; }
@@ -307,13 +307,13 @@ namespace Pulumi.Docker
         public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
 
         /// <summary>
-        /// Create swarm routing-mesh network. Defaults to `false`.
+        /// Create swarm routing-mesh network. Defaults to `False`.
         /// </summary>
         [Input("ingress")]
         public Input<bool>? Ingress { get; set; }
@@ -337,7 +337,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Driver used by the custom IP scheme of the network. Defaults to `default`
+        /// Driver used by the custom IP scheme of the network. Defaults to `Default`
         /// </summary>
         [Input("ipamDriver")]
         public Input<string>? IpamDriver { get; set; }
@@ -346,7 +346,7 @@ namespace Pulumi.Docker
         private InputMap<string>? _ipamOptions;
 
         /// <summary>
-        /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        /// Provide explicit options to the IPAM driver. Valid options vary with `IpamDriver` and refer to that driver's documentation for more details.
         /// </summary>
         public InputMap<string> IpamOptions
         {
@@ -355,7 +355,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Enable IPv6 networking. Defaults to `false`.
+        /// Enable IPv6 networking. Defaults to `False`.
         /// </summary>
         [Input("ipv6")]
         public Input<bool>? Ipv6 { get; set; }
@@ -391,7 +391,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Scope of the network. One of `swarm`, `global`, or `local`.
+        /// Scope of the network. One of `Swarm`, `Global`, or `Local`.
         /// </summary>
         [Input("scope")]
         public Input<string>? Scope { get; set; }

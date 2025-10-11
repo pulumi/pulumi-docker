@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string Id;
         /// <summary>
-        /// File source of the secret. Takes precedence over `env`
+        /// File source of the secret. Takes precedence over `Env`
         /// </summary>
         public readonly string? Src;
 
