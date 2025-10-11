@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class RemoteImageBuildArgs : global::Pulumi.ResourceArgs
+    public sealed class RegistryImageBuildArgs : global::Pulumi.ResourceArgs
     {
         [Input("additionalContexts")]
         private InputList<string>? _additionalContexts;
@@ -25,14 +25,14 @@ namespace Pulumi.Docker.Inputs
         }
 
         [Input("authConfigs")]
-        private InputList<Inputs.RemoteImageBuildAuthConfigArgs>? _authConfigs;
+        private InputList<Inputs.RegistryImageBuildAuthConfigArgs>? _authConfigs;
 
         /// <summary>
-        /// The configuration for the authentication
+        /// Authentication configuration for the Docker registry. It is only used for this resource.
         /// </summary>
-        public InputList<Inputs.RemoteImageBuildAuthConfigArgs> AuthConfigs
+        public InputList<Inputs.RegistryImageBuildAuthConfigArgs> AuthConfigs
         {
-            get => _authConfigs ?? (_authConfigs = new InputList<Inputs.RemoteImageBuildAuthConfigArgs>());
+            get => _authConfigs ?? (_authConfigs = new InputList<Inputs.RegistryImageBuildAuthConfigArgs>());
             set => _authConfigs = value;
         }
 
@@ -235,14 +235,14 @@ namespace Pulumi.Docker.Inputs
         public Input<bool>? Remove { get; set; }
 
         [Input("secrets")]
-        private InputList<Inputs.RemoteImageBuildSecretArgs>? _secrets;
+        private InputList<Inputs.RegistryImageBuildSecretArgs>? _secrets;
 
         /// <summary>
         /// Set build-time secrets. Only available when you use a buildx builder.
         /// </summary>
-        public InputList<Inputs.RemoteImageBuildSecretArgs> Secrets
+        public InputList<Inputs.RegistryImageBuildSecretArgs> Secrets
         {
-            get => _secrets ?? (_secrets = new InputList<Inputs.RemoteImageBuildSecretArgs>());
+            get => _secrets ?? (_secrets = new InputList<Inputs.RegistryImageBuildSecretArgs>());
             set => _secrets = value;
         }
 
@@ -301,14 +301,14 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Target { get; set; }
 
         [Input("ulimits")]
-        private InputList<Inputs.RemoteImageBuildUlimitArgs>? _ulimits;
+        private InputList<Inputs.RegistryImageBuildUlimitArgs>? _ulimits;
 
         /// <summary>
         /// Configuration for ulimits
         /// </summary>
-        public InputList<Inputs.RemoteImageBuildUlimitArgs> Ulimits
+        public InputList<Inputs.RegistryImageBuildUlimitArgs> Ulimits
         {
-            get => _ulimits ?? (_ulimits = new InputList<Inputs.RemoteImageBuildUlimitArgs>());
+            get => _ulimits ?? (_ulimits = new InputList<Inputs.RegistryImageBuildUlimitArgs>());
             set => _ulimits = value;
         }
 
@@ -318,9 +318,9 @@ namespace Pulumi.Docker.Inputs
         [Input("version")]
         public Input<string>? Version { get; set; }
 
-        public RemoteImageBuildArgs()
+        public RegistryImageBuildArgs()
         {
         }
-        public static new RemoteImageBuildArgs Empty => new RemoteImageBuildArgs();
+        public static new RegistryImageBuildArgs Empty => new RegistryImageBuildArgs();
     }
 }

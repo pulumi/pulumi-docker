@@ -22,6 +22,9 @@ namespace Pulumi.Docker
         [Output("authConfig")]
         public Output<Outputs.RegistryImageAuthConfig?> AuthConfig { get; private set; } = null!;
 
+        [Output("build")]
+        public Output<Outputs.RegistryImageBuild?> Build { get; private set; } = null!;
+
         /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
@@ -104,6 +107,9 @@ namespace Pulumi.Docker
         [Input("authConfig")]
         public Input<Inputs.RegistryImageAuthConfigArgs>? AuthConfig { get; set; }
 
+        [Input("build")]
+        public Input<Inputs.RegistryImageBuildArgs>? Build { get; set; }
+
         /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
@@ -147,6 +153,9 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("authConfig")]
         public Input<Inputs.RegistryImageAuthConfigGetArgs>? AuthConfig { get; set; }
+
+        [Input("build")]
+        public Input<Inputs.RegistryImageBuildGetArgs>? Build { get; set; }
 
         /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`

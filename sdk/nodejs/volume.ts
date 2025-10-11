@@ -81,6 +81,10 @@ export class Volume extends pulumi.CustomResource {
     }
 
     /**
+     * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     */
+    declare public readonly cluster: pulumi.Output<outputs.VolumeCluster | undefined>;
+    /**
      * Driver type for the volume. Defaults to `local`.
      */
     declare public readonly driver: pulumi.Output<string>;
@@ -114,6 +118,7 @@ export class Volume extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as VolumeState | undefined;
+            resourceInputs["cluster"] = state?.cluster;
             resourceInputs["driver"] = state?.driver;
             resourceInputs["driverOpts"] = state?.driverOpts;
             resourceInputs["labels"] = state?.labels;
@@ -121,6 +126,7 @@ export class Volume extends pulumi.CustomResource {
             resourceInputs["name"] = state?.name;
         } else {
             const args = argsOrState as VolumeArgs | undefined;
+            resourceInputs["cluster"] = args?.cluster;
             resourceInputs["driver"] = args?.driver;
             resourceInputs["driverOpts"] = args?.driverOpts;
             resourceInputs["labels"] = args?.labels;
@@ -136,6 +142,10 @@ export class Volume extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Volume resources.
  */
 export interface VolumeState {
+    /**
+     * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     */
+    cluster?: pulumi.Input<inputs.VolumeCluster>;
     /**
      * Driver type for the volume. Defaults to `local`.
      */
@@ -162,6 +172,10 @@ export interface VolumeState {
  * The set of arguments for constructing a Volume resource.
  */
 export interface VolumeArgs {
+    /**
+     * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     */
+    cluster?: pulumi.Input<inputs.VolumeCluster>;
     /**
      * Driver type for the volume. Defaults to `local`.
      */

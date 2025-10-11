@@ -6,6 +6,7 @@ package com.pulumi.docker.inputs;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.RegistryImageAuthConfigArgs;
+import com.pulumi.docker.inputs.RegistryImageBuildArgs;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Map;
@@ -31,6 +32,13 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
      */
     public Optional<Output<RegistryImageAuthConfigArgs>> authConfig() {
         return Optional.ofNullable(this.authConfig);
+    }
+
+    @Import(name="build")
+    private @Nullable Output<RegistryImageBuildArgs> build;
+
+    public Optional<Output<RegistryImageBuildArgs>> build() {
+        return Optional.ofNullable(this.build);
     }
 
     /**
@@ -112,6 +120,7 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
 
     private RegistryImageState(RegistryImageState $) {
         this.authConfig = $.authConfig;
+        this.build = $.build;
         this.insecureSkipVerify = $.insecureSkipVerify;
         this.keepRemotely = $.keepRemotely;
         this.name = $.name;
@@ -156,6 +165,15 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
          */
         public Builder authConfig(RegistryImageAuthConfigArgs authConfig) {
             return authConfig(Output.of(authConfig));
+        }
+
+        public Builder build(@Nullable Output<RegistryImageBuildArgs> build) {
+            $.build = build;
+            return this;
+        }
+
+        public Builder build(RegistryImageBuildArgs build) {
+            return build(Output.of(build));
         }
 
         /**
