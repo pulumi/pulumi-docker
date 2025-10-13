@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Cert;
         /// <summary>
-        /// Automatically load images to the Docker Engine image store. Defaults to `false`
+        /// Automatically load images to the Docker Engine image store. Defaults to `False`
         /// </summary>
         public readonly bool? DefaultLoad;
         /// <summary>

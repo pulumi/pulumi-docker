@@ -46,14 +46,14 @@ public final class GetLogsPlainArgs extends com.pulumi.resources.InvokeArgs {
     }
 
     /**
-     * If true populate computed value `logs_list_string`
+     * If true populate computed value `logsListString`
      * 
      */
     @Import(name="logsListStringEnabled")
     private @Nullable Boolean logsListStringEnabled;
 
     /**
-     * @return If true populate computed value `logs_list_string`
+     * @return If true populate computed value `logsListString`
      * 
      */
     public Optional<Boolean> logsListStringEnabled() {
@@ -173,7 +173,7 @@ public final class GetLogsPlainArgs extends com.pulumi.resources.InvokeArgs {
         }
 
         /**
-         * @param logsListStringEnabled If true populate computed value `logs_list_string`
+         * @param logsListStringEnabled If true populate computed value `logsListString`
          * 
          * @return builder
          * 

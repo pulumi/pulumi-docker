@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Ipv6Address;
         /// <summary>
-        /// The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+        /// The name or id of the network to use. You can use `Name` or `Id` attribute from a `docker.Network` resource.
         /// </summary>
         public readonly string Name;
 

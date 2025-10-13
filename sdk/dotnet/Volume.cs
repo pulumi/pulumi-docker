@@ -67,7 +67,7 @@ namespace Pulumi.Docker
     public partial class Volume : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Driver type for the volume. Defaults to `local`.
+        /// Driver type for the volume. Defaults to `Local`.
         /// </summary>
         [Output("driver")]
         public Output<string> Driver { get; private set; } = null!;
@@ -143,7 +143,7 @@ namespace Pulumi.Docker
     public sealed class VolumeArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Driver type for the volume. Defaults to `local`.
+        /// Driver type for the volume. Defaults to `Local`.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
@@ -187,7 +187,7 @@ namespace Pulumi.Docker
     public sealed class VolumeState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Driver type for the volume. Defaults to `local`.
+        /// Driver type for the volume. Defaults to `Local`.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }

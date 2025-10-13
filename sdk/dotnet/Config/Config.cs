@@ -64,7 +64,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _context = new __Value<string?>(() => __config.Get("context"));
         /// <summary>
-        /// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
+        /// The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `Host` if set.
         /// </summary>
         public static string? Context
         {
@@ -74,7 +74,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<bool?> _disableDockerDaemonCheck = new __Value<bool?>(() => __config.GetBoolean("disableDockerDaemonCheck"));
         /// <summary>
-        /// If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
+        /// If set to `True`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
         /// </summary>
         public static bool? DisableDockerDaemonCheck
         {
@@ -130,11 +130,11 @@ namespace Pulumi.Docker
                 public string Address { get; set; }
                 public bool? AuthDisabled { get; set; }
             /// <summary>
-            /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+            /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `ConfigFile` has predencen over all other options.
             /// </summary>
                 public string? ConfigFile { get; set; } = null!;
             /// <summary>
-            /// Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+            /// Plain content of the docker json file for registry auth. `ConfigFileContent` has precedence over username/password.
             /// </summary>
                 public string? ConfigFileContent { get; set; } = null!;
             /// <summary>

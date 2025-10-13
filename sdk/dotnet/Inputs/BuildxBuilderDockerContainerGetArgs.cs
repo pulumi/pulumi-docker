@@ -49,7 +49,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? CpusetMems { get; set; }
 
         /// <summary>
-        /// Automatically load images to the Docker Engine image store. Defaults to `false`
+        /// Automatically load images to the Docker Engine image store. Defaults to `False`
         /// </summary>
         [Input("defaultLoad")]
         public Input<bool>? DefaultLoad { get; set; }
