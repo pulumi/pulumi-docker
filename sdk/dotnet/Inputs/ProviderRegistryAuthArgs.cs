@@ -22,13 +22,13 @@ namespace Pulumi.Docker.Inputs
         public Input<bool>? AuthDisabled { get; set; }
 
         /// <summary>
-        /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `ConfigFile` has predencen over all other options.
         /// </summary>
         [Input("configFile")]
         public Input<string>? ConfigFile { get; set; }
 
         /// <summary>
-        /// Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+        /// Plain content of the docker json file for registry auth. `ConfigFileContent` has precedence over username/password.
         /// </summary>
         [Input("configFileContent")]
         public Input<string>? ConfigFileContent { get; set; }

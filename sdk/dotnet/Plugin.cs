@@ -37,7 +37,7 @@ namespace Pulumi.Docker
         public Output<int?> EnableTimeout { get; private set; } = null!;
 
         /// <summary>
-        /// If `true` the plugin is enabled. Defaults to `true`
+        /// If `True` the plugin is enabled. Defaults to `True`
         /// </summary>
         [Output("enabled")]
         public Output<bool?> Enabled { get; private set; } = null!;
@@ -143,7 +143,7 @@ namespace Pulumi.Docker
         public Input<int>? EnableTimeout { get; set; }
 
         /// <summary>
-        /// If `true` the plugin is enabled. Defaults to `true`
+        /// If `True` the plugin is enabled. Defaults to `True`
         /// </summary>
         [Input("enabled")]
         public Input<bool>? Enabled { get; set; }
@@ -217,7 +217,7 @@ namespace Pulumi.Docker
         public Input<int>? EnableTimeout { get; set; }
 
         /// <summary>
-        /// If `true` the plugin is enabled. Defaults to `true`
+        /// If `True` the plugin is enabled. Defaults to `True`
         /// </summary>
         [Input("enabled")]
         public Input<bool>? Enabled { get; set; }

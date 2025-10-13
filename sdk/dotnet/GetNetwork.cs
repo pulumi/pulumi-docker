@@ -118,7 +118,7 @@ namespace Pulumi.Docker
     public sealed class GetNetworkResult
     {
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         public readonly string Driver;
         /// <summary>
@@ -126,7 +126,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly string Id;
         /// <summary>
-        /// If `true`, the network is internal.
+        /// If `True`, the network is internal.
         /// </summary>
         public readonly bool Internal;
         /// <summary>
@@ -142,7 +142,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly ImmutableDictionary<string, string> Options;
         /// <summary>
-        /// Scope of the network. One of `swarm`, `global`, or `local`.
+        /// Scope of the network. One of `Swarm`, `Global`, or `Local`.
         /// </summary>
         public readonly string Scope;
 

@@ -20,12 +20,12 @@ public final class RegistryAuth {
     private String address;
     private @Nullable Boolean authDisabled;
     /**
-     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
      * 
      */
     private @Nullable String configFile;
     /**
-     * @return Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+     * @return Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
      * 
      */
     private @Nullable String configFileContent;
@@ -52,14 +52,14 @@ public final class RegistryAuth {
         return Optional.ofNullable(this.authDisabled);
     }
     /**
-     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
      * 
      */
     public Optional<String> configFile() {
         return Optional.ofNullable(this.configFile);
     }
     /**
-     * @return Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+     * @return Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
      * 
      */
     public Optional<String> configFileContent() {
