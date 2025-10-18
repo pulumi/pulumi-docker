@@ -29,6 +29,11 @@ public final class ContainerNetworksAdvanced {
      */
     private @Nullable String ipv6Address;
     /**
+     * @return The MAC address of the container in the specific network.
+     * 
+     */
+    private @Nullable String macAddress;
+    /**
      * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      * 
      */
@@ -57,6 +62,13 @@ public final class ContainerNetworksAdvanced {
         return Optional.ofNullable(this.ipv6Address);
     }
     /**
+     * @return The MAC address of the container in the specific network.
+     * 
+     */
+    public Optional<String> macAddress() {
+        return Optional.ofNullable(this.macAddress);
+    }
+    /**
      * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      * 
      */
@@ -76,6 +88,7 @@ public final class ContainerNetworksAdvanced {
         private @Nullable List<String> aliases;
         private @Nullable String ipv4Address;
         private @Nullable String ipv6Address;
+        private @Nullable String macAddress;
         private String name;
         public Builder() {}
         public Builder(ContainerNetworksAdvanced defaults) {
@@ -83,6 +96,7 @@ public final class ContainerNetworksAdvanced {
     	      this.aliases = defaults.aliases;
     	      this.ipv4Address = defaults.ipv4Address;
     	      this.ipv6Address = defaults.ipv6Address;
+    	      this.macAddress = defaults.macAddress;
     	      this.name = defaults.name;
         }
 
@@ -108,6 +122,12 @@ public final class ContainerNetworksAdvanced {
             return this;
         }
         @CustomType.Setter
+        public Builder macAddress(@Nullable String macAddress) {
+
+            this.macAddress = macAddress;
+            return this;
+        }
+        @CustomType.Setter
         public Builder name(String name) {
             if (name == null) {
               throw new MissingRequiredPropertyException("ContainerNetworksAdvanced", "name");
@@ -120,6 +140,7 @@ public final class ContainerNetworksAdvanced {
             _resultValue.aliases = aliases;
             _resultValue.ipv4Address = ipv4Address;
             _resultValue.ipv6Address = ipv6Address;
+            _resultValue.macAddress = macAddress;
             _resultValue.name = name;
             return _resultValue;
         }

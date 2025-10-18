@@ -37,6 +37,12 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Ipv6Address { get; set; }
 
         /// <summary>
+        /// The MAC address of the container in the specific network.
+        /// </summary>
+        [Input("macAddress")]
+        public Input<string>? MacAddress { get; set; }
+
+        /// <summary>
         /// The name or id of the network to use. You can use `Name` or `Id` attribute from a `docker.Network` resource.
         /// </summary>
         [Input("name", required: true)]
