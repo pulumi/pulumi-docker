@@ -3164,6 +3164,8 @@ type ContainerNetworksAdvanced struct {
 	Ipv4Address *string `pulumi:"ipv4Address"`
 	// The IPV6 address of the container in the specific network.
 	Ipv6Address *string `pulumi:"ipv6Address"`
+	// The MAC address of the container in the specific network.
+	MacAddress *string `pulumi:"macAddress"`
 	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name string `pulumi:"name"`
 }
@@ -3186,6 +3188,8 @@ type ContainerNetworksAdvancedArgs struct {
 	Ipv4Address pulumi.StringPtrInput `pulumi:"ipv4Address"`
 	// The IPV6 address of the container in the specific network.
 	Ipv6Address pulumi.StringPtrInput `pulumi:"ipv6Address"`
+	// The MAC address of the container in the specific network.
+	MacAddress pulumi.StringPtrInput `pulumi:"macAddress"`
 	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
 	Name pulumi.StringInput `pulumi:"name"`
 }
@@ -3254,6 +3258,11 @@ func (o ContainerNetworksAdvancedOutput) Ipv4Address() pulumi.StringPtrOutput {
 // The IPV6 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv6Address() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv6Address }).(pulumi.StringPtrOutput)
+}
+
+// The MAC address of the container in the specific network.
+func (o ContainerNetworksAdvancedOutput) MacAddress() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.MacAddress }).(pulumi.StringPtrOutput)
 }
 
 // The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
@@ -4454,7 +4463,1258 @@ func (o RegistryImageAuthConfigPtrOutput) Username() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+type RegistryImageBuild struct {
+	// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+	AdditionalContexts []string `pulumi:"additionalContexts"`
+	// Authentication configuration for the Docker registry. It is only used for this resource.
+	AuthConfigs []RegistryImageBuildAuthConfig `pulumi:"authConfigs"`
+	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+	BuildArgs map[string]string `pulumi:"buildArgs"`
+	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+	BuildId *string `pulumi:"buildId"`
+	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+	BuildLogFile *string `pulumi:"buildLogFile"`
+	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+	Builder *string `pulumi:"builder"`
+	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+	CacheFroms []string `pulumi:"cacheFroms"`
+	// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+	CacheTos []string `pulumi:"cacheTos"`
+	// Optional parent cgroup for the container
+	CgroupParent *string `pulumi:"cgroupParent"`
+	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+	Context string `pulumi:"context"`
+	// The length of a CPU period in microseconds
+	CpuPeriod *int `pulumi:"cpuPeriod"`
+	// Microseconds of CPU time that the container can get in a CPU period
+	CpuQuota *int `pulumi:"cpuQuota"`
+	// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+	CpuSetCpus *string `pulumi:"cpuSetCpus"`
+	// MEMs in which to allow execution (`0-3`, `0`, `1`)
+	CpuSetMems *string `pulumi:"cpuSetMems"`
+	// CPU shares (relative weight)
+	CpuShares *int `pulumi:"cpuShares"`
+	// Name of the Dockerfile. Defaults to `Dockerfile`.
+	Dockerfile *string `pulumi:"dockerfile"`
+	// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+	ExtraHosts []string `pulumi:"extraHosts"`
+	// Always remove intermediate containers
+	ForceRemove *bool `pulumi:"forceRemove"`
+	// Isolation represents the isolation technology of a container. The supported values are
+	Isolation *string `pulumi:"isolation"`
+	// Set metadata for an image
+	Label map[string]string `pulumi:"label"`
+	// User-defined key/value metadata
+	Labels map[string]string `pulumi:"labels"`
+	// Set memory limit for build
+	Memory *int `pulumi:"memory"`
+	// Total memory (memory + swap), -1 to enable unlimited swap
+	MemorySwap *int `pulumi:"memorySwap"`
+	// Set the networking mode for the RUN instructions during build
+	NetworkMode *string `pulumi:"networkMode"`
+	// Do not use the cache when building the image
+	NoCache *bool `pulumi:"noCache"`
+	// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+	Platform *string `pulumi:"platform"`
+	// Attempt to pull the image even if an older image exists locally
+	PullParent *bool `pulumi:"pullParent"`
+	// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+	RemoteContext *string `pulumi:"remoteContext"`
+	// Remove intermediate containers after a successful build. Defaults to `true`.
+	Remove *bool `pulumi:"remove"`
+	// Set build-time secrets. Only available when you use a buildx builder.
+	Secrets []RegistryImageBuildSecret `pulumi:"secrets"`
+	// The security options
+	SecurityOpts []string `pulumi:"securityOpts"`
+	// Set an ID for the build session
+	SessionId *string `pulumi:"sessionId"`
+	// Size of /dev/shm in bytes. The size must be greater than 0
+	ShmSize *int `pulumi:"shmSize"`
+	// If true the new layers are squashed into a new image with a single new layer
+	Squash *bool `pulumi:"squash"`
+	// Suppress the build output and print image ID on success
+	SuppressOutput *bool `pulumi:"suppressOutput"`
+	// Name and optionally a tag in the 'name:tag' format
+	Tags []string `pulumi:"tags"`
+	// Set the target build stage to build
+	Target *string `pulumi:"target"`
+	// Configuration for ulimits
+	Ulimits []RegistryImageBuildUlimit `pulumi:"ulimits"`
+	// Version of the underlying builder to use
+	Version *string `pulumi:"version"`
+}
+
+// RegistryImageBuildInput is an input type that accepts RegistryImageBuildArgs and RegistryImageBuildOutput values.
+// You can construct a concrete instance of `RegistryImageBuildInput` via:
+//
+//	RegistryImageBuildArgs{...}
+type RegistryImageBuildInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildOutput() RegistryImageBuildOutput
+	ToRegistryImageBuildOutputWithContext(context.Context) RegistryImageBuildOutput
+}
+
+type RegistryImageBuildArgs struct {
+	// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+	AdditionalContexts pulumi.StringArrayInput `pulumi:"additionalContexts"`
+	// Authentication configuration for the Docker registry. It is only used for this resource.
+	AuthConfigs RegistryImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
+	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+	BuildArgs pulumi.StringMapInput `pulumi:"buildArgs"`
+	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
+	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+	BuildLogFile pulumi.StringPtrInput `pulumi:"buildLogFile"`
+	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+	Builder pulumi.StringPtrInput `pulumi:"builder"`
+	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
+	// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+	CacheTos pulumi.StringArrayInput `pulumi:"cacheTos"`
+	// Optional parent cgroup for the container
+	CgroupParent pulumi.StringPtrInput `pulumi:"cgroupParent"`
+	// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+	Context pulumi.StringInput `pulumi:"context"`
+	// The length of a CPU period in microseconds
+	CpuPeriod pulumi.IntPtrInput `pulumi:"cpuPeriod"`
+	// Microseconds of CPU time that the container can get in a CPU period
+	CpuQuota pulumi.IntPtrInput `pulumi:"cpuQuota"`
+	// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+	CpuSetCpus pulumi.StringPtrInput `pulumi:"cpuSetCpus"`
+	// MEMs in which to allow execution (`0-3`, `0`, `1`)
+	CpuSetMems pulumi.StringPtrInput `pulumi:"cpuSetMems"`
+	// CPU shares (relative weight)
+	CpuShares pulumi.IntPtrInput `pulumi:"cpuShares"`
+	// Name of the Dockerfile. Defaults to `Dockerfile`.
+	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
+	// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+	ExtraHosts pulumi.StringArrayInput `pulumi:"extraHosts"`
+	// Always remove intermediate containers
+	ForceRemove pulumi.BoolPtrInput `pulumi:"forceRemove"`
+	// Isolation represents the isolation technology of a container. The supported values are
+	Isolation pulumi.StringPtrInput `pulumi:"isolation"`
+	// Set metadata for an image
+	Label pulumi.StringMapInput `pulumi:"label"`
+	// User-defined key/value metadata
+	Labels pulumi.StringMapInput `pulumi:"labels"`
+	// Set memory limit for build
+	Memory pulumi.IntPtrInput `pulumi:"memory"`
+	// Total memory (memory + swap), -1 to enable unlimited swap
+	MemorySwap pulumi.IntPtrInput `pulumi:"memorySwap"`
+	// Set the networking mode for the RUN instructions during build
+	NetworkMode pulumi.StringPtrInput `pulumi:"networkMode"`
+	// Do not use the cache when building the image
+	NoCache pulumi.BoolPtrInput `pulumi:"noCache"`
+	// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+	Platform pulumi.StringPtrInput `pulumi:"platform"`
+	// Attempt to pull the image even if an older image exists locally
+	PullParent pulumi.BoolPtrInput `pulumi:"pullParent"`
+	// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+	RemoteContext pulumi.StringPtrInput `pulumi:"remoteContext"`
+	// Remove intermediate containers after a successful build. Defaults to `true`.
+	Remove pulumi.BoolPtrInput `pulumi:"remove"`
+	// Set build-time secrets. Only available when you use a buildx builder.
+	Secrets RegistryImageBuildSecretArrayInput `pulumi:"secrets"`
+	// The security options
+	SecurityOpts pulumi.StringArrayInput `pulumi:"securityOpts"`
+	// Set an ID for the build session
+	SessionId pulumi.StringPtrInput `pulumi:"sessionId"`
+	// Size of /dev/shm in bytes. The size must be greater than 0
+	ShmSize pulumi.IntPtrInput `pulumi:"shmSize"`
+	// If true the new layers are squashed into a new image with a single new layer
+	Squash pulumi.BoolPtrInput `pulumi:"squash"`
+	// Suppress the build output and print image ID on success
+	SuppressOutput pulumi.BoolPtrInput `pulumi:"suppressOutput"`
+	// Name and optionally a tag in the 'name:tag' format
+	Tags pulumi.StringArrayInput `pulumi:"tags"`
+	// Set the target build stage to build
+	Target pulumi.StringPtrInput `pulumi:"target"`
+	// Configuration for ulimits
+	Ulimits RegistryImageBuildUlimitArrayInput `pulumi:"ulimits"`
+	// Version of the underlying builder to use
+	Version pulumi.StringPtrInput `pulumi:"version"`
+}
+
+func (RegistryImageBuildArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuild)(nil)).Elem()
+}
+
+func (i RegistryImageBuildArgs) ToRegistryImageBuildOutput() RegistryImageBuildOutput {
+	return i.ToRegistryImageBuildOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildArgs) ToRegistryImageBuildOutputWithContext(ctx context.Context) RegistryImageBuildOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildOutput)
+}
+
+func (i RegistryImageBuildArgs) ToRegistryImageBuildPtrOutput() RegistryImageBuildPtrOutput {
+	return i.ToRegistryImageBuildPtrOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildArgs) ToRegistryImageBuildPtrOutputWithContext(ctx context.Context) RegistryImageBuildPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildOutput).ToRegistryImageBuildPtrOutputWithContext(ctx)
+}
+
+// RegistryImageBuildPtrInput is an input type that accepts RegistryImageBuildArgs, RegistryImageBuildPtr and RegistryImageBuildPtrOutput values.
+// You can construct a concrete instance of `RegistryImageBuildPtrInput` via:
+//
+//	        RegistryImageBuildArgs{...}
+//
+//	or:
+//
+//	        nil
+type RegistryImageBuildPtrInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildPtrOutput() RegistryImageBuildPtrOutput
+	ToRegistryImageBuildPtrOutputWithContext(context.Context) RegistryImageBuildPtrOutput
+}
+
+type registryImageBuildPtrType RegistryImageBuildArgs
+
+func RegistryImageBuildPtr(v *RegistryImageBuildArgs) RegistryImageBuildPtrInput {
+	return (*registryImageBuildPtrType)(v)
+}
+
+func (*registryImageBuildPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryImageBuild)(nil)).Elem()
+}
+
+func (i *registryImageBuildPtrType) ToRegistryImageBuildPtrOutput() RegistryImageBuildPtrOutput {
+	return i.ToRegistryImageBuildPtrOutputWithContext(context.Background())
+}
+
+func (i *registryImageBuildPtrType) ToRegistryImageBuildPtrOutputWithContext(ctx context.Context) RegistryImageBuildPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildPtrOutput)
+}
+
+type RegistryImageBuildOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuild)(nil)).Elem()
+}
+
+func (o RegistryImageBuildOutput) ToRegistryImageBuildOutput() RegistryImageBuildOutput {
+	return o
+}
+
+func (o RegistryImageBuildOutput) ToRegistryImageBuildOutputWithContext(ctx context.Context) RegistryImageBuildOutput {
+	return o
+}
+
+func (o RegistryImageBuildOutput) ToRegistryImageBuildPtrOutput() RegistryImageBuildPtrOutput {
+	return o.ToRegistryImageBuildPtrOutputWithContext(context.Background())
+}
+
+func (o RegistryImageBuildOutput) ToRegistryImageBuildPtrOutputWithContext(ctx context.Context) RegistryImageBuildPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v RegistryImageBuild) *RegistryImageBuild {
+		return &v
+	}).(RegistryImageBuildPtrOutput)
+}
+
+// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+func (o RegistryImageBuildOutput) AdditionalContexts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []string { return v.AdditionalContexts }).(pulumi.StringArrayOutput)
+}
+
+// Authentication configuration for the Docker registry. It is only used for this resource.
+func (o RegistryImageBuildOutput) AuthConfigs() RegistryImageBuildAuthConfigArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildAuthConfig { return v.AuthConfigs }).(RegistryImageBuildAuthConfigArrayOutput)
+}
+
+// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+func (o RegistryImageBuildOutput) BuildArgs() pulumi.StringMapOutput {
+	return o.ApplyT(func(v RegistryImageBuild) map[string]string { return v.BuildArgs }).(pulumi.StringMapOutput)
+}
+
+// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+func (o RegistryImageBuildOutput) BuildId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.BuildId }).(pulumi.StringPtrOutput)
+}
+
+// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+func (o RegistryImageBuildOutput) BuildLogFile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.BuildLogFile }).(pulumi.StringPtrOutput)
+}
+
+// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+func (o RegistryImageBuildOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Builder }).(pulumi.StringPtrOutput)
+}
+
+// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+func (o RegistryImageBuildOutput) CacheFroms() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []string { return v.CacheFroms }).(pulumi.StringArrayOutput)
+}
+
+// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+func (o RegistryImageBuildOutput) CacheTos() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []string { return v.CacheTos }).(pulumi.StringArrayOutput)
+}
+
+// Optional parent cgroup for the container
+func (o RegistryImageBuildOutput) CgroupParent() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.CgroupParent }).(pulumi.StringPtrOutput)
+}
+
+// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+func (o RegistryImageBuildOutput) Context() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageBuild) string { return v.Context }).(pulumi.StringOutput)
+}
+
+// The length of a CPU period in microseconds
+func (o RegistryImageBuildOutput) CpuPeriod() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *int { return v.CpuPeriod }).(pulumi.IntPtrOutput)
+}
+
+// Microseconds of CPU time that the container can get in a CPU period
+func (o RegistryImageBuildOutput) CpuQuota() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *int { return v.CpuQuota }).(pulumi.IntPtrOutput)
+}
+
+// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+func (o RegistryImageBuildOutput) CpuSetCpus() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.CpuSetCpus }).(pulumi.StringPtrOutput)
+}
+
+// MEMs in which to allow execution (`0-3`, `0`, `1`)
+func (o RegistryImageBuildOutput) CpuSetMems() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.CpuSetMems }).(pulumi.StringPtrOutput)
+}
+
+// CPU shares (relative weight)
+func (o RegistryImageBuildOutput) CpuShares() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *int { return v.CpuShares }).(pulumi.IntPtrOutput)
+}
+
+// Name of the Dockerfile. Defaults to `Dockerfile`.
+func (o RegistryImageBuildOutput) Dockerfile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
+}
+
+// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+func (o RegistryImageBuildOutput) ExtraHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []string { return v.ExtraHosts }).(pulumi.StringArrayOutput)
+}
+
+// Always remove intermediate containers
+func (o RegistryImageBuildOutput) ForceRemove() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.ForceRemove }).(pulumi.BoolPtrOutput)
+}
+
+// Isolation represents the isolation technology of a container. The supported values are
+func (o RegistryImageBuildOutput) Isolation() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Isolation }).(pulumi.StringPtrOutput)
+}
+
+// Set metadata for an image
+func (o RegistryImageBuildOutput) Label() pulumi.StringMapOutput {
+	return o.ApplyT(func(v RegistryImageBuild) map[string]string { return v.Label }).(pulumi.StringMapOutput)
+}
+
+// User-defined key/value metadata
+func (o RegistryImageBuildOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v RegistryImageBuild) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+}
+
+// Set memory limit for build
+func (o RegistryImageBuildOutput) Memory() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *int { return v.Memory }).(pulumi.IntPtrOutput)
+}
+
+// Total memory (memory + swap), -1 to enable unlimited swap
+func (o RegistryImageBuildOutput) MemorySwap() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *int { return v.MemorySwap }).(pulumi.IntPtrOutput)
+}
+
+// Set the networking mode for the RUN instructions during build
+func (o RegistryImageBuildOutput) NetworkMode() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.NetworkMode }).(pulumi.StringPtrOutput)
+}
+
+// Do not use the cache when building the image
+func (o RegistryImageBuildOutput) NoCache() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.NoCache }).(pulumi.BoolPtrOutput)
+}
+
+// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+func (o RegistryImageBuildOutput) Platform() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Platform }).(pulumi.StringPtrOutput)
+}
+
+// Attempt to pull the image even if an older image exists locally
+func (o RegistryImageBuildOutput) PullParent() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.PullParent }).(pulumi.BoolPtrOutput)
+}
+
+// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+func (o RegistryImageBuildOutput) RemoteContext() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.RemoteContext }).(pulumi.StringPtrOutput)
+}
+
+// Remove intermediate containers after a successful build. Defaults to `true`.
+func (o RegistryImageBuildOutput) Remove() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.Remove }).(pulumi.BoolPtrOutput)
+}
+
+// Set build-time secrets. Only available when you use a buildx builder.
+func (o RegistryImageBuildOutput) Secrets() RegistryImageBuildSecretArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildSecret { return v.Secrets }).(RegistryImageBuildSecretArrayOutput)
+}
+
+// The security options
+func (o RegistryImageBuildOutput) SecurityOpts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []string { return v.SecurityOpts }).(pulumi.StringArrayOutput)
+}
+
+// Set an ID for the build session
+func (o RegistryImageBuildOutput) SessionId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.SessionId }).(pulumi.StringPtrOutput)
+}
+
+// Size of /dev/shm in bytes. The size must be greater than 0
+func (o RegistryImageBuildOutput) ShmSize() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *int { return v.ShmSize }).(pulumi.IntPtrOutput)
+}
+
+// If true the new layers are squashed into a new image with a single new layer
+func (o RegistryImageBuildOutput) Squash() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.Squash }).(pulumi.BoolPtrOutput)
+}
+
+// Suppress the build output and print image ID on success
+func (o RegistryImageBuildOutput) SuppressOutput() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.SuppressOutput }).(pulumi.BoolPtrOutput)
+}
+
+// Name and optionally a tag in the 'name:tag' format
+func (o RegistryImageBuildOutput) Tags() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []string { return v.Tags }).(pulumi.StringArrayOutput)
+}
+
+// Set the target build stage to build
+func (o RegistryImageBuildOutput) Target() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Target }).(pulumi.StringPtrOutput)
+}
+
+// Configuration for ulimits
+func (o RegistryImageBuildOutput) Ulimits() RegistryImageBuildUlimitArrayOutput {
+	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildUlimit { return v.Ulimits }).(RegistryImageBuildUlimitArrayOutput)
+}
+
+// Version of the underlying builder to use
+func (o RegistryImageBuildOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Version }).(pulumi.StringPtrOutput)
+}
+
+type RegistryImageBuildPtrOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryImageBuild)(nil)).Elem()
+}
+
+func (o RegistryImageBuildPtrOutput) ToRegistryImageBuildPtrOutput() RegistryImageBuildPtrOutput {
+	return o
+}
+
+func (o RegistryImageBuildPtrOutput) ToRegistryImageBuildPtrOutputWithContext(ctx context.Context) RegistryImageBuildPtrOutput {
+	return o
+}
+
+func (o RegistryImageBuildPtrOutput) Elem() RegistryImageBuildOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) RegistryImageBuild {
+		if v != nil {
+			return *v
+		}
+		var ret RegistryImageBuild
+		return ret
+	}).(RegistryImageBuildOutput)
+}
+
+// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+func (o RegistryImageBuildPtrOutput) AdditionalContexts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.AdditionalContexts
+	}).(pulumi.StringArrayOutput)
+}
+
+// Authentication configuration for the Docker registry. It is only used for this resource.
+func (o RegistryImageBuildPtrOutput) AuthConfigs() RegistryImageBuildAuthConfigArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []RegistryImageBuildAuthConfig {
+		if v == nil {
+			return nil
+		}
+		return v.AuthConfigs
+	}).(RegistryImageBuildAuthConfigArrayOutput)
+}
+
+// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+func (o RegistryImageBuildPtrOutput) BuildArgs() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.BuildArgs
+	}).(pulumi.StringMapOutput)
+}
+
+// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+func (o RegistryImageBuildPtrOutput) BuildId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BuildId
+	}).(pulumi.StringPtrOutput)
+}
+
+// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+func (o RegistryImageBuildPtrOutput) BuildLogFile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BuildLogFile
+	}).(pulumi.StringPtrOutput)
+}
+
+// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+func (o RegistryImageBuildPtrOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Builder
+	}).(pulumi.StringPtrOutput)
+}
+
+// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+func (o RegistryImageBuildPtrOutput) CacheFroms() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.CacheFroms
+	}).(pulumi.StringArrayOutput)
+}
+
+// Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+func (o RegistryImageBuildPtrOutput) CacheTos() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.CacheTos
+	}).(pulumi.StringArrayOutput)
+}
+
+// Optional parent cgroup for the container
+func (o RegistryImageBuildPtrOutput) CgroupParent() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CgroupParent
+	}).(pulumi.StringPtrOutput)
+}
+
+// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+func (o RegistryImageBuildPtrOutput) Context() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Context
+	}).(pulumi.StringPtrOutput)
+}
+
+// The length of a CPU period in microseconds
+func (o RegistryImageBuildPtrOutput) CpuPeriod() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CpuPeriod
+	}).(pulumi.IntPtrOutput)
+}
+
+// Microseconds of CPU time that the container can get in a CPU period
+func (o RegistryImageBuildPtrOutput) CpuQuota() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CpuQuota
+	}).(pulumi.IntPtrOutput)
+}
+
+// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+func (o RegistryImageBuildPtrOutput) CpuSetCpus() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpuSetCpus
+	}).(pulumi.StringPtrOutput)
+}
+
+// MEMs in which to allow execution (`0-3`, `0`, `1`)
+func (o RegistryImageBuildPtrOutput) CpuSetMems() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CpuSetMems
+	}).(pulumi.StringPtrOutput)
+}
+
+// CPU shares (relative weight)
+func (o RegistryImageBuildPtrOutput) CpuShares() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CpuShares
+	}).(pulumi.IntPtrOutput)
+}
+
+// Name of the Dockerfile. Defaults to `Dockerfile`.
+func (o RegistryImageBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Dockerfile
+	}).(pulumi.StringPtrOutput)
+}
+
+// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+func (o RegistryImageBuildPtrOutput) ExtraHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.ExtraHosts
+	}).(pulumi.StringArrayOutput)
+}
+
+// Always remove intermediate containers
+func (o RegistryImageBuildPtrOutput) ForceRemove() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceRemove
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Isolation represents the isolation technology of a container. The supported values are
+func (o RegistryImageBuildPtrOutput) Isolation() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Isolation
+	}).(pulumi.StringPtrOutput)
+}
+
+// Set metadata for an image
+func (o RegistryImageBuildPtrOutput) Label() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Label
+	}).(pulumi.StringMapOutput)
+}
+
+// User-defined key/value metadata
+func (o RegistryImageBuildPtrOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(pulumi.StringMapOutput)
+}
+
+// Set memory limit for build
+func (o RegistryImageBuildPtrOutput) Memory() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Memory
+	}).(pulumi.IntPtrOutput)
+}
+
+// Total memory (memory + swap), -1 to enable unlimited swap
+func (o RegistryImageBuildPtrOutput) MemorySwap() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *int {
+		if v == nil {
+			return nil
+		}
+		return v.MemorySwap
+	}).(pulumi.IntPtrOutput)
+}
+
+// Set the networking mode for the RUN instructions during build
+func (o RegistryImageBuildPtrOutput) NetworkMode() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.NetworkMode
+	}).(pulumi.StringPtrOutput)
+}
+
+// Do not use the cache when building the image
+func (o RegistryImageBuildPtrOutput) NoCache() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.NoCache
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+func (o RegistryImageBuildPtrOutput) Platform() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Platform
+	}).(pulumi.StringPtrOutput)
+}
+
+// Attempt to pull the image even if an older image exists locally
+func (o RegistryImageBuildPtrOutput) PullParent() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.PullParent
+	}).(pulumi.BoolPtrOutput)
+}
+
+// A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+func (o RegistryImageBuildPtrOutput) RemoteContext() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.RemoteContext
+	}).(pulumi.StringPtrOutput)
+}
+
+// Remove intermediate containers after a successful build. Defaults to `true`.
+func (o RegistryImageBuildPtrOutput) Remove() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Remove
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Set build-time secrets. Only available when you use a buildx builder.
+func (o RegistryImageBuildPtrOutput) Secrets() RegistryImageBuildSecretArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []RegistryImageBuildSecret {
+		if v == nil {
+			return nil
+		}
+		return v.Secrets
+	}).(RegistryImageBuildSecretArrayOutput)
+}
+
+// The security options
+func (o RegistryImageBuildPtrOutput) SecurityOpts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.SecurityOpts
+	}).(pulumi.StringArrayOutput)
+}
+
+// Set an ID for the build session
+func (o RegistryImageBuildPtrOutput) SessionId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SessionId
+	}).(pulumi.StringPtrOutput)
+}
+
+// Size of /dev/shm in bytes. The size must be greater than 0
+func (o RegistryImageBuildPtrOutput) ShmSize() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *int {
+		if v == nil {
+			return nil
+		}
+		return v.ShmSize
+	}).(pulumi.IntPtrOutput)
+}
+
+// If true the new layers are squashed into a new image with a single new layer
+func (o RegistryImageBuildPtrOutput) Squash() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Squash
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Suppress the build output and print image ID on success
+func (o RegistryImageBuildPtrOutput) SuppressOutput() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.SuppressOutput
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Name and optionally a tag in the 'name:tag' format
+func (o RegistryImageBuildPtrOutput) Tags() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Tags
+	}).(pulumi.StringArrayOutput)
+}
+
+// Set the target build stage to build
+func (o RegistryImageBuildPtrOutput) Target() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Target
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configuration for ulimits
+func (o RegistryImageBuildPtrOutput) Ulimits() RegistryImageBuildUlimitArrayOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) []RegistryImageBuildUlimit {
+		if v == nil {
+			return nil
+		}
+		return v.Ulimits
+	}).(RegistryImageBuildUlimitArrayOutput)
+}
+
+// Version of the underlying builder to use
+func (o RegistryImageBuildPtrOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Version
+	}).(pulumi.StringPtrOutput)
+}
+
+type RegistryImageBuildAuthConfig struct {
+	// the auth token
+	Auth *string `pulumi:"auth"`
+	// the user emal
+	Email *string `pulumi:"email"`
+	// hostname of the registry
+	HostName string `pulumi:"hostName"`
+	// the identity token
+	IdentityToken *string `pulumi:"identityToken"`
+	// The password for the Docker registry.
+	Password *string `pulumi:"password"`
+	// the registry token
+	RegistryToken *string `pulumi:"registryToken"`
+	// the server address
+	ServerAddress *string `pulumi:"serverAddress"`
+	// the registry user name
+	UserName *string `pulumi:"userName"`
+}
+
+// RegistryImageBuildAuthConfigInput is an input type that accepts RegistryImageBuildAuthConfigArgs and RegistryImageBuildAuthConfigOutput values.
+// You can construct a concrete instance of `RegistryImageBuildAuthConfigInput` via:
+//
+//	RegistryImageBuildAuthConfigArgs{...}
+type RegistryImageBuildAuthConfigInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildAuthConfigOutput() RegistryImageBuildAuthConfigOutput
+	ToRegistryImageBuildAuthConfigOutputWithContext(context.Context) RegistryImageBuildAuthConfigOutput
+}
+
+type RegistryImageBuildAuthConfigArgs struct {
+	// the auth token
+	Auth pulumi.StringPtrInput `pulumi:"auth"`
+	// the user emal
+	Email pulumi.StringPtrInput `pulumi:"email"`
+	// hostname of the registry
+	HostName pulumi.StringInput `pulumi:"hostName"`
+	// the identity token
+	IdentityToken pulumi.StringPtrInput `pulumi:"identityToken"`
+	// The password for the Docker registry.
+	Password pulumi.StringPtrInput `pulumi:"password"`
+	// the registry token
+	RegistryToken pulumi.StringPtrInput `pulumi:"registryToken"`
+	// the server address
+	ServerAddress pulumi.StringPtrInput `pulumi:"serverAddress"`
+	// the registry user name
+	UserName pulumi.StringPtrInput `pulumi:"userName"`
+}
+
+func (RegistryImageBuildAuthConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuildAuthConfig)(nil)).Elem()
+}
+
+func (i RegistryImageBuildAuthConfigArgs) ToRegistryImageBuildAuthConfigOutput() RegistryImageBuildAuthConfigOutput {
+	return i.ToRegistryImageBuildAuthConfigOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildAuthConfigArgs) ToRegistryImageBuildAuthConfigOutputWithContext(ctx context.Context) RegistryImageBuildAuthConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildAuthConfigOutput)
+}
+
+// RegistryImageBuildAuthConfigArrayInput is an input type that accepts RegistryImageBuildAuthConfigArray and RegistryImageBuildAuthConfigArrayOutput values.
+// You can construct a concrete instance of `RegistryImageBuildAuthConfigArrayInput` via:
+//
+//	RegistryImageBuildAuthConfigArray{ RegistryImageBuildAuthConfigArgs{...} }
+type RegistryImageBuildAuthConfigArrayInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildAuthConfigArrayOutput() RegistryImageBuildAuthConfigArrayOutput
+	ToRegistryImageBuildAuthConfigArrayOutputWithContext(context.Context) RegistryImageBuildAuthConfigArrayOutput
+}
+
+type RegistryImageBuildAuthConfigArray []RegistryImageBuildAuthConfigInput
+
+func (RegistryImageBuildAuthConfigArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImageBuildAuthConfig)(nil)).Elem()
+}
+
+func (i RegistryImageBuildAuthConfigArray) ToRegistryImageBuildAuthConfigArrayOutput() RegistryImageBuildAuthConfigArrayOutput {
+	return i.ToRegistryImageBuildAuthConfigArrayOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildAuthConfigArray) ToRegistryImageBuildAuthConfigArrayOutputWithContext(ctx context.Context) RegistryImageBuildAuthConfigArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildAuthConfigArrayOutput)
+}
+
+type RegistryImageBuildAuthConfigOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildAuthConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuildAuthConfig)(nil)).Elem()
+}
+
+func (o RegistryImageBuildAuthConfigOutput) ToRegistryImageBuildAuthConfigOutput() RegistryImageBuildAuthConfigOutput {
+	return o
+}
+
+func (o RegistryImageBuildAuthConfigOutput) ToRegistryImageBuildAuthConfigOutputWithContext(ctx context.Context) RegistryImageBuildAuthConfigOutput {
+	return o
+}
+
+// the auth token
+func (o RegistryImageBuildAuthConfigOutput) Auth() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.Auth }).(pulumi.StringPtrOutput)
+}
+
+// the user emal
+func (o RegistryImageBuildAuthConfigOutput) Email() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.Email }).(pulumi.StringPtrOutput)
+}
+
+// hostname of the registry
+func (o RegistryImageBuildAuthConfigOutput) HostName() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) string { return v.HostName }).(pulumi.StringOutput)
+}
+
+// the identity token
+func (o RegistryImageBuildAuthConfigOutput) IdentityToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.IdentityToken }).(pulumi.StringPtrOutput)
+}
+
+// The password for the Docker registry.
+func (o RegistryImageBuildAuthConfigOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.Password }).(pulumi.StringPtrOutput)
+}
+
+// the registry token
+func (o RegistryImageBuildAuthConfigOutput) RegistryToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.RegistryToken }).(pulumi.StringPtrOutput)
+}
+
+// the server address
+func (o RegistryImageBuildAuthConfigOutput) ServerAddress() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.ServerAddress }).(pulumi.StringPtrOutput)
+}
+
+// the registry user name
+func (o RegistryImageBuildAuthConfigOutput) UserName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.UserName }).(pulumi.StringPtrOutput)
+}
+
+type RegistryImageBuildAuthConfigArrayOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildAuthConfigArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImageBuildAuthConfig)(nil)).Elem()
+}
+
+func (o RegistryImageBuildAuthConfigArrayOutput) ToRegistryImageBuildAuthConfigArrayOutput() RegistryImageBuildAuthConfigArrayOutput {
+	return o
+}
+
+func (o RegistryImageBuildAuthConfigArrayOutput) ToRegistryImageBuildAuthConfigArrayOutputWithContext(ctx context.Context) RegistryImageBuildAuthConfigArrayOutput {
+	return o
+}
+
+func (o RegistryImageBuildAuthConfigArrayOutput) Index(i pulumi.IntInput) RegistryImageBuildAuthConfigOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryImageBuildAuthConfig {
+		return vs[0].([]RegistryImageBuildAuthConfig)[vs[1].(int)]
+	}).(RegistryImageBuildAuthConfigOutput)
+}
+
+type RegistryImageBuildSecret struct {
+	// Environment variable source of the secret
+	Env *string `pulumi:"env"`
+	// The ID of this resource.
+	Id string `pulumi:"id"`
+	// File source of the secret. Takes precedence over `env`
+	Src *string `pulumi:"src"`
+}
+
+// RegistryImageBuildSecretInput is an input type that accepts RegistryImageBuildSecretArgs and RegistryImageBuildSecretOutput values.
+// You can construct a concrete instance of `RegistryImageBuildSecretInput` via:
+//
+//	RegistryImageBuildSecretArgs{...}
+type RegistryImageBuildSecretInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildSecretOutput() RegistryImageBuildSecretOutput
+	ToRegistryImageBuildSecretOutputWithContext(context.Context) RegistryImageBuildSecretOutput
+}
+
+type RegistryImageBuildSecretArgs struct {
+	// Environment variable source of the secret
+	Env pulumi.StringPtrInput `pulumi:"env"`
+	// The ID of this resource.
+	Id pulumi.StringInput `pulumi:"id"`
+	// File source of the secret. Takes precedence over `env`
+	Src pulumi.StringPtrInput `pulumi:"src"`
+}
+
+func (RegistryImageBuildSecretArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuildSecret)(nil)).Elem()
+}
+
+func (i RegistryImageBuildSecretArgs) ToRegistryImageBuildSecretOutput() RegistryImageBuildSecretOutput {
+	return i.ToRegistryImageBuildSecretOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildSecretArgs) ToRegistryImageBuildSecretOutputWithContext(ctx context.Context) RegistryImageBuildSecretOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildSecretOutput)
+}
+
+// RegistryImageBuildSecretArrayInput is an input type that accepts RegistryImageBuildSecretArray and RegistryImageBuildSecretArrayOutput values.
+// You can construct a concrete instance of `RegistryImageBuildSecretArrayInput` via:
+//
+//	RegistryImageBuildSecretArray{ RegistryImageBuildSecretArgs{...} }
+type RegistryImageBuildSecretArrayInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildSecretArrayOutput() RegistryImageBuildSecretArrayOutput
+	ToRegistryImageBuildSecretArrayOutputWithContext(context.Context) RegistryImageBuildSecretArrayOutput
+}
+
+type RegistryImageBuildSecretArray []RegistryImageBuildSecretInput
+
+func (RegistryImageBuildSecretArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImageBuildSecret)(nil)).Elem()
+}
+
+func (i RegistryImageBuildSecretArray) ToRegistryImageBuildSecretArrayOutput() RegistryImageBuildSecretArrayOutput {
+	return i.ToRegistryImageBuildSecretArrayOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildSecretArray) ToRegistryImageBuildSecretArrayOutputWithContext(ctx context.Context) RegistryImageBuildSecretArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildSecretArrayOutput)
+}
+
+type RegistryImageBuildSecretOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildSecretOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuildSecret)(nil)).Elem()
+}
+
+func (o RegistryImageBuildSecretOutput) ToRegistryImageBuildSecretOutput() RegistryImageBuildSecretOutput {
+	return o
+}
+
+func (o RegistryImageBuildSecretOutput) ToRegistryImageBuildSecretOutputWithContext(ctx context.Context) RegistryImageBuildSecretOutput {
+	return o
+}
+
+// Environment variable source of the secret
+func (o RegistryImageBuildSecretOutput) Env() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildSecret) *string { return v.Env }).(pulumi.StringPtrOutput)
+}
+
+// The ID of this resource.
+func (o RegistryImageBuildSecretOutput) Id() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageBuildSecret) string { return v.Id }).(pulumi.StringOutput)
+}
+
+// File source of the secret. Takes precedence over `env`
+func (o RegistryImageBuildSecretOutput) Src() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuildSecret) *string { return v.Src }).(pulumi.StringPtrOutput)
+}
+
+type RegistryImageBuildSecretArrayOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildSecretArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImageBuildSecret)(nil)).Elem()
+}
+
+func (o RegistryImageBuildSecretArrayOutput) ToRegistryImageBuildSecretArrayOutput() RegistryImageBuildSecretArrayOutput {
+	return o
+}
+
+func (o RegistryImageBuildSecretArrayOutput) ToRegistryImageBuildSecretArrayOutputWithContext(ctx context.Context) RegistryImageBuildSecretArrayOutput {
+	return o
+}
+
+func (o RegistryImageBuildSecretArrayOutput) Index(i pulumi.IntInput) RegistryImageBuildSecretOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryImageBuildSecret {
+		return vs[0].([]RegistryImageBuildSecret)[vs[1].(int)]
+	}).(RegistryImageBuildSecretOutput)
+}
+
+type RegistryImageBuildUlimit struct {
+	// soft limit
+	Hard int `pulumi:"hard"`
+	// The name of the Docker image.
+	Name string `pulumi:"name"`
+	// hard limit
+	Soft int `pulumi:"soft"`
+}
+
+// RegistryImageBuildUlimitInput is an input type that accepts RegistryImageBuildUlimitArgs and RegistryImageBuildUlimitOutput values.
+// You can construct a concrete instance of `RegistryImageBuildUlimitInput` via:
+//
+//	RegistryImageBuildUlimitArgs{...}
+type RegistryImageBuildUlimitInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildUlimitOutput() RegistryImageBuildUlimitOutput
+	ToRegistryImageBuildUlimitOutputWithContext(context.Context) RegistryImageBuildUlimitOutput
+}
+
+type RegistryImageBuildUlimitArgs struct {
+	// soft limit
+	Hard pulumi.IntInput `pulumi:"hard"`
+	// The name of the Docker image.
+	Name pulumi.StringInput `pulumi:"name"`
+	// hard limit
+	Soft pulumi.IntInput `pulumi:"soft"`
+}
+
+func (RegistryImageBuildUlimitArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuildUlimit)(nil)).Elem()
+}
+
+func (i RegistryImageBuildUlimitArgs) ToRegistryImageBuildUlimitOutput() RegistryImageBuildUlimitOutput {
+	return i.ToRegistryImageBuildUlimitOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildUlimitArgs) ToRegistryImageBuildUlimitOutputWithContext(ctx context.Context) RegistryImageBuildUlimitOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildUlimitOutput)
+}
+
+// RegistryImageBuildUlimitArrayInput is an input type that accepts RegistryImageBuildUlimitArray and RegistryImageBuildUlimitArrayOutput values.
+// You can construct a concrete instance of `RegistryImageBuildUlimitArrayInput` via:
+//
+//	RegistryImageBuildUlimitArray{ RegistryImageBuildUlimitArgs{...} }
+type RegistryImageBuildUlimitArrayInput interface {
+	pulumi.Input
+
+	ToRegistryImageBuildUlimitArrayOutput() RegistryImageBuildUlimitArrayOutput
+	ToRegistryImageBuildUlimitArrayOutputWithContext(context.Context) RegistryImageBuildUlimitArrayOutput
+}
+
+type RegistryImageBuildUlimitArray []RegistryImageBuildUlimitInput
+
+func (RegistryImageBuildUlimitArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImageBuildUlimit)(nil)).Elem()
+}
+
+func (i RegistryImageBuildUlimitArray) ToRegistryImageBuildUlimitArrayOutput() RegistryImageBuildUlimitArrayOutput {
+	return i.ToRegistryImageBuildUlimitArrayOutputWithContext(context.Background())
+}
+
+func (i RegistryImageBuildUlimitArray) ToRegistryImageBuildUlimitArrayOutputWithContext(ctx context.Context) RegistryImageBuildUlimitArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageBuildUlimitArrayOutput)
+}
+
+type RegistryImageBuildUlimitOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildUlimitOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImageBuildUlimit)(nil)).Elem()
+}
+
+func (o RegistryImageBuildUlimitOutput) ToRegistryImageBuildUlimitOutput() RegistryImageBuildUlimitOutput {
+	return o
+}
+
+func (o RegistryImageBuildUlimitOutput) ToRegistryImageBuildUlimitOutputWithContext(ctx context.Context) RegistryImageBuildUlimitOutput {
+	return o
+}
+
+// soft limit
+func (o RegistryImageBuildUlimitOutput) Hard() pulumi.IntOutput {
+	return o.ApplyT(func(v RegistryImageBuildUlimit) int { return v.Hard }).(pulumi.IntOutput)
+}
+
+// The name of the Docker image.
+func (o RegistryImageBuildUlimitOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryImageBuildUlimit) string { return v.Name }).(pulumi.StringOutput)
+}
+
+// hard limit
+func (o RegistryImageBuildUlimitOutput) Soft() pulumi.IntOutput {
+	return o.ApplyT(func(v RegistryImageBuildUlimit) int { return v.Soft }).(pulumi.IntOutput)
+}
+
+type RegistryImageBuildUlimitArrayOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageBuildUlimitArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImageBuildUlimit)(nil)).Elem()
+}
+
+func (o RegistryImageBuildUlimitArrayOutput) ToRegistryImageBuildUlimitArrayOutput() RegistryImageBuildUlimitArrayOutput {
+	return o
+}
+
+func (o RegistryImageBuildUlimitArrayOutput) ToRegistryImageBuildUlimitArrayOutputWithContext(ctx context.Context) RegistryImageBuildUlimitArrayOutput {
+	return o
+}
+
+func (o RegistryImageBuildUlimitArrayOutput) Index(i pulumi.IntInput) RegistryImageBuildUlimitOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryImageBuildUlimit {
+		return vs[0].([]RegistryImageBuildUlimit)[vs[1].(int)]
+	}).(RegistryImageBuildUlimitOutput)
+}
+
 type RemoteImageBuild struct {
+	// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+	AdditionalContexts []string `pulumi:"additionalContexts"`
 	// The configuration for the authentication
 	AuthConfigs []RemoteImageBuildAuthConfig `pulumi:"authConfigs"`
 	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
@@ -4545,6 +5805,8 @@ type RemoteImageBuildInput interface {
 }
 
 type RemoteImageBuildArgs struct {
+	// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+	AdditionalContexts pulumi.StringArrayInput `pulumi:"additionalContexts"`
 	// The configuration for the authentication
 	AuthConfigs RemoteImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
 	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
@@ -4698,6 +5960,11 @@ func (o RemoteImageBuildOutput) ToRemoteImageBuildPtrOutputWithContext(ctx conte
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v RemoteImageBuild) *RemoteImageBuild {
 		return &v
 	}).(RemoteImageBuildPtrOutput)
+}
+
+// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+func (o RemoteImageBuildOutput) AdditionalContexts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v RemoteImageBuild) []string { return v.AdditionalContexts }).(pulumi.StringArrayOutput)
 }
 
 // The configuration for the authentication
@@ -4912,6 +6179,16 @@ func (o RemoteImageBuildPtrOutput) Elem() RemoteImageBuildOutput {
 		var ret RemoteImageBuild
 		return ret
 	}).(RemoteImageBuildOutput)
+}
+
+// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+func (o RemoteImageBuildPtrOutput) AdditionalContexts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *RemoteImageBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.AdditionalContexts
+	}).(pulumi.StringArrayOutput)
 }
 
 // The configuration for the authentication
@@ -11673,6 +12950,314 @@ func (o ServiceUpdateConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
+type VolumeCluster struct {
+	// Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+	Availability *string `pulumi:"availability"`
+	// Cluster Volume group
+	Group *string `pulumi:"group"`
+	// The ID of the cluster volume.
+	Id *string `pulumi:"id"`
+	// Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+	LimitBytes *string `pulumi:"limitBytes"`
+	// Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+	RequiredBytes *string `pulumi:"requiredBytes"`
+	// The scope of the volume. Can be `single` (default) or `multi`.
+	Scope *string `pulumi:"scope"`
+	// The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+	Sharing *string `pulumi:"sharing"`
+	// A topology that the Cluster Volume would be preferred in
+	TopologyPreferred *string `pulumi:"topologyPreferred"`
+	// A topology that the Cluster Volume must be accessible from
+	TopologyRequired *string `pulumi:"topologyRequired"`
+	// Cluster Volume access type. Can be `mount` or `block` (default).
+	Type *string `pulumi:"type"`
+}
+
+// VolumeClusterInput is an input type that accepts VolumeClusterArgs and VolumeClusterOutput values.
+// You can construct a concrete instance of `VolumeClusterInput` via:
+//
+//	VolumeClusterArgs{...}
+type VolumeClusterInput interface {
+	pulumi.Input
+
+	ToVolumeClusterOutput() VolumeClusterOutput
+	ToVolumeClusterOutputWithContext(context.Context) VolumeClusterOutput
+}
+
+type VolumeClusterArgs struct {
+	// Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+	Availability pulumi.StringPtrInput `pulumi:"availability"`
+	// Cluster Volume group
+	Group pulumi.StringPtrInput `pulumi:"group"`
+	// The ID of the cluster volume.
+	Id pulumi.StringPtrInput `pulumi:"id"`
+	// Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+	LimitBytes pulumi.StringPtrInput `pulumi:"limitBytes"`
+	// Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+	RequiredBytes pulumi.StringPtrInput `pulumi:"requiredBytes"`
+	// The scope of the volume. Can be `single` (default) or `multi`.
+	Scope pulumi.StringPtrInput `pulumi:"scope"`
+	// The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+	Sharing pulumi.StringPtrInput `pulumi:"sharing"`
+	// A topology that the Cluster Volume would be preferred in
+	TopologyPreferred pulumi.StringPtrInput `pulumi:"topologyPreferred"`
+	// A topology that the Cluster Volume must be accessible from
+	TopologyRequired pulumi.StringPtrInput `pulumi:"topologyRequired"`
+	// Cluster Volume access type. Can be `mount` or `block` (default).
+	Type pulumi.StringPtrInput `pulumi:"type"`
+}
+
+func (VolumeClusterArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*VolumeCluster)(nil)).Elem()
+}
+
+func (i VolumeClusterArgs) ToVolumeClusterOutput() VolumeClusterOutput {
+	return i.ToVolumeClusterOutputWithContext(context.Background())
+}
+
+func (i VolumeClusterArgs) ToVolumeClusterOutputWithContext(ctx context.Context) VolumeClusterOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VolumeClusterOutput)
+}
+
+func (i VolumeClusterArgs) ToVolumeClusterPtrOutput() VolumeClusterPtrOutput {
+	return i.ToVolumeClusterPtrOutputWithContext(context.Background())
+}
+
+func (i VolumeClusterArgs) ToVolumeClusterPtrOutputWithContext(ctx context.Context) VolumeClusterPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VolumeClusterOutput).ToVolumeClusterPtrOutputWithContext(ctx)
+}
+
+// VolumeClusterPtrInput is an input type that accepts VolumeClusterArgs, VolumeClusterPtr and VolumeClusterPtrOutput values.
+// You can construct a concrete instance of `VolumeClusterPtrInput` via:
+//
+//	        VolumeClusterArgs{...}
+//
+//	or:
+//
+//	        nil
+type VolumeClusterPtrInput interface {
+	pulumi.Input
+
+	ToVolumeClusterPtrOutput() VolumeClusterPtrOutput
+	ToVolumeClusterPtrOutputWithContext(context.Context) VolumeClusterPtrOutput
+}
+
+type volumeClusterPtrType VolumeClusterArgs
+
+func VolumeClusterPtr(v *VolumeClusterArgs) VolumeClusterPtrInput {
+	return (*volumeClusterPtrType)(v)
+}
+
+func (*volumeClusterPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**VolumeCluster)(nil)).Elem()
+}
+
+func (i *volumeClusterPtrType) ToVolumeClusterPtrOutput() VolumeClusterPtrOutput {
+	return i.ToVolumeClusterPtrOutputWithContext(context.Background())
+}
+
+func (i *volumeClusterPtrType) ToVolumeClusterPtrOutputWithContext(ctx context.Context) VolumeClusterPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VolumeClusterPtrOutput)
+}
+
+type VolumeClusterOutput struct{ *pulumi.OutputState }
+
+func (VolumeClusterOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*VolumeCluster)(nil)).Elem()
+}
+
+func (o VolumeClusterOutput) ToVolumeClusterOutput() VolumeClusterOutput {
+	return o
+}
+
+func (o VolumeClusterOutput) ToVolumeClusterOutputWithContext(ctx context.Context) VolumeClusterOutput {
+	return o
+}
+
+func (o VolumeClusterOutput) ToVolumeClusterPtrOutput() VolumeClusterPtrOutput {
+	return o.ToVolumeClusterPtrOutputWithContext(context.Background())
+}
+
+func (o VolumeClusterOutput) ToVolumeClusterPtrOutputWithContext(ctx context.Context) VolumeClusterPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v VolumeCluster) *VolumeCluster {
+		return &v
+	}).(VolumeClusterPtrOutput)
+}
+
+// Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+func (o VolumeClusterOutput) Availability() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.Availability }).(pulumi.StringPtrOutput)
+}
+
+// Cluster Volume group
+func (o VolumeClusterOutput) Group() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.Group }).(pulumi.StringPtrOutput)
+}
+
+// The ID of the cluster volume.
+func (o VolumeClusterOutput) Id() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.Id }).(pulumi.StringPtrOutput)
+}
+
+// Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+func (o VolumeClusterOutput) LimitBytes() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.LimitBytes }).(pulumi.StringPtrOutput)
+}
+
+// Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+func (o VolumeClusterOutput) RequiredBytes() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.RequiredBytes }).(pulumi.StringPtrOutput)
+}
+
+// The scope of the volume. Can be `single` (default) or `multi`.
+func (o VolumeClusterOutput) Scope() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.Scope }).(pulumi.StringPtrOutput)
+}
+
+// The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+func (o VolumeClusterOutput) Sharing() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.Sharing }).(pulumi.StringPtrOutput)
+}
+
+// A topology that the Cluster Volume would be preferred in
+func (o VolumeClusterOutput) TopologyPreferred() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.TopologyPreferred }).(pulumi.StringPtrOutput)
+}
+
+// A topology that the Cluster Volume must be accessible from
+func (o VolumeClusterOutput) TopologyRequired() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.TopologyRequired }).(pulumi.StringPtrOutput)
+}
+
+// Cluster Volume access type. Can be `mount` or `block` (default).
+func (o VolumeClusterOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VolumeCluster) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+type VolumeClusterPtrOutput struct{ *pulumi.OutputState }
+
+func (VolumeClusterPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**VolumeCluster)(nil)).Elem()
+}
+
+func (o VolumeClusterPtrOutput) ToVolumeClusterPtrOutput() VolumeClusterPtrOutput {
+	return o
+}
+
+func (o VolumeClusterPtrOutput) ToVolumeClusterPtrOutputWithContext(ctx context.Context) VolumeClusterPtrOutput {
+	return o
+}
+
+func (o VolumeClusterPtrOutput) Elem() VolumeClusterOutput {
+	return o.ApplyT(func(v *VolumeCluster) VolumeCluster {
+		if v != nil {
+			return *v
+		}
+		var ret VolumeCluster
+		return ret
+	}).(VolumeClusterOutput)
+}
+
+// Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+func (o VolumeClusterPtrOutput) Availability() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Availability
+	}).(pulumi.StringPtrOutput)
+}
+
+// Cluster Volume group
+func (o VolumeClusterPtrOutput) Group() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Group
+	}).(pulumi.StringPtrOutput)
+}
+
+// The ID of the cluster volume.
+func (o VolumeClusterPtrOutput) Id() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Id
+	}).(pulumi.StringPtrOutput)
+}
+
+// Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+func (o VolumeClusterPtrOutput) LimitBytes() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.LimitBytes
+	}).(pulumi.StringPtrOutput)
+}
+
+// Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+func (o VolumeClusterPtrOutput) RequiredBytes() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.RequiredBytes
+	}).(pulumi.StringPtrOutput)
+}
+
+// The scope of the volume. Can be `single` (default) or `multi`.
+func (o VolumeClusterPtrOutput) Scope() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Scope
+	}).(pulumi.StringPtrOutput)
+}
+
+// The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+func (o VolumeClusterPtrOutput) Sharing() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Sharing
+	}).(pulumi.StringPtrOutput)
+}
+
+// A topology that the Cluster Volume would be preferred in
+func (o VolumeClusterPtrOutput) TopologyPreferred() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.TopologyPreferred
+	}).(pulumi.StringPtrOutput)
+}
+
+// A topology that the Cluster Volume must be accessible from
+func (o VolumeClusterPtrOutput) TopologyRequired() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.TopologyRequired
+	}).(pulumi.StringPtrOutput)
+}
+
+// Cluster Volume access type. Can be `mount` or `block` (default).
+func (o VolumeClusterPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VolumeCluster) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
 type VolumeLabel struct {
 	// Name of the label
 	Label string `pulumi:"label"`
@@ -12867,6 +14452,14 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ProviderRegistryAuthArrayInput)(nil)).Elem(), ProviderRegistryAuthArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageAuthConfigInput)(nil)).Elem(), RegistryImageAuthConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageAuthConfigPtrInput)(nil)).Elem(), RegistryImageAuthConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildInput)(nil)).Elem(), RegistryImageBuildArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildPtrInput)(nil)).Elem(), RegistryImageBuildArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildAuthConfigInput)(nil)).Elem(), RegistryImageBuildAuthConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildAuthConfigArrayInput)(nil)).Elem(), RegistryImageBuildAuthConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildSecretInput)(nil)).Elem(), RegistryImageBuildSecretArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildSecretArrayInput)(nil)).Elem(), RegistryImageBuildSecretArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildUlimitInput)(nil)).Elem(), RegistryImageBuildUlimitArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageBuildUlimitArrayInput)(nil)).Elem(), RegistryImageBuildUlimitArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildInput)(nil)).Elem(), RemoteImageBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildPtrInput)(nil)).Elem(), RemoteImageBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RemoteImageBuildAuthConfigInput)(nil)).Elem(), RemoteImageBuildAuthConfigArgs{})
@@ -12945,6 +14538,8 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceTaskSpecRestartPolicyPtrInput)(nil)).Elem(), ServiceTaskSpecRestartPolicyArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceUpdateConfigInput)(nil)).Elem(), ServiceUpdateConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceUpdateConfigPtrInput)(nil)).Elem(), ServiceUpdateConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*VolumeClusterInput)(nil)).Elem(), VolumeClusterArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*VolumeClusterPtrInput)(nil)).Elem(), VolumeClusterArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelInput)(nil)).Elem(), VolumeLabelArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelArrayInput)(nil)).Elem(), VolumeLabelArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromInput)(nil)).Elem(), CacheFromArgs{})
@@ -13013,6 +14608,14 @@ func init() {
 	pulumi.RegisterOutputType(ProviderRegistryAuthArrayOutput{})
 	pulumi.RegisterOutputType(RegistryImageAuthConfigOutput{})
 	pulumi.RegisterOutputType(RegistryImageAuthConfigPtrOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildPtrOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildAuthConfigOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildAuthConfigArrayOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildSecretOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildSecretArrayOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildUlimitOutput{})
+	pulumi.RegisterOutputType(RegistryImageBuildUlimitArrayOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildPtrOutput{})
 	pulumi.RegisterOutputType(RemoteImageBuildAuthConfigOutput{})
@@ -13091,6 +14694,8 @@ func init() {
 	pulumi.RegisterOutputType(ServiceTaskSpecRestartPolicyPtrOutput{})
 	pulumi.RegisterOutputType(ServiceUpdateConfigOutput{})
 	pulumi.RegisterOutputType(ServiceUpdateConfigPtrOutput{})
+	pulumi.RegisterOutputType(VolumeClusterOutput{})
+	pulumi.RegisterOutputType(VolumeClusterPtrOutput{})
 	pulumi.RegisterOutputType(VolumeLabelOutput{})
 	pulumi.RegisterOutputType(VolumeLabelArrayOutput{})
 	pulumi.RegisterOutputType(CacheFromOutput{})

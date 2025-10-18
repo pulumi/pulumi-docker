@@ -26,6 +26,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Ipv6Address;
         /// <summary>
+        /// The MAC address of the container in the specific network.
+        /// </summary>
+        public readonly string? MacAddress;
+        /// <summary>
         /// The name or id of the network to use. You can use `Name` or `Id` attribute from a `docker.Network` resource.
         /// </summary>
         public readonly string Name;
@@ -38,11 +42,14 @@ namespace Pulumi.Docker.Outputs
 
             string? ipv6Address,
 
+            string? macAddress,
+
             string name)
         {
             Aliases = aliases;
             Ipv4Address = ipv4Address;
             Ipv6Address = ipv6Address;
+            MacAddress = macAddress;
             Name = name;
         }
     }

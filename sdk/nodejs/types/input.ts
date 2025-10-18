@@ -409,6 +409,10 @@ export interface ContainerNetworksAdvanced {
      */
     ipv6Address?: pulumi.Input<string>;
     /**
+     * The MAC address of the container in the specific network.
+     */
+    macAddress?: pulumi.Input<string>;
+    /**
      * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     name: pulumi.Input<string>;
@@ -672,7 +676,235 @@ export interface RegistryImageAuthConfig {
     username: pulumi.Input<string>;
 }
 
+export interface RegistryImageBuild {
+    /**
+     * A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+     */
+    additionalContexts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Authentication configuration for the Docker registry. It is only used for this resource.
+     */
+    authConfigs?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildAuthConfig>[]>;
+    /**
+     * Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+     */
+    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+     */
+    buildId?: pulumi.Input<string>;
+    /**
+     * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     */
+    buildLogFile?: pulumi.Input<string>;
+    /**
+     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     */
+    builder?: pulumi.Input<string>;
+    /**
+     * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+     */
+    cacheFroms?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     */
+    cacheTos?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Optional parent cgroup for the container
+     */
+    cgroupParent?: pulumi.Input<string>;
+    /**
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     */
+    context: pulumi.Input<string>;
+    /**
+     * The length of a CPU period in microseconds
+     */
+    cpuPeriod?: pulumi.Input<number>;
+    /**
+     * Microseconds of CPU time that the container can get in a CPU period
+     */
+    cpuQuota?: pulumi.Input<number>;
+    /**
+     * CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+     */
+    cpuSetCpus?: pulumi.Input<string>;
+    /**
+     * MEMs in which to allow execution (`0-3`, `0`, `1`)
+     */
+    cpuSetMems?: pulumi.Input<string>;
+    /**
+     * CPU shares (relative weight)
+     */
+    cpuShares?: pulumi.Input<number>;
+    /**
+     * Name of the Dockerfile. Defaults to `Dockerfile`.
+     */
+    dockerfile?: pulumi.Input<string>;
+    /**
+     * A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+     */
+    extraHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Always remove intermediate containers
+     */
+    forceRemove?: pulumi.Input<boolean>;
+    /**
+     * Isolation represents the isolation technology of a container. The supported values are
+     */
+    isolation?: pulumi.Input<string>;
+    /**
+     * Set metadata for an image
+     */
+    label?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * User-defined key/value metadata
+     */
+    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * Set memory limit for build
+     */
+    memory?: pulumi.Input<number>;
+    /**
+     * Total memory (memory + swap), -1 to enable unlimited swap
+     */
+    memorySwap?: pulumi.Input<number>;
+    /**
+     * Set the networking mode for the RUN instructions during build
+     */
+    networkMode?: pulumi.Input<string>;
+    /**
+     * Do not use the cache when building the image
+     */
+    noCache?: pulumi.Input<boolean>;
+    /**
+     * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+     */
+    platform?: pulumi.Input<string>;
+    /**
+     * Attempt to pull the image even if an older image exists locally
+     */
+    pullParent?: pulumi.Input<boolean>;
+    /**
+     * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+     */
+    remoteContext?: pulumi.Input<string>;
+    /**
+     * Remove intermediate containers after a successful build. Defaults to `true`.
+     */
+    remove?: pulumi.Input<boolean>;
+    /**
+     * Set build-time secrets. Only available when you use a buildx builder.
+     */
+    secrets?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildSecret>[]>;
+    /**
+     * The security options
+     */
+    securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Set an ID for the build session
+     */
+    sessionId?: pulumi.Input<string>;
+    /**
+     * Size of /dev/shm in bytes. The size must be greater than 0
+     */
+    shmSize?: pulumi.Input<number>;
+    /**
+     * If true the new layers are squashed into a new image with a single new layer
+     */
+    squash?: pulumi.Input<boolean>;
+    /**
+     * Suppress the build output and print image ID on success
+     */
+    suppressOutput?: pulumi.Input<boolean>;
+    /**
+     * Name and optionally a tag in the 'name:tag' format
+     */
+    tags?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Set the target build stage to build
+     */
+    target?: pulumi.Input<string>;
+    /**
+     * Configuration for ulimits
+     */
+    ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[]>;
+    /**
+     * Version of the underlying builder to use
+     */
+    version?: pulumi.Input<string>;
+}
+
+export interface RegistryImageBuildAuthConfig {
+    /**
+     * the auth token
+     */
+    auth?: pulumi.Input<string>;
+    /**
+     * the user emal
+     */
+    email?: pulumi.Input<string>;
+    /**
+     * hostname of the registry
+     */
+    hostName: pulumi.Input<string>;
+    /**
+     * the identity token
+     */
+    identityToken?: pulumi.Input<string>;
+    /**
+     * The password for the Docker registry.
+     */
+    password?: pulumi.Input<string>;
+    /**
+     * the registry token
+     */
+    registryToken?: pulumi.Input<string>;
+    /**
+     * the server address
+     */
+    serverAddress?: pulumi.Input<string>;
+    /**
+     * the registry user name
+     */
+    userName?: pulumi.Input<string>;
+}
+
+export interface RegistryImageBuildSecret {
+    /**
+     * Environment variable source of the secret
+     */
+    env?: pulumi.Input<string>;
+    /**
+     * The ID of this resource.
+     */
+    id: pulumi.Input<string>;
+    /**
+     * File source of the secret. Takes precedence over `env`
+     */
+    src?: pulumi.Input<string>;
+}
+
+export interface RegistryImageBuildUlimit {
+    /**
+     * soft limit
+     */
+    hard: pulumi.Input<number>;
+    /**
+     * The name of the Docker image.
+     */
+    name: pulumi.Input<string>;
+    /**
+     * hard limit
+     */
+    soft: pulumi.Input<number>;
+}
+
 export interface RemoteImageBuild {
+    /**
+     * A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+     */
+    additionalContexts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The configuration for the authentication
      */
@@ -1535,6 +1767,49 @@ export interface ServiceUpdateConfig {
      * Maximum number of tasks to be updated in one iteration. Defaults to `1`
      */
     parallelism?: pulumi.Input<number>;
+}
+
+export interface VolumeCluster {
+    /**
+     * Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+     */
+    availability?: pulumi.Input<string>;
+    /**
+     * Cluster Volume group
+     */
+    group?: pulumi.Input<string>;
+    /**
+     * The ID of the cluster volume.
+     */
+    id?: pulumi.Input<string>;
+    /**
+     * Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+     */
+    limitBytes?: pulumi.Input<string>;
+    /**
+     * Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+     */
+    requiredBytes?: pulumi.Input<string>;
+    /**
+     * The scope of the volume. Can be `single` (default) or `multi`.
+     */
+    scope?: pulumi.Input<string>;
+    /**
+     * The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+     */
+    sharing?: pulumi.Input<string>;
+    /**
+     * A topology that the Cluster Volume would be preferred in
+     */
+    topologyPreferred?: pulumi.Input<string>;
+    /**
+     * A topology that the Cluster Volume must be accessible from
+     */
+    topologyRequired?: pulumi.Input<string>;
+    /**
+     * Cluster Volume access type. Can be `mount` or `block` (default).
+     */
+    type?: pulumi.Input<string>;
 }
 
 export interface VolumeLabel {
