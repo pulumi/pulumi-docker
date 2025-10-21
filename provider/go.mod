@@ -14,7 +14,7 @@ require (
 	github.com/moby/patternmatcher v0.6.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.115.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.115.1-0.20251021160433-4c9196985ee8
 	github.com/pulumi/pulumi/pkg/v3 v3.190.0
 	github.com/pulumi/pulumi/sdk/v3 v3.190.0
 	github.com/spf13/afero v1.12.0
