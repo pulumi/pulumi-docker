@@ -26,12 +26,6 @@ env:
 makeTemplate: bridged
 docsCmd: "cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./"
 hybrid: true
-plugins:
-    - name: terraform
-      version: "1.0.16"
-      kind: converter
-    - name: aws
-      version: "6.8.0"
 team: ecosystem
 pulumiConvert: 1
 registryDocs: true
