@@ -5,6 +5,7 @@ package com.pulumi.docker;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.docker.inputs.VolumeClusterArgs;
 import com.pulumi.docker.inputs.VolumeLabelArgs;
 import java.lang.String;
 import java.util.List;
@@ -17,6 +18,21 @@ import javax.annotation.Nullable;
 public final class VolumeArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final VolumeArgs Empty = new VolumeArgs();
+
+    /**
+     * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     * 
+     */
+    @Import(name="cluster")
+    private @Nullable Output<VolumeClusterArgs> cluster;
+
+    /**
+     * @return Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     * 
+     */
+    public Optional<Output<VolumeClusterArgs>> cluster() {
+        return Optional.ofNullable(this.cluster);
+    }
 
     /**
      * Driver type for the volume. Defaults to `local`.
@@ -81,6 +97,7 @@ public final class VolumeArgs extends com.pulumi.resources.ResourceArgs {
     private VolumeArgs() {}
 
     private VolumeArgs(VolumeArgs $) {
+        this.cluster = $.cluster;
         this.driver = $.driver;
         this.driverOpts = $.driverOpts;
         this.labels = $.labels;
@@ -103,6 +120,27 @@ public final class VolumeArgs extends com.pulumi.resources.ResourceArgs {
 
         public Builder(VolumeArgs defaults) {
             $ = new VolumeArgs(Objects.requireNonNull(defaults));
+        }
+
+        /**
+         * @param cluster Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cluster(@Nullable Output<VolumeClusterArgs> cluster) {
+            $.cluster = cluster;
+            return this;
+        }
+
+        /**
+         * @param cluster Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cluster(VolumeClusterArgs cluster) {
+            return cluster(Output.of(cluster));
         }
 
         /**

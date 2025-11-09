@@ -13,11 +13,58 @@ import (
 
 // <!-- Bug: Type and Name are switched -->
 // Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+//
+// ## Example Usage
+//
+// Build an image with the `RemoteImage` resource and then push it to a registry:
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"fmt"
+//	"os"
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			image, err := docker.NewRemoteImage(ctx, "image", &docker.RemoteImageArgs{
+//				Name: pulumi.String("registry.com/somename:1.0"),
+//				Build: &docker.RemoteImageBuildArgs{
+//					Context: pulumi.Sprintf("%v/absolutePathToContextFolder", func(cwd string, err error) string {
+//						if err != nil {
+//							panic(err)
+//						}
+//						return cwd
+//					}(os.Getwd())),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
+//				Name:         image.Name,
+//				KeepRemotely: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 type RegistryImage struct {
 	pulumi.CustomResourceState
 
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig RegistryImageAuthConfigPtrOutput `pulumi:"authConfig"`
+	Build      RegistryImageBuildPtrOutput      `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrOutput `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -62,6 +109,7 @@ func GetRegistryImage(ctx *pulumi.Context,
 type registryImageState struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig *RegistryImageAuthConfig `pulumi:"authConfig"`
+	Build      *RegistryImageBuild      `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -77,6 +125,7 @@ type registryImageState struct {
 type RegistryImageState struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig RegistryImageAuthConfigPtrInput
+	Build      RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -96,6 +145,7 @@ func (RegistryImageState) ElementType() reflect.Type {
 type registryImageArgs struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig *RegistryImageAuthConfig `pulumi:"authConfig"`
+	Build      *RegistryImageBuild      `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -110,6 +160,7 @@ type registryImageArgs struct {
 type RegistryImageArgs struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig RegistryImageAuthConfigPtrInput
+	Build      RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -210,6 +261,10 @@ func (o RegistryImageOutput) ToRegistryImageOutputWithContext(ctx context.Contex
 // Authentication configuration for the Docker registry. It is only used for this resource.
 func (o RegistryImageOutput) AuthConfig() RegistryImageAuthConfigPtrOutput {
 	return o.ApplyT(func(v *RegistryImage) RegistryImageAuthConfigPtrOutput { return v.AuthConfig }).(RegistryImageAuthConfigPtrOutput)
+}
+
+func (o RegistryImageOutput) Build() RegistryImageBuildPtrOutput {
+	return o.ApplyT(func(v *RegistryImage) RegistryImageBuildPtrOutput { return v.Build }).(RegistryImageBuildPtrOutput)
 }
 
 // If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`

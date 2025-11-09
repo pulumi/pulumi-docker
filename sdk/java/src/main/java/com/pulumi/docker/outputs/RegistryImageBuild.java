@@ -4,9 +4,9 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import com.pulumi.docker.outputs.RemoteImageBuildAuthConfig;
-import com.pulumi.docker.outputs.RemoteImageBuildSecret;
-import com.pulumi.docker.outputs.RemoteImageBuildUlimit;
+import com.pulumi.docker.outputs.RegistryImageBuildAuthConfig;
+import com.pulumi.docker.outputs.RegistryImageBuildSecret;
+import com.pulumi.docker.outputs.RegistryImageBuildUlimit;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -18,17 +18,17 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 @CustomType
-public final class RemoteImageBuild {
+public final class RegistryImageBuild {
     /**
      * @return A list of additional build contexts. Only supported when using a buildx builder. Example: `[&#34;name=path&#34;, &#34;src = https://example.org&#34;}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
      * 
      */
     private @Nullable List<String> additionalContexts;
     /**
-     * @return The configuration for the authentication
+     * @return Authentication configuration for the Docker registry. It is only used for this resource.
      * 
      */
-    private @Nullable List<RemoteImageBuildAuthConfig> authConfigs;
+    private @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
     /**
      * @return Pairs for build-time variables in the form of `ENDPOINT : &#34;https://example.com&#34;`
      * 
@@ -168,7 +168,7 @@ public final class RemoteImageBuild {
      * @return Set build-time secrets. Only available when you use a buildx builder.
      * 
      */
-    private @Nullable List<RemoteImageBuildSecret> secrets;
+    private @Nullable List<RegistryImageBuildSecret> secrets;
     /**
      * @return The security options
      * 
@@ -208,14 +208,14 @@ public final class RemoteImageBuild {
      * @return Configuration for ulimits
      * 
      */
-    private @Nullable List<RemoteImageBuildUlimit> ulimits;
+    private @Nullable List<RegistryImageBuildUlimit> ulimits;
     /**
      * @return Version of the underlying builder to use
      * 
      */
     private @Nullable String version;
 
-    private RemoteImageBuild() {}
+    private RegistryImageBuild() {}
     /**
      * @return A list of additional build contexts. Only supported when using a buildx builder. Example: `[&#34;name=path&#34;, &#34;src = https://example.org&#34;}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
      * 
@@ -224,10 +224,10 @@ public final class RemoteImageBuild {
         return this.additionalContexts == null ? List.of() : this.additionalContexts;
     }
     /**
-     * @return The configuration for the authentication
+     * @return Authentication configuration for the Docker registry. It is only used for this resource.
      * 
      */
-    public List<RemoteImageBuildAuthConfig> authConfigs() {
+    public List<RegistryImageBuildAuthConfig> authConfigs() {
         return this.authConfigs == null ? List.of() : this.authConfigs;
     }
     /**
@@ -423,7 +423,7 @@ public final class RemoteImageBuild {
      * @return Set build-time secrets. Only available when you use a buildx builder.
      * 
      */
-    public List<RemoteImageBuildSecret> secrets() {
+    public List<RegistryImageBuildSecret> secrets() {
         return this.secrets == null ? List.of() : this.secrets;
     }
     /**
@@ -479,7 +479,7 @@ public final class RemoteImageBuild {
      * @return Configuration for ulimits
      * 
      */
-    public List<RemoteImageBuildUlimit> ulimits() {
+    public List<RegistryImageBuildUlimit> ulimits() {
         return this.ulimits == null ? List.of() : this.ulimits;
     }
     /**
@@ -494,13 +494,13 @@ public final class RemoteImageBuild {
         return new Builder();
     }
 
-    public static Builder builder(RemoteImageBuild defaults) {
+    public static Builder builder(RegistryImageBuild defaults) {
         return new Builder(defaults);
     }
     @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> additionalContexts;
-        private @Nullable List<RemoteImageBuildAuthConfig> authConfigs;
+        private @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
         private @Nullable Map<String,String> buildArgs;
         private @Nullable String buildId;
         private @Nullable String buildLogFile;
@@ -528,7 +528,7 @@ public final class RemoteImageBuild {
         private @Nullable Boolean pullParent;
         private @Nullable String remoteContext;
         private @Nullable Boolean remove;
-        private @Nullable List<RemoteImageBuildSecret> secrets;
+        private @Nullable List<RegistryImageBuildSecret> secrets;
         private @Nullable List<String> securityOpts;
         private @Nullable String sessionId;
         private @Nullable Integer shmSize;
@@ -536,10 +536,10 @@ public final class RemoteImageBuild {
         private @Nullable Boolean suppressOutput;
         private @Nullable List<String> tags;
         private @Nullable String target;
-        private @Nullable List<RemoteImageBuildUlimit> ulimits;
+        private @Nullable List<RegistryImageBuildUlimit> ulimits;
         private @Nullable String version;
         public Builder() {}
-        public Builder(RemoteImageBuild defaults) {
+        public Builder(RegistryImageBuild defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.additionalContexts = defaults.additionalContexts;
     	      this.authConfigs = defaults.authConfigs;
@@ -592,12 +592,12 @@ public final class RemoteImageBuild {
             return additionalContexts(List.of(additionalContexts));
         }
         @CustomType.Setter
-        public Builder authConfigs(@Nullable List<RemoteImageBuildAuthConfig> authConfigs) {
+        public Builder authConfigs(@Nullable List<RegistryImageBuildAuthConfig> authConfigs) {
 
             this.authConfigs = authConfigs;
             return this;
         }
-        public Builder authConfigs(RemoteImageBuildAuthConfig... authConfigs) {
+        public Builder authConfigs(RegistryImageBuildAuthConfig... authConfigs) {
             return authConfigs(List.of(authConfigs));
         }
         @CustomType.Setter
@@ -651,7 +651,7 @@ public final class RemoteImageBuild {
         @CustomType.Setter
         public Builder context(String context) {
             if (context == null) {
-              throw new MissingRequiredPropertyException("RemoteImageBuild", "context");
+              throw new MissingRequiredPropertyException("RegistryImageBuild", "context");
             }
             this.context = context;
             return this;
@@ -774,12 +774,12 @@ public final class RemoteImageBuild {
             return this;
         }
         @CustomType.Setter
-        public Builder secrets(@Nullable List<RemoteImageBuildSecret> secrets) {
+        public Builder secrets(@Nullable List<RegistryImageBuildSecret> secrets) {
 
             this.secrets = secrets;
             return this;
         }
-        public Builder secrets(RemoteImageBuildSecret... secrets) {
+        public Builder secrets(RegistryImageBuildSecret... secrets) {
             return secrets(List.of(secrets));
         }
         @CustomType.Setter
@@ -831,12 +831,12 @@ public final class RemoteImageBuild {
             return this;
         }
         @CustomType.Setter
-        public Builder ulimits(@Nullable List<RemoteImageBuildUlimit> ulimits) {
+        public Builder ulimits(@Nullable List<RegistryImageBuildUlimit> ulimits) {
 
             this.ulimits = ulimits;
             return this;
         }
-        public Builder ulimits(RemoteImageBuildUlimit... ulimits) {
+        public Builder ulimits(RegistryImageBuildUlimit... ulimits) {
             return ulimits(List.of(ulimits));
         }
         @CustomType.Setter
@@ -845,8 +845,8 @@ public final class RemoteImageBuild {
             this.version = version;
             return this;
         }
-        public RemoteImageBuild build() {
-            final var _resultValue = new RemoteImageBuild();
+        public RegistryImageBuild build() {
+            final var _resultValue = new RegistryImageBuild();
             _resultValue.additionalContexts = additionalContexts;
             _resultValue.authConfigs = authConfigs;
             _resultValue.buildArgs = buildArgs;

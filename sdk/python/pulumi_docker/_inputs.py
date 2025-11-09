@@ -70,6 +70,14 @@ __all__ = [
     'ProviderRegistryAuthArgsDict',
     'RegistryImageAuthConfigArgs',
     'RegistryImageAuthConfigArgsDict',
+    'RegistryImageBuildArgs',
+    'RegistryImageBuildArgsDict',
+    'RegistryImageBuildAuthConfigArgs',
+    'RegistryImageBuildAuthConfigArgsDict',
+    'RegistryImageBuildSecretArgs',
+    'RegistryImageBuildSecretArgsDict',
+    'RegistryImageBuildUlimitArgs',
+    'RegistryImageBuildUlimitArgsDict',
     'RemoteImageBuildArgs',
     'RemoteImageBuildArgsDict',
     'RemoteImageBuildAuthConfigArgs',
@@ -148,6 +156,8 @@ __all__ = [
     'ServiceTaskSpecRestartPolicyArgsDict',
     'ServiceUpdateConfigArgs',
     'ServiceUpdateConfigArgsDict',
+    'VolumeClusterArgs',
+    'VolumeClusterArgsDict',
     'VolumeLabelArgs',
     'VolumeLabelArgsDict',
     'CacheFromArgs',
@@ -2014,6 +2024,10 @@ if not MYPY:
         """
         The IPV6 address of the container in the specific network.
         """
+        mac_address: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        The MAC address of the container in the specific network.
+        """
 elif False:
     ContainerNetworksAdvancedArgsDict: TypeAlias = Mapping[str, Any]
 
@@ -2023,12 +2037,14 @@ class ContainerNetworksAdvancedArgs:
                  name: pulumi.Input[_builtins.str],
                  aliases: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  ipv4_address: Optional[pulumi.Input[_builtins.str]] = None,
-                 ipv6_address: Optional[pulumi.Input[_builtins.str]] = None):
+                 ipv6_address: Optional[pulumi.Input[_builtins.str]] = None,
+                 mac_address: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] name: The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] aliases: The network aliases of the container in the specific network.
         :param pulumi.Input[_builtins.str] ipv4_address: The IPV4 address of the container in the specific network.
         :param pulumi.Input[_builtins.str] ipv6_address: The IPV6 address of the container in the specific network.
+        :param pulumi.Input[_builtins.str] mac_address: The MAC address of the container in the specific network.
         """
         pulumi.set(__self__, "name", name)
         if aliases is not None:
@@ -2037,6 +2053,8 @@ class ContainerNetworksAdvancedArgs:
             pulumi.set(__self__, "ipv4_address", ipv4_address)
         if ipv6_address is not None:
             pulumi.set(__self__, "ipv6_address", ipv6_address)
+        if mac_address is not None:
+            pulumi.set(__self__, "mac_address", mac_address)
 
     @_builtins.property
     @pulumi.getter
@@ -2085,6 +2103,18 @@ class ContainerNetworksAdvancedArgs:
     @ipv6_address.setter
     def ipv6_address(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "ipv6_address", value)
+
+    @_builtins.property
+    @pulumi.getter(name="macAddress")
+    def mac_address(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The MAC address of the container in the specific network.
+        """
+        return pulumi.get(self, "mac_address")
+
+    @mac_address.setter
+    def mac_address(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "mac_address", value)
 
 
 if not MYPY:
@@ -2896,10 +2926,1116 @@ class RegistryImageAuthConfigArgs:
 
 
 if not MYPY:
+    class RegistryImageBuildArgsDict(TypedDict):
+        context: pulumi.Input[_builtins.str]
+        """
+        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        """
+        additional_contexts: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+        """
+        auth_configs: NotRequired[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgsDict']]]]
+        """
+        Authentication configuration for the Docker registry. It is only used for this resource.
+        """
+        build_args: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]
+        """
+        Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+        """
+        build_id: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+        """
+        build_log_file: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        """
+        builder: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        """
+        cache_froms: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+        """
+        cache_tos: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        """
+        cgroup_parent: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Optional parent cgroup for the container
+        """
+        cpu_period: NotRequired[pulumi.Input[_builtins.int]]
+        """
+        The length of a CPU period in microseconds
+        """
+        cpu_quota: NotRequired[pulumi.Input[_builtins.int]]
+        """
+        Microseconds of CPU time that the container can get in a CPU period
+        """
+        cpu_set_cpus: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        """
+        cpu_set_mems: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        MEMs in which to allow execution (`0-3`, `0`, `1`)
+        """
+        cpu_shares: NotRequired[pulumi.Input[_builtins.int]]
+        """
+        CPU shares (relative weight)
+        """
+        dockerfile: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Name of the Dockerfile. Defaults to `Dockerfile`.
+        """
+        extra_hosts: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        """
+        force_remove: NotRequired[pulumi.Input[_builtins.bool]]
+        """
+        Always remove intermediate containers
+        """
+        isolation: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Isolation represents the isolation technology of a container. The supported values are
+        """
+        label: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]
+        """
+        Set metadata for an image
+        """
+        labels: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]
+        """
+        User-defined key/value metadata
+        """
+        memory: NotRequired[pulumi.Input[_builtins.int]]
+        """
+        Set memory limit for build
+        """
+        memory_swap: NotRequired[pulumi.Input[_builtins.int]]
+        """
+        Total memory (memory + swap), -1 to enable unlimited swap
+        """
+        network_mode: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Set the networking mode for the RUN instructions during build
+        """
+        no_cache: NotRequired[pulumi.Input[_builtins.bool]]
+        """
+        Do not use the cache when building the image
+        """
+        platform: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+        """
+        pull_parent: NotRequired[pulumi.Input[_builtins.bool]]
+        """
+        Attempt to pull the image even if an older image exists locally
+        """
+        remote_context: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+        """
+        remove: NotRequired[pulumi.Input[_builtins.bool]]
+        """
+        Remove intermediate containers after a successful build. Defaults to `true`.
+        """
+        secrets: NotRequired[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildSecretArgsDict']]]]
+        """
+        Set build-time secrets. Only available when you use a buildx builder.
+        """
+        security_opts: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        The security options
+        """
+        session_id: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Set an ID for the build session
+        """
+        shm_size: NotRequired[pulumi.Input[_builtins.int]]
+        """
+        Size of /dev/shm in bytes. The size must be greater than 0
+        """
+        squash: NotRequired[pulumi.Input[_builtins.bool]]
+        """
+        If true the new layers are squashed into a new image with a single new layer
+        """
+        suppress_output: NotRequired[pulumi.Input[_builtins.bool]]
+        """
+        Suppress the build output and print image ID on success
+        """
+        tags: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        Name and optionally a tag in the 'name:tag' format
+        """
+        target: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Set the target build stage to build
+        """
+        ulimits: NotRequired[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgsDict']]]]
+        """
+        Configuration for ulimits
+        """
+        version: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Version of the underlying builder to use
+        """
+elif False:
+    RegistryImageBuildArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class RegistryImageBuildArgs:
+    def __init__(__self__, *,
+                 context: pulumi.Input[_builtins.str],
+                 additional_contexts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 auth_configs: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgs']]]] = None,
+                 build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 build_id: Optional[pulumi.Input[_builtins.str]] = None,
+                 build_log_file: Optional[pulumi.Input[_builtins.str]] = None,
+                 builder: Optional[pulumi.Input[_builtins.str]] = None,
+                 cache_froms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 cache_tos: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 cgroup_parent: Optional[pulumi.Input[_builtins.str]] = None,
+                 cpu_period: Optional[pulumi.Input[_builtins.int]] = None,
+                 cpu_quota: Optional[pulumi.Input[_builtins.int]] = None,
+                 cpu_set_cpus: Optional[pulumi.Input[_builtins.str]] = None,
+                 cpu_set_mems: Optional[pulumi.Input[_builtins.str]] = None,
+                 cpu_shares: Optional[pulumi.Input[_builtins.int]] = None,
+                 dockerfile: Optional[pulumi.Input[_builtins.str]] = None,
+                 extra_hosts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 force_remove: Optional[pulumi.Input[_builtins.bool]] = None,
+                 isolation: Optional[pulumi.Input[_builtins.str]] = None,
+                 label: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 memory: Optional[pulumi.Input[_builtins.int]] = None,
+                 memory_swap: Optional[pulumi.Input[_builtins.int]] = None,
+                 network_mode: Optional[pulumi.Input[_builtins.str]] = None,
+                 no_cache: Optional[pulumi.Input[_builtins.bool]] = None,
+                 platform: Optional[pulumi.Input[_builtins.str]] = None,
+                 pull_parent: Optional[pulumi.Input[_builtins.bool]] = None,
+                 remote_context: Optional[pulumi.Input[_builtins.str]] = None,
+                 remove: Optional[pulumi.Input[_builtins.bool]] = None,
+                 secrets: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]]] = None,
+                 security_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 session_id: Optional[pulumi.Input[_builtins.str]] = None,
+                 shm_size: Optional[pulumi.Input[_builtins.int]] = None,
+                 squash: Optional[pulumi.Input[_builtins.bool]] = None,
+                 suppress_output: Optional[pulumi.Input[_builtins.bool]] = None,
+                 tags: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 target: Optional[pulumi.Input[_builtins.str]] = None,
+                 ulimits: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]]] = None,
+                 version: Optional[pulumi.Input[_builtins.str]] = None):
+        """
+        :param pulumi.Input[_builtins.str] context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] additional_contexts: A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+        :param pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgs']]] auth_configs: Authentication configuration for the Docker registry. It is only used for this resource.
+        :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+        :param pulumi.Input[_builtins.str] build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+        :param pulumi.Input[_builtins.str] build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        :param pulumi.Input[_builtins.str] builder: Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_froms: External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_tos: Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
+        :param pulumi.Input[_builtins.int] cpu_period: The length of a CPU period in microseconds
+        :param pulumi.Input[_builtins.int] cpu_quota: Microseconds of CPU time that the container can get in a CPU period
+        :param pulumi.Input[_builtins.str] cpu_set_cpus: CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        :param pulumi.Input[_builtins.str] cpu_set_mems: MEMs in which to allow execution (`0-3`, `0`, `1`)
+        :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight)
+        :param pulumi.Input[_builtins.str] dockerfile: Name of the Dockerfile. Defaults to `Dockerfile`.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] extra_hosts: A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        :param pulumi.Input[_builtins.bool] force_remove: Always remove intermediate containers
+        :param pulumi.Input[_builtins.str] isolation: Isolation represents the isolation technology of a container. The supported values are
+        :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] label: Set metadata for an image
+        :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] labels: User-defined key/value metadata
+        :param pulumi.Input[_builtins.int] memory: Set memory limit for build
+        :param pulumi.Input[_builtins.int] memory_swap: Total memory (memory + swap), -1 to enable unlimited swap
+        :param pulumi.Input[_builtins.str] network_mode: Set the networking mode for the RUN instructions during build
+        :param pulumi.Input[_builtins.bool] no_cache: Do not use the cache when building the image
+        :param pulumi.Input[_builtins.str] platform: Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+        :param pulumi.Input[_builtins.bool] pull_parent: Attempt to pull the image even if an older image exists locally
+        :param pulumi.Input[_builtins.str] remote_context: A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+        :param pulumi.Input[_builtins.bool] remove: Remove intermediate containers after a successful build. Defaults to `true`.
+        :param pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]] secrets: Set build-time secrets. Only available when you use a buildx builder.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] security_opts: The security options
+        :param pulumi.Input[_builtins.str] session_id: Set an ID for the build session
+        :param pulumi.Input[_builtins.int] shm_size: Size of /dev/shm in bytes. The size must be greater than 0
+        :param pulumi.Input[_builtins.bool] squash: If true the new layers are squashed into a new image with a single new layer
+        :param pulumi.Input[_builtins.bool] suppress_output: Suppress the build output and print image ID on success
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tags: Name and optionally a tag in the 'name:tag' format
+        :param pulumi.Input[_builtins.str] target: Set the target build stage to build
+        :param pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]] ulimits: Configuration for ulimits
+        :param pulumi.Input[_builtins.str] version: Version of the underlying builder to use
+        """
+        pulumi.set(__self__, "context", context)
+        if additional_contexts is not None:
+            pulumi.set(__self__, "additional_contexts", additional_contexts)
+        if auth_configs is not None:
+            pulumi.set(__self__, "auth_configs", auth_configs)
+        if build_args is not None:
+            pulumi.set(__self__, "build_args", build_args)
+        if build_id is not None:
+            pulumi.set(__self__, "build_id", build_id)
+        if build_log_file is not None:
+            pulumi.set(__self__, "build_log_file", build_log_file)
+        if builder is not None:
+            pulumi.set(__self__, "builder", builder)
+        if cache_froms is not None:
+            pulumi.set(__self__, "cache_froms", cache_froms)
+        if cache_tos is not None:
+            pulumi.set(__self__, "cache_tos", cache_tos)
+        if cgroup_parent is not None:
+            pulumi.set(__self__, "cgroup_parent", cgroup_parent)
+        if cpu_period is not None:
+            pulumi.set(__self__, "cpu_period", cpu_period)
+        if cpu_quota is not None:
+            pulumi.set(__self__, "cpu_quota", cpu_quota)
+        if cpu_set_cpus is not None:
+            pulumi.set(__self__, "cpu_set_cpus", cpu_set_cpus)
+        if cpu_set_mems is not None:
+            pulumi.set(__self__, "cpu_set_mems", cpu_set_mems)
+        if cpu_shares is not None:
+            pulumi.set(__self__, "cpu_shares", cpu_shares)
+        if dockerfile is not None:
+            pulumi.set(__self__, "dockerfile", dockerfile)
+        if extra_hosts is not None:
+            pulumi.set(__self__, "extra_hosts", extra_hosts)
+        if force_remove is not None:
+            pulumi.set(__self__, "force_remove", force_remove)
+        if isolation is not None:
+            pulumi.set(__self__, "isolation", isolation)
+        if label is not None:
+            pulumi.set(__self__, "label", label)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if memory is not None:
+            pulumi.set(__self__, "memory", memory)
+        if memory_swap is not None:
+            pulumi.set(__self__, "memory_swap", memory_swap)
+        if network_mode is not None:
+            pulumi.set(__self__, "network_mode", network_mode)
+        if no_cache is not None:
+            pulumi.set(__self__, "no_cache", no_cache)
+        if platform is not None:
+            pulumi.set(__self__, "platform", platform)
+        if pull_parent is not None:
+            pulumi.set(__self__, "pull_parent", pull_parent)
+        if remote_context is not None:
+            pulumi.set(__self__, "remote_context", remote_context)
+        if remove is not None:
+            pulumi.set(__self__, "remove", remove)
+        if secrets is not None:
+            pulumi.set(__self__, "secrets", secrets)
+        if security_opts is not None:
+            pulumi.set(__self__, "security_opts", security_opts)
+        if session_id is not None:
+            pulumi.set(__self__, "session_id", session_id)
+        if shm_size is not None:
+            pulumi.set(__self__, "shm_size", shm_size)
+        if squash is not None:
+            pulumi.set(__self__, "squash", squash)
+        if suppress_output is not None:
+            pulumi.set(__self__, "suppress_output", suppress_output)
+        if tags is not None:
+            pulumi.set(__self__, "tags", tags)
+        if target is not None:
+            pulumi.set(__self__, "target", target)
+        if ulimits is not None:
+            pulumi.set(__self__, "ulimits", ulimits)
+        if version is not None:
+            pulumi.set(__self__, "version", version)
+
+    @_builtins.property
+    @pulumi.getter
+    def context(self) -> pulumi.Input[_builtins.str]:
+        """
+        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        """
+        return pulumi.get(self, "context")
+
+    @context.setter
+    def context(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "context", value)
+
+    @_builtins.property
+    @pulumi.getter(name="additionalContexts")
+    def additional_contexts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+        """
+        return pulumi.get(self, "additional_contexts")
+
+    @additional_contexts.setter
+    def additional_contexts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "additional_contexts", value)
+
+    @_builtins.property
+    @pulumi.getter(name="authConfigs")
+    def auth_configs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgs']]]]:
+        """
+        Authentication configuration for the Docker registry. It is only used for this resource.
+        """
+        return pulumi.get(self, "auth_configs")
+
+    @auth_configs.setter
+    def auth_configs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgs']]]]):
+        pulumi.set(self, "auth_configs", value)
+
+    @_builtins.property
+    @pulumi.getter(name="buildArgs")
+    def build_args(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+        """
+        Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+        """
+        return pulumi.get(self, "build_args")
+
+    @build_args.setter
+    def build_args(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "build_args", value)
+
+    @_builtins.property
+    @pulumi.getter(name="buildId")
+    def build_id(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+        """
+        return pulumi.get(self, "build_id")
+
+    @build_id.setter
+    def build_id(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "build_id", value)
+
+    @_builtins.property
+    @pulumi.getter(name="buildLogFile")
+    def build_log_file(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+        """
+        return pulumi.get(self, "build_log_file")
+
+    @build_log_file.setter
+    def build_log_file(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "build_log_file", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def builder(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        """
+        return pulumi.get(self, "builder")
+
+    @builder.setter
+    def builder(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "builder", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cacheFroms")
+    def cache_froms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+        """
+        return pulumi.get(self, "cache_froms")
+
+    @cache_froms.setter
+    def cache_froms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "cache_froms", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cacheTos")
+    def cache_tos(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+        """
+        return pulumi.get(self, "cache_tos")
+
+    @cache_tos.setter
+    def cache_tos(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "cache_tos", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cgroupParent")
+    def cgroup_parent(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Optional parent cgroup for the container
+        """
+        return pulumi.get(self, "cgroup_parent")
+
+    @cgroup_parent.setter
+    def cgroup_parent(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "cgroup_parent", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cpuPeriod")
+    def cpu_period(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        The length of a CPU period in microseconds
+        """
+        return pulumi.get(self, "cpu_period")
+
+    @cpu_period.setter
+    def cpu_period(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "cpu_period", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cpuQuota")
+    def cpu_quota(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        Microseconds of CPU time that the container can get in a CPU period
+        """
+        return pulumi.get(self, "cpu_quota")
+
+    @cpu_quota.setter
+    def cpu_quota(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "cpu_quota", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cpuSetCpus")
+    def cpu_set_cpus(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        """
+        return pulumi.get(self, "cpu_set_cpus")
+
+    @cpu_set_cpus.setter
+    def cpu_set_cpus(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "cpu_set_cpus", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cpuSetMems")
+    def cpu_set_mems(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        MEMs in which to allow execution (`0-3`, `0`, `1`)
+        """
+        return pulumi.get(self, "cpu_set_mems")
+
+    @cpu_set_mems.setter
+    def cpu_set_mems(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "cpu_set_mems", value)
+
+    @_builtins.property
+    @pulumi.getter(name="cpuShares")
+    def cpu_shares(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        CPU shares (relative weight)
+        """
+        return pulumi.get(self, "cpu_shares")
+
+    @cpu_shares.setter
+    def cpu_shares(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "cpu_shares", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def dockerfile(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Name of the Dockerfile. Defaults to `Dockerfile`.
+        """
+        return pulumi.get(self, "dockerfile")
+
+    @dockerfile.setter
+    def dockerfile(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "dockerfile", value)
+
+    @_builtins.property
+    @pulumi.getter(name="extraHosts")
+    def extra_hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        """
+        return pulumi.get(self, "extra_hosts")
+
+    @extra_hosts.setter
+    def extra_hosts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "extra_hosts", value)
+
+    @_builtins.property
+    @pulumi.getter(name="forceRemove")
+    def force_remove(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Always remove intermediate containers
+        """
+        return pulumi.get(self, "force_remove")
+
+    @force_remove.setter
+    def force_remove(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "force_remove", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def isolation(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Isolation represents the isolation technology of a container. The supported values are
+        """
+        return pulumi.get(self, "isolation")
+
+    @isolation.setter
+    def isolation(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "isolation", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def label(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+        """
+        Set metadata for an image
+        """
+        return pulumi.get(self, "label")
+
+    @label.setter
+    def label(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "label", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+        """
+        User-defined key/value metadata
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "labels", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def memory(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        Set memory limit for build
+        """
+        return pulumi.get(self, "memory")
+
+    @memory.setter
+    def memory(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "memory", value)
+
+    @_builtins.property
+    @pulumi.getter(name="memorySwap")
+    def memory_swap(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        Total memory (memory + swap), -1 to enable unlimited swap
+        """
+        return pulumi.get(self, "memory_swap")
+
+    @memory_swap.setter
+    def memory_swap(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "memory_swap", value)
+
+    @_builtins.property
+    @pulumi.getter(name="networkMode")
+    def network_mode(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Set the networking mode for the RUN instructions during build
+        """
+        return pulumi.get(self, "network_mode")
+
+    @network_mode.setter
+    def network_mode(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "network_mode", value)
+
+    @_builtins.property
+    @pulumi.getter(name="noCache")
+    def no_cache(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Do not use the cache when building the image
+        """
+        return pulumi.get(self, "no_cache")
+
+    @no_cache.setter
+    def no_cache(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "no_cache", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def platform(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+        """
+        return pulumi.get(self, "platform")
+
+    @platform.setter
+    def platform(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "platform", value)
+
+    @_builtins.property
+    @pulumi.getter(name="pullParent")
+    def pull_parent(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Attempt to pull the image even if an older image exists locally
+        """
+        return pulumi.get(self, "pull_parent")
+
+    @pull_parent.setter
+    def pull_parent(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "pull_parent", value)
+
+    @_builtins.property
+    @pulumi.getter(name="remoteContext")
+    def remote_context(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+        """
+        return pulumi.get(self, "remote_context")
+
+    @remote_context.setter
+    def remote_context(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "remote_context", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def remove(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Remove intermediate containers after a successful build. Defaults to `true`.
+        """
+        return pulumi.get(self, "remove")
+
+    @remove.setter
+    def remove(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "remove", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def secrets(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]]]:
+        """
+        Set build-time secrets. Only available when you use a buildx builder.
+        """
+        return pulumi.get(self, "secrets")
+
+    @secrets.setter
+    def secrets(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]]]):
+        pulumi.set(self, "secrets", value)
+
+    @_builtins.property
+    @pulumi.getter(name="securityOpts")
+    def security_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        The security options
+        """
+        return pulumi.get(self, "security_opts")
+
+    @security_opts.setter
+    def security_opts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "security_opts", value)
+
+    @_builtins.property
+    @pulumi.getter(name="sessionId")
+    def session_id(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Set an ID for the build session
+        """
+        return pulumi.get(self, "session_id")
+
+    @session_id.setter
+    def session_id(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "session_id", value)
+
+    @_builtins.property
+    @pulumi.getter(name="shmSize")
+    def shm_size(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        Size of /dev/shm in bytes. The size must be greater than 0
+        """
+        return pulumi.get(self, "shm_size")
+
+    @shm_size.setter
+    def shm_size(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "shm_size", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def squash(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        If true the new layers are squashed into a new image with a single new layer
+        """
+        return pulumi.get(self, "squash")
+
+    @squash.setter
+    def squash(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "squash", value)
+
+    @_builtins.property
+    @pulumi.getter(name="suppressOutput")
+    def suppress_output(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Suppress the build output and print image ID on success
+        """
+        return pulumi.get(self, "suppress_output")
+
+    @suppress_output.setter
+    def suppress_output(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "suppress_output", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def tags(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        Name and optionally a tag in the 'name:tag' format
+        """
+        return pulumi.get(self, "tags")
+
+    @tags.setter
+    def tags(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "tags", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def target(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Set the target build stage to build
+        """
+        return pulumi.get(self, "target")
+
+    @target.setter
+    def target(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "target", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def ulimits(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]]]:
+        """
+        Configuration for ulimits
+        """
+        return pulumi.get(self, "ulimits")
+
+    @ulimits.setter
+    def ulimits(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]]]):
+        pulumi.set(self, "ulimits", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def version(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Version of the underlying builder to use
+        """
+        return pulumi.get(self, "version")
+
+    @version.setter
+    def version(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "version", value)
+
+
+if not MYPY:
+    class RegistryImageBuildAuthConfigArgsDict(TypedDict):
+        host_name: pulumi.Input[_builtins.str]
+        """
+        hostname of the registry
+        """
+        auth: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        the auth token
+        """
+        email: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        the user emal
+        """
+        identity_token: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        the identity token
+        """
+        password: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        The password for the Docker registry.
+        """
+        registry_token: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        the registry token
+        """
+        server_address: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        the server address
+        """
+        user_name: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        the registry user name
+        """
+elif False:
+    RegistryImageBuildAuthConfigArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class RegistryImageBuildAuthConfigArgs:
+    def __init__(__self__, *,
+                 host_name: pulumi.Input[_builtins.str],
+                 auth: Optional[pulumi.Input[_builtins.str]] = None,
+                 email: Optional[pulumi.Input[_builtins.str]] = None,
+                 identity_token: Optional[pulumi.Input[_builtins.str]] = None,
+                 password: Optional[pulumi.Input[_builtins.str]] = None,
+                 registry_token: Optional[pulumi.Input[_builtins.str]] = None,
+                 server_address: Optional[pulumi.Input[_builtins.str]] = None,
+                 user_name: Optional[pulumi.Input[_builtins.str]] = None):
+        """
+        :param pulumi.Input[_builtins.str] host_name: hostname of the registry
+        :param pulumi.Input[_builtins.str] auth: the auth token
+        :param pulumi.Input[_builtins.str] email: the user emal
+        :param pulumi.Input[_builtins.str] identity_token: the identity token
+        :param pulumi.Input[_builtins.str] password: The password for the Docker registry.
+        :param pulumi.Input[_builtins.str] registry_token: the registry token
+        :param pulumi.Input[_builtins.str] server_address: the server address
+        :param pulumi.Input[_builtins.str] user_name: the registry user name
+        """
+        pulumi.set(__self__, "host_name", host_name)
+        if auth is not None:
+            pulumi.set(__self__, "auth", auth)
+        if email is not None:
+            pulumi.set(__self__, "email", email)
+        if identity_token is not None:
+            pulumi.set(__self__, "identity_token", identity_token)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+        if registry_token is not None:
+            pulumi.set(__self__, "registry_token", registry_token)
+        if server_address is not None:
+            pulumi.set(__self__, "server_address", server_address)
+        if user_name is not None:
+            pulumi.set(__self__, "user_name", user_name)
+
+    @_builtins.property
+    @pulumi.getter(name="hostName")
+    def host_name(self) -> pulumi.Input[_builtins.str]:
+        """
+        hostname of the registry
+        """
+        return pulumi.get(self, "host_name")
+
+    @host_name.setter
+    def host_name(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "host_name", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def auth(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        the auth token
+        """
+        return pulumi.get(self, "auth")
+
+    @auth.setter
+    def auth(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "auth", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def email(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        the user emal
+        """
+        return pulumi.get(self, "email")
+
+    @email.setter
+    def email(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "email", value)
+
+    @_builtins.property
+    @pulumi.getter(name="identityToken")
+    def identity_token(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        the identity token
+        """
+        return pulumi.get(self, "identity_token")
+
+    @identity_token.setter
+    def identity_token(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "identity_token", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def password(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The password for the Docker registry.
+        """
+        return pulumi.get(self, "password")
+
+    @password.setter
+    def password(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "password", value)
+
+    @_builtins.property
+    @pulumi.getter(name="registryToken")
+    def registry_token(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        the registry token
+        """
+        return pulumi.get(self, "registry_token")
+
+    @registry_token.setter
+    def registry_token(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "registry_token", value)
+
+    @_builtins.property
+    @pulumi.getter(name="serverAddress")
+    def server_address(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        the server address
+        """
+        return pulumi.get(self, "server_address")
+
+    @server_address.setter
+    def server_address(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "server_address", value)
+
+    @_builtins.property
+    @pulumi.getter(name="userName")
+    def user_name(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        the registry user name
+        """
+        return pulumi.get(self, "user_name")
+
+    @user_name.setter
+    def user_name(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "user_name", value)
+
+
+if not MYPY:
+    class RegistryImageBuildSecretArgsDict(TypedDict):
+        id: pulumi.Input[_builtins.str]
+        """
+        The ID of this resource.
+        """
+        env: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Environment variable source of the secret
+        """
+        src: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        File source of the secret. Takes precedence over `env`
+        """
+elif False:
+    RegistryImageBuildSecretArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class RegistryImageBuildSecretArgs:
+    def __init__(__self__, *,
+                 id: pulumi.Input[_builtins.str],
+                 env: Optional[pulumi.Input[_builtins.str]] = None,
+                 src: Optional[pulumi.Input[_builtins.str]] = None):
+        """
+        :param pulumi.Input[_builtins.str] id: The ID of this resource.
+        :param pulumi.Input[_builtins.str] env: Environment variable source of the secret
+        :param pulumi.Input[_builtins.str] src: File source of the secret. Takes precedence over `env`
+        """
+        pulumi.set(__self__, "id", id)
+        if env is not None:
+            pulumi.set(__self__, "env", env)
+        if src is not None:
+            pulumi.set(__self__, "src", src)
+
+    @_builtins.property
+    @pulumi.getter
+    def id(self) -> pulumi.Input[_builtins.str]:
+        """
+        The ID of this resource.
+        """
+        return pulumi.get(self, "id")
+
+    @id.setter
+    def id(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "id", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def env(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Environment variable source of the secret
+        """
+        return pulumi.get(self, "env")
+
+    @env.setter
+    def env(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "env", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def src(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        File source of the secret. Takes precedence over `env`
+        """
+        return pulumi.get(self, "src")
+
+    @src.setter
+    def src(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "src", value)
+
+
+if not MYPY:
+    class RegistryImageBuildUlimitArgsDict(TypedDict):
+        hard: pulumi.Input[_builtins.int]
+        """
+        soft limit
+        """
+        name: pulumi.Input[_builtins.str]
+        """
+        The name of the Docker image.
+        """
+        soft: pulumi.Input[_builtins.int]
+        """
+        hard limit
+        """
+elif False:
+    RegistryImageBuildUlimitArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class RegistryImageBuildUlimitArgs:
+    def __init__(__self__, *,
+                 hard: pulumi.Input[_builtins.int],
+                 name: pulumi.Input[_builtins.str],
+                 soft: pulumi.Input[_builtins.int]):
+        """
+        :param pulumi.Input[_builtins.int] hard: soft limit
+        :param pulumi.Input[_builtins.str] name: The name of the Docker image.
+        :param pulumi.Input[_builtins.int] soft: hard limit
+        """
+        pulumi.set(__self__, "hard", hard)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "soft", soft)
+
+    @_builtins.property
+    @pulumi.getter
+    def hard(self) -> pulumi.Input[_builtins.int]:
+        """
+        soft limit
+        """
+        return pulumi.get(self, "hard")
+
+    @hard.setter
+    def hard(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "hard", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[_builtins.str]:
+        """
+        The name of the Docker image.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "name", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def soft(self) -> pulumi.Input[_builtins.int]:
+        """
+        hard limit
+        """
+        return pulumi.get(self, "soft")
+
+    @soft.setter
+    def soft(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "soft", value)
+
+
+if not MYPY:
     class RemoteImageBuildArgsDict(TypedDict):
         context: pulumi.Input[_builtins.str]
         """
         Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        """
+        additional_contexts: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+        """
+        A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
         """
         auth_configs: NotRequired[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgsDict']]]]
         """
@@ -3056,6 +4192,7 @@ elif False:
 class RemoteImageBuildArgs:
     def __init__(__self__, *,
                  context: pulumi.Input[_builtins.str],
+                 additional_contexts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  auth_configs: Optional[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgs']]]] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  build_id: Optional[pulumi.Input[_builtins.str]] = None,
@@ -3095,6 +4232,7 @@ class RemoteImageBuildArgs:
                  version: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] additional_contexts: A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
         :param pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgs']]] auth_configs: The configuration for the authentication
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         :param pulumi.Input[_builtins.str] build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
@@ -3134,6 +4272,8 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[_builtins.str] version: Version of the underlying builder to use
         """
         pulumi.set(__self__, "context", context)
+        if additional_contexts is not None:
+            pulumi.set(__self__, "additional_contexts", additional_contexts)
         if auth_configs is not None:
             pulumi.set(__self__, "auth_configs", auth_configs)
         if build_args is not None:
@@ -3220,6 +4360,18 @@ class RemoteImageBuildArgs:
     @context.setter
     def context(self, value: pulumi.Input[_builtins.str]):
         pulumi.set(self, "context", value)
+
+    @_builtins.property
+    @pulumi.getter(name="additionalContexts")
+    def additional_contexts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+        """
+        return pulumi.get(self, "additional_contexts")
+
+    @additional_contexts.setter
+    def additional_contexts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "additional_contexts", value)
 
     @_builtins.property
     @pulumi.getter(name="authConfigs")
@@ -7069,6 +8221,218 @@ class ServiceUpdateConfigArgs:
     @parallelism.setter
     def parallelism(self, value: Optional[pulumi.Input[_builtins.int]]):
         pulumi.set(self, "parallelism", value)
+
+
+if not MYPY:
+    class VolumeClusterArgsDict(TypedDict):
+        availability: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+        """
+        group: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Cluster Volume group
+        """
+        id: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        The ID of the cluster volume.
+        """
+        limit_bytes: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+        """
+        required_bytes: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+        """
+        scope: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        The scope of the volume. Can be `single` (default) or `multi`.
+        """
+        sharing: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+        """
+        topology_preferred: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        A topology that the Cluster Volume would be preferred in
+        """
+        topology_required: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        A topology that the Cluster Volume must be accessible from
+        """
+        type: NotRequired[pulumi.Input[_builtins.str]]
+        """
+        Cluster Volume access type. Can be `mount` or `block` (default).
+        """
+elif False:
+    VolumeClusterArgsDict: TypeAlias = Mapping[str, Any]
+
+@pulumi.input_type
+class VolumeClusterArgs:
+    def __init__(__self__, *,
+                 availability: Optional[pulumi.Input[_builtins.str]] = None,
+                 group: Optional[pulumi.Input[_builtins.str]] = None,
+                 id: Optional[pulumi.Input[_builtins.str]] = None,
+                 limit_bytes: Optional[pulumi.Input[_builtins.str]] = None,
+                 required_bytes: Optional[pulumi.Input[_builtins.str]] = None,
+                 scope: Optional[pulumi.Input[_builtins.str]] = None,
+                 sharing: Optional[pulumi.Input[_builtins.str]] = None,
+                 topology_preferred: Optional[pulumi.Input[_builtins.str]] = None,
+                 topology_required: Optional[pulumi.Input[_builtins.str]] = None,
+                 type: Optional[pulumi.Input[_builtins.str]] = None):
+        """
+        :param pulumi.Input[_builtins.str] availability: Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+        :param pulumi.Input[_builtins.str] group: Cluster Volume group
+        :param pulumi.Input[_builtins.str] id: The ID of the cluster volume.
+        :param pulumi.Input[_builtins.str] limit_bytes: Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+        :param pulumi.Input[_builtins.str] required_bytes: Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+        :param pulumi.Input[_builtins.str] scope: The scope of the volume. Can be `single` (default) or `multi`.
+        :param pulumi.Input[_builtins.str] sharing: The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+        :param pulumi.Input[_builtins.str] topology_preferred: A topology that the Cluster Volume would be preferred in
+        :param pulumi.Input[_builtins.str] topology_required: A topology that the Cluster Volume must be accessible from
+        :param pulumi.Input[_builtins.str] type: Cluster Volume access type. Can be `mount` or `block` (default).
+        """
+        if availability is not None:
+            pulumi.set(__self__, "availability", availability)
+        if group is not None:
+            pulumi.set(__self__, "group", group)
+        if id is not None:
+            pulumi.set(__self__, "id", id)
+        if limit_bytes is not None:
+            pulumi.set(__self__, "limit_bytes", limit_bytes)
+        if required_bytes is not None:
+            pulumi.set(__self__, "required_bytes", required_bytes)
+        if scope is not None:
+            pulumi.set(__self__, "scope", scope)
+        if sharing is not None:
+            pulumi.set(__self__, "sharing", sharing)
+        if topology_preferred is not None:
+            pulumi.set(__self__, "topology_preferred", topology_preferred)
+        if topology_required is not None:
+            pulumi.set(__self__, "topology_required", topology_required)
+        if type is not None:
+            pulumi.set(__self__, "type", type)
+
+    @_builtins.property
+    @pulumi.getter
+    def availability(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+        """
+        return pulumi.get(self, "availability")
+
+    @availability.setter
+    def availability(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "availability", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def group(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Cluster Volume group
+        """
+        return pulumi.get(self, "group")
+
+    @group.setter
+    def group(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "group", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def id(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The ID of the cluster volume.
+        """
+        return pulumi.get(self, "id")
+
+    @id.setter
+    def id(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "id", value)
+
+    @_builtins.property
+    @pulumi.getter(name="limitBytes")
+    def limit_bytes(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+        """
+        return pulumi.get(self, "limit_bytes")
+
+    @limit_bytes.setter
+    def limit_bytes(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "limit_bytes", value)
+
+    @_builtins.property
+    @pulumi.getter(name="requiredBytes")
+    def required_bytes(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+        """
+        return pulumi.get(self, "required_bytes")
+
+    @required_bytes.setter
+    def required_bytes(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "required_bytes", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def scope(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The scope of the volume. Can be `single` (default) or `multi`.
+        """
+        return pulumi.get(self, "scope")
+
+    @scope.setter
+    def scope(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "scope", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def sharing(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+        """
+        return pulumi.get(self, "sharing")
+
+    @sharing.setter
+    def sharing(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "sharing", value)
+
+    @_builtins.property
+    @pulumi.getter(name="topologyPreferred")
+    def topology_preferred(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        A topology that the Cluster Volume would be preferred in
+        """
+        return pulumi.get(self, "topology_preferred")
+
+    @topology_preferred.setter
+    def topology_preferred(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "topology_preferred", value)
+
+    @_builtins.property
+    @pulumi.getter(name="topologyRequired")
+    def topology_required(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        A topology that the Cluster Volume must be accessible from
+        """
+        return pulumi.get(self, "topology_required")
+
+    @topology_required.setter
+    def topology_required(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "topology_required", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def type(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Cluster Volume access type. Can be `mount` or `block` (default).
+        """
+        return pulumi.get(self, "type")
+
+    @type.setter
+    def type(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "type", value)
 
 
 if not MYPY:

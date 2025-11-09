@@ -67,6 +67,12 @@ namespace Pulumi.Docker
     public partial class Volume : global::Pulumi.CustomResource
     {
         /// <summary>
+        /// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+        /// </summary>
+        [Output("cluster")]
+        public Output<Outputs.VolumeCluster?> Cluster { get; private set; } = null!;
+
+        /// <summary>
         /// Driver type for the volume. Defaults to `Local`.
         /// </summary>
         [Output("driver")]
@@ -143,6 +149,12 @@ namespace Pulumi.Docker
     public sealed class VolumeArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+        /// </summary>
+        [Input("cluster")]
+        public Input<Inputs.VolumeClusterArgs>? Cluster { get; set; }
+
+        /// <summary>
         /// Driver type for the volume. Defaults to `Local`.
         /// </summary>
         [Input("driver")]
@@ -186,6 +198,12 @@ namespace Pulumi.Docker
 
     public sealed class VolumeState : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+        /// </summary>
+        [Input("cluster")]
+        public Input<Inputs.VolumeClusterGetArgs>? Cluster { get; set; }
+
         /// <summary>
         /// Driver type for the volume. Defaults to `Local`.
         /// </summary>

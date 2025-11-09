@@ -12,6 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class RemoteImageBuildGetArgs : global::Pulumi.ResourceArgs
     {
+        [Input("additionalContexts")]
+        private InputList<string>? _additionalContexts;
+
+        /// <summary>
+        /// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+        /// </summary>
+        public InputList<string> AdditionalContexts
+        {
+            get => _additionalContexts ?? (_additionalContexts = new InputList<string>());
+            set => _additionalContexts = value;
+        }
+
         [Input("authConfigs")]
         private InputList<Inputs.RemoteImageBuildAuthConfigGetArgs>? _authConfigs;
 

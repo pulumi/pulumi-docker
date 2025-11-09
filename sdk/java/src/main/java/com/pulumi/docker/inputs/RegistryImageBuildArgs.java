@@ -5,9 +5,9 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.docker.inputs.RemoteImageBuildAuthConfigArgs;
-import com.pulumi.docker.inputs.RemoteImageBuildSecretArgs;
-import com.pulumi.docker.inputs.RemoteImageBuildUlimitArgs;
+import com.pulumi.docker.inputs.RegistryImageBuildAuthConfigArgs;
+import com.pulumi.docker.inputs.RegistryImageBuildSecretArgs;
+import com.pulumi.docker.inputs.RegistryImageBuildUlimitArgs;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -19,9 +19,9 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 
-public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArgs {
+public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceArgs {
 
-    public static final RemoteImageBuildArgs Empty = new RemoteImageBuildArgs();
+    public static final RegistryImageBuildArgs Empty = new RegistryImageBuildArgs();
 
     /**
      * A list of additional build contexts. Only supported when using a buildx builder. Example: `[&#34;name=path&#34;, &#34;src = https://example.org&#34;}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
@@ -39,17 +39,17 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
-     * The configuration for the authentication
+     * Authentication configuration for the Docker registry. It is only used for this resource.
      * 
      */
     @Import(name="authConfigs")
-    private @Nullable Output<List<RemoteImageBuildAuthConfigArgs>> authConfigs;
+    private @Nullable Output<List<RegistryImageBuildAuthConfigArgs>> authConfigs;
 
     /**
-     * @return The configuration for the authentication
+     * @return Authentication configuration for the Docker registry. It is only used for this resource.
      * 
      */
-    public Optional<Output<List<RemoteImageBuildAuthConfigArgs>>> authConfigs() {
+    public Optional<Output<List<RegistryImageBuildAuthConfigArgs>>> authConfigs() {
         return Optional.ofNullable(this.authConfigs);
     }
 
@@ -463,13 +463,13 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
      * 
      */
     @Import(name="secrets")
-    private @Nullable Output<List<RemoteImageBuildSecretArgs>> secrets;
+    private @Nullable Output<List<RegistryImageBuildSecretArgs>> secrets;
 
     /**
      * @return Set build-time secrets. Only available when you use a buildx builder.
      * 
      */
-    public Optional<Output<List<RemoteImageBuildSecretArgs>>> secrets() {
+    public Optional<Output<List<RegistryImageBuildSecretArgs>>> secrets() {
         return Optional.ofNullable(this.secrets);
     }
 
@@ -583,13 +583,13 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
      * 
      */
     @Import(name="ulimits")
-    private @Nullable Output<List<RemoteImageBuildUlimitArgs>> ulimits;
+    private @Nullable Output<List<RegistryImageBuildUlimitArgs>> ulimits;
 
     /**
      * @return Configuration for ulimits
      * 
      */
-    public Optional<Output<List<RemoteImageBuildUlimitArgs>>> ulimits() {
+    public Optional<Output<List<RegistryImageBuildUlimitArgs>>> ulimits() {
         return Optional.ofNullable(this.ulimits);
     }
 
@@ -608,9 +608,9 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         return Optional.ofNullable(this.version);
     }
 
-    private RemoteImageBuildArgs() {}
+    private RegistryImageBuildArgs() {}
 
-    private RemoteImageBuildArgs(RemoteImageBuildArgs $) {
+    private RegistryImageBuildArgs(RegistryImageBuildArgs $) {
         this.additionalContexts = $.additionalContexts;
         this.authConfigs = $.authConfigs;
         this.buildArgs = $.buildArgs;
@@ -655,19 +655,19 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     public static Builder builder() {
         return new Builder();
     }
-    public static Builder builder(RemoteImageBuildArgs defaults) {
+    public static Builder builder(RegistryImageBuildArgs defaults) {
         return new Builder(defaults);
     }
 
     public static final class Builder {
-        private RemoteImageBuildArgs $;
+        private RegistryImageBuildArgs $;
 
         public Builder() {
-            $ = new RemoteImageBuildArgs();
+            $ = new RegistryImageBuildArgs();
         }
 
-        public Builder(RemoteImageBuildArgs defaults) {
-            $ = new RemoteImageBuildArgs(Objects.requireNonNull(defaults));
+        public Builder(RegistryImageBuildArgs defaults) {
+            $ = new RegistryImageBuildArgs(Objects.requireNonNull(defaults));
         }
 
         /**
@@ -702,33 +702,33 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
-         * @param authConfigs The configuration for the authentication
+         * @param authConfigs Authentication configuration for the Docker registry. It is only used for this resource.
          * 
          * @return builder
          * 
          */
-        public Builder authConfigs(@Nullable Output<List<RemoteImageBuildAuthConfigArgs>> authConfigs) {
+        public Builder authConfigs(@Nullable Output<List<RegistryImageBuildAuthConfigArgs>> authConfigs) {
             $.authConfigs = authConfigs;
             return this;
         }
 
         /**
-         * @param authConfigs The configuration for the authentication
+         * @param authConfigs Authentication configuration for the Docker registry. It is only used for this resource.
          * 
          * @return builder
          * 
          */
-        public Builder authConfigs(List<RemoteImageBuildAuthConfigArgs> authConfigs) {
+        public Builder authConfigs(List<RegistryImageBuildAuthConfigArgs> authConfigs) {
             return authConfigs(Output.of(authConfigs));
         }
 
         /**
-         * @param authConfigs The configuration for the authentication
+         * @param authConfigs Authentication configuration for the Docker registry. It is only used for this resource.
          * 
          * @return builder
          * 
          */
-        public Builder authConfigs(RemoteImageBuildAuthConfigArgs... authConfigs) {
+        public Builder authConfigs(RegistryImageBuildAuthConfigArgs... authConfigs) {
             return authConfigs(List.of(authConfigs));
         }
 
@@ -1335,7 +1335,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          * @return builder
          * 
          */
-        public Builder secrets(@Nullable Output<List<RemoteImageBuildSecretArgs>> secrets) {
+        public Builder secrets(@Nullable Output<List<RegistryImageBuildSecretArgs>> secrets) {
             $.secrets = secrets;
             return this;
         }
@@ -1346,7 +1346,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          * @return builder
          * 
          */
-        public Builder secrets(List<RemoteImageBuildSecretArgs> secrets) {
+        public Builder secrets(List<RegistryImageBuildSecretArgs> secrets) {
             return secrets(Output.of(secrets));
         }
 
@@ -1356,7 +1356,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          * @return builder
          * 
          */
-        public Builder secrets(RemoteImageBuildSecretArgs... secrets) {
+        public Builder secrets(RegistryImageBuildSecretArgs... secrets) {
             return secrets(List.of(secrets));
         }
 
@@ -1533,7 +1533,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          * @return builder
          * 
          */
-        public Builder ulimits(@Nullable Output<List<RemoteImageBuildUlimitArgs>> ulimits) {
+        public Builder ulimits(@Nullable Output<List<RegistryImageBuildUlimitArgs>> ulimits) {
             $.ulimits = ulimits;
             return this;
         }
@@ -1544,7 +1544,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          * @return builder
          * 
          */
-        public Builder ulimits(List<RemoteImageBuildUlimitArgs> ulimits) {
+        public Builder ulimits(List<RegistryImageBuildUlimitArgs> ulimits) {
             return ulimits(Output.of(ulimits));
         }
 
@@ -1554,7 +1554,7 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          * @return builder
          * 
          */
-        public Builder ulimits(RemoteImageBuildUlimitArgs... ulimits) {
+        public Builder ulimits(RegistryImageBuildUlimitArgs... ulimits) {
             return ulimits(List.of(ulimits));
         }
 
@@ -1579,9 +1579,9 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
             return version(Output.of(version));
         }
 
-        public RemoteImageBuildArgs build() {
+        public RegistryImageBuildArgs build() {
             if ($.context == null) {
-                throw new MissingRequiredPropertyException("RemoteImageBuildArgs", "context");
+                throw new MissingRequiredPropertyException("RegistryImageBuildArgs", "context");
             }
             return $;
         }

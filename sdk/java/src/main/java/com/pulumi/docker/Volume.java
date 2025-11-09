@@ -10,6 +10,7 @@ import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.VolumeArgs;
 import com.pulumi.docker.inputs.VolumeState;
+import com.pulumi.docker.outputs.VolumeCluster;
 import com.pulumi.docker.outputs.VolumeLabel;
 import java.lang.String;
 import java.util.List;
@@ -89,6 +90,20 @@ import javax.annotation.Nullable;
  */
 @ResourceType(type="docker:index/volume:Volume")
 public class Volume extends com.pulumi.resources.CustomResource {
+    /**
+     * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     * 
+     */
+    @Export(name="cluster", refs={VolumeCluster.class}, tree="[0]")
+    private Output</* @Nullable */ VolumeCluster> cluster;
+
+    /**
+     * @return Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+     * 
+     */
+    public Output<Optional<VolumeCluster>> cluster() {
+        return Codegen.optional(this.cluster);
+    }
     /**
      * Driver type for the volume. Defaults to `local`.
      * 

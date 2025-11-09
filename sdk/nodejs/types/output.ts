@@ -399,6 +399,10 @@ export interface ContainerNetworksAdvanced {
      */
     ipv6Address?: string;
     /**
+     * The MAC address of the container in the specific network.
+     */
+    macAddress?: string;
+    /**
      * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     name: string;
@@ -601,7 +605,235 @@ export interface RegistryImageAuthConfig {
     username: string;
 }
 
+export interface RegistryImageBuild {
+    /**
+     * A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+     */
+    additionalContexts?: string[];
+    /**
+     * Authentication configuration for the Docker registry. It is only used for this resource.
+     */
+    authConfigs?: outputs.RegistryImageBuildAuthConfig[];
+    /**
+     * Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
+     */
+    buildArgs?: {[key: string]: string};
+    /**
+     * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+     */
+    buildId?: string;
+    /**
+     * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
+     */
+    buildLogFile?: string;
+    /**
+     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     */
+    builder?: string;
+    /**
+     * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
+     */
+    cacheFroms?: string[];
+    /**
+     * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
+     */
+    cacheTos?: string[];
+    /**
+     * Optional parent cgroup for the container
+     */
+    cgroupParent?: string;
+    /**
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+     */
+    context: string;
+    /**
+     * The length of a CPU period in microseconds
+     */
+    cpuPeriod?: number;
+    /**
+     * Microseconds of CPU time that the container can get in a CPU period
+     */
+    cpuQuota?: number;
+    /**
+     * CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+     */
+    cpuSetCpus?: string;
+    /**
+     * MEMs in which to allow execution (`0-3`, `0`, `1`)
+     */
+    cpuSetMems?: string;
+    /**
+     * CPU shares (relative weight)
+     */
+    cpuShares?: number;
+    /**
+     * Name of the Dockerfile. Defaults to `Dockerfile`.
+     */
+    dockerfile?: string;
+    /**
+     * A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+     */
+    extraHosts?: string[];
+    /**
+     * Always remove intermediate containers
+     */
+    forceRemove?: boolean;
+    /**
+     * Isolation represents the isolation technology of a container. The supported values are
+     */
+    isolation?: string;
+    /**
+     * Set metadata for an image
+     */
+    label?: {[key: string]: string};
+    /**
+     * User-defined key/value metadata
+     */
+    labels?: {[key: string]: string};
+    /**
+     * Set memory limit for build
+     */
+    memory?: number;
+    /**
+     * Total memory (memory + swap), -1 to enable unlimited swap
+     */
+    memorySwap?: number;
+    /**
+     * Set the networking mode for the RUN instructions during build
+     */
+    networkMode?: string;
+    /**
+     * Do not use the cache when building the image
+     */
+    noCache?: boolean;
+    /**
+     * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+     */
+    platform?: string;
+    /**
+     * Attempt to pull the image even if an older image exists locally
+     */
+    pullParent?: boolean;
+    /**
+     * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
+     */
+    remoteContext?: string;
+    /**
+     * Remove intermediate containers after a successful build. Defaults to `true`.
+     */
+    remove?: boolean;
+    /**
+     * Set build-time secrets. Only available when you use a buildx builder.
+     */
+    secrets?: outputs.RegistryImageBuildSecret[];
+    /**
+     * The security options
+     */
+    securityOpts?: string[];
+    /**
+     * Set an ID for the build session
+     */
+    sessionId?: string;
+    /**
+     * Size of /dev/shm in bytes. The size must be greater than 0
+     */
+    shmSize?: number;
+    /**
+     * If true the new layers are squashed into a new image with a single new layer
+     */
+    squash?: boolean;
+    /**
+     * Suppress the build output and print image ID on success
+     */
+    suppressOutput?: boolean;
+    /**
+     * Name and optionally a tag in the 'name:tag' format
+     */
+    tags?: string[];
+    /**
+     * Set the target build stage to build
+     */
+    target?: string;
+    /**
+     * Configuration for ulimits
+     */
+    ulimits?: outputs.RegistryImageBuildUlimit[];
+    /**
+     * Version of the underlying builder to use
+     */
+    version?: string;
+}
+
+export interface RegistryImageBuildAuthConfig {
+    /**
+     * the auth token
+     */
+    auth?: string;
+    /**
+     * the user emal
+     */
+    email?: string;
+    /**
+     * hostname of the registry
+     */
+    hostName: string;
+    /**
+     * the identity token
+     */
+    identityToken?: string;
+    /**
+     * The password for the Docker registry.
+     */
+    password?: string;
+    /**
+     * the registry token
+     */
+    registryToken?: string;
+    /**
+     * the server address
+     */
+    serverAddress?: string;
+    /**
+     * the registry user name
+     */
+    userName?: string;
+}
+
+export interface RegistryImageBuildSecret {
+    /**
+     * Environment variable source of the secret
+     */
+    env?: string;
+    /**
+     * The ID of this resource.
+     */
+    id: string;
+    /**
+     * File source of the secret. Takes precedence over `env`
+     */
+    src?: string;
+}
+
+export interface RegistryImageBuildUlimit {
+    /**
+     * soft limit
+     */
+    hard: number;
+    /**
+     * The name of the Docker image.
+     */
+    name: string;
+    /**
+     * hard limit
+     */
+    soft: number;
+}
+
 export interface RemoteImageBuild {
+    /**
+     * A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
+     */
+    additionalContexts?: string[];
     /**
      * The configuration for the authentication
      */
@@ -1464,6 +1696,49 @@ export interface ServiceUpdateConfig {
      * Maximum number of tasks to be updated in one iteration. Defaults to `1`
      */
     parallelism?: number;
+}
+
+export interface VolumeCluster {
+    /**
+     * Availability of the volume. Can be `active` (default), `pause`, or `drain`.
+     */
+    availability?: string;
+    /**
+     * Cluster Volume group
+     */
+    group?: string;
+    /**
+     * The ID of the cluster volume.
+     */
+    id: string;
+    /**
+     * Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+     */
+    limitBytes?: string;
+    /**
+     * Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
+     */
+    requiredBytes?: string;
+    /**
+     * The scope of the volume. Can be `single` (default) or `multi`.
+     */
+    scope?: string;
+    /**
+     * The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
+     */
+    sharing?: string;
+    /**
+     * A topology that the Cluster Volume would be preferred in
+     */
+    topologyPreferred?: string;
+    /**
+     * A topology that the Cluster Volume must be accessible from
+     */
+    topologyRequired?: string;
+    /**
+     * Cluster Volume access type. Can be `mount` or `block` (default).
+     */
+    type?: string;
 }
 
 export interface VolumeLabel {
