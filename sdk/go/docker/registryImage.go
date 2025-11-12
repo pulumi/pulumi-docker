@@ -13,6 +13,52 @@ import (
 
 // <!-- Bug: Type and Name are switched -->
 // Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+//
+// ## Example Usage
+//
+// Build an image with the `RemoteImage` resource and then push it to a registry:
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"fmt"
+//	"os"
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			image, err := docker.NewRemoteImage(ctx, "image", &docker.RemoteImageArgs{
+//				Name: pulumi.String("registry.com/somename:1.0"),
+//				Build: &docker.RemoteImageBuildArgs{
+//					Context: pulumi.Sprintf("%v/absolutePathToContextFolder", func(cwd string, err error) string {
+//						if err != nil {
+//							panic(err)
+//						}
+//						return cwd
+//					}(os.Getwd())),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
+//				Name:         image.Name,
+//				KeepRemotely: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 type RegistryImage struct {
 	pulumi.CustomResourceState
 

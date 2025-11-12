@@ -12,6 +12,37 @@ namespace Pulumi.Docker
     /// <summary>
     /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+    /// 
+    /// ## Example Usage
+    /// 
+    /// Build an image with the `docker.RemoteImage` resource and then push it to a registry:
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.IO;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.RemoteImage("image", new()
+    ///     {
+    ///         Name = "registry.com/somename:1.0",
+    ///         Build = new Docker.Inputs.RemoteImageBuildArgs
+    ///         {
+    ///             Context = $"{Directory.GetCurrentDirectory()}/absolutePathToContextFolder",
+    ///         },
+    ///     });
+    /// 
+    ///     var helloworld = new Docker.RegistryImage("helloworld", new()
+    ///     {
+    ///         Name = image.Name,
+    ///         KeepRemotely = true,
+    ///     });
+    /// 
+    /// });
+    /// ```
     /// </summary>
     [DockerResourceType("docker:index/registryImage:RegistryImage")]
     public partial class RegistryImage : global::Pulumi.CustomResource

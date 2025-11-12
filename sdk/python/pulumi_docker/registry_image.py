@@ -226,6 +226,25 @@ class RegistryImage(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
 
+        ## Example Usage
+
+        Build an image with the `RemoteImage` resource and then push it to a registry:
+
+        ```python
+        import pulumi
+        import os
+        import pulumi_docker as docker
+
+        image = docker.RemoteImage("image",
+            name="registry.com/somename:1.0",
+            build={
+                "context": f"{os.getcwd()}/absolutePathToContextFolder",
+            })
+        helloworld = docker.RegistryImage("helloworld",
+            name=image.name,
+            keep_remotely=True)
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
@@ -243,6 +262,25 @@ class RegistryImage(pulumi.CustomResource):
         """
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+
+        ## Example Usage
+
+        Build an image with the `RemoteImage` resource and then push it to a registry:
+
+        ```python
+        import pulumi
+        import os
+        import pulumi_docker as docker
+
+        image = docker.RemoteImage("image",
+            name="registry.com/somename:1.0",
+            build={
+                "context": f"{os.getcwd()}/absolutePathToContextFolder",
+            })
+        helloworld = docker.RegistryImage("helloworld",
+            name=image.name,
+            keep_remotely=True)
+        ```
 
         :param str resource_name: The name of the resource.
         :param RegistryImageArgs args: The arguments to use to populate this resource's properties.

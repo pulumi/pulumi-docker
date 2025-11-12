@@ -21,6 +21,10 @@ import javax.annotation.Nullable;
  * &lt;!-- Bug: Type and Name are switched --&gt;
  * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
  * 
+ * ## Example Usage
+ * 
+ * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
+ * 
  */
 @ResourceType(type="docker:index/registryImage:RegistryImage")
 public class RegistryImage extends com.pulumi.resources.CustomResource {

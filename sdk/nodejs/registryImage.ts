@@ -10,6 +10,26 @@ import * as utilities from "./utilities";
 /**
  * <!-- Bug: Type and Name are switched -->
  * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+ *
+ * ## Example Usage
+ *
+ * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const image = new docker.RemoteImage("image", {
+ *     name: "registry.com/somename:1.0",
+ *     build: {
+ *         context: `${process.cwd()}/absolutePathToContextFolder`,
+ *     },
+ * });
+ * const helloworld = new docker.RegistryImage("helloworld", {
+ *     name: image.name,
+ *     keepRemotely: true,
+ * });
+ * ```
  */
 export class RegistryImage extends pulumi.CustomResource {
     /**
