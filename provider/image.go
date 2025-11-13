@@ -75,7 +75,7 @@ type Build struct {
 	Platform       string
 	Network        string
 	ExtraHosts     []string
-	BuilderVersion types.BuilderVersion
+	BuilderVersion build.BuilderVersion
 }
 
 type Config struct {
