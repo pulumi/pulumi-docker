@@ -11,16 +11,16 @@ namespace Pulumi.Docker.Outputs
 {
 
     [OutputType]
-    public sealed class RemoteImageBuild
+    public sealed class RegistryImageBuild
     {
         /// <summary>
         /// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
         /// </summary>
         public readonly ImmutableArray<string> AdditionalContexts;
         /// <summary>
-        /// The configuration for the authentication
+        /// Authentication configuration for the Docker registry. It is only used for this resource.
         /// </summary>
-        public readonly ImmutableArray<Outputs.RemoteImageBuildAuthConfig> AuthConfigs;
+        public readonly ImmutableArray<Outputs.RegistryImageBuildAuthConfig> AuthConfigs;
         /// <summary>
         /// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         /// </summary>
@@ -132,7 +132,7 @@ namespace Pulumi.Docker.Outputs
         /// <summary>
         /// Set build-time secrets. Only available when you use a buildx builder.
         /// </summary>
-        public readonly ImmutableArray<Outputs.RemoteImageBuildSecret> Secrets;
+        public readonly ImmutableArray<Outputs.RegistryImageBuildSecret> Secrets;
         /// <summary>
         /// The security options
         /// </summary>
@@ -164,17 +164,17 @@ namespace Pulumi.Docker.Outputs
         /// <summary>
         /// Configuration for ulimits
         /// </summary>
-        public readonly ImmutableArray<Outputs.RemoteImageBuildUlimit> Ulimits;
+        public readonly ImmutableArray<Outputs.RegistryImageBuildUlimit> Ulimits;
         /// <summary>
         /// Version of the underlying builder to use
         /// </summary>
         public readonly string? Version;
 
         [OutputConstructor]
-        private RemoteImageBuild(
+        private RegistryImageBuild(
             ImmutableArray<string> additionalContexts,
 
-            ImmutableArray<Outputs.RemoteImageBuildAuthConfig> authConfigs,
+            ImmutableArray<Outputs.RegistryImageBuildAuthConfig> authConfigs,
 
             ImmutableDictionary<string, string>? buildArgs,
 
@@ -230,7 +230,7 @@ namespace Pulumi.Docker.Outputs
 
             bool? remove,
 
-            ImmutableArray<Outputs.RemoteImageBuildSecret> secrets,
+            ImmutableArray<Outputs.RegistryImageBuildSecret> secrets,
 
             ImmutableArray<string> securityOpts,
 
@@ -246,7 +246,7 @@ namespace Pulumi.Docker.Outputs
 
             string? target,
 
-            ImmutableArray<Outputs.RemoteImageBuildUlimit> ulimits,
+            ImmutableArray<Outputs.RegistryImageBuildUlimit> ulimits,
 
             string? version)
         {

@@ -11,6 +11,7 @@ import com.pulumi.docker.RegistryImageArgs;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.RegistryImageState;
 import com.pulumi.docker.outputs.RegistryImageAuthConfig;
+import com.pulumi.docker.outputs.RegistryImageBuild;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Map;
@@ -20,6 +21,10 @@ import javax.annotation.Nullable;
 /**
  * &lt;!-- Bug: Type and Name are switched --&gt;
  * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+ * 
+ * ## Example Usage
+ * 
+ * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
  * 
  */
 @ResourceType(type="docker:index/registryImage:RegistryImage")
@@ -37,6 +42,12 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<RegistryImageAuthConfig>> authConfig() {
         return Codegen.optional(this.authConfig);
+    }
+    @Export(name="build", refs={RegistryImageBuild.class}, tree="[0]")
+    private Output</* @Nullable */ RegistryImageBuild> build;
+
+    public Output<Optional<RegistryImageBuild>> build() {
+        return Codegen.optional(this.build);
     }
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`

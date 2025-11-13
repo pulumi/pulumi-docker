@@ -21,17 +21,21 @@ __all__ = ['VolumeArgs', 'Volume']
 @pulumi.input_type
 class VolumeArgs:
     def __init__(__self__, *,
+                 cluster: Optional[pulumi.Input['VolumeClusterArgs']] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Volume resource.
+        :param pulumi.Input['VolumeClusterArgs'] cluster: Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
         :param pulumi.Input[_builtins.str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] driver_opts: Options specific to the driver.
         :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: The name of the Docker volume (will be generated if not provided).
         """
+        if cluster is not None:
+            pulumi.set(__self__, "cluster", cluster)
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
         if driver_opts is not None:
@@ -40,6 +44,18 @@ class VolumeArgs:
             pulumi.set(__self__, "labels", labels)
         if name is not None:
             pulumi.set(__self__, "name", name)
+
+    @_builtins.property
+    @pulumi.getter
+    def cluster(self) -> Optional[pulumi.Input['VolumeClusterArgs']]:
+        """
+        Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+        """
+        return pulumi.get(self, "cluster")
+
+    @cluster.setter
+    def cluster(self, value: Optional[pulumi.Input['VolumeClusterArgs']]):
+        pulumi.set(self, "cluster", value)
 
     @_builtins.property
     @pulumi.getter
@@ -93,6 +109,7 @@ class VolumeArgs:
 @pulumi.input_type
 class _VolumeState:
     def __init__(__self__, *,
+                 cluster: Optional[pulumi.Input['VolumeClusterArgs']] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
@@ -100,12 +117,15 @@ class _VolumeState:
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Volume resources.
+        :param pulumi.Input['VolumeClusterArgs'] cluster: Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
         :param pulumi.Input[_builtins.str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] driver_opts: Options specific to the driver.
         :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] mountpoint: The mountpoint of the volume.
         :param pulumi.Input[_builtins.str] name: The name of the Docker volume (will be generated if not provided).
         """
+        if cluster is not None:
+            pulumi.set(__self__, "cluster", cluster)
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
         if driver_opts is not None:
@@ -116,6 +136,18 @@ class _VolumeState:
             pulumi.set(__self__, "mountpoint", mountpoint)
         if name is not None:
             pulumi.set(__self__, "name", name)
+
+    @_builtins.property
+    @pulumi.getter
+    def cluster(self) -> Optional[pulumi.Input['VolumeClusterArgs']]:
+        """
+        Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+        """
+        return pulumi.get(self, "cluster")
+
+    @cluster.setter
+    def cluster(self, value: Optional[pulumi.Input['VolumeClusterArgs']]):
+        pulumi.set(self, "cluster", value)
 
     @_builtins.property
     @pulumi.getter
@@ -184,6 +216,7 @@ class Volume(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 cluster: Optional[pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
@@ -236,6 +269,7 @@ class Volume(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']] cluster: Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
         :param pulumi.Input[_builtins.str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] driver_opts: Options specific to the driver.
         :param pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]] labels: User-defined key/value metadata
@@ -307,6 +341,7 @@ class Volume(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 cluster: Optional[pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
@@ -320,6 +355,7 @@ class Volume(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = VolumeArgs.__new__(VolumeArgs)
 
+            __props__.__dict__["cluster"] = cluster
             __props__.__dict__["driver"] = driver
             __props__.__dict__["driver_opts"] = driver_opts
             __props__.__dict__["labels"] = labels
@@ -335,6 +371,7 @@ class Volume(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
+            cluster: Optional[pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
             driver: Optional[pulumi.Input[_builtins.str]] = None,
             driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
             labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
@@ -347,6 +384,7 @@ class Volume(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']] cluster: Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
         :param pulumi.Input[_builtins.str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] driver_opts: Options specific to the driver.
         :param pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]] labels: User-defined key/value metadata
@@ -357,12 +395,21 @@ class Volume(pulumi.CustomResource):
 
         __props__ = _VolumeState.__new__(_VolumeState)
 
+        __props__.__dict__["cluster"] = cluster
         __props__.__dict__["driver"] = driver
         __props__.__dict__["driver_opts"] = driver_opts
         __props__.__dict__["labels"] = labels
         __props__.__dict__["mountpoint"] = mountpoint
         __props__.__dict__["name"] = name
         return Volume(resource_name, opts=opts, __props__=__props__)
+
+    @_builtins.property
+    @pulumi.getter
+    def cluster(self) -> pulumi.Output[Optional['outputs.VolumeCluster']]:
+        """
+        Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
+        """
+        return pulumi.get(self, "cluster")
 
     @_builtins.property
     @pulumi.getter

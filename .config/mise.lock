@@ -87,7 +87,7 @@ version = "3.11.8"
 backend = "core:python"
 
 [[tools."vfox-pulumi:pulumi/pulumi-aws"]]
-version = "7.10.0"
+version = "7.11.0"
 backend = "vfox-pulumi:pulumi/pulumi-aws"
 
 [[tools."vfox-pulumi:pulumi/pulumi-converter-terraform"]]

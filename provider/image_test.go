@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/build"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -16,7 +16,6 @@ import (
 )
 
 func TestSetRegistry(t *testing.T) {
-
 	t.Run("Valid Registry", func(t *testing.T) {
 		expected := Registry{
 			Server:   "https://index.docker.io/v1/",
@@ -71,7 +70,6 @@ func TestSetRegistry(t *testing.T) {
 }
 
 func TestMarshalBuildAndApplyDefaults(t *testing.T) {
-
 	t.Run("Default Build on empty input", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -327,7 +325,6 @@ func TestMarshalCachedImages(t *testing.T) {
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test Cached Images No Build Input Returns Nil", func(t *testing.T) {
 		expected := []string(nil)
@@ -381,7 +378,6 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknowns", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
@@ -391,12 +387,10 @@ func TestMarshalCachedImages(t *testing.T) {
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test Cached Images For Preview Passes On Unknowns And Keeps Knowns", func(t *testing.T) {
 		expected := []string{"apple", "banana", "cherry"}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewNullProperty(),
@@ -410,7 +404,6 @@ func TestMarshalCachedImages(t *testing.T) {
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test Cached Images Passes On Unknown Images List", func(t *testing.T) {
 		expected := []string(nil)
@@ -447,33 +440,30 @@ func TestMarshalCachedImages(t *testing.T) {
 // TODO: do we want to allow Builder to be Unknown? there's very little use case here
 func TestMarshalBuilder(t *testing.T) {
 	t.Run("Test Builder Version Default", func(t *testing.T) {
-		expected := types.BuilderBuildKit
+		expected := build.BuilderBuildKit
 		input := resource.NewPropertyValue(nil)
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
-
 	})
 	t.Run("Test Builder BuildKit Version", func(t *testing.T) {
-		expected := types.BuilderBuildKit
+		expected := build.BuilderBuildKit
 		input := resource.NewStringProperty("BuilderBuildKit")
 
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
-
 	})
 	t.Run("Test Builder V1 Version", func(t *testing.T) {
-		expected := types.BuilderV1
+		expected := build.BuilderV1
 		input := resource.NewStringProperty("BuilderV1")
 
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
-
 	})
 	t.Run("Test Invalid Builder Returns Error", func(t *testing.T) {
-		expected := types.BuilderV1
+		expected := build.BuilderV1
 		input := resource.NewStringProperty("BuilderV1")
 
 		actual, err := marshalBuilder(input)
@@ -488,7 +478,6 @@ func TestMarshalSkipPush(t *testing.T) {
 		input := resource.NewPropertyValue(nil)
 		actual := marshalSkipPush(input)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test SkipPush returns true if set to true", func(t *testing.T) {
 		expected := true
@@ -507,7 +496,6 @@ func TestMarshalSkipPush(t *testing.T) {
 }
 
 func TestGetRegistryAddrFromImage(t *testing.T) {
-
 	t.Run("Returns registry name of correct spec format", func(t *testing.T) {
 		expected := "pulumi.test.registry"
 		input := "pulumi.test.registry/unicorns/swiftwind:latest"
@@ -533,7 +521,6 @@ func TestGetRegistryAddrFromImage(t *testing.T) {
 }
 
 func TestConfigureDockerClient(t *testing.T) {
-
 	t.Run("Given a host passed via pulumi config, a client should have that host", func(t *testing.T) {
 		expected := "testhost://something.sock"
 		input := map[string]string{
@@ -635,7 +622,6 @@ func TestConfigureDockerClient(t *testing.T) {
 			assert.Equal(t, actual.DaemonHost(), input["host"])
 		})
 	t.Run("When host is empty, returns default host ", func(t *testing.T) {
-
 		input := map[string]string{
 			"host": "",
 		}

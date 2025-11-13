@@ -63,6 +63,21 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
     }
 
     /**
+     * The MAC address of the container in the specific network.
+     * 
+     */
+    @Import(name="macAddress")
+    private @Nullable Output<String> macAddress;
+
+    /**
+     * @return The MAC address of the container in the specific network.
+     * 
+     */
+    public Optional<Output<String>> macAddress() {
+        return Optional.ofNullable(this.macAddress);
+    }
+
+    /**
      * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      * 
      */
@@ -83,6 +98,7 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
         this.aliases = $.aliases;
         this.ipv4Address = $.ipv4Address;
         this.ipv6Address = $.ipv6Address;
+        this.macAddress = $.macAddress;
         this.name = $.name;
     }
 
@@ -175,6 +191,27 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
          */
         public Builder ipv6Address(String ipv6Address) {
             return ipv6Address(Output.of(ipv6Address));
+        }
+
+        /**
+         * @param macAddress The MAC address of the container in the specific network.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder macAddress(@Nullable Output<String> macAddress) {
+            $.macAddress = macAddress;
+            return this;
+        }
+
+        /**
+         * @param macAddress The MAC address of the container in the specific network.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder macAddress(String macAddress) {
+            return macAddress(Output.of(macAddress));
         }
 
         /**

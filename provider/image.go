@@ -27,6 +27,8 @@ import (
 	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/cli/cli/connhelper"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/build"
+	buildtypes "github.com/docker/docker/api/types/build"
 	imgtypes "github.com/docker/docker/api/types/image"
 	regtypes "github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
@@ -73,7 +75,7 @@ type Build struct {
 	Platform       string
 	Network        string
 	ExtraHosts     []string
-	BuilderVersion types.BuilderVersion
+	BuilderVersion build.BuilderVersion
 }
 
 type Config struct {
@@ -219,7 +221,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// make the build options
-	opts := types.ImageBuildOptions{
+	opts := buildtypes.ImageBuildOptions{
 		Dockerfile:  replaceDockerfile,
 		Tags:        []string{img.Name}, // this should build the image locally, sans registry info
 		CacheFrom:   img.Build.CachedImages,
@@ -434,7 +436,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 // store.
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
-	opts types.ImageBuildOptions, urn resource.URN,
+	opts build.ImageBuildOptions, urn resource.URN,
 ) (string, error) {
 	if opts.Labels == nil {
 		opts.Labels = make(map[string]string)
@@ -450,7 +452,7 @@ func (p *dockerNativeProvider) runImageBuild(
 
 	var imageID string
 	extractImageID := func(rm json.RawMessage) (bool, string, error) {
-		var result types.BuildResult
+		var result build.Result
 		err := json.Unmarshal(rm, &result)
 		if err != nil {
 			// Unmarshal failures here mean the message isn't what we expected, return handled = false
@@ -706,8 +708,8 @@ func marshalArgs(a resource.PropertyValue) map[string]*string {
 	return args
 }
 
-func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error) {
-	var version types.BuilderVersion
+func marshalBuilder(builder resource.PropertyValue) (build.BuilderVersion, error) {
+	var version build.BuilderVersion
 
 	if builder.IsNull() {
 		// set default
@@ -739,7 +741,7 @@ func getDefaultDockerConfig() (*configfile.ConfigFile, error) {
 	if err != nil {
 		return nil, err
 	}
-	var _ = authprovider.DockerAuthProviderConfig{}
+	_ = authprovider.DockerAuthProviderConfig{}
 	cfg.CredentialsStore = credentials.DetectDefaultStore(cfg.CredentialsStore)
 	return cfg, nil
 }

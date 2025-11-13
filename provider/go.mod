@@ -6,8 +6,8 @@ toolchain go1.24.2
 
 require (
 	github.com/distribution/reference v0.6.0
-	github.com/docker/cli v28.1.1+incompatible
-	github.com/docker/docker v28.1.1+incompatible
+	github.com/docker/cli v28.5.1+incompatible
+	github.com/docker/docker v28.5.1+incompatible
 	github.com/golang/protobuf v1.5.4
 	github.com/moby/buildkit v0.22.0
 	github.com/moby/go-archive v0.1.0
@@ -22,7 +22,7 @@ require (
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
 	github.com/tonistiigi/fsutil v0.0.0-20250417144416-3f76f8130144
 	google.golang.org/grpc v1.75.1
-	google.golang.org/protobuf v1.36.9
+	google.golang.org/protobuf v1.36.10
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -163,7 +163,7 @@ require (
 	github.com/hashicorp/terraform-json v0.27.1 // indirect
 	github.com/hashicorp/terraform-plugin-go v0.29.0 // indirect
 	github.com/hashicorp/terraform-plugin-log v0.9.0 // indirect
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0 // indirect
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.1 // indirect
 	github.com/hashicorp/terraform-registry-address v0.4.0 // indirect
 	github.com/hashicorp/terraform-svchost v0.1.1 // indirect
 	github.com/hashicorp/yamux v0.1.2 // indirect

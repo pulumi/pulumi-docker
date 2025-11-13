@@ -10,6 +10,26 @@ import * as utilities from "./utilities";
 /**
  * <!-- Bug: Type and Name are switched -->
  * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+ *
+ * ## Example Usage
+ *
+ * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const image = new docker.RemoteImage("image", {
+ *     name: "registry.com/somename:1.0",
+ *     build: {
+ *         context: `${process.cwd()}/absolutePathToContextFolder`,
+ *     },
+ * });
+ * const helloworld = new docker.RegistryImage("helloworld", {
+ *     name: image.name,
+ *     keepRemotely: true,
+ * });
+ * ```
  */
 export class RegistryImage extends pulumi.CustomResource {
     /**
@@ -43,6 +63,7 @@ export class RegistryImage extends pulumi.CustomResource {
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
     declare public readonly authConfig: pulumi.Output<outputs.RegistryImageAuthConfig | undefined>;
+    declare public readonly build: pulumi.Output<outputs.RegistryImageBuild | undefined>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
@@ -78,6 +99,7 @@ export class RegistryImage extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as RegistryImageState | undefined;
             resourceInputs["authConfig"] = state?.authConfig;
+            resourceInputs["build"] = state?.build;
             resourceInputs["insecureSkipVerify"] = state?.insecureSkipVerify;
             resourceInputs["keepRemotely"] = state?.keepRemotely;
             resourceInputs["name"] = state?.name;
@@ -86,6 +108,7 @@ export class RegistryImage extends pulumi.CustomResource {
         } else {
             const args = argsOrState as RegistryImageArgs | undefined;
             resourceInputs["authConfig"] = args?.authConfig;
+            resourceInputs["build"] = args?.build;
             resourceInputs["insecureSkipVerify"] = args?.insecureSkipVerify;
             resourceInputs["keepRemotely"] = args?.keepRemotely;
             resourceInputs["name"] = args?.name;
@@ -105,6 +128,7 @@ export interface RegistryImageState {
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
     authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
+    build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
@@ -135,6 +159,7 @@ export interface RegistryImageArgs {
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
     authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
+    build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */

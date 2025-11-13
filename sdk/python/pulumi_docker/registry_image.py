@@ -22,6 +22,7 @@ __all__ = ['RegistryImageArgs', 'RegistryImage']
 class RegistryImageArgs:
     def __init__(__self__, *,
                  auth_config: Optional[pulumi.Input['RegistryImageAuthConfigArgs']] = None,
+                 build: Optional[pulumi.Input['RegistryImageBuildArgs']] = None,
                  insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
@@ -36,6 +37,8 @@ class RegistryImageArgs:
         """
         if auth_config is not None:
             pulumi.set(__self__, "auth_config", auth_config)
+        if build is not None:
+            pulumi.set(__self__, "build", build)
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
@@ -56,6 +59,15 @@ class RegistryImageArgs:
     @auth_config.setter
     def auth_config(self, value: Optional[pulumi.Input['RegistryImageAuthConfigArgs']]):
         pulumi.set(self, "auth_config", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
+        return pulumi.get(self, "build")
+
+    @build.setter
+    def build(self, value: Optional[pulumi.Input['RegistryImageBuildArgs']]):
+        pulumi.set(self, "build", value)
 
     @_builtins.property
     @pulumi.getter(name="insecureSkipVerify")
@@ -110,6 +122,7 @@ class RegistryImageArgs:
 class _RegistryImageState:
     def __init__(__self__, *,
                  auth_config: Optional[pulumi.Input['RegistryImageAuthConfigArgs']] = None,
+                 build: Optional[pulumi.Input['RegistryImageBuildArgs']] = None,
                  insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
@@ -126,6 +139,8 @@ class _RegistryImageState:
         """
         if auth_config is not None:
             pulumi.set(__self__, "auth_config", auth_config)
+        if build is not None:
+            pulumi.set(__self__, "build", build)
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
@@ -148,6 +163,15 @@ class _RegistryImageState:
     @auth_config.setter
     def auth_config(self, value: Optional[pulumi.Input['RegistryImageAuthConfigArgs']]):
         pulumi.set(self, "auth_config", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
+        return pulumi.get(self, "build")
+
+    @build.setter
+    def build(self, value: Optional[pulumi.Input['RegistryImageBuildArgs']]):
+        pulumi.set(self, "build", value)
 
     @_builtins.property
     @pulumi.getter(name="insecureSkipVerify")
@@ -217,6 +241,7 @@ class RegistryImage(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
+                 build: Optional[pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
                  insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
@@ -225,6 +250,25 @@ class RegistryImage(pulumi.CustomResource):
         """
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
+
+        ## Example Usage
+
+        Build an image with the `RemoteImage` resource and then push it to a registry:
+
+        ```python
+        import pulumi
+        import os
+        import pulumi_docker as docker
+
+        image = docker.RemoteImage("image",
+            name="registry.com/somename:1.0",
+            build={
+                "context": f"{os.getcwd()}/absolutePathToContextFolder",
+            })
+        helloworld = docker.RegistryImage("helloworld",
+            name=image.name,
+            keep_remotely=True)
+        ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -244,6 +288,25 @@ class RegistryImage(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
 
+        ## Example Usage
+
+        Build an image with the `RemoteImage` resource and then push it to a registry:
+
+        ```python
+        import pulumi
+        import os
+        import pulumi_docker as docker
+
+        image = docker.RemoteImage("image",
+            name="registry.com/somename:1.0",
+            build={
+                "context": f"{os.getcwd()}/absolutePathToContextFolder",
+            })
+        helloworld = docker.RegistryImage("helloworld",
+            name=image.name,
+            keep_remotely=True)
+        ```
+
         :param str resource_name: The name of the resource.
         :param RegistryImageArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -260,6 +323,7 @@ class RegistryImage(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
+                 build: Optional[pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
                  insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
                  keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
@@ -274,6 +338,7 @@ class RegistryImage(pulumi.CustomResource):
             __props__ = RegistryImageArgs.__new__(RegistryImageArgs)
 
             __props__.__dict__["auth_config"] = auth_config
+            __props__.__dict__["build"] = build
             __props__.__dict__["insecure_skip_verify"] = insecure_skip_verify
             __props__.__dict__["keep_remotely"] = keep_remotely
             __props__.__dict__["name"] = name
@@ -290,6 +355,7 @@ class RegistryImage(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
+            build: Optional[pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
             insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
             keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
             name: Optional[pulumi.Input[_builtins.str]] = None,
@@ -314,6 +380,7 @@ class RegistryImage(pulumi.CustomResource):
         __props__ = _RegistryImageState.__new__(_RegistryImageState)
 
         __props__.__dict__["auth_config"] = auth_config
+        __props__.__dict__["build"] = build
         __props__.__dict__["insecure_skip_verify"] = insecure_skip_verify
         __props__.__dict__["keep_remotely"] = keep_remotely
         __props__.__dict__["name"] = name
@@ -328,6 +395,11 @@ class RegistryImage(pulumi.CustomResource):
         Authentication configuration for the Docker registry. It is only used for this resource.
         """
         return pulumi.get(self, "auth_config")
+
+    @_builtins.property
+    @pulumi.getter
+    def build(self) -> pulumi.Output[Optional['outputs.RegistryImageBuild']]:
+        return pulumi.get(self, "build")
 
     @_builtins.property
     @pulumi.getter(name="insecureSkipVerify")

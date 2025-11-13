@@ -150,6 +150,9 @@
                         "maxItemsOne": true,
                         "elem": {
                             "fields": {
+                                "additional_contexts": {
+                                    "maxItemsOne": false
+                                },
                                 "auth_config": {
                                     "maxItemsOne": false
                                 },
@@ -216,6 +219,40 @@
                 "fields": {
                     "auth_config": {
                         "maxItemsOne": true
+                    },
+                    "build": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "additional_contexts": {
+                                    "maxItemsOne": false
+                                },
+                                "auth_config": {
+                                    "maxItemsOne": false
+                                },
+                                "cache_from": {
+                                    "maxItemsOne": false
+                                },
+                                "cache_to": {
+                                    "maxItemsOne": false
+                                },
+                                "extra_hosts": {
+                                    "maxItemsOne": false
+                                },
+                                "secrets": {
+                                    "maxItemsOne": false
+                                },
+                                "security_opt": {
+                                    "maxItemsOne": false
+                                },
+                                "tag": {
+                                    "maxItemsOne": false
+                                },
+                                "ulimit": {
+                                    "maxItemsOne": false
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -446,6 +483,9 @@
             "docker_volume": {
                 "current": "docker:index/volume:Volume",
                 "fields": {
+                    "cluster": {
+                        "maxItemsOne": true
+                    },
                     "labels": {
                         "maxItemsOne": false
                     }

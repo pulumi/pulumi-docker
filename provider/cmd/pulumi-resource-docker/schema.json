@@ -643,6 +643,11 @@
                     "description": "The IPV6 address of the container in the specific network.\n",
                     "willReplaceOnChanges": true
                 },
+                "macAddress": {
+                    "type": "string",
+                    "description": "The MAC address of the container in the specific network.\n",
+                    "willReplaceOnChanges": true
+                },
                 "name": {
                     "type": "string",
                     "description": "The name or id of the network to use. You can use \u003cspan pulumi-lang-nodejs=\"`name`\" pulumi-lang-dotnet=\"`Name`\" pulumi-lang-go=\"`name`\" pulumi-lang-python=\"`name`\" pulumi-lang-yaml=\"`name`\" pulumi-lang-java=\"`name`\"\u003e`name`\u003c/span\u003e or \u003cspan pulumi-lang-nodejs=\"`id`\" pulumi-lang-dotnet=\"`Id`\" pulumi-lang-go=\"`id`\" pulumi-lang-python=\"`id`\" pulumi-lang-yaml=\"`id`\" pulumi-lang-java=\"`id`\"\u003e`id`\u003c/span\u003e attribute from a \u003cspan pulumi-lang-nodejs=\"`docker.Network`\" pulumi-lang-dotnet=\"`docker.Network`\" pulumi-lang-go=\"`Network`\" pulumi-lang-python=\"`Network`\" pulumi-lang-yaml=\"`docker.Network`\" pulumi-lang-java=\"`docker.Network`\"\u003e`docker.Network`\u003c/span\u003e resource.\n",
@@ -915,8 +920,337 @@
                 "username"
             ]
         },
+        "docker:index/RegistryImageBuild:RegistryImageBuild": {
+            "properties": {
+                "additionalContexts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of additional build contexts. Only supported when using a buildx builder. Example: `[\"name=path\", \"src = https://example.org\"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.\n",
+                    "willReplaceOnChanges": true
+                },
+                "authConfigs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig"
+                    },
+                    "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                },
+                "buildArgs": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Pairs for build-time variables in the form of `ENDPOINT : \"https://example.com\"`\n",
+                    "willReplaceOnChanges": true
+                },
+                "buildId": {
+                    "type": "string",
+                    "description": "BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.\n",
+                    "willReplaceOnChanges": true
+                },
+                "buildLogFile": {
+                    "type": "string",
+                    "description": "Path to a file where the buildx log are written to. Only available when \u003cspan pulumi-lang-nodejs=\"`builder`\" pulumi-lang-dotnet=\"`Builder`\" pulumi-lang-go=\"`builder`\" pulumi-lang-python=\"`builder`\" pulumi-lang-yaml=\"`builder`\" pulumi-lang-java=\"`builder`\"\u003e`builder`\u003c/span\u003e is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.\n",
+                    "willReplaceOnChanges": true
+                },
+                "builder": {
+                    "type": "string",
+                    "description": "Set the name of the buildx builder to use. If not set, the legacy builder is used.\n",
+                    "willReplaceOnChanges": true
+                },
+                "cacheFroms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.\n",
+                    "willReplaceOnChanges": true
+                },
+                "cacheTos": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.\n",
+                    "willReplaceOnChanges": true
+                },
+                "cgroupParent": {
+                    "type": "string",
+                    "description": "Optional parent cgroup for the container\n",
+                    "willReplaceOnChanges": true
+                },
+                "context": {
+                    "type": "string",
+                    "description": "Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.\n",
+                    "willReplaceOnChanges": true
+                },
+                "cpuPeriod": {
+                    "type": "integer",
+                    "description": "The length of a CPU period in microseconds\n",
+                    "willReplaceOnChanges": true
+                },
+                "cpuQuota": {
+                    "type": "integer",
+                    "description": "Microseconds of CPU time that the container can get in a CPU period\n",
+                    "willReplaceOnChanges": true
+                },
+                "cpuSetCpus": {
+                    "type": "string",
+                    "description": "CPUs in which to allow execution (e.g., `0-3`, \u003cspan pulumi-lang-nodejs=\"`0`\" pulumi-lang-dotnet=\"`0`\" pulumi-lang-go=\"`0`\" pulumi-lang-python=\"`0`\" pulumi-lang-yaml=\"`0`\" pulumi-lang-java=\"`0`\"\u003e`0`\u003c/span\u003e, \u003cspan pulumi-lang-nodejs=\"`1`\" pulumi-lang-dotnet=\"`1`\" pulumi-lang-go=\"`1`\" pulumi-lang-python=\"`1`\" pulumi-lang-yaml=\"`1`\" pulumi-lang-java=\"`1`\"\u003e`1`\u003c/span\u003e)\n",
+                    "willReplaceOnChanges": true
+                },
+                "cpuSetMems": {
+                    "type": "string",
+                    "description": "MEMs in which to allow execution (`0-3`, \u003cspan pulumi-lang-nodejs=\"`0`\" pulumi-lang-dotnet=\"`0`\" pulumi-lang-go=\"`0`\" pulumi-lang-python=\"`0`\" pulumi-lang-yaml=\"`0`\" pulumi-lang-java=\"`0`\"\u003e`0`\u003c/span\u003e, \u003cspan pulumi-lang-nodejs=\"`1`\" pulumi-lang-dotnet=\"`1`\" pulumi-lang-go=\"`1`\" pulumi-lang-python=\"`1`\" pulumi-lang-yaml=\"`1`\" pulumi-lang-java=\"`1`\"\u003e`1`\u003c/span\u003e)\n",
+                    "willReplaceOnChanges": true
+                },
+                "cpuShares": {
+                    "type": "integer",
+                    "description": "CPU shares (relative weight)\n",
+                    "willReplaceOnChanges": true
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "Name of the Dockerfile. Defaults to `Dockerfile`.\n",
+                    "willReplaceOnChanges": true
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [\"hostname:IP\"]\n",
+                    "willReplaceOnChanges": true
+                },
+                "forceRemove": {
+                    "type": "boolean",
+                    "description": "Always remove intermediate containers\n",
+                    "willReplaceOnChanges": true
+                },
+                "isolation": {
+                    "type": "string",
+                    "description": "Isolation represents the isolation technology of a container. The supported values are\n",
+                    "willReplaceOnChanges": true
+                },
+                "label": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set metadata for an image\n"
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "User-defined key/value metadata\n",
+                    "willReplaceOnChanges": true
+                },
+                "memory": {
+                    "type": "integer",
+                    "description": "Set memory limit for build\n",
+                    "willReplaceOnChanges": true
+                },
+                "memorySwap": {
+                    "type": "integer",
+                    "description": "Total memory (memory + swap), -1 to enable unlimited swap\n",
+                    "willReplaceOnChanges": true
+                },
+                "networkMode": {
+                    "type": "string",
+                    "description": "Set the networking mode for the RUN instructions during build\n",
+                    "willReplaceOnChanges": true
+                },
+                "noCache": {
+                    "type": "boolean",
+                    "description": "Do not use the cache when building the image\n",
+                    "willReplaceOnChanges": true
+                },
+                "platform": {
+                    "type": "string",
+                    "description": "Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)\n",
+                    "willReplaceOnChanges": true
+                },
+                "pullParent": {
+                    "type": "boolean",
+                    "description": "Attempt to pull the image even if an older image exists locally\n",
+                    "willReplaceOnChanges": true
+                },
+                "remoteContext": {
+                    "type": "string",
+                    "description": "A Git repository URI or HTTP/HTTPS context URI. Will be ignored if \u003cspan pulumi-lang-nodejs=\"`builder`\" pulumi-lang-dotnet=\"`Builder`\" pulumi-lang-go=\"`builder`\" pulumi-lang-python=\"`builder`\" pulumi-lang-yaml=\"`builder`\" pulumi-lang-java=\"`builder`\"\u003e`builder`\u003c/span\u003e is set.\n",
+                    "willReplaceOnChanges": true
+                },
+                "remove": {
+                    "type": "boolean",
+                    "description": "Remove intermediate containers after a successful build. Defaults to \u003cspan pulumi-lang-nodejs=\"`true`\" pulumi-lang-dotnet=\"`True`\" pulumi-lang-go=\"`true`\" pulumi-lang-python=\"`true`\" pulumi-lang-yaml=\"`true`\" pulumi-lang-java=\"`true`\"\u003e`true`\u003c/span\u003e.\n"
+                },
+                "secrets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/RegistryImageBuildSecret:RegistryImageBuildSecret"
+                    },
+                    "description": "Set build-time secrets. Only available when you use a buildx builder.\n"
+                },
+                "securityOpts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The security options\n",
+                    "willReplaceOnChanges": true
+                },
+                "sessionId": {
+                    "type": "string",
+                    "description": "Set an ID for the build session\n",
+                    "willReplaceOnChanges": true
+                },
+                "shmSize": {
+                    "type": "integer",
+                    "description": "Size of /dev/shm in bytes. The size must be greater than 0\n",
+                    "willReplaceOnChanges": true
+                },
+                "squash": {
+                    "type": "boolean",
+                    "description": "If true the new layers are squashed into a new image with a single new layer\n",
+                    "willReplaceOnChanges": true
+                },
+                "suppressOutput": {
+                    "type": "boolean",
+                    "description": "Suppress the build output and print image ID on success\n",
+                    "willReplaceOnChanges": true
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Name and optionally a tag in the 'name:tag' format\n"
+                },
+                "target": {
+                    "type": "string",
+                    "description": "Set the target build stage to build\n",
+                    "willReplaceOnChanges": true
+                },
+                "ulimits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit"
+                    },
+                    "description": "Configuration for ulimits\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Version of the underlying builder to use\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "context"
+            ]
+        },
+        "docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig": {
+            "properties": {
+                "auth": {
+                    "type": "string",
+                    "description": "the auth token\n"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "the user emal\n"
+                },
+                "hostName": {
+                    "type": "string",
+                    "description": "hostname of the registry\n"
+                },
+                "identityToken": {
+                    "type": "string",
+                    "description": "the identity token\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password for the Docker registry.\n"
+                },
+                "registryToken": {
+                    "type": "string",
+                    "description": "the registry token\n"
+                },
+                "serverAddress": {
+                    "type": "string",
+                    "description": "the server address\n"
+                },
+                "userName": {
+                    "type": "string",
+                    "description": "the registry user name\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "hostName"
+            ]
+        },
+        "docker:index/RegistryImageBuildSecret:RegistryImageBuildSecret": {
+            "properties": {
+                "env": {
+                    "type": "string",
+                    "description": "Environment variable source of the secret\n",
+                    "willReplaceOnChanges": true
+                },
+                "id": {
+                    "type": "string",
+                    "description": "The ID of this resource.\n",
+                    "willReplaceOnChanges": true
+                },
+                "src": {
+                    "type": "string",
+                    "description": "File source of the secret. Takes precedence over \u003cspan pulumi-lang-nodejs=\"`env`\" pulumi-lang-dotnet=\"`Env`\" pulumi-lang-go=\"`env`\" pulumi-lang-python=\"`env`\" pulumi-lang-yaml=\"`env`\" pulumi-lang-java=\"`env`\"\u003e`env`\u003c/span\u003e\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "id"
+            ]
+        },
+        "docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit": {
+            "properties": {
+                "hard": {
+                    "type": "integer",
+                    "description": "soft limit\n",
+                    "willReplaceOnChanges": true
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the Docker image.\n",
+                    "willReplaceOnChanges": true
+                },
+                "soft": {
+                    "type": "integer",
+                    "description": "hard limit\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "hard",
+                "name",
+                "soft"
+            ]
+        },
         "docker:index/RemoteImageBuild:RemoteImageBuild": {
             "properties": {
+                "additionalContexts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of additional build contexts. Only supported when using a buildx builder. Example: `[\"name=path\", \"src = https://example.org\"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.\n",
+                    "willReplaceOnChanges": true
+                },
                 "authConfigs": {
                     "type": "array",
                     "items": {
@@ -2149,6 +2483,66 @@
                 }
             },
             "type": "object"
+        },
+        "docker:index/VolumeCluster:VolumeCluster": {
+            "properties": {
+                "availability": {
+                    "type": "string",
+                    "description": "Availability of the volume. Can be \u003cspan pulumi-lang-nodejs=\"`active`\" pulumi-lang-dotnet=\"`Active`\" pulumi-lang-go=\"`active`\" pulumi-lang-python=\"`active`\" pulumi-lang-yaml=\"`active`\" pulumi-lang-java=\"`active`\"\u003e`active`\u003c/span\u003e (default), \u003cspan pulumi-lang-nodejs=\"`pause`\" pulumi-lang-dotnet=\"`Pause`\" pulumi-lang-go=\"`pause`\" pulumi-lang-python=\"`pause`\" pulumi-lang-yaml=\"`pause`\" pulumi-lang-java=\"`pause`\"\u003e`pause`\u003c/span\u003e, or \u003cspan pulumi-lang-nodejs=\"`drain`\" pulumi-lang-dotnet=\"`Drain`\" pulumi-lang-go=\"`drain`\" pulumi-lang-python=\"`drain`\" pulumi-lang-yaml=\"`drain`\" pulumi-lang-java=\"`drain`\"\u003e`drain`\u003c/span\u003e.\n"
+                },
+                "group": {
+                    "type": "string",
+                    "description": "Cluster Volume group\n",
+                    "willReplaceOnChanges": true
+                },
+                "id": {
+                    "type": "string",
+                    "description": "The ID of the cluster volume.\n"
+                },
+                "limitBytes": {
+                    "type": "string",
+                    "description": "Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.\n",
+                    "willReplaceOnChanges": true
+                },
+                "requiredBytes": {
+                    "type": "string",
+                    "description": "Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.\n",
+                    "willReplaceOnChanges": true
+                },
+                "scope": {
+                    "type": "string",
+                    "description": "The scope of the volume. Can be \u003cspan pulumi-lang-nodejs=\"`single`\" pulumi-lang-dotnet=\"`Single`\" pulumi-lang-go=\"`single`\" pulumi-lang-python=\"`single`\" pulumi-lang-yaml=\"`single`\" pulumi-lang-java=\"`single`\"\u003e`single`\u003c/span\u003e (default) or \u003cspan pulumi-lang-nodejs=\"`multi`\" pulumi-lang-dotnet=\"`Multi`\" pulumi-lang-go=\"`multi`\" pulumi-lang-python=\"`multi`\" pulumi-lang-yaml=\"`multi`\" pulumi-lang-java=\"`multi`\"\u003e`multi`\u003c/span\u003e.\n",
+                    "willReplaceOnChanges": true
+                },
+                "sharing": {
+                    "type": "string",
+                    "description": "The sharing mode. Can be \u003cspan pulumi-lang-nodejs=\"`none`\" pulumi-lang-dotnet=\"`None`\" pulumi-lang-go=\"`none`\" pulumi-lang-python=\"`none`\" pulumi-lang-yaml=\"`none`\" pulumi-lang-java=\"`none`\"\u003e`none`\u003c/span\u003e (default), \u003cspan pulumi-lang-nodejs=\"`readonly`\" pulumi-lang-dotnet=\"`Readonly`\" pulumi-lang-go=\"`readonly`\" pulumi-lang-python=\"`readonly`\" pulumi-lang-yaml=\"`readonly`\" pulumi-lang-java=\"`readonly`\"\u003e`readonly`\u003c/span\u003e, \u003cspan pulumi-lang-nodejs=\"`onewriter`\" pulumi-lang-dotnet=\"`Onewriter`\" pulumi-lang-go=\"`onewriter`\" pulumi-lang-python=\"`onewriter`\" pulumi-lang-yaml=\"`onewriter`\" pulumi-lang-java=\"`onewriter`\"\u003e`onewriter`\u003c/span\u003e or \u003cspan pulumi-lang-nodejs=\"`all`\" pulumi-lang-dotnet=\"`All`\" pulumi-lang-go=\"`all`\" pulumi-lang-python=\"`all`\" pulumi-lang-yaml=\"`all`\" pulumi-lang-java=\"`all`\"\u003e`all`\u003c/span\u003e.\n",
+                    "willReplaceOnChanges": true
+                },
+                "topologyPreferred": {
+                    "type": "string",
+                    "description": "A topology that the Cluster Volume would be preferred in\n",
+                    "willReplaceOnChanges": true
+                },
+                "topologyRequired": {
+                    "type": "string",
+                    "description": "A topology that the Cluster Volume must be accessible from\n",
+                    "willReplaceOnChanges": true
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Cluster Volume access type. Can be \u003cspan pulumi-lang-nodejs=\"`mount`\" pulumi-lang-dotnet=\"`Mount`\" pulumi-lang-go=\"`mount`\" pulumi-lang-python=\"`mount`\" pulumi-lang-yaml=\"`mount`\" pulumi-lang-java=\"`mount`\"\u003e`mount`\u003c/span\u003e or \u003cspan pulumi-lang-nodejs=\"`block`\" pulumi-lang-dotnet=\"`Block`\" pulumi-lang-go=\"`block`\" pulumi-lang-python=\"`block`\" pulumi-lang-yaml=\"`block`\" pulumi-lang-java=\"`block`\"\u003e`block`\u003c/span\u003e (default).\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "id"
+                    ]
+                }
+            }
         },
         "docker:index/VolumeLabel:VolumeLabel": {
             "properties": {
@@ -4297,11 +4691,14 @@
             }
         },
         "docker:index/registryImage:RegistryImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again\n\n",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again\n\n## Example Usage\n\nBuild an image with the \u003cspan pulumi-lang-nodejs=\"`docker.RemoteImage`\" pulumi-lang-dotnet=\"`docker.RemoteImage`\" pulumi-lang-go=\"`RemoteImage`\" pulumi-lang-python=\"`RemoteImage`\" pulumi-lang-yaml=\"`docker.RemoteImage`\" pulumi-lang-java=\"`docker.RemoteImage`\"\u003e`docker.RemoteImage`\u003c/span\u003e resource and then push it to a registry:\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.RemoteImage(\"image\", {\n    name: \"registry.com/somename:1.0\",\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    name: image.name,\n    keepRemotely: true,\n});\n```\n```python\nimport pulumi\nimport os\nimport pulumi_docker as docker\n\nimage = docker.RemoteImage(\"image\",\n    name=\"registry.com/somename:1.0\",\n    build={\n        \"context\": f\"{os.getcwd()}/absolutePathToContextFolder\",\n    })\nhelloworld = docker.RegistryImage(\"helloworld\",\n    name=image.name,\n    keep_remotely=True)\n```\n```csharp\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.RemoteImage(\"image\", new()\n    {\n        Name = \"registry.com/somename:1.0\",\n        Build = new Docker.Inputs.RemoteImageBuildArgs\n        {\n            Context = $\"{Directory.GetCurrentDirectory()}/absolutePathToContextFolder\",\n        },\n    });\n\n    var helloworld = new Docker.RegistryImage(\"helloworld\", new()\n    {\n        Name = image.Name,\n        KeepRemotely = true,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\timage, err := docker.NewRemoteImage(ctx, \"image\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"registry.com/somename:1.0\"),\n\t\t\tBuild: \u0026docker.RemoteImageBuildArgs{\n\t\t\t\tContext: pulumi.Sprintf(\"%v/absolutePathToContextFolder\", func(cwd string, err error) string {\n\t\t\t\t\tif err != nil {\n\t\t\t\t\t\tpanic(err)\n\t\t\t\t\t}\n\t\t\t\t\treturn cwd\n\t\t\t\t}(os.Getwd())),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tName:         image.Name,\n\t\t\tKeepRemotely: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n\u003c!--End PulumiCodeChooser --\u003e\n",
             "properties": {
                 "authConfig": {
                     "$ref": "#/types/docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig",
                     "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                },
+                "build": {
+                    "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild"
                 },
                 "insecureSkipVerify": {
                     "type": "boolean",
@@ -4336,6 +4733,9 @@
                     "$ref": "#/types/docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig",
                     "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
                 },
+                "build": {
+                    "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild"
+                },
                 "insecureSkipVerify": {
                     "type": "boolean",
                     "description": "If \u003cspan pulumi-lang-nodejs=\"`true`\" pulumi-lang-dotnet=\"`True`\" pulumi-lang-go=\"`true`\" pulumi-lang-python=\"`true`\" pulumi-lang-yaml=\"`true`\" pulumi-lang-java=\"`true`\"\u003e`true`\u003c/span\u003e, the verification of TLS certificates of the server/registry is disabled. Defaults to \u003cspan pulumi-lang-nodejs=\"`false`\" pulumi-lang-dotnet=\"`False`\" pulumi-lang-go=\"`false`\" pulumi-lang-python=\"`false`\" pulumi-lang-yaml=\"`false`\" pulumi-lang-java=\"`false`\"\u003e`false`\u003c/span\u003e\n"
@@ -4364,6 +4764,9 @@
                     "authConfig": {
                         "$ref": "#/types/docker:index/RegistryImageAuthConfig:RegistryImageAuthConfig",
                         "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                    },
+                    "build": {
+                        "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild"
                     },
                     "insecureSkipVerify": {
                         "type": "boolean",
@@ -4889,6 +5292,10 @@
         "docker:index/volume:Volume": {
             "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside\u003cspan pulumi-lang-nodejs=\" docker.Container \" pulumi-lang-dotnet=\" docker.Container \" pulumi-lang-go=\" Container \" pulumi-lang-python=\" Container \" pulumi-lang-yaml=\" docker.Container \" pulumi-lang-java=\" docker.Container \"\u003e docker.Container \u003c/span\u003eto prepare volumes that can be shared across containers.\n\n## Example Usage\n\n\u003c!--Start PulumiCodeChooser --\u003e\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {name: \"shared_volume\"});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"shared_volume\", name=\"shared_volume\")\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var sharedVolume = new Docker.Volume(\"shared_volume\", new()\n    {\n        Name = \"shared_volume\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"shared_volume\", \u0026docker.VolumeArgs{\n\t\t\tName: pulumi.String(\"shared_volume\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Volume;\nimport com.pulumi.docker.VolumeArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\", VolumeArgs.builder()\n            .name(\"shared_volume\")\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n    name: shared_volume\n    properties:\n      name: shared_volume\n```\n\u003c!--End PulumiCodeChooser --\u003e\n\n## Import\n\n### Example\n\nAssuming you created a `volume` as follows\n\n#!/bin/bash\n\ndocker volume create\n\nprints the long ID\n\n524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n\nyou provide the definition for the resource as follows\n\nterraform\n\nresource \"docker_volume\" \"foo\" {\n\n  name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\"\n\n}\n\nthen the import command is as follows\n\n#!/bin/bash\n\n```sh\n$ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n",
             "properties": {
+                "cluster": {
+                    "$ref": "#/types/docker:index/VolumeCluster:VolumeCluster",
+                    "description": "Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.\n"
+                },
                 "driver": {
                     "type": "string",
                     "description": "Driver type for the volume. Defaults to \u003cspan pulumi-lang-nodejs=\"`local`\" pulumi-lang-dotnet=\"`Local`\" pulumi-lang-go=\"`local`\" pulumi-lang-python=\"`local`\" pulumi-lang-yaml=\"`local`\" pulumi-lang-java=\"`local`\"\u003e`local`\u003c/span\u003e.\n"
@@ -4922,6 +5329,10 @@
                 "name"
             ],
             "inputProperties": {
+                "cluster": {
+                    "$ref": "#/types/docker:index/VolumeCluster:VolumeCluster",
+                    "description": "Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.\n"
+                },
                 "driver": {
                     "type": "string",
                     "description": "Driver type for the volume. Defaults to \u003cspan pulumi-lang-nodejs=\"`local`\" pulumi-lang-dotnet=\"`Local`\" pulumi-lang-go=\"`local`\" pulumi-lang-python=\"`local`\" pulumi-lang-yaml=\"`local`\" pulumi-lang-java=\"`local`\"\u003e`local`\u003c/span\u003e.\n",
@@ -4952,6 +5363,10 @@
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering Volume resources.\n",
                 "properties": {
+                    "cluster": {
+                        "$ref": "#/types/docker:index/VolumeCluster:VolumeCluster",
+                        "description": "Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.\n"
+                    },
                     "driver": {
                         "type": "string",
                         "description": "Driver type for the volume. Defaults to \u003cspan pulumi-lang-nodejs=\"`local`\" pulumi-lang-dotnet=\"`Local`\" pulumi-lang-go=\"`local`\" pulumi-lang-python=\"`local`\" pulumi-lang-yaml=\"`local`\" pulumi-lang-java=\"`local`\"\u003e`local`\u003c/span\u003e.\n",
