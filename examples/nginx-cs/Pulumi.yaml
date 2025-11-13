@@ -1,3 +1,0 @@
-name: nginx-cs
-description: "Nginx Docker image"
-runtime: dotnet
