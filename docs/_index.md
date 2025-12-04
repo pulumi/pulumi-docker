@@ -39,6 +39,7 @@ config:
         value: unix:///var/run/docker.sock
 
 ```
+
 ```typescript
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "@pulumi/docker";
@@ -51,6 +52,7 @@ const foo = new docker.Container("foo", {
     name: "foo",
 });
 ```
+
 {{% /choosable %}}
 {{% choosable language python %}}
 ```yaml
@@ -62,6 +64,7 @@ config:
         value: unix:///var/run/docker.sock
 
 ```
+
 ```python
 import pulumi
 import pulumi_docker as docker
@@ -73,6 +76,7 @@ foo = docker.Container("foo",
     image=ubuntu.image_id,
     name="foo")
 ```
+
 {{% /choosable %}}
 {{% choosable language csharp %}}
 ```yaml
@@ -84,6 +88,7 @@ config:
         value: unix:///var/run/docker.sock
 
 ```
+
 ```csharp
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +113,7 @@ return await Deployment.RunAsync(() =>
 });
 
 ```
+
 {{% /choosable %}}
 {{% choosable language go %}}
 ```yaml
@@ -119,6 +125,7 @@ config:
         value: unix:///var/run/docker.sock
 
 ```
+
 ```go
 package main
 
@@ -148,6 +155,7 @@ func main() {
 	})
 }
 ```
+
 {{% /choosable %}}
 {{% choosable language yaml %}}
 ```yaml
@@ -159,6 +167,7 @@ config:
         value: unix:///var/run/docker.sock
 
 ```
+
 ```yaml
 resources:
   # Pulls the image
@@ -173,6 +182,7 @@ resources:
       image: ${ubuntu.imageId}
       name: foo
 ```
+
 {{% /choosable %}}
 {{% choosable language java %}}
 ```yaml
@@ -184,6 +194,7 @@ config:
         value: unix:///var/run/docker.sock
 
 ```
+
 ```java
 package generated_program;
 
@@ -221,6 +232,7 @@ public class App {
     }
 }
 ```
+
 {{% /choosable %}}
 {{< /chooser >}}
 ## Remote Hosts
