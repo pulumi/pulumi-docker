@@ -30,7 +30,7 @@ namespace Pulumi.Docker.Inputs
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
-        [Input("tests", required: true)]
+        [Input("tests")]
         private InputList<string>? _tests;
 
         /// <summary>

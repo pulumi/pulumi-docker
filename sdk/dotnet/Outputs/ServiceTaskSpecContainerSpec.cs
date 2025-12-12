@@ -50,7 +50,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> Groups;
         /// <summary>
-        /// A test to perform to check that the container is healthy
+        /// A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
         /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecHealthcheck? Healthcheck;
         /// <summary>

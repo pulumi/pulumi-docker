@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Env { get; set; }
 
         /// <summary>
-        /// The ID of this resource.
+        /// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
         /// </summary>
         [Input("id", required: true)]
         public Input<string> Id { get; set; } = null!;

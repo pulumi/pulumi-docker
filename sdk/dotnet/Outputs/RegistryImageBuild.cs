@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> AdditionalContexts;
         /// <summary>
-        /// Authentication configuration for the Docker registry. It is only used for this resource.
+        /// The configuration for the authentication
         /// </summary>
         public readonly ImmutableArray<Outputs.RegistryImageBuildAuthConfig> AuthConfigs;
         /// <summary>

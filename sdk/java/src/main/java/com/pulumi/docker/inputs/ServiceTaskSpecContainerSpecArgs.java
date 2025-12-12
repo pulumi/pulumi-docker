@@ -163,14 +163,14 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
     }
 
     /**
-     * A test to perform to check that the container is healthy
+     * A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
     @Import(name="healthcheck")
     private @Nullable Output<ServiceTaskSpecContainerSpecHealthcheckArgs> healthcheck;
 
     /**
-     * @return A test to perform to check that the container is healthy
+     * @return A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
     public Optional<Output<ServiceTaskSpecContainerSpecHealthcheckArgs>> healthcheck() {
@@ -668,7 +668,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         /**
-         * @param healthcheck A test to perform to check that the container is healthy
+         * @param healthcheck A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
          * 
          * @return builder
          * 
@@ -679,7 +679,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         /**
-         * @param healthcheck A test to perform to check that the container is healthy
+         * @param healthcheck A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
          * 
          * @return builder
          * 

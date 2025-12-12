@@ -308,7 +308,7 @@ config:
     docker:certMaterial:
         value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
     docker:certPath:
-        value: /home/runner/.docker
+        value: /Users/guin/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:

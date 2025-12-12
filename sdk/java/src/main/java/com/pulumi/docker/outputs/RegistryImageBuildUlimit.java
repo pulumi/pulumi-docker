@@ -17,7 +17,7 @@ public final class RegistryImageBuildUlimit {
      */
     private Integer hard;
     /**
-     * @return The name of the Docker image.
+     * @return type of ulimit, e.g. `nofile`
      * 
      */
     private String name;
@@ -36,7 +36,7 @@ public final class RegistryImageBuildUlimit {
         return this.hard;
     }
     /**
-     * @return The name of the Docker image.
+     * @return type of ulimit, e.g. `nofile`
      * 
      */
     public String name() {

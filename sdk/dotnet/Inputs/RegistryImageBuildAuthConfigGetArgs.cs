@@ -37,7 +37,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? IdentityToken { get; set; }
 
         /// <summary>
-        /// The password for the Docker registry.
+        /// the registry password
         /// </summary>
         [Input("password")]
         public Input<string>? Password { get; set; }
