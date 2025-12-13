@@ -17,6 +17,7 @@ package provider
 import (
 	"fmt"
 	"path/filepath"
+	"regexp"
 	"unicode"
 
 	// embed is used to store bridge-metadata.json in the compiled binary
@@ -76,6 +77,7 @@ func Provider() tfbridge.ProviderInfo {
 		Repository:       "https://github.com/pulumi/pulumi-docker",
 		UpstreamRepoPath: "./upstream",
 		GitHubOrg:        "kreuzwerker",
+		DocRules:         &tfbridge.DocRuleInfo{EditRules: editRules},
 		Config: map[string]*tfbridge.SchemaInfo{
 			"host": {
 				Default: &tfbridge.DefaultInfo{
@@ -384,8 +386,28 @@ func Provider() tfbridge.ProviderInfo {
 		tfbridgetokens.MakeStandard(dockerPkg)))
 	prov.MustApplyAutoAliases()
 	prov.SetAutonaming(255, "-")
-
 	return prov
+}
+
+func editRules(defaults []tfbridge.DocsEdit) []tfbridge.DocsEdit {
+	return append(defaults, fixupCertPathExpansion)
+}
+
+var fixupCertPathExpansion = tfbridge.DocsEdit{
+	Path: "*",
+	Edit: func(_ string, content []byte) ([]byte, error) {
+		// Remove file(pathexpand("...")) and replace with quoted path
+		// Example: file(pathexpand("~/.docker/ca.pem")) -> "~/.docker/ca.pem"
+		reFilePathexpand := regexp.MustCompile(`file\(pathexpand\("([^"]+)"\)\)`)
+		content = reFilePathexpand.ReplaceAll(content, []byte(`"$1"`))
+
+		// Remove pathexpand("...") and replace with quoted path
+		// Example: pathexpand("~/.docker") -> "~/.docker"
+		rePathexpand := regexp.MustCompile(`pathexpand\("([^"]+)"\)`)
+		content = rePathexpand.ReplaceAll(content, []byte(`"$1"`))
+
+		return content, nil
+	},
 }
 
 //go:embed cmd/pulumi-resource-docker/bridge-metadata.json
