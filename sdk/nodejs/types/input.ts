@@ -682,7 +682,7 @@ export interface RegistryImageBuild {
      */
     additionalContexts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * Authentication configuration for the Docker registry. It is only used for this resource.
+     * The configuration for the authentication
      */
     authConfigs?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildAuthConfig>[]>;
     /**
@@ -853,7 +853,7 @@ export interface RegistryImageBuildAuthConfig {
      */
     identityToken?: pulumi.Input<string>;
     /**
-     * The password for the Docker registry.
+     * the registry password
      */
     password?: pulumi.Input<string>;
     /**
@@ -876,7 +876,7 @@ export interface RegistryImageBuildSecret {
      */
     env?: pulumi.Input<string>;
     /**
-     * The ID of this resource.
+     * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
      */
     id: pulumi.Input<string>;
     /**
@@ -891,7 +891,7 @@ export interface RegistryImageBuildUlimit {
      */
     hard: pulumi.Input<number>;
     /**
-     * The name of the Docker image.
+     * type of ulimit, e.g. `nofile`
      */
     name: pulumi.Input<string>;
     /**
@@ -1324,7 +1324,7 @@ export interface ServiceTaskSpecContainerSpec {
      */
     groups?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * A test to perform to check that the container is healthy
+     * A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
      */
     healthcheck?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecHealthcheck>;
     /**
@@ -1439,7 +1439,7 @@ export interface ServiceTaskSpecContainerSpecHealthcheck {
     /**
      * The test to perform as list
      */
-    tests: pulumi.Input<pulumi.Input<string>[]>;
+    tests?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */

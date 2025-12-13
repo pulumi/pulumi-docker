@@ -2077,7 +2077,7 @@ class RegistryImageBuild(dict):
         """
         :param _builtins.str context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
         :param Sequence[_builtins.str] additional_contexts: A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
-        :param Sequence['RegistryImageBuildAuthConfigArgs'] auth_configs: Authentication configuration for the Docker registry. It is only used for this resource.
+        :param Sequence['RegistryImageBuildAuthConfigArgs'] auth_configs: The configuration for the authentication
         :param Mapping[str, _builtins.str] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         :param _builtins.str build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param _builtins.str build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
@@ -2213,7 +2213,7 @@ class RegistryImageBuild(dict):
     @pulumi.getter(name="authConfigs")
     def auth_configs(self) -> Optional[Sequence['outputs.RegistryImageBuildAuthConfig']]:
         """
-        Authentication configuration for the Docker registry. It is only used for this resource.
+        The configuration for the authentication
         """
         return pulumi.get(self, "auth_configs")
 
@@ -2547,7 +2547,7 @@ class RegistryImageBuildAuthConfig(dict):
         :param _builtins.str auth: the auth token
         :param _builtins.str email: the user emal
         :param _builtins.str identity_token: the identity token
-        :param _builtins.str password: The password for the Docker registry.
+        :param _builtins.str password: the registry password
         :param _builtins.str registry_token: the registry token
         :param _builtins.str server_address: the server address
         :param _builtins.str user_name: the registry user name
@@ -2604,7 +2604,7 @@ class RegistryImageBuildAuthConfig(dict):
     @pulumi.getter
     def password(self) -> Optional[_builtins.str]:
         """
-        The password for the Docker registry.
+        the registry password
         """
         return pulumi.get(self, "password")
 
@@ -2640,7 +2640,7 @@ class RegistryImageBuildSecret(dict):
                  env: Optional[_builtins.str] = None,
                  src: Optional[_builtins.str] = None):
         """
-        :param _builtins.str id: The ID of this resource.
+        :param _builtins.str id: ID of the secret. By default, secrets are mounted to /run/secrets/\\n\\n
         :param _builtins.str env: Environment variable source of the secret
         :param _builtins.str src: File source of the secret. Takes precedence over `env`
         """
@@ -2654,7 +2654,7 @@ class RegistryImageBuildSecret(dict):
     @pulumi.getter
     def id(self) -> _builtins.str:
         """
-        The ID of this resource.
+        ID of the secret. By default, secrets are mounted to /run/secrets/\\n\\n
         """
         return pulumi.get(self, "id")
 
@@ -2683,7 +2683,7 @@ class RegistryImageBuildUlimit(dict):
                  soft: _builtins.int):
         """
         :param _builtins.int hard: soft limit
-        :param _builtins.str name: The name of the Docker image.
+        :param _builtins.str name: type of ulimit, e.g. `nofile`
         :param _builtins.int soft: hard limit
         """
         pulumi.set(__self__, "hard", hard)
@@ -2702,7 +2702,7 @@ class RegistryImageBuildUlimit(dict):
     @pulumi.getter
     def name(self) -> _builtins.str:
         """
-        The name of the Docker image.
+        type of ulimit, e.g. `nofile`
         """
         return pulumi.get(self, "name")
 
@@ -4083,7 +4083,7 @@ class ServiceTaskSpecContainerSpec(dict):
         :param 'ServiceTaskSpecContainerSpecDnsConfigArgs' dns_config: Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
         :param Mapping[str, _builtins.str] env: A list of environment variables in the form VAR="value"
         :param Sequence[_builtins.str] groups: A list of additional groups that the container process will run as
-        :param 'ServiceTaskSpecContainerSpecHealthcheckArgs' healthcheck: A test to perform to check that the container is healthy
+        :param 'ServiceTaskSpecContainerSpecHealthcheckArgs' healthcheck: A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
         :param _builtins.str hostname: The hostname to use for the container, as a valid RFC 1123 hostname
         :param Sequence['ServiceTaskSpecContainerSpecHostArgs'] hosts: A list of hostname/IP mappings to add to the container's hosts file
         :param _builtins.str isolation: Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
@@ -4227,7 +4227,7 @@ class ServiceTaskSpecContainerSpec(dict):
     @pulumi.getter
     def healthcheck(self) -> Optional['outputs.ServiceTaskSpecContainerSpecHealthcheck']:
         """
-        A test to perform to check that the container is healthy
+        A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
         """
         return pulumi.get(self, "healthcheck")
 
@@ -4494,35 +4494,28 @@ class ServiceTaskSpecContainerSpecHealthcheck(dict):
         return super().get(key, default)
 
     def __init__(__self__, *,
-                 tests: Sequence[_builtins.str],
                  interval: Optional[_builtins.str] = None,
                  retries: Optional[_builtins.int] = None,
                  start_period: Optional[_builtins.str] = None,
+                 tests: Optional[Sequence[_builtins.str]] = None,
                  timeout: Optional[_builtins.str] = None):
         """
-        :param Sequence[_builtins.str] tests: The test to perform as list
         :param _builtins.str interval: Time between running the check (ms|s|m|h). Defaults to `0s`.
         :param _builtins.int retries: Consecutive failures needed to report unhealthy. Defaults to `0`
         :param _builtins.str start_period: Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        :param Sequence[_builtins.str] tests: The test to perform as list
         :param _builtins.str timeout: Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         """
-        pulumi.set(__self__, "tests", tests)
         if interval is not None:
             pulumi.set(__self__, "interval", interval)
         if retries is not None:
             pulumi.set(__self__, "retries", retries)
         if start_period is not None:
             pulumi.set(__self__, "start_period", start_period)
+        if tests is not None:
+            pulumi.set(__self__, "tests", tests)
         if timeout is not None:
             pulumi.set(__self__, "timeout", timeout)
-
-    @_builtins.property
-    @pulumi.getter
-    def tests(self) -> Sequence[_builtins.str]:
-        """
-        The test to perform as list
-        """
-        return pulumi.get(self, "tests")
 
     @_builtins.property
     @pulumi.getter
@@ -4547,6 +4540,14 @@ class ServiceTaskSpecContainerSpecHealthcheck(dict):
         Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
         """
         return pulumi.get(self, "start_period")
+
+    @_builtins.property
+    @pulumi.getter
+    def tests(self) -> Optional[Sequence[_builtins.str]]:
+        """
+        The test to perform as list
+        """
+        return pulumi.get(self, "tests")
 
     @_builtins.property
     @pulumi.getter

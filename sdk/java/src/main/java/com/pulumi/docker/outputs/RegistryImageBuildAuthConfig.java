@@ -33,7 +33,7 @@ public final class RegistryImageBuildAuthConfig {
      */
     private @Nullable String identityToken;
     /**
-     * @return The password for the Docker registry.
+     * @return the registry password
      * 
      */
     private @Nullable String password;
@@ -83,7 +83,7 @@ public final class RegistryImageBuildAuthConfig {
         return Optional.ofNullable(this.identityToken);
     }
     /**
-     * @return The password for the Docker registry.
+     * @return the registry password
      * 
      */
     public Optional<String> password() {

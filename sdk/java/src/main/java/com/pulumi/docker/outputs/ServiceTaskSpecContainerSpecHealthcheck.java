@@ -4,7 +4,6 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -33,7 +32,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
      * @return The test to perform as list
      * 
      */
-    private List<String> tests;
+    private @Nullable List<String> tests;
     /**
      * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
@@ -67,7 +66,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
      * 
      */
     public List<String> tests() {
-        return this.tests;
+        return this.tests == null ? List.of() : this.tests;
     }
     /**
      * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
@@ -89,7 +88,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
         private @Nullable String interval;
         private @Nullable Integer retries;
         private @Nullable String startPeriod;
-        private List<String> tests;
+        private @Nullable List<String> tests;
         private @Nullable String timeout;
         public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecHealthcheck defaults) {
@@ -120,10 +119,8 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
             return this;
         }
         @CustomType.Setter
-        public Builder tests(List<String> tests) {
-            if (tests == null) {
-              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHealthcheck", "tests");
-            }
+        public Builder tests(@Nullable List<String> tests) {
+
             this.tests = tests;
             return this;
         }

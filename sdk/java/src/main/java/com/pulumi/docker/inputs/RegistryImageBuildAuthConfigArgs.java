@@ -77,14 +77,14 @@ public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources
     }
 
     /**
-     * The password for the Docker registry.
+     * the registry password
      * 
      */
     @Import(name="password")
     private @Nullable Output<String> password;
 
     /**
-     * @return The password for the Docker registry.
+     * @return the registry password
      * 
      */
     public Optional<Output<String>> password() {
@@ -252,7 +252,7 @@ public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources
         }
 
         /**
-         * @param password The password for the Docker registry.
+         * @param password the registry password
          * 
          * @return builder
          * 
@@ -263,7 +263,7 @@ public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources
         }
 
         /**
-         * @param password The password for the Docker registry.
+         * @param password the registry password
          * 
          * @return builder
          * 

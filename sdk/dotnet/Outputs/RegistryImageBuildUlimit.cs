@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly int Hard;
         /// <summary>
-        /// The name of the Docker image.
+        /// type of ulimit, e.g. `Nofile`
         /// </summary>
         public readonly string Name;
         /// <summary>

@@ -935,7 +935,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig"
                     },
-                    "description": "Authentication configuration for the Docker registry. It is only used for this resource.\n"
+                    "description": "The configuration for the authentication\n"
                 },
                 "buildArgs": {
                     "type": "object",
@@ -1173,7 +1173,7 @@
                 },
                 "password": {
                     "type": "string",
-                    "description": "The password for the Docker registry.\n"
+                    "description": "the registry password\n"
                 },
                 "registryToken": {
                     "type": "string",
@@ -1202,7 +1202,7 @@
                 },
                 "id": {
                     "type": "string",
-                    "description": "The ID of this resource.\n",
+                    "description": "ID of the secret. By default, secrets are mounted to /run/secrets/\\n\\n\n",
                     "willReplaceOnChanges": true
                 },
                 "src": {
@@ -1225,7 +1225,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image.\n",
+                    "description": "type of ulimit, e.g. \u003cspan pulumi-lang-nodejs=\"`nofile`\" pulumi-lang-dotnet=\"`Nofile`\" pulumi-lang-go=\"`nofile`\" pulumi-lang-python=\"`nofile`\" pulumi-lang-yaml=\"`nofile`\" pulumi-lang-java=\"`nofile`\"\u003e`nofile`\u003c/span\u003e\n",
                     "willReplaceOnChanges": true
                 },
                 "soft": {
@@ -1681,13 +1681,11 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
-                    "willReplaceOnChanges": true
+                    "description": "Name of the label\n"
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
-                    "willReplaceOnChanges": true
+                    "description": "Value of the label\n"
                 }
             },
             "type": "object",
@@ -1870,7 +1868,7 @@
                 },
                 "healthcheck": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck",
-                    "description": "A test to perform to check that the container is healthy\n"
+                    "description": "A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.\n"
                 },
                 "hostname": {
                     "type": "string",
@@ -2045,10 +2043,7 @@
                     "description": "Maximum time to allow one check to run (ms|s|m|h). Defaults to \u003cspan pulumi-lang-nodejs=\"`0s`\" pulumi-lang-dotnet=\"`0s`\" pulumi-lang-go=\"`0s`\" pulumi-lang-python=\"`0s`\" pulumi-lang-yaml=\"`0s`\" pulumi-lang-java=\"`0s`\"\u003e`0s`\u003c/span\u003e.\n"
                 }
             },
-            "type": "object",
-            "required": [
-                "tests"
-            ]
+            "type": "object"
         },
         "docker:index/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost": {
             "properties": {

@@ -24,7 +24,7 @@ index 1b0cd45..ba10cc3 100644
  ## Example Usage
  
 diff --git a/internal/provider/data_source_docker_image.go b/internal/provider/data_source_docker_image.go
-index 2514c2e..cc92ee0 100644
+index 916e3de..b5c864a 100644
 --- a/internal/provider/data_source_docker_image.go
 +++ b/internal/provider/data_source_docker_image.go
 @@ -12,7 +12,7 @@ import (

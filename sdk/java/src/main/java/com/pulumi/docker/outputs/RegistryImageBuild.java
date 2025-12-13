@@ -25,7 +25,7 @@ public final class RegistryImageBuild {
      */
     private @Nullable List<String> additionalContexts;
     /**
-     * @return Authentication configuration for the Docker registry. It is only used for this resource.
+     * @return The configuration for the authentication
      * 
      */
     private @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
@@ -224,7 +224,7 @@ public final class RegistryImageBuild {
         return this.additionalContexts == null ? List.of() : this.additionalContexts;
     }
     /**
-     * @return Authentication configuration for the Docker registry. It is only used for this resource.
+     * @return The configuration for the authentication
      * 
      */
     public List<RegistryImageBuildAuthConfig> authConfigs() {

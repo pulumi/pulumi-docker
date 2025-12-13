@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Env;
         /// <summary>
-        /// The ID of this resource.
+        /// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
         /// </summary>
         public readonly string Id;
         /// <summary>

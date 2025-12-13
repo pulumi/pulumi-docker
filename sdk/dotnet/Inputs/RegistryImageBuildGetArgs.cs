@@ -28,7 +28,7 @@ namespace Pulumi.Docker.Inputs
         private InputList<Inputs.RegistryImageBuildAuthConfigGetArgs>? _authConfigs;
 
         /// <summary>
-        /// Authentication configuration for the Docker registry. It is only used for this resource.
+        /// The configuration for the authentication
         /// </summary>
         public InputList<Inputs.RegistryImageBuildAuthConfigGetArgs> AuthConfigs
         {

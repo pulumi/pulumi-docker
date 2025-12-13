@@ -39,14 +39,14 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
     }
 
     /**
-     * Authentication configuration for the Docker registry. It is only used for this resource.
+     * The configuration for the authentication
      * 
      */
     @Import(name="authConfigs")
     private @Nullable Output<List<RegistryImageBuildAuthConfigArgs>> authConfigs;
 
     /**
-     * @return Authentication configuration for the Docker registry. It is only used for this resource.
+     * @return The configuration for the authentication
      * 
      */
     public Optional<Output<List<RegistryImageBuildAuthConfigArgs>>> authConfigs() {
@@ -702,7 +702,7 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
         }
 
         /**
-         * @param authConfigs Authentication configuration for the Docker registry. It is only used for this resource.
+         * @param authConfigs The configuration for the authentication
          * 
          * @return builder
          * 
@@ -713,7 +713,7 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
         }
 
         /**
-         * @param authConfigs Authentication configuration for the Docker registry. It is only used for this resource.
+         * @param authConfigs The configuration for the authentication
          * 
          * @return builder
          * 
@@ -723,7 +723,7 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
         }
 
         /**
-         * @param authConfigs Authentication configuration for the Docker registry. It is only used for this resource.
+         * @param authConfigs The configuration for the authentication
          * 
          * @return builder
          * 

@@ -611,7 +611,7 @@ export interface RegistryImageBuild {
      */
     additionalContexts?: string[];
     /**
-     * Authentication configuration for the Docker registry. It is only used for this resource.
+     * The configuration for the authentication
      */
     authConfigs?: outputs.RegistryImageBuildAuthConfig[];
     /**
@@ -782,7 +782,7 @@ export interface RegistryImageBuildAuthConfig {
      */
     identityToken?: string;
     /**
-     * The password for the Docker registry.
+     * the registry password
      */
     password?: string;
     /**
@@ -805,7 +805,7 @@ export interface RegistryImageBuildSecret {
      */
     env?: string;
     /**
-     * The ID of this resource.
+     * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
      */
     id: string;
     /**
@@ -820,7 +820,7 @@ export interface RegistryImageBuildUlimit {
      */
     hard: number;
     /**
-     * The name of the Docker image.
+     * type of ulimit, e.g. `nofile`
      */
     name: string;
     /**
@@ -1253,7 +1253,7 @@ export interface ServiceTaskSpecContainerSpec {
      */
     groups?: string[];
     /**
-     * A test to perform to check that the container is healthy
+     * A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
      */
     healthcheck: outputs.ServiceTaskSpecContainerSpecHealthcheck;
     /**
@@ -1368,7 +1368,7 @@ export interface ServiceTaskSpecContainerSpecHealthcheck {
     /**
      * The test to perform as list
      */
-    tests: string[];
+    tests?: string[];
     /**
      * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
