@@ -1,9 +1,0 @@
-{
-    "name": "cbp-gcp-ts-dev",
-    "devDependencies": {
-        "@types/node": "^14.0.0"
-    },
-    "dependencies": {
-        "@pulumi/pulumi": "^3.0.0"
-    }
-}
