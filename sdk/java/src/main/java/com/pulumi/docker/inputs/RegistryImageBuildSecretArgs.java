@@ -32,14 +32,14 @@ public final class RegistryImageBuildSecretArgs extends com.pulumi.resources.Res
     }
 
     /**
-     * The ID of this resource.
+     * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
      * 
      */
     @Import(name="id", required=true)
     private Output<String> id;
 
     /**
-     * @return The ID of this resource.
+     * @return ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
      * 
      */
     public Output<String> id() {
@@ -109,7 +109,7 @@ public final class RegistryImageBuildSecretArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param id The ID of this resource.
+         * @param id ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
          * 
          * @return builder
          * 
@@ -120,7 +120,7 @@ public final class RegistryImageBuildSecretArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param id The ID of this resource.
+         * @param id ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
          * 
          * @return builder
          * 

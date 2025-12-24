@@ -304,15 +304,15 @@ name: configuration-example
 runtime:
 config:
     docker:caMaterial:
-        value: 'TODO: file(pathexpand("~/.docker/ca.pem"))'
+        value: ~/.docker/ca.pem
     docker:certMaterial:
-        value: 'TODO: file(pathexpand("~/.docker/cert.pem"))'
+        value: ~/.docker/cert.pem
     docker:certPath:
-        value: /home/runner/.docker
+        value: ~/.docker
     docker:host:
         value: tcp://your-host-ip:2376/
     docker:keyMaterial:
-        value: 'TODO: file(pathexpand("~/.docker/key.pem"))'
+        value: ~/.docker/key.pem
 
 ```
 ## Configuration Reference

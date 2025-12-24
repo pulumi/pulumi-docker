@@ -69,7 +69,7 @@ public final class ServiceTaskSpecContainerSpec {
      */
     private @Nullable List<String> groups;
     /**
-     * @return A test to perform to check that the container is healthy
+     * @return A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
     private @Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck;
@@ -204,7 +204,7 @@ public final class ServiceTaskSpecContainerSpec {
         return this.groups == null ? List.of() : this.groups;
     }
     /**
-     * @return A test to perform to check that the container is healthy
+     * @return A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
     public Optional<ServiceTaskSpecContainerSpecHealthcheck> healthcheck() {

@@ -4466,7 +4466,7 @@ func (o RegistryImageAuthConfigPtrOutput) Username() pulumi.StringPtrOutput {
 type RegistryImageBuild struct {
 	// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
 	AdditionalContexts []string `pulumi:"additionalContexts"`
-	// Authentication configuration for the Docker registry. It is only used for this resource.
+	// The configuration for the authentication
 	AuthConfigs []RegistryImageBuildAuthConfig `pulumi:"authConfigs"`
 	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
 	BuildArgs map[string]string `pulumi:"buildArgs"`
@@ -4558,7 +4558,7 @@ type RegistryImageBuildInput interface {
 type RegistryImageBuildArgs struct {
 	// A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
 	AdditionalContexts pulumi.StringArrayInput `pulumi:"additionalContexts"`
-	// Authentication configuration for the Docker registry. It is only used for this resource.
+	// The configuration for the authentication
 	AuthConfigs RegistryImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
 	// Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
 	BuildArgs pulumi.StringMapInput `pulumi:"buildArgs"`
@@ -4718,7 +4718,7 @@ func (o RegistryImageBuildOutput) AdditionalContexts() pulumi.StringArrayOutput 
 	return o.ApplyT(func(v RegistryImageBuild) []string { return v.AdditionalContexts }).(pulumi.StringArrayOutput)
 }
 
-// Authentication configuration for the Docker registry. It is only used for this resource.
+// The configuration for the authentication
 func (o RegistryImageBuildOutput) AuthConfigs() RegistryImageBuildAuthConfigArrayOutput {
 	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildAuthConfig { return v.AuthConfigs }).(RegistryImageBuildAuthConfigArrayOutput)
 }
@@ -4942,7 +4942,7 @@ func (o RegistryImageBuildPtrOutput) AdditionalContexts() pulumi.StringArrayOutp
 	}).(pulumi.StringArrayOutput)
 }
 
-// Authentication configuration for the Docker registry. It is only used for this resource.
+// The configuration for the authentication
 func (o RegistryImageBuildPtrOutput) AuthConfigs() RegistryImageBuildAuthConfigArrayOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) []RegistryImageBuildAuthConfig {
 		if v == nil {
@@ -5331,7 +5331,7 @@ type RegistryImageBuildAuthConfig struct {
 	HostName string `pulumi:"hostName"`
 	// the identity token
 	IdentityToken *string `pulumi:"identityToken"`
-	// The password for the Docker registry.
+	// the registry password
 	Password *string `pulumi:"password"`
 	// the registry token
 	RegistryToken *string `pulumi:"registryToken"`
@@ -5361,7 +5361,7 @@ type RegistryImageBuildAuthConfigArgs struct {
 	HostName pulumi.StringInput `pulumi:"hostName"`
 	// the identity token
 	IdentityToken pulumi.StringPtrInput `pulumi:"identityToken"`
-	// The password for the Docker registry.
+	// the registry password
 	Password pulumi.StringPtrInput `pulumi:"password"`
 	// the registry token
 	RegistryToken pulumi.StringPtrInput `pulumi:"registryToken"`
@@ -5442,7 +5442,7 @@ func (o RegistryImageBuildAuthConfigOutput) IdentityToken() pulumi.StringPtrOutp
 	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.IdentityToken }).(pulumi.StringPtrOutput)
 }
 
-// The password for the Docker registry.
+// the registry password
 func (o RegistryImageBuildAuthConfigOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuildAuthConfig) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
@@ -5485,7 +5485,7 @@ func (o RegistryImageBuildAuthConfigArrayOutput) Index(i pulumi.IntInput) Regist
 type RegistryImageBuildSecret struct {
 	// Environment variable source of the secret
 	Env *string `pulumi:"env"`
-	// The ID of this resource.
+	// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
 	Id string `pulumi:"id"`
 	// File source of the secret. Takes precedence over `env`
 	Src *string `pulumi:"src"`
@@ -5505,7 +5505,7 @@ type RegistryImageBuildSecretInput interface {
 type RegistryImageBuildSecretArgs struct {
 	// Environment variable source of the secret
 	Env pulumi.StringPtrInput `pulumi:"env"`
-	// The ID of this resource.
+	// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
 	Id pulumi.StringInput `pulumi:"id"`
 	// File source of the secret. Takes precedence over `env`
 	Src pulumi.StringPtrInput `pulumi:"src"`
@@ -5567,7 +5567,7 @@ func (o RegistryImageBuildSecretOutput) Env() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuildSecret) *string { return v.Env }).(pulumi.StringPtrOutput)
 }
 
-// The ID of this resource.
+// ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
 func (o RegistryImageBuildSecretOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryImageBuildSecret) string { return v.Id }).(pulumi.StringOutput)
 }
@@ -5600,7 +5600,7 @@ func (o RegistryImageBuildSecretArrayOutput) Index(i pulumi.IntInput) RegistryIm
 type RegistryImageBuildUlimit struct {
 	// soft limit
 	Hard int `pulumi:"hard"`
-	// The name of the Docker image.
+	// type of ulimit, e.g. `nofile`
 	Name string `pulumi:"name"`
 	// hard limit
 	Soft int `pulumi:"soft"`
@@ -5620,7 +5620,7 @@ type RegistryImageBuildUlimitInput interface {
 type RegistryImageBuildUlimitArgs struct {
 	// soft limit
 	Hard pulumi.IntInput `pulumi:"hard"`
-	// The name of the Docker image.
+	// type of ulimit, e.g. `nofile`
 	Name pulumi.StringInput `pulumi:"name"`
 	// hard limit
 	Soft pulumi.IntInput `pulumi:"soft"`
@@ -5682,7 +5682,7 @@ func (o RegistryImageBuildUlimitOutput) Hard() pulumi.IntOutput {
 	return o.ApplyT(func(v RegistryImageBuildUlimit) int { return v.Hard }).(pulumi.IntOutput)
 }
 
-// The name of the Docker image.
+// type of ulimit, e.g. `nofile`
 func (o RegistryImageBuildUlimitOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryImageBuildUlimit) string { return v.Name }).(pulumi.StringOutput)
 }
@@ -8607,7 +8607,7 @@ type ServiceTaskSpecContainerSpec struct {
 	Env map[string]string `pulumi:"env"`
 	// A list of additional groups that the container process will run as
 	Groups []string `pulumi:"groups"`
-	// A test to perform to check that the container is healthy
+	// A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 	Healthcheck *ServiceTaskSpecContainerSpecHealthcheck `pulumi:"healthcheck"`
 	// The hostname to use for the container, as a valid RFC 1123 hostname
 	Hostname *string `pulumi:"hostname"`
@@ -8667,7 +8667,7 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	Env pulumi.StringMapInput `pulumi:"env"`
 	// A list of additional groups that the container process will run as
 	Groups pulumi.StringArrayInput `pulumi:"groups"`
-	// A test to perform to check that the container is healthy
+	// A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 	Healthcheck ServiceTaskSpecContainerSpecHealthcheckPtrInput `pulumi:"healthcheck"`
 	// The hostname to use for the container, as a valid RFC 1123 hostname
 	Hostname pulumi.StringPtrInput `pulumi:"hostname"`
@@ -8819,7 +8819,7 @@ func (o ServiceTaskSpecContainerSpecOutput) Groups() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.Groups }).(pulumi.StringArrayOutput)
 }
 
-// A test to perform to check that the container is healthy
+// A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 func (o ServiceTaskSpecContainerSpecOutput) Healthcheck() ServiceTaskSpecContainerSpecHealthcheckPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecHealthcheck { return v.Healthcheck }).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
 }
@@ -9003,7 +9003,7 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) Groups() pulumi.StringArrayOutput
 	}).(pulumi.StringArrayOutput)
 }
 
-// A test to perform to check that the container is healthy
+// A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 func (o ServiceTaskSpecContainerSpecPtrOutput) Healthcheck() ServiceTaskSpecContainerSpecHealthcheckPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecHealthcheck {
 		if v == nil {

@@ -123,33 +123,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
 	}
 
-	absDockerfile, err := filepath.Abs(build.Dockerfile)
+	contextDir, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
 	if err != nil {
-		return "", nil, fmt.Errorf("absDockerfile error: %s", err)
+		return "", nil, fmt.Errorf("error resolving context: %w", err)
 	}
-	absBuildpath, err := filepath.Abs(build.Context)
-	if err != nil {
-		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
-	}
-	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
-	if err != nil {
-		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
-	}
-
-	// filepath.Abs returns the filepath with the os' filepath separator.
-	// To clean this up, we convert the filepath to a forward slash.
-	relDockerfile = filepath.ToSlash(relDockerfile)
 
 	// if the dockerfile is in the context it will be something like "./Dockerfile" or "./sub/dir/Dockerfile"
 	// if the dockerfile is out of the context it will begin with "../"
 	dockerfileInContext := true
 	if strings.HasPrefix(relDockerfile, "../") {
 		dockerfileInContext = false
-	}
-
-	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
-	if err != nil {
-		return "", nil, fmt.Errorf("error resolving context: %w", err)
 	}
 
 	if err := clibuild.ValidateContextDirectory(contextDir, initialIgnorePatterns); err != nil {

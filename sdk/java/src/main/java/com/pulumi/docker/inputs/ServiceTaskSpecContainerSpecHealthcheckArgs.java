@@ -5,7 +5,6 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -67,15 +66,15 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
      * The test to perform as list
      * 
      */
-    @Import(name="tests", required=true)
-    private Output<List<String>> tests;
+    @Import(name="tests")
+    private @Nullable Output<List<String>> tests;
 
     /**
      * @return The test to perform as list
      * 
      */
-    public Output<List<String>> tests() {
-        return this.tests;
+    public Optional<Output<List<String>>> tests() {
+        return Optional.ofNullable(this.tests);
     }
 
     /**
@@ -190,7 +189,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
          * @return builder
          * 
          */
-        public Builder tests(Output<List<String>> tests) {
+        public Builder tests(@Nullable Output<List<String>> tests) {
             $.tests = tests;
             return this;
         }
@@ -237,9 +236,6 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
         }
 
         public ServiceTaskSpecContainerSpecHealthcheckArgs build() {
-            if ($.tests == null) {
-                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHealthcheckArgs", "tests");
-            }
             return $;
         }
     }

@@ -30,7 +30,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? IdentityToken;
         /// <summary>
-        /// The password for the Docker registry.
+        /// the registry password
         /// </summary>
         public readonly string? Password;
         /// <summary>
