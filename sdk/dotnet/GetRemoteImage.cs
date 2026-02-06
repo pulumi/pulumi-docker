@@ -12,7 +12,7 @@ namespace Pulumi.Docker
     public static class GetRemoteImage
     {
         /// <summary>
-        /// `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+        /// `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
         /// 
         /// ## Example Usage
         /// 
@@ -55,7 +55,7 @@ namespace Pulumi.Docker
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageArgs(), options.WithDefaults());
 
         /// <summary>
-        /// `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+        /// `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
         /// 
         /// ## Example Usage
         /// 
@@ -98,7 +98,7 @@ namespace Pulumi.Docker
             => global::Pulumi.Deployment.Instance.Invoke<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageInvokeArgs(), options.WithDefaults());
 
         /// <summary>
-        /// `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
+        /// `docker.RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host
         /// 
         /// ## Example Usage
         /// 
