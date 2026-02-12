@@ -32,9 +32,17 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         return this.address;
     }
 
+    /**
+     * Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
+     * 
+     */
     @Import(name="authDisabled")
     private @Nullable Output<Boolean> authDisabled;
 
+    /**
+     * @return Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
+     * 
+     */
     public Optional<Output<Boolean>> authDisabled() {
         return Optional.ofNullable(this.authDisabled);
     }
@@ -149,11 +157,23 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
             return address(Output.of(address));
         }
 
+        /**
+         * @param authDisabled Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder authDisabled(@Nullable Output<Boolean> authDisabled) {
             $.authDisabled = authDisabled;
             return this;
         }
 
+        /**
+         * @param authDisabled Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder authDisabled(Boolean authDisabled) {
             return authDisabled(Output.of(authDisabled));
         }

@@ -8,11 +8,33 @@ import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
+ * <!-- Bug: Type and Name are switched -->
+ * Manages the secrets of a Docker service in a swarm.
+ *
+ * ## Example Usage
+ *
+ * ### Basic
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ * import * as std from "@pulumi/std";
+ *
+ * const foo = new docker.Secret("foo", {
+ *     name: "foo",
+ *     data: std.index.base64encode({
+ *         input: "{\"foo\": \"s3cr3t\"}",
+ *     }).result,
+ * });
+ * ```
+ *
  * ## Import
  *
+ * ```sh
  * #!/bin/bash
  *
- * Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * ```
  */
 export class Secret extends pulumi.CustomResource {
     /**

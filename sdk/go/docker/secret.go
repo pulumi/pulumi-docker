@@ -12,11 +12,52 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// <!-- Bug: Type and Name are switched -->
+// Manages the secrets of a Docker service in a swarm.
+//
+// ## Example Usage
+//
+// ### Basic
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi-std/sdk/go/std"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			invokeBase64encode, err := std.Base64encode(ctx, map[string]interface{}{
+//				"input": "{\"foo\": \"s3cr3t\"}",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewSecret(ctx, "foo", &docker.SecretArgs{
+//				Name: pulumi.String("foo"),
+//				Data: invokeBase64encode.Result,
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
 // ## Import
 //
+// ```sh
 // #!/bin/bash
 //
-// Docker secret cannot be imported as the secret data, once set, is never exposed again.
+// # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+// ```
 type Secret struct {
 	pulumi.CustomResourceState
 

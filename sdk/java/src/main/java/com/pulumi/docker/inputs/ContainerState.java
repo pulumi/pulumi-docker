@@ -616,9 +616,17 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.mounts);
     }
 
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * 
+     */
     @Import(name="mustRun")
     private @Nullable Output<Boolean> mustRun;
 
+    /**
+     * @return If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * 
+     */
     public Optional<Output<Boolean>> mustRun() {
         return Optional.ofNullable(this.mustRun);
     }
@@ -2111,11 +2119,23 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
             return mounts(List.of(mounts));
         }
 
+        /**
+         * @param mustRun If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mustRun(@Nullable Output<Boolean> mustRun) {
             $.mustRun = mustRun;
             return this;
         }
 
+        /**
+         * @param mustRun If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mustRun(Boolean mustRun) {
             return mustRun(Output.of(mustRun));
         }

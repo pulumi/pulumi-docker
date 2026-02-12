@@ -18,6 +18,9 @@ namespace Pulumi.Docker.Inputs
         [Input("address", required: true)]
         public Input<string> Address { get; set; } = null!;
 
+        /// <summary>
+        /// Setting this to `True` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `False`.
+        /// </summary>
         [Input("authDisabled")]
         public Input<bool>? AuthDisabled { get; set; }
 

@@ -18,11 +18,156 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
+/**
+ * &lt;!-- Bug: Type and Name are switched --&gt;
+ * Manages the lifecycle of a docker image in your docker host. It can be used to build a new docker image or to pull an existing one from a registry.
+ *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
+ * 
+ * ## Example Usage
+ * 
+ * ### Basic
+ * 
+ * Finds and downloads the latest `ubuntu:precise` image but does not check
+ * for further updates of the image
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var ubuntu = new RemoteImage("ubuntu", RemoteImageArgs.builder()
+ *             .name("ubuntu:precise")
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
+ * ### Dynamic updates
+ * 
+ * To be able to update an image dynamically when the `sha256` sum changes,
+ * you need to use it in combination with `docker.RegistryImage` as follows:
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.DockerFunctions;
+ * import com.pulumi.docker.inputs.GetRegistryImageArgs;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         final var ubuntu = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+ *             .name("ubuntu:precise")
+ *             .build());
+ * 
+ *         var ubuntuRemoteImage = new RemoteImage("ubuntuRemoteImage", RemoteImageArgs.builder()
+ *             .name(ubuntu.name())
+ *             .pullTriggers(ubuntu.sha256Digest())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
+ * ### Build
+ * 
+ * You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
+ * 
+ * &gt; **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
+ * 
+ * In this case the image &#34;zoo&#34; and &#34;zoo:develop&#34; are built.
+ * The `context` and `dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+ * There is no need to copy the files to remote hosts before creating the resource.
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var zoo = new RemoteImage("zoo", RemoteImageArgs.builder()
+ *             .name("zoo")
+ *             .build(RemoteImageBuildArgs.builder()
+ *                 .context(".")
+ *                 .tags("zoo:develop")
+ *                 .buildArgs(Map.of("foo", "zoo"))
+ *                 .label(Map.of("author", "zoo"))
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
+ * You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
+ * 
+ */
 @ResourceType(type="docker:index/remoteImage:RemoteImage")
 public class RemoteImage extends com.pulumi.resources.CustomResource {
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * 
+     */
     @Export(name="build", refs={RemoteImageBuild.class}, tree="[0]")
     private Output</* @Nullable */ RemoteImageBuild> build;
 
+    /**
+     * @return Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * 
+     */
     public Output<Optional<RemoteImageBuild>> build() {
         return Codegen.optional(this.build);
     }

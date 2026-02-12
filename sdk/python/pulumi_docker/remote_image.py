@@ -31,6 +31,7 @@ class RemoteImageArgs:
         """
         The set of arguments for constructing a RemoteImage resource.
         :param pulumi.Input[_builtins.str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[_builtins.str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
@@ -66,6 +67,9 @@ class RemoteImageArgs:
     @_builtins.property
     @pulumi.getter
     def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
+        """
+        Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        """
         return pulumi.get(self, "build")
 
     @build.setter
@@ -147,6 +151,7 @@ class _RemoteImageState:
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering RemoteImage resources.
+        :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[_builtins.bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
@@ -178,6 +183,9 @@ class _RemoteImageState:
     @_builtins.property
     @pulumi.getter
     def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
+        """
+        Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        """
         return pulumi.get(self, "build")
 
     @build.setter
@@ -296,9 +304,72 @@ class RemoteImage(pulumi.CustomResource):
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         """
-        Create a RemoteImage resource with the given unique name, props, and options.
+        <!-- Bug: Type and Name are switched -->
+        Manages the lifecycle of a docker image in your docker host. It can be used to build a new docker image or to pull an existing one from a registry.
+         This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
+
+        ## Example Usage
+
+        ### Basic
+
+        Finds and downloads the latest `ubuntu:precise` image but does not check
+        for further updates of the image
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
+        ```
+
+        ### Dynamic updates
+
+        To be able to update an image dynamically when the `sha256` sum changes,
+        you need to use it in combination with `RegistryImage` as follows:
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu = docker.get_registry_image(name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntu",
+            name=ubuntu.name,
+            pull_triggers=[ubuntu.sha256_digest])
+        ```
+
+        ### Build
+
+        You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
+
+        > **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
+
+        In this case the image "zoo" and "zoo:develop" are built.
+        The `context` and `dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+        There is no need to copy the files to remote hosts before creating the resource.
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        zoo = docker.RemoteImage("zoo",
+            name="zoo",
+            build={
+                "context": ".",
+                "tags": ["zoo:develop"],
+                "build_args": {
+                    "foo": "zoo",
+                },
+                "label": {
+                    "author": "zoo",
+                },
+            })
+        ```
+
+        You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[_builtins.str] name: The name of the Docker image, including any tags or SHA256 repo digests.
@@ -313,7 +384,69 @@ class RemoteImage(pulumi.CustomResource):
                  args: RemoteImageArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a RemoteImage resource with the given unique name, props, and options.
+        <!-- Bug: Type and Name are switched -->
+        Manages the lifecycle of a docker image in your docker host. It can be used to build a new docker image or to pull an existing one from a registry.
+         This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
+
+        ## Example Usage
+
+        ### Basic
+
+        Finds and downloads the latest `ubuntu:precise` image but does not check
+        for further updates of the image
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
+        ```
+
+        ### Dynamic updates
+
+        To be able to update an image dynamically when the `sha256` sum changes,
+        you need to use it in combination with `RegistryImage` as follows:
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu = docker.get_registry_image(name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntu",
+            name=ubuntu.name,
+            pull_triggers=[ubuntu.sha256_digest])
+        ```
+
+        ### Build
+
+        You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
+
+        > **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
+
+        In this case the image "zoo" and "zoo:develop" are built.
+        The `context` and `dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+        There is no need to copy the files to remote hosts before creating the resource.
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        zoo = docker.RemoteImage("zoo",
+            name="zoo",
+            build={
+                "context": ".",
+                "tags": ["zoo:develop"],
+                "build_args": {
+                    "foo": "zoo",
+                },
+                "label": {
+                    "author": "zoo",
+                },
+            })
+        ```
+
+        You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
+
         :param str resource_name: The name of the resource.
         :param RemoteImageArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -382,6 +515,7 @@ class RemoteImage(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[_builtins.bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
@@ -409,6 +543,9 @@ class RemoteImage(pulumi.CustomResource):
     @_builtins.property
     @pulumi.getter
     def build(self) -> pulumi.Output[Optional['outputs.RemoteImageBuild']]:
+        """
+        Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        """
         return pulumi.get(self, "build")
 
     @_builtins.property

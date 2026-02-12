@@ -12,55 +12,425 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// <!-- Bug: Type and Name are switched -->
+// This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+//
+//	With the Converge Config the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `terraform` that a service could no be updated and was successfully rolled back.
+//
+// ## Example Usage
+//
+// ### Basic
+//
+// # The following configuration starts a Docker Service with
+//
+// - the given image,
+// - 1 replica
+// - exposes the port `8080` in `vip` mode to the host machine
+// - moreover, uses the `container` runtime
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewService(ctx, "foo", &docker.ServiceArgs{
+//				Name: pulumi.String("foo-service"),
+//				TaskSpec: &docker.ServiceTaskSpecArgs{
+//					ContainerSpec: &docker.ServiceTaskSpecContainerSpecArgs{
+//						Image: pulumi.String("repo.mycompany.com:8080/foo-service:v1"),
+//					},
+//				},
+//				EndpointSpec: &docker.ServiceEndpointSpecArgs{
+//					Ports: docker.ServiceEndpointSpecPortArray{
+//						&docker.ServiceEndpointSpecPortArgs{
+//							TargetPort: pulumi.Int(8080),
+//						},
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// The following command is the equivalent:
+//
+// ### Basic with Datasource
+//
+// Alternatively, if the image is already present on the Docker Host and not managed
+// by `terraform`, you can also use the `RemoteImage` datasource:
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			foo, err := docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
+//				Name: "repo.mycompany.com:8080/foo-service:v1",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewService(ctx, "foo", &docker.ServiceArgs{
+//				Name: pulumi.String("foo-service"),
+//				TaskSpec: &docker.ServiceTaskSpecArgs{
+//					ContainerSpec: &docker.ServiceTaskSpecContainerSpecArgs{
+//						Image: pulumi.String(foo.RepoDigest),
+//					},
+//				},
+//				EndpointSpec: &docker.ServiceEndpointSpecArgs{
+//					Ports: docker.ServiceEndpointSpecPortArray{
+//						&docker.ServiceEndpointSpecPortArgs{
+//							TargetPort: pulumi.Int(8080),
+//						},
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ### Advanced
+//
+// The following configuration shows the full capabilities of a Docker Service,
+// with a `volume`, `config`, `secret` and `network`
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			testVolume, err := docker.NewVolume(ctx, "test_volume", &docker.VolumeArgs{
+//				Name: pulumi.String("tftest-volume"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			testVolume2, err := docker.NewVolume(ctx, "test_volume_2", &docker.VolumeArgs{
+//				Name: pulumi.String("tftest-volume2"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			serviceConfig, err := docker.NewServiceConfig(ctx, "service_config", &docker.ServiceConfigArgs{
+//				Name: pulumi.String("tftest-full-myconfig"),
+//				Data: pulumi.String("ewogICJwcmVmaXgiOiAiMTIzIgp9"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			serviceSecret, err := docker.NewSecret(ctx, "service_secret", &docker.SecretArgs{
+//				Name: pulumi.String("tftest-mysecret"),
+//				Data: pulumi.String("ewogICJrZXkiOiAiUVdFUlRZIgp9"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			testNetwork, err := docker.NewNetwork(ctx, "test_network", &docker.NetworkArgs{
+//				Name:   pulumi.String("tftest-network"),
+//				Driver: pulumi.String("overlay"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewService(ctx, "foo", &docker.ServiceArgs{
+//				Name: pulumi.String("tftest-service-basic"),
+//				TaskSpec: &docker.ServiceTaskSpecArgs{
+//					ContainerSpec: &docker.ServiceTaskSpecContainerSpecArgs{
+//						Configs: docker.ServiceTaskSpecContainerSpecConfigArray{
+//							&docker.ServiceTaskSpecContainerSpecConfigArgs{
+//								ConfigId:   serviceConfig.ID(),
+//								ConfigName: serviceConfig.Name,
+//								FileName:   pulumi.String("/configs.json"),
+//							},
+//							&docker.ServiceTaskSpecContainerSpecConfigArgs{},
+//						},
+//						Secrets: docker.ServiceTaskSpecContainerSpecSecretArray{
+//							&docker.ServiceTaskSpecContainerSpecSecretArgs{
+//								SecretId:   serviceSecret.ID(),
+//								SecretName: serviceSecret.Name,
+//								FileName:   pulumi.String("/secrets.json"),
+//								FileUid:    pulumi.String("0"),
+//								FileGid:    pulumi.String("0"),
+//								FileMode:   pulumi.Int(777),
+//							},
+//							&docker.ServiceTaskSpecContainerSpecSecretArgs{},
+//						},
+//						Image: pulumi.String("repo.mycompany.com:8080/foo-service:v1"),
+//						Labels: docker.ServiceTaskSpecContainerSpecLabelArray{
+//							&docker.ServiceTaskSpecContainerSpecLabelArgs{
+//								Label: pulumi.String("foo.bar"),
+//								Value: pulumi.String("baz"),
+//							},
+//						},
+//						Commands: pulumi.StringArray{
+//							pulumi.String("ls"),
+//						},
+//						Args: pulumi.StringArray{
+//							pulumi.String("-las"),
+//						},
+//						Hostname: pulumi.String("my-fancy-service"),
+//						Env: pulumi.StringMap{
+//							"MYFOO": pulumi.String("BAR"),
+//						},
+//						Dir:  pulumi.String("/root"),
+//						User: pulumi.String("root"),
+//						Groups: pulumi.StringArray{
+//							pulumi.String("docker"),
+//							pulumi.String("foogroup"),
+//						},
+//						Privileges: &docker.ServiceTaskSpecContainerSpecPrivilegesArgs{
+//							SeLinuxContext: &docker.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs{
+//								Disable: pulumi.Bool(true),
+//								User:    pulumi.String("user-label"),
+//								Role:    pulumi.String("role-label"),
+//								Type:    pulumi.String("type-label"),
+//								Level:   pulumi.String("level-label"),
+//							},
+//						},
+//						ReadOnly: pulumi.Bool(true),
+//						Mounts: docker.ServiceTaskSpecContainerSpecMountArray{
+//							&docker.ServiceTaskSpecContainerSpecMountArgs{
+//								Target:   pulumi.String("/mount/test"),
+//								Source:   testVolume.Name,
+//								Type:     pulumi.String("bind"),
+//								ReadOnly: pulumi.Bool(true),
+//								BindOptions: &docker.ServiceTaskSpecContainerSpecMountBindOptionsArgs{
+//									Propagation: pulumi.String("rprivate"),
+//								},
+//							},
+//							&docker.ServiceTaskSpecContainerSpecMountArgs{
+//								Target:   pulumi.String("/mount/test2"),
+//								Source:   testVolume2.Name,
+//								Type:     pulumi.String("volume"),
+//								ReadOnly: pulumi.Bool(true),
+//								VolumeOptions: &docker.ServiceTaskSpecContainerSpecMountVolumeOptionsArgs{
+//									NoCopy: pulumi.Bool(true),
+//									Labels: docker.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray{
+//										&docker.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs{
+//											Label: pulumi.String("foo"),
+//											Value: pulumi.String("bar"),
+//										},
+//									},
+//									DriverName: pulumi.String("random-driver"),
+//									DriverOptions: pulumi.StringMap{
+//										"op1": pulumi.String("val1"),
+//									},
+//								},
+//							},
+//						},
+//						StopSignal:      pulumi.String("SIGTERM"),
+//						StopGracePeriod: pulumi.String("10s"),
+//						Healthcheck: &docker.ServiceTaskSpecContainerSpecHealthcheckArgs{
+//							Tests: pulumi.StringArray{
+//								pulumi.String("CMD"),
+//								pulumi.String("curl"),
+//								pulumi.String("-f"),
+//								pulumi.String("http://localhost:8080/health"),
+//							},
+//							Interval: pulumi.String("5s"),
+//							Timeout:  pulumi.String("2s"),
+//							Retries:  pulumi.Int(4),
+//						},
+//						Hosts: docker.ServiceTaskSpecContainerSpecHostArray{
+//							&docker.ServiceTaskSpecContainerSpecHostArgs{
+//								Host: pulumi.String("testhost"),
+//								Ip:   pulumi.String("10.0.1.0"),
+//							},
+//						},
+//						DnsConfig: &docker.ServiceTaskSpecContainerSpecDnsConfigArgs{
+//							Nameservers: pulumi.StringArray{
+//								pulumi.String("8.8.8.8"),
+//							},
+//							Searches: pulumi.StringArray{
+//								pulumi.String("example.org"),
+//							},
+//							Options: pulumi.StringArray{
+//								pulumi.String("timeout:3"),
+//							},
+//						},
+//					},
+//					Resources: &docker.ServiceTaskSpecResourcesArgs{
+//						Limits: &docker.ServiceTaskSpecResourcesLimitsArgs{
+//							NanoCpus:    pulumi.Int(1000000),
+//							MemoryBytes: pulumi.Int(536870912),
+//						},
+//						Reservation: &docker.ServiceTaskSpecResourcesReservationArgs{
+//							NanoCpus:    pulumi.Int(1000000),
+//							MemoryBytes: pulumi.Int(536870912),
+//							GenericResources: &docker.ServiceTaskSpecResourcesReservationGenericResourcesArgs{
+//								NamedResourcesSpecs: pulumi.StringArray{
+//									pulumi.String("GPU=UUID1"),
+//								},
+//								DiscreteResourcesSpecs: pulumi.StringArray{
+//									pulumi.String("SSD=3"),
+//								},
+//							},
+//						},
+//					},
+//					RestartPolicy: map[string]interface{}{
+//						"condition":   "on-failure",
+//						"delay":       "3s",
+//						"maxAttempts": 4,
+//						"window":      "10s",
+//					}[0],
+//					Placement: &docker.ServiceTaskSpecPlacementArgs{
+//						Constraints: pulumi.StringArray{
+//							pulumi.String("node.role==manager"),
+//						},
+//						Prefs: pulumi.StringArray{
+//							pulumi.String("spread=node.role.manager"),
+//						},
+//						MaxReplicas: pulumi.Int(1),
+//					},
+//					ForceUpdate: pulumi.Int(0),
+//					Runtime:     pulumi.String("container"),
+//					Networks: pulumi.StringArray{
+//						testNetwork.ID(),
+//					},
+//					LogDriver: &docker.ServiceTaskSpecLogDriverArgs{
+//						Name: pulumi.String("json-file"),
+//						Options: pulumi.StringMap{
+//							"max-size": pulumi.String("10m"),
+//							"max-file": pulumi.String("3"),
+//						},
+//					},
+//				},
+//				Mode: &docker.ServiceModeArgs{
+//					Replicated: &docker.ServiceModeReplicatedArgs{
+//						Replicas: pulumi.Int(2),
+//					},
+//				},
+//				UpdateConfig: &docker.ServiceUpdateConfigArgs{
+//					Parallelism:     pulumi.Int(2),
+//					Delay:           pulumi.String("10s"),
+//					FailureAction:   pulumi.String("pause"),
+//					Monitor:         pulumi.String("5s"),
+//					MaxFailureRatio: pulumi.String("0.1"),
+//					Order:           pulumi.String("start-first"),
+//				},
+//				RollbackConfig: &docker.ServiceRollbackConfigArgs{
+//					Parallelism:     pulumi.Int(2),
+//					Delay:           pulumi.String("5ms"),
+//					FailureAction:   pulumi.String("pause"),
+//					Monitor:         pulumi.String("10h"),
+//					MaxFailureRatio: pulumi.String("0.9"),
+//					Order:           pulumi.String("stop-first"),
+//				},
+//				EndpointSpec: &docker.ServiceEndpointSpecArgs{
+//					Ports: docker.ServiceEndpointSpecPortArray{
+//						&docker.ServiceEndpointSpecPortArgs{
+//							Name:          pulumi.String("random"),
+//							Protocol:      pulumi.String("tcp"),
+//							TargetPort:    pulumi.Int(8080),
+//							PublishedPort: pulumi.Int(8080),
+//							PublishMode:   pulumi.String("ingress"),
+//						},
+//						&docker.ServiceEndpointSpecPortArgs{},
+//					},
+//					Mode: pulumi.String("vip"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
 // ## Import
+//
+// !/bin/bash
+//
+// ```sh
+// $ pulumi import docker:index/service:Service foo id
+// ```
 //
 // ### Example
 //
 // # Assuming you created a `service` as follows
 //
+// ```sh
 // #!/bin/bash
-//
 // docker service create --name foo -p 8080:80 nginx
-//
-// prints th ID
-//
+// # prints th ID
 // 4pcphbxkfn2rffhbhe6czytgi
+// ```
 //
 // you provide the definition for the resource as follows
 //
-// terraform
+// ```go
+// package main
 //
-// resource "docker_service" "foo" {
+// import (
 //
-//	name = "foo"
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
-//	task_spec {
+// )
 //
-//	  container_spec {
-//
-//	    image = "nginx"
-//
-//	  }
-//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewService(ctx, "foo", &docker.ServiceArgs{
+//				Name: pulumi.String("foo"),
+//				TaskSpec: &docker.ServiceTaskSpecArgs{
+//					ContainerSpec: &docker.ServiceTaskSpecContainerSpecArgs{
+//						Image: pulumi.String("nginx"),
+//					},
+//				},
+//				EndpointSpec: &docker.ServiceEndpointSpecArgs{
+//					Ports: docker.ServiceEndpointSpecPortArray{
+//						&docker.ServiceEndpointSpecPortArgs{
+//							TargetPort:    pulumi.Int(80),
+//							PublishedPort: pulumi.Int(8080),
+//						},
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
 //	}
 //
-//	endpoint_spec {
-//
-//	  ports {
-//
-//	    target_port    = "80"
-//
-//	    published_port = "8080"
-//
-//	  }
-//
-//	}
-//
-// }
+// ```
 //
 // then the import command is as follows
 //
-// #!/bin/bash
+// !/bin/bash
 //
 // ```sh
 // $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi

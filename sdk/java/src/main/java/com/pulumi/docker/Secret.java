@@ -17,11 +17,53 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
+ * &lt;!-- Bug: Type and Name are switched --&gt;
+ * Manages the secrets of a Docker service in a swarm.
+ * 
+ * ## Example Usage
+ * 
+ * ### Basic
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Secret;
+ * import com.pulumi.docker.SecretArgs;
+ * import com.pulumi.std.StdFunctions;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var foo = new Secret("foo", SecretArgs.builder()
+ *             .name("foo")
+ *             .data(StdFunctions.base64encode(Map.of("input", "{\"foo\": \"s3cr3t\"}")).result())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
  * ## Import
  * 
+ * ```sh
  * #!/bin/bash
  * 
- * Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * ```
  * 
  */
 @ResourceType(type="docker:index/secret:Secret")

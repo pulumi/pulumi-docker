@@ -10,11 +10,41 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// Manages the secrets of a Docker service in a swarm.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ### Basic
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// using Std = Pulumi.Std;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var foo = new Docker.Secret("foo", new()
+    ///     {
+    ///         Name = "foo",
+    ///         Data = Std.Index.Base64encode.Invoke(new()
+    ///         {
+    ///             Input = "{\"foo\": \"s3cr3t\"}",
+    ///         }).Result,
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
     /// ## Import
     /// 
+    /// ```sh
     /// #!/bin/bash
     /// 
-    /// Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// ```
     /// </summary>
     [DockerResourceType("docker:index/secret:Secret")]
     public partial class Secret : global::Pulumi.CustomResource

@@ -52,41 +52,59 @@ import (
 //
 // ## Import
 //
+// !/bin/bash
+//
+// ```sh
+// $ pulumi import docker:index/container:Container foo id
+// ```
+//
 // ### Example
 //
 // # Assuming you created a `container` as follows
 //
+// ```sh
 // #!/bin/bash
-//
 // docker run --name foo -p8080:80 -d nginx
-//
-// prints the container ID
-//
+// # prints the container ID
 // 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+// ```
 //
 // you provide the definition for the resource as follows
 //
-// terraform
+// ```go
+// package main
 //
-// resource "docker_container" "foo" {
+// import (
 //
-//	name  = "foo"
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
-//	image = "nginx"
+// )
 //
-//	ports {
-//
-//	  internal = "80"
-//
-//	  external = "8080"
-//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewContainer(ctx, "foo", &docker.ContainerArgs{
+//				Name:  pulumi.String("foo"),
+//				Image: pulumi.String("nginx"),
+//				Ports: docker.ContainerPortArray{
+//					&docker.ContainerPortArgs{
+//						Internal: pulumi.Int(80),
+//						External: pulumi.Int(8080),
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
 //	}
 //
-// }
+// ```
 //
 // then the import command is as follows
 //
-// #!/bin/bash
+// !/bin/bash
 //
 // ```sh
 // $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
@@ -171,8 +189,9 @@ type Container struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrOutput `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  ContainerMountArrayOutput `pulumi:"mounts"`
-	MustRun pulumi.BoolPtrOutput      `pulumi:"mustRun"`
+	Mounts ContainerMountArrayOutput `pulumi:"mounts"`
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	MustRun pulumi.BoolPtrOutput `pulumi:"mustRun"`
 	// The name of the container.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The data of the networks the container is connected to.
@@ -347,8 +366,9 @@ type containerState struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  []ContainerMount `pulumi:"mounts"`
-	MustRun *bool            `pulumi:"mustRun"`
+	Mounts []ContainerMount `pulumi:"mounts"`
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
 	// The data of the networks the container is connected to.
@@ -491,7 +511,8 @@ type ContainerState struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  ContainerMountArrayInput
+	Mounts ContainerMountArrayInput
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
@@ -633,8 +654,9 @@ type containerArgs struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  []ContainerMount `pulumi:"mounts"`
-	MustRun *bool            `pulumi:"mustRun"`
+	Mounts []ContainerMount `pulumi:"mounts"`
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
 	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
@@ -770,7 +792,8 @@ type ContainerArgs struct {
 	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
-	Mounts  ContainerMountArrayInput
+	Mounts ContainerMountArrayInput
+	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
@@ -1116,6 +1139,7 @@ func (o ContainerOutput) Mounts() ContainerMountArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerMountArrayOutput { return v.Mounts }).(ContainerMountArrayOutput)
 }
 
+// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
 func (o ContainerOutput) MustRun() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.MustRun }).(pulumi.BoolPtrOutput)
 }

@@ -338,55 +338,301 @@ class Service(pulumi.CustomResource):
                  update_config: Optional[pulumi.Input[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict']]] = None,
                  __props__=None):
         """
+        <!-- Bug: Type and Name are switched -->
+        This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+         With the Converge Config the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `terraform` that a service could no be updated and was successfully rolled back.
+
+        ## Example Usage
+
+        ### Basic
+
+        The following configuration starts a Docker Service with
+
+        - the given image,
+        - 1 replica
+        - exposes the port `8080` in `vip` mode to the host machine
+        - moreover, uses the `container` runtime
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        foo = docker.Service("foo",
+            name="foo-service",
+            task_spec={
+                "container_spec": {
+                    "image": "repo.mycompany.com:8080/foo-service:v1",
+                },
+            },
+            endpoint_spec={
+                "ports": [{
+                    "target_port": 8080,
+                }],
+            })
+        ```
+
+        The following command is the equivalent:
+
+        ### Basic with Datasource
+
+        Alternatively, if the image is already present on the Docker Host and not managed
+        by `terraform`, you can also use the `RemoteImage` datasource:
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        foo = docker.get_remote_image(name="repo.mycompany.com:8080/foo-service:v1")
+        foo_service = docker.Service("foo",
+            name="foo-service",
+            task_spec={
+                "container_spec": {
+                    "image": foo.repo_digest,
+                },
+            },
+            endpoint_spec={
+                "ports": [{
+                    "target_port": 8080,
+                }],
+            })
+        ```
+
+        ### Advanced
+
+        The following configuration shows the full capabilities of a Docker Service,
+        with a `volume`, `config`, `secret` and `network`
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        test_volume = docker.Volume("test_volume", name="tftest-volume")
+        test_volume2 = docker.Volume("test_volume_2", name="tftest-volume2")
+        service_config = docker.ServiceConfig("service_config",
+            name="tftest-full-myconfig",
+            data="ewogICJwcmVmaXgiOiAiMTIzIgp9")
+        service_secret = docker.Secret("service_secret",
+            name="tftest-mysecret",
+            data="ewogICJrZXkiOiAiUVdFUlRZIgp9")
+        test_network = docker.Network("test_network",
+            name="tftest-network",
+            driver="overlay")
+        foo = docker.Service("foo",
+            name="tftest-service-basic",
+            task_spec={
+                "container_spec": {
+                    "configs": [
+                        {
+                            "config_id": service_config.id,
+                            "config_name": service_config.name,
+                            "file_name": "/configs.json",
+                        },
+                        {},
+                    ],
+                    "secrets": [
+                        {
+                            "secret_id": service_secret.id,
+                            "secret_name": service_secret.name,
+                            "file_name": "/secrets.json",
+                            "file_uid": "0",
+                            "file_gid": "0",
+                            "file_mode": 777,
+                        },
+                        {},
+                    ],
+                    "image": "repo.mycompany.com:8080/foo-service:v1",
+                    "labels": [{
+                        "label": "foo.bar",
+                        "value": "baz",
+                    }],
+                    "commands": ["ls"],
+                    "args": ["-las"],
+                    "hostname": "my-fancy-service",
+                    "env": {
+                        "MYFOO": "BAR",
+                    },
+                    "dir": "/root",
+                    "user": "root",
+                    "groups": [
+                        "docker",
+                        "foogroup",
+                    ],
+                    "privileges": {
+                        "se_linux_context": {
+                            "disable": True,
+                            "user": "user-label",
+                            "role": "role-label",
+                            "type": "type-label",
+                            "level": "level-label",
+                        },
+                    },
+                    "read_only": True,
+                    "mounts": [
+                        {
+                            "target": "/mount/test",
+                            "source": test_volume.name,
+                            "type": "bind",
+                            "read_only": True,
+                            "bind_options": {
+                                "propagation": "rprivate",
+                            },
+                        },
+                        {
+                            "target": "/mount/test2",
+                            "source": test_volume2.name,
+                            "type": "volume",
+                            "read_only": True,
+                            "volume_options": {
+                                "no_copy": True,
+                                "labels": [{
+                                    "label": "foo",
+                                    "value": "bar",
+                                }],
+                                "driver_name": "random-driver",
+                                "driver_options": {
+                                    "op1": "val1",
+                                },
+                            },
+                        },
+                    ],
+                    "stop_signal": "SIGTERM",
+                    "stop_grace_period": "10s",
+                    "healthcheck": {
+                        "tests": [
+                            "CMD",
+                            "curl",
+                            "-f",
+                            "http://localhost:8080/health",
+                        ],
+                        "interval": "5s",
+                        "timeout": "2s",
+                        "retries": 4,
+                    },
+                    "hosts": [{
+                        "host": "testhost",
+                        "ip": "10.0.1.0",
+                    }],
+                    "dns_config": {
+                        "nameservers": ["8.8.8.8"],
+                        "searches": ["example.org"],
+                        "options": ["timeout:3"],
+                    },
+                },
+                "resources": {
+                    "limits": {
+                        "nano_cpus": 1000000,
+                        "memory_bytes": 536870912,
+                    },
+                    "reservation": {
+                        "nano_cpus": 1000000,
+                        "memory_bytes": 536870912,
+                        "generic_resources": {
+                            "named_resources_specs": ["GPU=UUID1"],
+                            "discrete_resources_specs": ["SSD=3"],
+                        },
+                    },
+                },
+                "restart_policy": {
+                    "condition": "on-failure",
+                    "delay": "3s",
+                    "maxAttempts": 4,
+                    "window": "10s",
+                }[0],
+                "placement": {
+                    "constraints": ["node.role==manager"],
+                    "prefs": ["spread=node.role.manager"],
+                    "max_replicas": 1,
+                },
+                "force_update": 0,
+                "runtime": "container",
+                "networks": [test_network.id],
+                "log_driver": {
+                    "name": "json-file",
+                    "options": {
+                        "max-size": "10m",
+                        "max-file": "3",
+                    },
+                },
+            },
+            mode={
+                "replicated": {
+                    "replicas": 2,
+                },
+            },
+            update_config={
+                "parallelism": 2,
+                "delay": "10s",
+                "failure_action": "pause",
+                "monitor": "5s",
+                "max_failure_ratio": "0.1",
+                "order": "start-first",
+            },
+            rollback_config={
+                "parallelism": 2,
+                "delay": "5ms",
+                "failure_action": "pause",
+                "monitor": "10h",
+                "max_failure_ratio": "0.9",
+                "order": "stop-first",
+            },
+            endpoint_spec={
+                "ports": [
+                    {
+                        "name": "random",
+                        "protocol": "tcp",
+                        "target_port": 8080,
+                        "published_port": 8080,
+                        "publish_mode": "ingress",
+                    },
+                    {},
+                ],
+                "mode": "vip",
+            })
+        ```
+
         ## Import
+
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/service:Service foo id
+        ```
 
         ### Example
 
         Assuming you created a `service` as follows
 
+        ```sh
         #!/bin/bash
-
         docker service create --name foo -p 8080:80 nginx
-
-        prints th ID
-
+        # prints th ID
         4pcphbxkfn2rffhbhe6czytgi
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_service" "foo" {
-
-          name = "foo"
-
-          task_spec {
-
-            container_spec {
-            
-              image = "nginx"
-            
-            }
-
-          }
-
-          endpoint_spec {
-
-            ports {
-            
-              target_port    = "80"
-            
-              published_port = "8080"
-            
-            }
-
-          }
-
-        }
+        foo = docker.Service("foo",
+            name="foo",
+            task_spec={
+                "container_spec": {
+                    "image": "nginx",
+                },
+            },
+            endpoint_spec={
+                "ports": [{
+                    "target_port": 80,
+                    "published_port": 8080,
+                }],
+            })
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
@@ -411,55 +657,301 @@ class Service(pulumi.CustomResource):
                  args: ServiceArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
+        <!-- Bug: Type and Name are switched -->
+        This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+         With the Converge Config the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `terraform` that a service could no be updated and was successfully rolled back.
+
+        ## Example Usage
+
+        ### Basic
+
+        The following configuration starts a Docker Service with
+
+        - the given image,
+        - 1 replica
+        - exposes the port `8080` in `vip` mode to the host machine
+        - moreover, uses the `container` runtime
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        foo = docker.Service("foo",
+            name="foo-service",
+            task_spec={
+                "container_spec": {
+                    "image": "repo.mycompany.com:8080/foo-service:v1",
+                },
+            },
+            endpoint_spec={
+                "ports": [{
+                    "target_port": 8080,
+                }],
+            })
+        ```
+
+        The following command is the equivalent:
+
+        ### Basic with Datasource
+
+        Alternatively, if the image is already present on the Docker Host and not managed
+        by `terraform`, you can also use the `RemoteImage` datasource:
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        foo = docker.get_remote_image(name="repo.mycompany.com:8080/foo-service:v1")
+        foo_service = docker.Service("foo",
+            name="foo-service",
+            task_spec={
+                "container_spec": {
+                    "image": foo.repo_digest,
+                },
+            },
+            endpoint_spec={
+                "ports": [{
+                    "target_port": 8080,
+                }],
+            })
+        ```
+
+        ### Advanced
+
+        The following configuration shows the full capabilities of a Docker Service,
+        with a `volume`, `config`, `secret` and `network`
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        test_volume = docker.Volume("test_volume", name="tftest-volume")
+        test_volume2 = docker.Volume("test_volume_2", name="tftest-volume2")
+        service_config = docker.ServiceConfig("service_config",
+            name="tftest-full-myconfig",
+            data="ewogICJwcmVmaXgiOiAiMTIzIgp9")
+        service_secret = docker.Secret("service_secret",
+            name="tftest-mysecret",
+            data="ewogICJrZXkiOiAiUVdFUlRZIgp9")
+        test_network = docker.Network("test_network",
+            name="tftest-network",
+            driver="overlay")
+        foo = docker.Service("foo",
+            name="tftest-service-basic",
+            task_spec={
+                "container_spec": {
+                    "configs": [
+                        {
+                            "config_id": service_config.id,
+                            "config_name": service_config.name,
+                            "file_name": "/configs.json",
+                        },
+                        {},
+                    ],
+                    "secrets": [
+                        {
+                            "secret_id": service_secret.id,
+                            "secret_name": service_secret.name,
+                            "file_name": "/secrets.json",
+                            "file_uid": "0",
+                            "file_gid": "0",
+                            "file_mode": 777,
+                        },
+                        {},
+                    ],
+                    "image": "repo.mycompany.com:8080/foo-service:v1",
+                    "labels": [{
+                        "label": "foo.bar",
+                        "value": "baz",
+                    }],
+                    "commands": ["ls"],
+                    "args": ["-las"],
+                    "hostname": "my-fancy-service",
+                    "env": {
+                        "MYFOO": "BAR",
+                    },
+                    "dir": "/root",
+                    "user": "root",
+                    "groups": [
+                        "docker",
+                        "foogroup",
+                    ],
+                    "privileges": {
+                        "se_linux_context": {
+                            "disable": True,
+                            "user": "user-label",
+                            "role": "role-label",
+                            "type": "type-label",
+                            "level": "level-label",
+                        },
+                    },
+                    "read_only": True,
+                    "mounts": [
+                        {
+                            "target": "/mount/test",
+                            "source": test_volume.name,
+                            "type": "bind",
+                            "read_only": True,
+                            "bind_options": {
+                                "propagation": "rprivate",
+                            },
+                        },
+                        {
+                            "target": "/mount/test2",
+                            "source": test_volume2.name,
+                            "type": "volume",
+                            "read_only": True,
+                            "volume_options": {
+                                "no_copy": True,
+                                "labels": [{
+                                    "label": "foo",
+                                    "value": "bar",
+                                }],
+                                "driver_name": "random-driver",
+                                "driver_options": {
+                                    "op1": "val1",
+                                },
+                            },
+                        },
+                    ],
+                    "stop_signal": "SIGTERM",
+                    "stop_grace_period": "10s",
+                    "healthcheck": {
+                        "tests": [
+                            "CMD",
+                            "curl",
+                            "-f",
+                            "http://localhost:8080/health",
+                        ],
+                        "interval": "5s",
+                        "timeout": "2s",
+                        "retries": 4,
+                    },
+                    "hosts": [{
+                        "host": "testhost",
+                        "ip": "10.0.1.0",
+                    }],
+                    "dns_config": {
+                        "nameservers": ["8.8.8.8"],
+                        "searches": ["example.org"],
+                        "options": ["timeout:3"],
+                    },
+                },
+                "resources": {
+                    "limits": {
+                        "nano_cpus": 1000000,
+                        "memory_bytes": 536870912,
+                    },
+                    "reservation": {
+                        "nano_cpus": 1000000,
+                        "memory_bytes": 536870912,
+                        "generic_resources": {
+                            "named_resources_specs": ["GPU=UUID1"],
+                            "discrete_resources_specs": ["SSD=3"],
+                        },
+                    },
+                },
+                "restart_policy": {
+                    "condition": "on-failure",
+                    "delay": "3s",
+                    "maxAttempts": 4,
+                    "window": "10s",
+                }[0],
+                "placement": {
+                    "constraints": ["node.role==manager"],
+                    "prefs": ["spread=node.role.manager"],
+                    "max_replicas": 1,
+                },
+                "force_update": 0,
+                "runtime": "container",
+                "networks": [test_network.id],
+                "log_driver": {
+                    "name": "json-file",
+                    "options": {
+                        "max-size": "10m",
+                        "max-file": "3",
+                    },
+                },
+            },
+            mode={
+                "replicated": {
+                    "replicas": 2,
+                },
+            },
+            update_config={
+                "parallelism": 2,
+                "delay": "10s",
+                "failure_action": "pause",
+                "monitor": "5s",
+                "max_failure_ratio": "0.1",
+                "order": "start-first",
+            },
+            rollback_config={
+                "parallelism": 2,
+                "delay": "5ms",
+                "failure_action": "pause",
+                "monitor": "10h",
+                "max_failure_ratio": "0.9",
+                "order": "stop-first",
+            },
+            endpoint_spec={
+                "ports": [
+                    {
+                        "name": "random",
+                        "protocol": "tcp",
+                        "target_port": 8080,
+                        "published_port": 8080,
+                        "publish_mode": "ingress",
+                    },
+                    {},
+                ],
+                "mode": "vip",
+            })
+        ```
+
         ## Import
+
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/service:Service foo id
+        ```
 
         ### Example
 
         Assuming you created a `service` as follows
 
+        ```sh
         #!/bin/bash
-
         docker service create --name foo -p 8080:80 nginx
-
-        prints th ID
-
+        # prints th ID
         4pcphbxkfn2rffhbhe6czytgi
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_service" "foo" {
-
-          name = "foo"
-
-          task_spec {
-
-            container_spec {
-            
-              image = "nginx"
-            
-            }
-
-          }
-
-          endpoint_spec {
-
-            ports {
-            
-              target_port    = "80"
-            
-              published_port = "8080"
-            
-            }
-
-          }
-
-        }
+        foo = docker.Service("foo",
+            name="foo",
+            task_spec={
+                "container_spec": {
+                    "image": "nginx",
+                },
+            },
+            endpoint_spec={
+                "ports": [{
+                    "target_port": 80,
+                    "published_port": 8080,
+                }],
+            })
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi

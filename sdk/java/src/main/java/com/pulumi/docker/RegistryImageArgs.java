@@ -34,9 +34,17 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.authConfig);
     }
 
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * 
+     */
     @Import(name="build")
     private @Nullable Output<RegistryImageBuildArgs> build;
 
+    /**
+     * @return Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * 
+     */
     public Optional<Output<RegistryImageBuildArgs>> build() {
         return Optional.ofNullable(this.build);
     }
@@ -151,11 +159,23 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
             return authConfig(Output.of(authConfig));
         }
 
+        /**
+         * @param build Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+         * 
+         * @return builder
+         * 
+         */
         public Builder build(@Nullable Output<RegistryImageBuildArgs> build) {
             $.build = build;
             return this;
         }
 
+        /**
+         * @param build Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+         * 
+         * @return builder
+         * 
+         */
         public Builder build(RegistryImageBuildArgs build) {
             return build(Output.of(build));
         }

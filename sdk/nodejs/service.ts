@@ -8,55 +8,310 @@ import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
+ * <!-- Bug: Type and Name are switched -->
+ * This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+ *  With the Converge Config the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `terraform` that a service could no be updated and was successfully rolled back.
+ *
+ * ## Example Usage
+ *
+ * ### Basic
+ *
+ * The following configuration starts a Docker Service with
+ *
+ * - the given image,
+ * - 1 replica
+ * - exposes the port `8080` in `vip` mode to the host machine
+ * - moreover, uses the `container` runtime
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const foo = new docker.Service("foo", {
+ *     name: "foo-service",
+ *     taskSpec: {
+ *         containerSpec: {
+ *             image: "repo.mycompany.com:8080/foo-service:v1",
+ *         },
+ *     },
+ *     endpointSpec: {
+ *         ports: [{
+ *             targetPort: 8080,
+ *         }],
+ *     },
+ * });
+ * ```
+ *
+ * The following command is the equivalent:
+ *
+ * ### Basic with Datasource
+ *
+ * Alternatively, if the image is already present on the Docker Host and not managed
+ * by `terraform`, you can also use the `docker.RemoteImage` datasource:
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const foo = docker.getRemoteImage({
+ *     name: "repo.mycompany.com:8080/foo-service:v1",
+ * });
+ * const fooService = new docker.Service("foo", {
+ *     name: "foo-service",
+ *     taskSpec: {
+ *         containerSpec: {
+ *             image: foo.then(foo => foo.repoDigest),
+ *         },
+ *     },
+ *     endpointSpec: {
+ *         ports: [{
+ *             targetPort: 8080,
+ *         }],
+ *     },
+ * });
+ * ```
+ *
+ * ### Advanced
+ *
+ * The following configuration shows the full capabilities of a Docker Service,
+ * with a `volume`, `config`, `secret` and `network`
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const testVolume = new docker.Volume("test_volume", {name: "tftest-volume"});
+ * const testVolume2 = new docker.Volume("test_volume_2", {name: "tftest-volume2"});
+ * const serviceConfig = new docker.ServiceConfig("service_config", {
+ *     name: "tftest-full-myconfig",
+ *     data: "ewogICJwcmVmaXgiOiAiMTIzIgp9",
+ * });
+ * const serviceSecret = new docker.Secret("service_secret", {
+ *     name: "tftest-mysecret",
+ *     data: "ewogICJrZXkiOiAiUVdFUlRZIgp9",
+ * });
+ * const testNetwork = new docker.Network("test_network", {
+ *     name: "tftest-network",
+ *     driver: "overlay",
+ * });
+ * const foo = new docker.Service("foo", {
+ *     name: "tftest-service-basic",
+ *     taskSpec: {
+ *         containerSpec: {
+ *             configs: [
+ *                 {
+ *                     configId: serviceConfig.id,
+ *                     configName: serviceConfig.name,
+ *                     fileName: "/configs.json",
+ *                 },
+ *                 {},
+ *             ],
+ *             secrets: [
+ *                 {
+ *                     secretId: serviceSecret.id,
+ *                     secretName: serviceSecret.name,
+ *                     fileName: "/secrets.json",
+ *                     fileUid: "0",
+ *                     fileGid: "0",
+ *                     fileMode: 777,
+ *                 },
+ *                 {},
+ *             ],
+ *             image: "repo.mycompany.com:8080/foo-service:v1",
+ *             labels: [{
+ *                 label: "foo.bar",
+ *                 value: "baz",
+ *             }],
+ *             commands: ["ls"],
+ *             args: ["-las"],
+ *             hostname: "my-fancy-service",
+ *             env: {
+ *                 MYFOO: "BAR",
+ *             },
+ *             dir: "/root",
+ *             user: "root",
+ *             groups: [
+ *                 "docker",
+ *                 "foogroup",
+ *             ],
+ *             privileges: {
+ *                 seLinuxContext: {
+ *                     disable: true,
+ *                     user: "user-label",
+ *                     role: "role-label",
+ *                     type: "type-label",
+ *                     level: "level-label",
+ *                 },
+ *             },
+ *             readOnly: true,
+ *             mounts: [
+ *                 {
+ *                     target: "/mount/test",
+ *                     source: testVolume.name,
+ *                     type: "bind",
+ *                     readOnly: true,
+ *                     bindOptions: {
+ *                         propagation: "rprivate",
+ *                     },
+ *                 },
+ *                 {
+ *                     target: "/mount/test2",
+ *                     source: testVolume2.name,
+ *                     type: "volume",
+ *                     readOnly: true,
+ *                     volumeOptions: {
+ *                         noCopy: true,
+ *                         labels: [{
+ *                             label: "foo",
+ *                             value: "bar",
+ *                         }],
+ *                         driverName: "random-driver",
+ *                         driverOptions: {
+ *                             op1: "val1",
+ *                         },
+ *                     },
+ *                 },
+ *             ],
+ *             stopSignal: "SIGTERM",
+ *             stopGracePeriod: "10s",
+ *             healthcheck: {
+ *                 tests: [
+ *                     "CMD",
+ *                     "curl",
+ *                     "-f",
+ *                     "http://localhost:8080/health",
+ *                 ],
+ *                 interval: "5s",
+ *                 timeout: "2s",
+ *                 retries: 4,
+ *             },
+ *             hosts: [{
+ *                 host: "testhost",
+ *                 ip: "10.0.1.0",
+ *             }],
+ *             dnsConfig: {
+ *                 nameservers: ["8.8.8.8"],
+ *                 searches: ["example.org"],
+ *                 options: ["timeout:3"],
+ *             },
+ *         },
+ *         resources: {
+ *             limits: {
+ *                 nanoCpus: 1000000,
+ *                 memoryBytes: 536870912,
+ *             },
+ *             reservation: {
+ *                 nanoCpus: 1000000,
+ *                 memoryBytes: 536870912,
+ *                 genericResources: {
+ *                     namedResourcesSpecs: ["GPU=UUID1"],
+ *                     discreteResourcesSpecs: ["SSD=3"],
+ *                 },
+ *             },
+ *         },
+ *         restartPolicy: {
+ *             condition: "on-failure",
+ *             delay: "3s",
+ *             maxAttempts: 4,
+ *             window: "10s",
+ *         }[0],
+ *         placement: {
+ *             constraints: ["node.role==manager"],
+ *             prefs: ["spread=node.role.manager"],
+ *             maxReplicas: 1,
+ *         },
+ *         forceUpdate: 0,
+ *         runtime: "container",
+ *         networks: [testNetwork.id],
+ *         logDriver: {
+ *             name: "json-file",
+ *             options: {
+ *                 "max-size": "10m",
+ *                 "max-file": "3",
+ *             },
+ *         },
+ *     },
+ *     mode: {
+ *         replicated: {
+ *             replicas: 2,
+ *         },
+ *     },
+ *     updateConfig: {
+ *         parallelism: 2,
+ *         delay: "10s",
+ *         failureAction: "pause",
+ *         monitor: "5s",
+ *         maxFailureRatio: "0.1",
+ *         order: "start-first",
+ *     },
+ *     rollbackConfig: {
+ *         parallelism: 2,
+ *         delay: "5ms",
+ *         failureAction: "pause",
+ *         monitor: "10h",
+ *         maxFailureRatio: "0.9",
+ *         order: "stop-first",
+ *     },
+ *     endpointSpec: {
+ *         ports: [
+ *             {
+ *                 name: "random",
+ *                 protocol: "tcp",
+ *                 targetPort: 8080,
+ *                 publishedPort: 8080,
+ *                 publishMode: "ingress",
+ *             },
+ *             {},
+ *         ],
+ *         mode: "vip",
+ *     },
+ * });
+ * ```
+ *
  * ## Import
+ *
+ * !/bin/bash
+ *
+ * ```sh
+ * $ pulumi import docker:index/service:Service foo id
+ * ```
  *
  * ### Example
  *
  * Assuming you created a `service` as follows
  *
+ * ```sh
  * #!/bin/bash
- *
  * docker service create --name foo -p 8080:80 nginx
- *
- * prints th ID
- *
+ * # prints th ID
  * 4pcphbxkfn2rffhbhe6czytgi
+ * ```
  *
  * you provide the definition for the resource as follows
  *
- * terraform
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
  *
- * resource "docker_service" "foo" {
- *
- *   name = "foo"
- *
- *   task_spec {
- *
- *     container_spec {
- *     
- *       image = "nginx"
- *     
- *     }
- *
- *   }
- *
- *   endpoint_spec {
- *
- *     ports {
- *     
- *       target_port    = "80"
- *     
- *       published_port = "8080"
- *     
- *     }
- *
- *   }
- *
- * }
+ * const foo = new docker.Service("foo", {
+ *     name: "foo",
+ *     taskSpec: {
+ *         containerSpec: {
+ *             image: "nginx",
+ *         },
+ *     },
+ *     endpointSpec: {
+ *         ports: [{
+ *             targetPort: 80,
+ *             publishedPort: 8080,
+ *         }],
+ *     },
+ * });
+ * ```
  *
  * then the import command is as follows
  *
- * #!/bin/bash
+ * !/bin/bash
  *
  * ```sh
  * $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi

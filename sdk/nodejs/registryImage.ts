@@ -63,6 +63,9 @@ export class RegistryImage extends pulumi.CustomResource {
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
     declare public readonly authConfig: pulumi.Output<outputs.RegistryImageAuthConfig | undefined>;
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     */
     declare public readonly build: pulumi.Output<outputs.RegistryImageBuild | undefined>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -128,6 +131,9 @@ export interface RegistryImageState {
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
     authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     */
     build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -159,6 +165,9 @@ export interface RegistryImageArgs {
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
     authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     */
     build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`

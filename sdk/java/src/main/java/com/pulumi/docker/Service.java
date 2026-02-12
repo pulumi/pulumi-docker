@@ -24,55 +24,437 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
+ * &lt;!-- Bug: Type and Name are switched --&gt;
+ * This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+ *  With the Converge Config the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `terraform` that a service could no be updated and was successfully rolled back.
+ * 
+ * ## Example Usage
+ * 
+ * ### Basic
+ * 
+ * The following configuration starts a Docker Service with
+ * 
+ * - the given image,
+ * - 1 replica
+ * - exposes the port `8080` in `vip` mode to the host machine
+ * - moreover, uses the `container` runtime
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Service;
+ * import com.pulumi.docker.ServiceArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var foo = new Service("foo", ServiceArgs.builder()
+ *             .name("foo-service")
+ *             .taskSpec(ServiceTaskSpecArgs.builder()
+ *                 .containerSpec(ServiceTaskSpecContainerSpecArgs.builder()
+ *                     .image("repo.mycompany.com:8080/foo-service:v1")
+ *                     .build())
+ *                 .build())
+ *             .endpointSpec(ServiceEndpointSpecArgs.builder()
+ *                 .ports(ServiceEndpointSpecPortArgs.builder()
+ *                     .targetPort(8080)
+ *                     .build())
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
+ * The following command is the equivalent:
+ * 
+ * ### Basic with Datasource
+ * 
+ * Alternatively, if the image is already present on the Docker Host and not managed
+ * by `terraform`, you can also use the `docker.RemoteImage` datasource:
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.DockerFunctions;
+ * import com.pulumi.docker.inputs.GetRemoteImageArgs;
+ * import com.pulumi.docker.Service;
+ * import com.pulumi.docker.ServiceArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         final var foo = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+ *             .name("repo.mycompany.com:8080/foo-service:v1")
+ *             .build());
+ * 
+ *         var fooService = new Service("fooService", ServiceArgs.builder()
+ *             .name("foo-service")
+ *             .taskSpec(ServiceTaskSpecArgs.builder()
+ *                 .containerSpec(ServiceTaskSpecContainerSpecArgs.builder()
+ *                     .image(foo.repoDigest())
+ *                     .build())
+ *                 .build())
+ *             .endpointSpec(ServiceEndpointSpecArgs.builder()
+ *                 .ports(ServiceEndpointSpecPortArgs.builder()
+ *                     .targetPort(8080)
+ *                     .build())
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
+ * ### Advanced
+ * 
+ * The following configuration shows the full capabilities of a Docker Service,
+ * with a `volume`, `config`, `secret` and `network`
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Volume;
+ * import com.pulumi.docker.VolumeArgs;
+ * import com.pulumi.docker.ServiceConfig;
+ * import com.pulumi.docker.ServiceConfigArgs;
+ * import com.pulumi.docker.Secret;
+ * import com.pulumi.docker.SecretArgs;
+ * import com.pulumi.docker.Network;
+ * import com.pulumi.docker.NetworkArgs;
+ * import com.pulumi.docker.Service;
+ * import com.pulumi.docker.ServiceArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecPrivilegesArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecHealthcheckArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecDnsConfigArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecResourcesArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecResourcesLimitsArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecResourcesReservationArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecResourcesReservationGenericResourcesArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecPlacementArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecLogDriverArgs;
+ * import com.pulumi.docker.inputs.ServiceModeArgs;
+ * import com.pulumi.docker.inputs.ServiceModeReplicatedArgs;
+ * import com.pulumi.docker.inputs.ServiceUpdateConfigArgs;
+ * import com.pulumi.docker.inputs.ServiceRollbackConfigArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var testVolume = new Volume("testVolume", VolumeArgs.builder()
+ *             .name("tftest-volume")
+ *             .build());
+ * 
+ *         var testVolume2 = new Volume("testVolume2", VolumeArgs.builder()
+ *             .name("tftest-volume2")
+ *             .build());
+ * 
+ *         var serviceConfig = new ServiceConfig("serviceConfig", ServiceConfigArgs.builder()
+ *             .name("tftest-full-myconfig")
+ *             .data("ewogICJwcmVmaXgiOiAiMTIzIgp9")
+ *             .build());
+ * 
+ *         var serviceSecret = new Secret("serviceSecret", SecretArgs.builder()
+ *             .name("tftest-mysecret")
+ *             .data("ewogICJrZXkiOiAiUVdFUlRZIgp9")
+ *             .build());
+ * 
+ *         var testNetwork = new Network("testNetwork", NetworkArgs.builder()
+ *             .name("tftest-network")
+ *             .driver("overlay")
+ *             .build());
+ * 
+ *         var foo = new Service("foo", ServiceArgs.builder()
+ *             .name("tftest-service-basic")
+ *             .taskSpec(ServiceTaskSpecArgs.builder()
+ *                 .containerSpec(ServiceTaskSpecContainerSpecArgs.builder()
+ *                     .configs(                    
+ *                         ServiceTaskSpecContainerSpecConfigArgs.builder()
+ *                             .configId(serviceConfig.id())
+ *                             .configName(serviceConfig.name())
+ *                             .fileName("/configs.json")
+ *                             .build(),
+ *                         ServiceTaskSpecContainerSpecConfigArgs.builder()
+ *                             .build())
+ *                     .secrets(                    
+ *                         ServiceTaskSpecContainerSpecSecretArgs.builder()
+ *                             .secretId(serviceSecret.id())
+ *                             .secretName(serviceSecret.name())
+ *                             .fileName("/secrets.json")
+ *                             .fileUid("0")
+ *                             .fileGid("0")
+ *                             .fileMode(777)
+ *                             .build(),
+ *                         ServiceTaskSpecContainerSpecSecretArgs.builder()
+ *                             .build())
+ *                     .image("repo.mycompany.com:8080/foo-service:v1")
+ *                     .labels(ServiceTaskSpecContainerSpecLabelArgs.builder()
+ *                         .label("foo.bar")
+ *                         .value("baz")
+ *                         .build())
+ *                     .commands("ls")
+ *                     .args("-las")
+ *                     .hostname("my-fancy-service")
+ *                     .env(Map.of("MYFOO", "BAR"))
+ *                     .dir("/root")
+ *                     .user("root")
+ *                     .groups(                    
+ *                         "docker",
+ *                         "foogroup")
+ *                     .privileges(ServiceTaskSpecContainerSpecPrivilegesArgs.builder()
+ *                         .seLinuxContext(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs.builder()
+ *                             .disable(true)
+ *                             .user("user-label")
+ *                             .role("role-label")
+ *                             .type("type-label")
+ *                             .level("level-label")
+ *                             .build())
+ *                         .build())
+ *                     .readOnly(true)
+ *                     .mounts(                    
+ *                         ServiceTaskSpecContainerSpecMountArgs.builder()
+ *                             .target("/mount/test")
+ *                             .source(testVolume.name())
+ *                             .type("bind")
+ *                             .readOnly(true)
+ *                             .bindOptions(ServiceTaskSpecContainerSpecMountBindOptionsArgs.builder()
+ *                                 .propagation("rprivate")
+ *                                 .build())
+ *                             .build(),
+ *                         ServiceTaskSpecContainerSpecMountArgs.builder()
+ *                             .target("/mount/test2")
+ *                             .source(testVolume2.name())
+ *                             .type("volume")
+ *                             .readOnly(true)
+ *                             .volumeOptions(ServiceTaskSpecContainerSpecMountVolumeOptionsArgs.builder()
+ *                                 .noCopy(true)
+ *                                 .labels(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs.builder()
+ *                                     .label("foo")
+ *                                     .value("bar")
+ *                                     .build())
+ *                                 .driverName("random-driver")
+ *                                 .driverOptions(Map.of("op1", "val1"))
+ *                                 .build())
+ *                             .build())
+ *                     .stopSignal("SIGTERM")
+ *                     .stopGracePeriod("10s")
+ *                     .healthcheck(ServiceTaskSpecContainerSpecHealthcheckArgs.builder()
+ *                         .tests(                        
+ *                             "CMD",
+ *                             "curl",
+ *                             "-f",
+ *                             "http://localhost:8080/health")
+ *                         .interval("5s")
+ *                         .timeout("2s")
+ *                         .retries(4)
+ *                         .build())
+ *                     .hosts(ServiceTaskSpecContainerSpecHostArgs.builder()
+ *                         .host("testhost")
+ *                         .ip("10.0.1.0")
+ *                         .build())
+ *                     .dnsConfig(ServiceTaskSpecContainerSpecDnsConfigArgs.builder()
+ *                         .nameservers("8.8.8.8")
+ *                         .searches("example.org")
+ *                         .options("timeout:3")
+ *                         .build())
+ *                     .build())
+ *                 .resources(ServiceTaskSpecResourcesArgs.builder()
+ *                     .limits(ServiceTaskSpecResourcesLimitsArgs.builder()
+ *                         .nanoCpus(1000000)
+ *                         .memoryBytes(536870912)
+ *                         .build())
+ *                     .reservation(ServiceTaskSpecResourcesReservationArgs.builder()
+ *                         .nanoCpus(1000000)
+ *                         .memoryBytes(536870912)
+ *                         .genericResources(ServiceTaskSpecResourcesReservationGenericResourcesArgs.builder()
+ *                             .namedResourcesSpecs("GPU=UUID1")
+ *                             .discreteResourcesSpecs("SSD=3")
+ *                             .build())
+ *                         .build())
+ *                     .build())
+ *                 .restartPolicy(ServiceTaskSpecRestartPolicyArgs.builder()
+ *                     .condition("on-failure")
+ *                     .delay("3s")
+ *                     .maxAttempts(4)
+ *                     .window("10s")
+ *                     .build()[0])
+ *                 .placement(ServiceTaskSpecPlacementArgs.builder()
+ *                     .constraints("node.role==manager")
+ *                     .prefs("spread=node.role.manager")
+ *                     .maxReplicas(1)
+ *                     .build())
+ *                 .forceUpdate(0)
+ *                 .runtime("container")
+ *                 .networks(List.of(testNetwork.id()))
+ *                 .logDriver(ServiceTaskSpecLogDriverArgs.builder()
+ *                     .name("json-file")
+ *                     .options(Map.ofEntries(
+ *                         Map.entry("max-size", "10m"),
+ *                         Map.entry("max-file", "3")
+ *                     ))
+ *                     .build())
+ *                 .build())
+ *             .mode(ServiceModeArgs.builder()
+ *                 .replicated(ServiceModeReplicatedArgs.builder()
+ *                     .replicas(2)
+ *                     .build())
+ *                 .build())
+ *             .updateConfig(ServiceUpdateConfigArgs.builder()
+ *                 .parallelism(2)
+ *                 .delay("10s")
+ *                 .failureAction("pause")
+ *                 .monitor("5s")
+ *                 .maxFailureRatio("0.1")
+ *                 .order("start-first")
+ *                 .build())
+ *             .rollbackConfig(ServiceRollbackConfigArgs.builder()
+ *                 .parallelism(2)
+ *                 .delay("5ms")
+ *                 .failureAction("pause")
+ *                 .monitor("10h")
+ *                 .maxFailureRatio("0.9")
+ *                 .order("stop-first")
+ *                 .build())
+ *             .endpointSpec(ServiceEndpointSpecArgs.builder()
+ *                 .ports(                
+ *                     ServiceEndpointSpecPortArgs.builder()
+ *                         .name("random")
+ *                         .protocol("tcp")
+ *                         .targetPort(8080)
+ *                         .publishedPort(8080)
+ *                         .publishMode("ingress")
+ *                         .build(),
+ *                     ServiceEndpointSpecPortArgs.builder()
+ *                         .build())
+ *                 .mode("vip")
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
  * ## Import
+ * 
+ * !/bin/bash
+ * 
+ * ```sh
+ * $ pulumi import docker:index/service:Service foo id
+ * ```
  * 
  * ### Example
  * 
  * Assuming you created a `service` as follows
  * 
+ * ```sh
  * #!/bin/bash
- * 
  * docker service create --name foo -p 8080:80 nginx
- * 
- * prints th ID
- * 
+ * # prints th ID
  * 4pcphbxkfn2rffhbhe6czytgi
+ * ```
  * 
  * you provide the definition for the resource as follows
  * 
- * terraform
+ * <pre>
+ * {@code
+ * package generated_program;
  * 
- * resource &#34;docker_service&#34; &#34;foo&#34; {
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Service;
+ * import com.pulumi.docker.ServiceArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
- *   name = &#34;foo&#34;
- * 
- *   task_spec {
- * 
- *     container_spec {
- *     
- *       image = &#34;nginx&#34;
- *     
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
  *     }
  * 
- *   }
+ *     public static void stack(Context ctx) {
+ *         var foo = new Service("foo", ServiceArgs.builder()
+ *             .name("foo")
+ *             .taskSpec(ServiceTaskSpecArgs.builder()
+ *                 .containerSpec(ServiceTaskSpecContainerSpecArgs.builder()
+ *                     .image("nginx")
+ *                     .build())
+ *                 .build())
+ *             .endpointSpec(ServiceEndpointSpecArgs.builder()
+ *                 .ports(ServiceEndpointSpecPortArgs.builder()
+ *                     .targetPort(80)
+ *                     .publishedPort(8080)
+ *                     .build())
+ *                 .build())
+ *             .build());
  * 
- *   endpoint_spec {
- * 
- *     ports {
- *     
- *       target_port    = &#34;80&#34;
- *     
- *       published_port = &#34;8080&#34;
- *     
  *     }
- * 
- *   }
- * 
  * }
+ * }
+ * </pre>
  * 
  * then the import command is as follows
  * 
- * #!/bin/bash
+ * !/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi

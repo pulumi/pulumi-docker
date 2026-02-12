@@ -140,11 +140,30 @@ class Secret(pulumi.CustomResource):
                  name: Optional[pulumi.Input[_builtins.str]] = None,
                  __props__=None):
         """
+        <!-- Bug: Type and Name are switched -->
+        Manages the secrets of a Docker service in a swarm.
+
+        ## Example Usage
+
+        ### Basic
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+        import pulumi_std as std
+
+        foo = docker.Secret("foo",
+            name="foo",
+            data=std.index.base64encode(input="{\\"foo\\": \\"s3cr3t\\"}")["result"])
+        ```
+
         ## Import
 
+        ```sh
         #!/bin/bash
 
-        Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -159,11 +178,30 @@ class Secret(pulumi.CustomResource):
                  args: SecretArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
+        <!-- Bug: Type and Name are switched -->
+        Manages the secrets of a Docker service in a swarm.
+
+        ## Example Usage
+
+        ### Basic
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+        import pulumi_std as std
+
+        foo = docker.Secret("foo",
+            name="foo",
+            data=std.index.base64encode(input="{\\"foo\\": \\"s3cr3t\\"}")["result"])
+        ```
+
         ## Import
 
+        ```sh
         #!/bin/bash
 
-        Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        ```
 
         :param str resource_name: The name of the resource.
         :param SecretArgs args: The arguments to use to populate this resource's properties.

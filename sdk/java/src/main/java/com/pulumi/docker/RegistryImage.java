@@ -43,9 +43,17 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
     public Output<Optional<RegistryImageAuthConfig>> authConfig() {
         return Codegen.optional(this.authConfig);
     }
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * 
+     */
     @Export(name="build", refs={RegistryImageBuild.class}, tree="[0]")
     private Output</* @Nullable */ RegistryImageBuild> build;
 
+    /**
+     * @return Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * 
+     */
     public Output<Optional<RegistryImageBuild>> build() {
         return Codegen.optional(this.build);
     }
