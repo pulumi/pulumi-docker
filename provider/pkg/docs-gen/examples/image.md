@@ -15,6 +15,8 @@ const demoImage = new docker.Image("demo-image", {
     },
     imageName: "username/image:tag1",
     skipPush: true,
+}, {
+    version: "v4.4.0",
 });
 export const imageName = demoImage.imageName;
 ```
@@ -29,7 +31,8 @@ demo_image = docker.Image("demo-image",
         "platform": "linux/amd64",
     },
     image_name="username/image:tag1",
-    skip_push=True)
+    skip_push=True,
+    opts = pulumi.ResourceOptions(version="v4.4.0"))
 pulumi.export("imageName", demo_image.image_name)
 ```
 ```csharp
@@ -77,7 +80,7 @@ func main() {
 			},
 			ImageName: pulumi.String("username/image:tag1"),
 			SkipPush:  pulumi.Bool(true),
-		})
+		}, pulumi.Version("v4.4.0"))
 		if err != nil {
 			return err
 		}
@@ -157,6 +160,8 @@ const demoPushImage = new docker.Image("demo-push-image", {
         dockerfile: "Dockerfile",
     },
     imageName: "docker.io/username/push-image:tag1",
+}, {
+    version: "v4.4.0",
 });
 export const imageName = demoPushImage.imageName;
 export const repoDigest = demoPushImage.repoDigest;
@@ -170,7 +175,8 @@ demo_push_image = docker.Image("demo-push-image",
         "context": ".",
         "dockerfile": "Dockerfile",
     },
-    image_name="docker.io/username/push-image:tag1")
+    image_name="docker.io/username/push-image:tag1",
+    opts = pulumi.ResourceOptions(version="v4.4.0"))
 pulumi.export("imageName", demo_push_image.image_name)
 pulumi.export("repoDigest", demo_push_image.repo_digest)
 ```
@@ -216,7 +222,7 @@ func main() {
 				Dockerfile: pulumi.String("Dockerfile"),
 			},
 			ImageName: pulumi.String("docker.io/username/push-image:tag1"),
-		})
+		}, pulumi.Version("v4.4.0"))
 		if err != nil {
 			return err
 		}
@@ -311,6 +317,8 @@ const myAppImage = new docker.Image("my-app-image", {
         server: ecrRepository.repositoryUrl,
         username: authToken.apply(authToken => authToken.userName),
     },
+}, {
+    version: "v4.1.2",
 });
 export const imageName = myAppImage.imageName;
 ```
@@ -337,7 +345,8 @@ my_app_image = docker.Image("my-app-image",
         "password": pulumi.Output.secret(auth_token.password),
         "server": ecr_repository.repository_url,
         "username": auth_token.user_name,
-    })
+    },
+    opts = pulumi.ResourceOptions(version="v4.1.2"))
 pulumi.export("imageName", my_app_image.image_name)
 ```
 ```csharp
@@ -442,7 +451,7 @@ func main() {
 					return &authToken.UserName, nil
 				}).(pulumi.StringPtrOutput),
 			},
-		})
+		}, pulumi.Version("v4.1.2"))
 		if err != nil {
 			return err
 		}
