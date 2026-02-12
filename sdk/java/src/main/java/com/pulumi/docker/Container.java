@@ -78,41 +78,65 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
+ * !/bin/bash
+ * 
+ * ```sh
+ * $ pulumi import docker:index/container:Container foo id
+ * ```
+ * 
  * ### Example
  * 
  * Assuming you created a `container` as follows
  * 
+ * ```sh
  * #!/bin/bash
- * 
- * docker run --name foo -p8080:80 -d nginx
- * 
- * prints the container ID
- * 
+ * docker run --name foo -p8080:80 -d nginx 
+ * # prints the container ID 
  * 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+ * ```
  * 
  * you provide the definition for the resource as follows
  * 
- * terraform
+ * <pre>
+ * {@code
+ * package generated_program;
  * 
- * resource &#34;docker_container&#34; &#34;foo&#34; {
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Container;
+ * import com.pulumi.docker.ContainerArgs;
+ * import com.pulumi.docker.inputs.ContainerPortArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
- *   name  = &#34;foo&#34;
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
  * 
- *   image = &#34;nginx&#34;
+ *     public static void stack(Context ctx) {
+ *         var foo = new Container("foo", ContainerArgs.builder()
+ *             .name("foo")
+ *             .image("nginx")
+ *             .ports(ContainerPortArgs.builder()
+ *                 .internal(80)
+ *                 .external(8080)
+ *                 .build())
+ *             .build());
  * 
- *   ports {
- * 
- *     internal = &#34;80&#34;
- *     
- *     external = &#34;8080&#34;
- * 
- *   }
- * 
+ *     }
  * }
+ * }
+ * </pre>
  * 
  * then the import command is as follows
  * 
- * #!/bin/bash
+ * !/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
@@ -667,9 +691,17 @@ public class Container extends com.pulumi.resources.CustomResource {
     public Output<Optional<List<ContainerMount>>> mounts() {
         return Codegen.optional(this.mounts);
     }
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * 
+     */
     @Export(name="mustRun", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> mustRun;
 
+    /**
+     * @return If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * 
+     */
     public Output<Optional<Boolean>> mustRun() {
         return Codegen.optional(this.mustRun);
     }

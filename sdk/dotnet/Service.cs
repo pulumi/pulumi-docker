@@ -10,55 +10,451 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+    ///  With the Converge Config the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `Terraform` that a service could no be updated and was successfully rolled back.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ### Basic
+    /// 
+    /// The following configuration starts a Docker Service with
+    /// 
+    /// - the given image,
+    /// - 1 replica
+    /// - exposes the port `8080` in `Vip` mode to the host machine
+    /// - moreover, uses the `Container` runtime
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var foo = new Docker.Service("foo", new()
+    ///     {
+    ///         Name = "foo-service",
+    ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
+    ///         {
+    ///             ContainerSpec = new Docker.Inputs.ServiceTaskSpecContainerSpecArgs
+    ///             {
+    ///                 Image = "repo.mycompany.com:8080/foo-service:v1",
+    ///             },
+    ///         },
+    ///         EndpointSpec = new Docker.Inputs.ServiceEndpointSpecArgs
+    ///         {
+    ///             Ports = new[]
+    ///             {
+    ///                 new Docker.Inputs.ServiceEndpointSpecPortArgs
+    ///                 {
+    ///                     TargetPort = 8080,
+    ///                 },
+    ///             },
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
+    /// The following command is the equivalent:
+    /// 
+    /// ### Basic with Datasource
+    /// 
+    /// Alternatively, if the image is already present on the Docker Host and not managed
+    /// by `Terraform`, you can also use the `docker.RemoteImage` datasource:
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var foo = Docker.GetRemoteImage.Invoke(new()
+    ///     {
+    ///         Name = "repo.mycompany.com:8080/foo-service:v1",
+    ///     });
+    /// 
+    ///     var fooService = new Docker.Service("foo", new()
+    ///     {
+    ///         Name = "foo-service",
+    ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
+    ///         {
+    ///             ContainerSpec = new Docker.Inputs.ServiceTaskSpecContainerSpecArgs
+    ///             {
+    ///                 Image = foo.Apply(getRemoteImageResult =&gt; getRemoteImageResult.RepoDigest),
+    ///             },
+    ///         },
+    ///         EndpointSpec = new Docker.Inputs.ServiceEndpointSpecArgs
+    ///         {
+    ///             Ports = new[]
+    ///             {
+    ///                 new Docker.Inputs.ServiceEndpointSpecPortArgs
+    ///                 {
+    ///                     TargetPort = 8080,
+    ///                 },
+    ///             },
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
+    /// ### Advanced
+    /// 
+    /// The following configuration shows the full capabilities of a Docker Service,
+    /// with a `Volume`, `Config`, `Secret` and `Network`
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var testVolume = new Docker.Volume("test_volume", new()
+    ///     {
+    ///         Name = "tftest-volume",
+    ///     });
+    /// 
+    ///     var testVolume2 = new Docker.Volume("test_volume_2", new()
+    ///     {
+    ///         Name = "tftest-volume2",
+    ///     });
+    /// 
+    ///     var serviceConfig = new Docker.ServiceConfig("service_config", new()
+    ///     {
+    ///         Name = "tftest-full-myconfig",
+    ///         Data = "ewogICJwcmVmaXgiOiAiMTIzIgp9",
+    ///     });
+    /// 
+    ///     var serviceSecret = new Docker.Secret("service_secret", new()
+    ///     {
+    ///         Name = "tftest-mysecret",
+    ///         Data = "ewogICJrZXkiOiAiUVdFUlRZIgp9",
+    ///     });
+    /// 
+    ///     var testNetwork = new Docker.Network("test_network", new()
+    ///     {
+    ///         Name = "tftest-network",
+    ///         Driver = "overlay",
+    ///     });
+    /// 
+    ///     var foo = new Docker.Service("foo", new()
+    ///     {
+    ///         Name = "tftest-service-basic",
+    ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
+    ///         {
+    ///             ContainerSpec = new Docker.Inputs.ServiceTaskSpecContainerSpecArgs
+    ///             {
+    ///                 Configs = new[]
+    ///                 {
+    ///                     new Docker.Inputs.ServiceTaskSpecContainerSpecConfigArgs
+    ///                     {
+    ///                         ConfigId = serviceConfig.Id,
+    ///                         ConfigName = serviceConfig.Name,
+    ///                         FileName = "/configs.json",
+    ///                     },
+    ///                     null,
+    ///                 },
+    ///                 Secrets = new[]
+    ///                 {
+    ///                     new Docker.Inputs.ServiceTaskSpecContainerSpecSecretArgs
+    ///                     {
+    ///                         SecretId = serviceSecret.Id,
+    ///                         SecretName = serviceSecret.Name,
+    ///                         FileName = "/secrets.json",
+    ///                         FileUid = "0",
+    ///                         FileGid = "0",
+    ///                         FileMode = 777,
+    ///                     },
+    ///                     null,
+    ///                 },
+    ///                 Image = "repo.mycompany.com:8080/foo-service:v1",
+    ///                 Labels = new[]
+    ///                 {
+    ///                     new Docker.Inputs.ServiceTaskSpecContainerSpecLabelArgs
+    ///                     {
+    ///                         Label = "foo.bar",
+    ///                         Value = "baz",
+    ///                     },
+    ///                 },
+    ///                 Commands = new[]
+    ///                 {
+    ///                     "ls",
+    ///                 },
+    ///                 Args = new[]
+    ///                 {
+    ///                     "-las",
+    ///                 },
+    ///                 Hostname = "my-fancy-service",
+    ///                 Env = 
+    ///                 {
+    ///                     { "MYFOO", "BAR" },
+    ///                 },
+    ///                 Dir = "/root",
+    ///                 User = "root",
+    ///                 Groups = new[]
+    ///                 {
+    ///                     "docker",
+    ///                     "foogroup",
+    ///                 },
+    ///                 Privileges = new Docker.Inputs.ServiceTaskSpecContainerSpecPrivilegesArgs
+    ///                 {
+    ///                     SeLinuxContext = new Docker.Inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs
+    ///                     {
+    ///                         Disable = true,
+    ///                         User = "user-label",
+    ///                         Role = "role-label",
+    ///                         Type = "type-label",
+    ///                         Level = "level-label",
+    ///                     },
+    ///                 },
+    ///                 ReadOnly = true,
+    ///                 Mounts = new[]
+    ///                 {
+    ///                     new Docker.Inputs.ServiceTaskSpecContainerSpecMountArgs
+    ///                     {
+    ///                         Target = "/mount/test",
+    ///                         Source = testVolume.Name,
+    ///                         Type = "bind",
+    ///                         ReadOnly = true,
+    ///                         BindOptions = new Docker.Inputs.ServiceTaskSpecContainerSpecMountBindOptionsArgs
+    ///                         {
+    ///                             Propagation = "rprivate",
+    ///                         },
+    ///                     },
+    ///                     new Docker.Inputs.ServiceTaskSpecContainerSpecMountArgs
+    ///                     {
+    ///                         Target = "/mount/test2",
+    ///                         Source = testVolume2.Name,
+    ///                         Type = "volume",
+    ///                         ReadOnly = true,
+    ///                         VolumeOptions = new Docker.Inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsArgs
+    ///                         {
+    ///                             NoCopy = true,
+    ///                             Labels = new[]
+    ///                             {
+    ///                                 new Docker.Inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs
+    ///                                 {
+    ///                                     Label = "foo",
+    ///                                     Value = "bar",
+    ///                                 },
+    ///                             },
+    ///                             DriverName = "random-driver",
+    ///                             DriverOptions = 
+    ///                             {
+    ///                                 { "op1", "val1" },
+    ///                             },
+    ///                         },
+    ///                     },
+    ///                 },
+    ///                 StopSignal = "SIGTERM",
+    ///                 StopGracePeriod = "10s",
+    ///                 Healthcheck = new Docker.Inputs.ServiceTaskSpecContainerSpecHealthcheckArgs
+    ///                 {
+    ///                     Tests = new[]
+    ///                     {
+    ///                         "CMD",
+    ///                         "curl",
+    ///                         "-f",
+    ///                         "http://localhost:8080/health",
+    ///                     },
+    ///                     Interval = "5s",
+    ///                     Timeout = "2s",
+    ///                     Retries = 4,
+    ///                 },
+    ///                 Hosts = new[]
+    ///                 {
+    ///                     new Docker.Inputs.ServiceTaskSpecContainerSpecHostArgs
+    ///                     {
+    ///                         Host = "testhost",
+    ///                         Ip = "10.0.1.0",
+    ///                     },
+    ///                 },
+    ///                 DnsConfig = new Docker.Inputs.ServiceTaskSpecContainerSpecDnsConfigArgs
+    ///                 {
+    ///                     Nameservers = new[]
+    ///                     {
+    ///                         "8.8.8.8",
+    ///                     },
+    ///                     Searches = new[]
+    ///                     {
+    ///                         "example.org",
+    ///                     },
+    ///                     Options = new[]
+    ///                     {
+    ///                         "timeout:3",
+    ///                     },
+    ///                 },
+    ///             },
+    ///             Resources = new Docker.Inputs.ServiceTaskSpecResourcesArgs
+    ///             {
+    ///                 Limits = new Docker.Inputs.ServiceTaskSpecResourcesLimitsArgs
+    ///                 {
+    ///                     NanoCpus = 1000000,
+    ///                     MemoryBytes = 536870912,
+    ///                 },
+    ///                 Reservation = new Docker.Inputs.ServiceTaskSpecResourcesReservationArgs
+    ///                 {
+    ///                     NanoCpus = 1000000,
+    ///                     MemoryBytes = 536870912,
+    ///                     GenericResources = new Docker.Inputs.ServiceTaskSpecResourcesReservationGenericResourcesArgs
+    ///                     {
+    ///                         NamedResourcesSpecs = new[]
+    ///                         {
+    ///                             "GPU=UUID1",
+    ///                         },
+    ///                         DiscreteResourcesSpecs = new[]
+    ///                         {
+    ///                             "SSD=3",
+    ///                         },
+    ///                     },
+    ///                 },
+    ///             },
+    ///             RestartPolicy = 
+    ///             {
+    ///                 { "condition", "on-failure" },
+    ///                 { "delay", "3s" },
+    ///                 { "maxAttempts", 4 },
+    ///                 { "window", "10s" },
+    ///             }[0],
+    ///             Placement = new Docker.Inputs.ServiceTaskSpecPlacementArgs
+    ///             {
+    ///                 Constraints = new[]
+    ///                 {
+    ///                     "node.role==manager",
+    ///                 },
+    ///                 Prefs = new[]
+    ///                 {
+    ///                     "spread=node.role.manager",
+    ///                 },
+    ///                 MaxReplicas = 1,
+    ///             },
+    ///             ForceUpdate = 0,
+    ///             Runtime = "container",
+    ///             Networks = new[]
+    ///             {
+    ///                 testNetwork.Id,
+    ///             },
+    ///             LogDriver = new Docker.Inputs.ServiceTaskSpecLogDriverArgs
+    ///             {
+    ///                 Name = "json-file",
+    ///                 Options = 
+    ///                 {
+    ///                     { "max-size", "10m" },
+    ///                     { "max-file", "3" },
+    ///                 },
+    ///             },
+    ///         },
+    ///         Mode = new Docker.Inputs.ServiceModeArgs
+    ///         {
+    ///             Replicated = new Docker.Inputs.ServiceModeReplicatedArgs
+    ///             {
+    ///                 Replicas = 2,
+    ///             },
+    ///         },
+    ///         UpdateConfig = new Docker.Inputs.ServiceUpdateConfigArgs
+    ///         {
+    ///             Parallelism = 2,
+    ///             Delay = "10s",
+    ///             FailureAction = "pause",
+    ///             Monitor = "5s",
+    ///             MaxFailureRatio = "0.1",
+    ///             Order = "start-first",
+    ///         },
+    ///         RollbackConfig = new Docker.Inputs.ServiceRollbackConfigArgs
+    ///         {
+    ///             Parallelism = 2,
+    ///             Delay = "5ms",
+    ///             FailureAction = "pause",
+    ///             Monitor = "10h",
+    ///             MaxFailureRatio = "0.9",
+    ///             Order = "stop-first",
+    ///         },
+    ///         EndpointSpec = new Docker.Inputs.ServiceEndpointSpecArgs
+    ///         {
+    ///             Ports = new[]
+    ///             {
+    ///                 new Docker.Inputs.ServiceEndpointSpecPortArgs
+    ///                 {
+    ///                     Name = "random",
+    ///                     Protocol = "tcp",
+    ///                     TargetPort = 8080,
+    ///                     PublishedPort = 8080,
+    ///                     PublishMode = "ingress",
+    ///                 },
+    ///                 null,
+    ///             },
+    ///             Mode = "vip",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
     /// ## Import
+    /// 
+    /// !/bin/bash
+    /// 
+    /// ```sh
+    /// $ pulumi import docker:index/service:Service foo id
+    /// ```
     /// 
     /// ### Example
     /// 
-    /// Assuming you created a `service` as follows
+    /// Assuming you created a `Service` as follows
     /// 
+    /// ```sh
     /// #!/bin/bash
-    /// 
     /// docker service create --name foo -p 8080:80 nginx
-    /// 
-    /// prints th ID
-    /// 
+    /// # prints th ID
     /// 4pcphbxkfn2rffhbhe6czytgi
+    /// ```
     /// 
     /// you provide the definition for the resource as follows
     /// 
-    /// terraform
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
     /// 
-    /// resource "docker_service" "foo" {
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var foo = new Docker.Service("foo", new()
+    ///     {
+    ///         Name = "foo",
+    ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
+    ///         {
+    ///             ContainerSpec = new Docker.Inputs.ServiceTaskSpecContainerSpecArgs
+    ///             {
+    ///                 Image = "nginx",
+    ///             },
+    ///         },
+    ///         EndpointSpec = new Docker.Inputs.ServiceEndpointSpecArgs
+    ///         {
+    ///             Ports = new[]
+    ///             {
+    ///                 new Docker.Inputs.ServiceEndpointSpecPortArgs
+    ///                 {
+    ///                     TargetPort = 80,
+    ///                     PublishedPort = 8080,
+    ///                 },
+    ///             },
+    ///         },
+    ///     });
     /// 
-    ///   name = "foo"
-    /// 
-    ///   task_spec {
-    /// 
-    ///     container_spec {
-    ///     
-    ///       image = "nginx"
-    ///     
-    ///     }
-    /// 
-    ///   }
-    /// 
-    ///   endpoint_spec {
-    /// 
-    ///     ports {
-    ///     
-    ///       target_port    = "80"
-    ///     
-    ///       published_port = "8080"
-    ///     
-    ///     }
-    /// 
-    ///   }
-    /// 
-    /// }
+    /// });
+    /// ```
     /// 
     /// then the import command is as follows
     /// 
-    /// #!/bin/bash
+    /// !/bin/bash
     /// 
     /// ```sh
     /// $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi

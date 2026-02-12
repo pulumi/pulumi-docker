@@ -9,9 +9,114 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Docker
 {
+    /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// Manages the lifecycle of a docker image in your docker host. It can be used to build a new docker image or to pull an existing one from a registry.
+    ///  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `PullTriggers` field.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ### Basic
+    /// 
+    /// Finds and downloads the latest `ubuntu:precise` image but does not check
+    /// for further updates of the image
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var ubuntu = new Docker.RemoteImage("ubuntu", new()
+    ///     {
+    ///         Name = "ubuntu:precise",
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
+    /// ### Dynamic updates
+    /// 
+    /// To be able to update an image dynamically when the `Sha256` sum changes,
+    /// you need to use it in combination with `docker.RegistryImage` as follows:
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var ubuntu = Docker.GetRegistryImage.Invoke(new()
+    ///     {
+    ///         Name = "ubuntu:precise",
+    ///     });
+    /// 
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntu", new()
+    ///     {
+    ///         Name = ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+    ///         PullTriggers = new[]
+    ///         {
+    ///             ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
+    /// ### Build
+    /// 
+    /// You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
+    /// 
+    /// &gt; **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
+    /// 
+    /// In this case the image "zoo" and "zoo:develop" are built.
+    /// The `Context` and `Dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+    /// There is no need to copy the files to remote hosts before creating the resource.
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var zoo = new Docker.RemoteImage("zoo", new()
+    ///     {
+    ///         Name = "zoo",
+    ///         Build = new Docker.Inputs.RemoteImageBuildArgs
+    ///         {
+    ///             Context = ".",
+    ///             Tags = new[]
+    ///             {
+    ///                 "zoo:develop",
+    ///             },
+    ///             BuildArgs = 
+    ///             {
+    ///                 { "foo", "zoo" },
+    ///             },
+    ///             Label = 
+    ///             {
+    ///                 { "author", "zoo" },
+    ///             },
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
+    /// You can use the `Triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
+    /// </summary>
     [DockerResourceType("docker:index/remoteImage:RemoteImage")]
     public partial class RemoteImage : global::Pulumi.CustomResource
     {
+        /// <summary>
+        /// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// </summary>
         [Output("build")]
         public Output<Outputs.RemoteImageBuild?> Build { get; private set; } = null!;
 
@@ -109,6 +214,9 @@ namespace Pulumi.Docker
 
     public sealed class RemoteImageArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildArgs>? Build { get; set; }
 
@@ -168,6 +276,9 @@ namespace Pulumi.Docker
 
     public sealed class RemoteImageState : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildGetArgs>? Build { get; set; }
 

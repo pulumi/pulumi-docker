@@ -126,6 +126,7 @@ class ContainerArgs:
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
@@ -726,6 +727,9 @@ class ContainerArgs:
     @_builtins.property
     @pulumi.getter(name="mustRun")
     def must_run(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        """
         return pulumi.get(self, "must_run")
 
     @must_run.setter
@@ -1208,6 +1212,7 @@ class _ContainerState:
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
@@ -1854,6 +1859,9 @@ class _ContainerState:
     @_builtins.property
     @pulumi.getter(name="mustRun")
     def must_run(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        """
         return pulumi.get(self, "must_run")
 
     @must_run.setter
@@ -2327,41 +2335,41 @@ class Container(pulumi.CustomResource):
 
         ## Import
 
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/container:Container foo id
+        ```
+
         ### Example
 
         Assuming you created a `container` as follows
 
+        ```sh
         #!/bin/bash
-
-        docker run --name foo -p8080:80 -d nginx
-
-        prints the container ID
-
+        docker run --name foo -p8080:80 -d nginx 
+        # prints the container ID 
         9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_container" "foo" {
-
-          name  = "foo"
-
-          image = "nginx"
-
-          ports {
-
-            internal = "80"
-            
-            external = "8080"
-
-          }
-
-        }
+        foo = docker.Container("foo",
+            name="foo",
+            image="nginx",
+            ports=[{
+                "internal": 80,
+                "external": 8080,
+            }])
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
@@ -2405,6 +2413,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
@@ -2462,41 +2471,41 @@ class Container(pulumi.CustomResource):
 
         ## Import
 
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/container:Container foo id
+        ```
+
         ### Example
 
         Assuming you created a `container` as follows
 
+        ```sh
         #!/bin/bash
-
-        docker run --name foo -p8080:80 -d nginx
-
-        prints the container ID
-
+        docker run --name foo -p8080:80 -d nginx 
+        # prints the container ID 
         9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_container" "foo" {
-
-          name  = "foo"
-
-          image = "nginx"
-
-          ports {
-
-            internal = "80"
-            
-            external = "8080"
-
-          }
-
-        }
+        foo = docker.Container("foo",
+            name="foo",
+            image="nginx",
+            ports=[{
+                "internal": 80,
+                "external": 8080,
+            }])
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
@@ -2793,6 +2802,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworkDataArgs', 'ContainerNetworkDataArgsDict']]]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
@@ -3217,6 +3227,9 @@ class Container(pulumi.CustomResource):
     @_builtins.property
     @pulumi.getter(name="mustRun")
     def must_run(self) -> pulumi.Output[Optional[_builtins.bool]]:
+        """
+        If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        """
         return pulumi.get(self, "must_run")
 
     @_builtins.property

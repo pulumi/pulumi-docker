@@ -23,7 +23,6 @@ import (
 //
 // import (
 //
-//	"fmt"
 //	"os"
 //
 //	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
@@ -64,7 +63,8 @@ type RegistryImage struct {
 
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig RegistryImageAuthConfigPtrOutput `pulumi:"authConfig"`
-	Build      RegistryImageBuildPtrOutput      `pulumi:"build"`
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	Build RegistryImageBuildPtrOutput `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrOutput `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -109,7 +109,8 @@ func GetRegistryImage(ctx *pulumi.Context,
 type registryImageState struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig *RegistryImageAuthConfig `pulumi:"authConfig"`
-	Build      *RegistryImageBuild      `pulumi:"build"`
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	Build *RegistryImageBuild `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -125,7 +126,8 @@ type registryImageState struct {
 type RegistryImageState struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig RegistryImageAuthConfigPtrInput
-	Build      RegistryImageBuildPtrInput
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	Build RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -145,7 +147,8 @@ func (RegistryImageState) ElementType() reflect.Type {
 type registryImageArgs struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig *RegistryImageAuthConfig `pulumi:"authConfig"`
-	Build      *RegistryImageBuild      `pulumi:"build"`
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	Build *RegistryImageBuild `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -160,7 +163,8 @@ type registryImageArgs struct {
 type RegistryImageArgs struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig RegistryImageAuthConfigPtrInput
-	Build      RegistryImageBuildPtrInput
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	Build RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -263,6 +267,7 @@ func (o RegistryImageOutput) AuthConfig() RegistryImageAuthConfigPtrOutput {
 	return o.ApplyT(func(v *RegistryImage) RegistryImageAuthConfigPtrOutput { return v.AuthConfig }).(RegistryImageAuthConfigPtrOutput)
 }
 
+// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 func (o RegistryImageOutput) Build() RegistryImageBuildPtrOutput {
 	return o.ApplyT(func(v *RegistryImage) RegistryImageBuildPtrOutput { return v.Build }).(RegistryImageBuildPtrOutput)
 }

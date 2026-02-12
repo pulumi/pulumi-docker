@@ -7,6 +7,74 @@ import * as outputs from "./types/output";
 import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
+/**
+ * <!-- Bug: Type and Name are switched -->
+ * Manages the lifecycle of a docker image in your docker host. It can be used to build a new docker image or to pull an existing one from a registry.
+ *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
+ *
+ * ## Example Usage
+ *
+ * ### Basic
+ *
+ * Finds and downloads the latest `ubuntu:precise` image but does not check
+ * for further updates of the image
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const ubuntu = new docker.RemoteImage("ubuntu", {name: "ubuntu:precise"});
+ * ```
+ *
+ * ### Dynamic updates
+ *
+ * To be able to update an image dynamically when the `sha256` sum changes,
+ * you need to use it in combination with `docker.RegistryImage` as follows:
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const ubuntu = docker.getRegistryImage({
+ *     name: "ubuntu:precise",
+ * });
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
+ *     name: ubuntu.then(ubuntu => ubuntu.name),
+ *     pullTriggers: [ubuntu.then(ubuntu => ubuntu.sha256Digest)],
+ * });
+ * ```
+ *
+ * ### Build
+ *
+ * You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
+ *
+ * > **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
+ *
+ * In this case the image "zoo" and "zoo:develop" are built.
+ * The `context` and `dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+ * There is no need to copy the files to remote hosts before creating the resource.
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const zoo = new docker.RemoteImage("zoo", {
+ *     name: "zoo",
+ *     build: {
+ *         context: ".",
+ *         tags: ["zoo:develop"],
+ *         buildArgs: {
+ *             foo: "zoo",
+ *         },
+ *         label: {
+ *             author: "zoo",
+ *         },
+ *     },
+ * });
+ * ```
+ *
+ * You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
+ */
 export class RemoteImage extends pulumi.CustomResource {
     /**
      * Get an existing RemoteImage resource's state with the given name, ID, and optional extra
@@ -35,6 +103,9 @@ export class RemoteImage extends pulumi.CustomResource {
         return obj['__pulumiType'] === RemoteImage.__pulumiType;
     }
 
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     */
     declare public readonly build: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
      * If true, then the image is removed forcibly when the resource is destroyed.
@@ -115,6 +186,9 @@ export class RemoteImage extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RemoteImage resources.
  */
 export interface RemoteImageState {
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
      * If true, then the image is removed forcibly when the resource is destroyed.
@@ -154,6 +228,9 @@ export interface RemoteImageState {
  * The set of arguments for constructing a RemoteImage resource.
  */
 export interface RemoteImageArgs {
+    /**
+     * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
      * If true, then the image is removed forcibly when the resource is destroyed.

@@ -41,41 +41,53 @@ namespace Pulumi.Docker
     /// 
     /// ## Import
     /// 
+    /// !/bin/bash
+    /// 
+    /// ```sh
+    /// $ pulumi import docker:index/container:Container foo id
+    /// ```
+    /// 
     /// ### Example
     /// 
-    /// Assuming you created a `container` as follows
+    /// Assuming you created a `Container` as follows
     /// 
+    /// ```sh
     /// #!/bin/bash
-    /// 
-    /// docker run --name foo -p8080:80 -d nginx
-    /// 
-    /// prints the container ID
-    /// 
+    /// docker run --name foo -p8080:80 -d nginx 
+    /// # prints the container ID 
     /// 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+    /// ```
     /// 
     /// you provide the definition for the resource as follows
     /// 
-    /// terraform
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
     /// 
-    /// resource "docker_container" "foo" {
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var foo = new Docker.Container("foo", new()
+    ///     {
+    ///         Name = "foo",
+    ///         Image = "nginx",
+    ///         Ports = new[]
+    ///         {
+    ///             new Docker.Inputs.ContainerPortArgs
+    ///             {
+    ///                 Internal = 80,
+    ///                 External = 8080,
+    ///             },
+    ///         },
+    ///     });
     /// 
-    ///   name  = "foo"
-    /// 
-    ///   image = "nginx"
-    /// 
-    ///   ports {
-    /// 
-    ///     internal = "80"
-    ///     
-    ///     external = "8080"
-    /// 
-    ///   }
-    /// 
-    /// }
+    /// });
+    /// ```
     /// 
     /// then the import command is as follows
     /// 
-    /// #!/bin/bash
+    /// !/bin/bash
     /// 
     /// ```sh
     /// $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
@@ -318,6 +330,9 @@ namespace Pulumi.Docker
         [Output("mounts")]
         public Output<ImmutableArray<Outputs.ContainerMount>> Mounts { get; private set; } = null!;
 
+        /// <summary>
+        /// If `True`, then the Docker container will be kept running. If `False`, then as long as the container exists, Terraform assumes it is successful. Defaults to `True`.
+        /// </summary>
         [Output("mustRun")]
         public Output<bool?> MustRun { get; private set; } = null!;
 
@@ -841,6 +856,9 @@ namespace Pulumi.Docker
             set => _mounts = value;
         }
 
+        /// <summary>
+        /// If `True`, then the Docker container will be kept running. If `False`, then as long as the container exists, Terraform assumes it is successful. Defaults to `True`.
+        /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
 
@@ -1392,6 +1410,9 @@ namespace Pulumi.Docker
             set => _mounts = value;
         }
 
+        /// <summary>
+        /// If `True`, then the Docker container will be kept running. If `False`, then as long as the container exists, Terraform assumes it is successful. Defaults to `True`.
+        /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
 

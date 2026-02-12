@@ -53,6 +53,9 @@ namespace Pulumi.Docker
         [Output("authConfig")]
         public Output<Outputs.RegistryImageAuthConfig?> AuthConfig { get; private set; } = null!;
 
+        /// <summary>
+        /// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// </summary>
         [Output("build")]
         public Output<Outputs.RegistryImageBuild?> Build { get; private set; } = null!;
 
@@ -138,6 +141,9 @@ namespace Pulumi.Docker
         [Input("authConfig")]
         public Input<Inputs.RegistryImageAuthConfigArgs>? AuthConfig { get; set; }
 
+        /// <summary>
+        /// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// </summary>
         [Input("build")]
         public Input<Inputs.RegistryImageBuildArgs>? Build { get; set; }
 
@@ -185,6 +191,9 @@ namespace Pulumi.Docker
         [Input("authConfig")]
         public Input<Inputs.RegistryImageAuthConfigGetArgs>? AuthConfig { get; set; }
 
+        /// <summary>
+        /// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// </summary>
         [Input("build")]
         public Input<Inputs.RegistryImageBuildGetArgs>? Build { get; set; }
 

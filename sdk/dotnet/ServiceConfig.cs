@@ -10,35 +10,55 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// Manages the configs of a Docker service in a swarm.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ### Basic
+    /// 
+    /// ### Advanced
+    /// ### Dynamically set config with a template
+    /// In this example you can use the `${var.foo_port}` variable to dynamically
+    /// set the `${port}` variable in the `foo.configs.json.tpl` template and create
+    /// the data of the `FooConfig` with the help of the `Base64encode` interpolation
+    /// function.
+    /// 
+    /// The file `foo.config.json.tpl` has the following content:
+    /// 
+    /// and the resource uses it as follows:
+    /// 
+    /// ### Update config with no downtime
+    /// To update a `Config`, Terraform will destroy the existing resource and create a replacement.
+    /// To effectively use a `docker.ServiceConfig` resource with a `docker.Service` resource, it's recommended
+    ///  to specify `CreateBeforeDestroy` in a `Lifecycle` block. Provide a unique `Name` attribute,
+    /// for example with one of the interpolation functions `Uuid` or `Timestamp` as shown
+    /// in the example below. The reason is this [issue](https://github.com/moby/moby/issues/35803).
+    /// 
     /// ## Import
+    /// 
+    /// !/bin/bash
+    /// 
+    /// ```sh
+    /// $ pulumi import docker:index/serviceConfig:ServiceConfig foo id
+    /// ```
     /// 
     /// ### Example
     /// 
-    /// Assuming you created a `config` as follows
+    /// Assuming you created a `Config` as follows
     /// 
+    /// ```sh
     /// #!/bin/bash
-    /// 
     /// printf '{"a":"b"}' | docker config create foo -
-    /// 
-    /// prints the id
-    /// 
+    /// # prints the id 
     /// 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
+    /// ```
     /// 
     /// you provide the definition for the resource as follows
     /// 
-    /// terraform
-    /// 
-    /// resource "docker_config" "foo" {
-    /// 
-    ///   name = "foo"
-    /// 
-    ///   data = base64encode("{\"a\": \"b\"}")
-    /// 
-    /// }
-    /// 
     /// then the import command is as follows
     /// 
-    /// #!/bin/bash
+    /// !/bin/bash
     /// 
     /// ```sh
     /// $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d

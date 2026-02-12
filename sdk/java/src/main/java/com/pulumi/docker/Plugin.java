@@ -24,10 +24,9 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
- * #!/bin/bash
- * 
  * ```sh
- * $ pulumi import docker:index/plugin:Plugin sample-volume-plugin &#34;$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)&#34;
+ * #!/bin/bash
+ * terraform import docker_plugin.sample-volume-plugin &#34;$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)&#34;
  * ```
  * 
  */

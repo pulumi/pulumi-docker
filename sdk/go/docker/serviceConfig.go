@@ -12,35 +12,57 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// <!-- Bug: Type and Name are switched -->
+// Manages the configs of a Docker service in a swarm.
+//
+// ## Example Usage
+//
+// ### Basic
+//
+// ### Advanced
+// ### Dynamically set config with a template
+// In this example you can use the `${var.foo_port}` variable to dynamically
+// set the `${port}` variable in the `foo.configs.json.tpl` template and create
+// the data of the `fooConfig` with the help of the `base64encode` interpolation
+// function.
+//
+// The file `foo.config.json.tpl` has the following content:
+//
+// and the resource uses it as follows:
+//
+// ### Update config with no downtime
+// To update a `config`, Terraform will destroy the existing resource and create a replacement.
+// To effectively use a `ServiceConfig` resource with a `Service` resource, it's recommended
+//
+//	to specify `createBeforeDestroy` in a `lifecycle` block. Provide a unique `name` attribute,
+//
+// for example with one of the interpolation functions `uuid` or `timestamp` as shown
+// in the example below. The reason is this [issue](https://github.com/moby/moby/issues/35803).
+//
 // ## Import
+//
+// !/bin/bash
+//
+// ```sh
+// $ pulumi import docker:index/serviceConfig:ServiceConfig foo id
+// ```
 //
 // ### Example
 //
 // # Assuming you created a `config` as follows
 //
+// ```sh
 // #!/bin/bash
-//
 // printf '{"a":"b"}' | docker config create foo -
-//
-// prints the id
-//
+// # prints the id
 // 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
+// ```
 //
 // you provide the definition for the resource as follows
 //
-// terraform
-//
-// resource "docker_config" "foo" {
-//
-//	name = "foo"
-//
-//	data = base64encode("{\"a\": \"b\"}")
-//
-// }
-//
 // then the import command is as follows
 //
-// #!/bin/bash
+// !/bin/bash
 //
 // ```sh
 // $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d

@@ -58,31 +58,59 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
+ * !/bin/bash
+ * 
+ * ```sh
+ * $ pulumi import docker:index/network:Network foo id
+ * ```
+ * 
  * ### Example
  * 
  * Assuming you created a `network` as follows
  * 
+ * ```sh
  * #!/bin/bash
- * 
  * docker network create foo
- * 
- * prints the long ID
- * 
+ * # prints the long ID
  * 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+ * ```
  * 
  * you provide the definition for the resource as follows
  * 
- * terraform
+ * <pre>
+ * {@code
+ * package generated_program;
  * 
- * resource &#34;docker_network&#34; &#34;foo&#34; {
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Network;
+ * import com.pulumi.docker.NetworkArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
- *   name = &#34;foo&#34;
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
  * 
+ *     public static void stack(Context ctx) {
+ *         var foo = new Network("foo", NetworkArgs.builder()
+ *             .name("foo")
+ *             .build());
+ * 
+ *     }
  * }
+ * }
+ * </pre>
  * 
  * then the import command is as follows
  * 
- * #!/bin/bash
+ * !/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73

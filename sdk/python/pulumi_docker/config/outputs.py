@@ -29,6 +29,7 @@ class RegistryAuth(dict):
                  username: Optional[_builtins.str] = None):
         """
         :param _builtins.str address: Address of the registry
+        :param _builtins.bool auth_disabled: Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
         :param _builtins.str config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
         :param _builtins.str config_file_content: Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
         :param _builtins.str password: Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
@@ -57,6 +58,9 @@ class RegistryAuth(dict):
     @_builtins.property
     @pulumi.getter(name="authDisabled")
     def auth_disabled(self) -> Optional[_builtins.bool]:
+        """
+        Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
+        """
         return pulumi.get(self, "auth_disabled")
 
     @_builtins.property

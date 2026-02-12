@@ -42,31 +42,52 @@ import (
 //
 // ## Import
 //
+// !/bin/bash
+//
+// ```sh
+// $ pulumi import docker:index/network:Network foo id
+// ```
+//
 // ### Example
 //
 // # Assuming you created a `network` as follows
 //
+// ```sh
 // #!/bin/bash
-//
 // docker network create foo
-//
-// prints the long ID
-//
+// # prints the long ID
 // 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+// ```
 //
 // you provide the definition for the resource as follows
 //
-// terraform
+// ```go
+// package main
 //
-// resource "docker_network" "foo" {
+// import (
 //
-//	name = "foo"
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
-// }
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewNetwork(ctx, "foo", &docker.NetworkArgs{
+//				Name: pulumi.String("foo"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 //
 // then the import command is as follows
 //
-// #!/bin/bash
+// !/bin/bash
 //
 // ```sh
 // $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73

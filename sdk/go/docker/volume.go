@@ -42,31 +42,52 @@ import (
 //
 // ## Import
 //
+// !/bin/bash
+//
+// ```sh
+// $ pulumi import docker:index/volume:Volume foo id
+// ```
+//
 // ### Example
 //
 // # Assuming you created a `volume` as follows
 //
+// ```sh
 // #!/bin/bash
-//
 // docker volume create
-//
-// prints the long ID
-//
+// # prints the long ID
 // 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+// ```
 //
 // you provide the definition for the resource as follows
 //
-// terraform
+// ```go
+// package main
 //
-// resource "docker_volume" "foo" {
+// import (
 //
-//	name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d"
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
-// }
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewVolume(ctx, "foo", &docker.VolumeArgs{
+//				Name: pulumi.String("524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 //
 // then the import command is as follows
 //
-// #!/bin/bash
+// !/bin/bash
 //
 // ```sh
 // $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d

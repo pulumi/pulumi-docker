@@ -476,31 +476,35 @@ class Network(pulumi.CustomResource):
 
         ## Import
 
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/network:Network foo id
+        ```
+
         ### Example
 
         Assuming you created a `network` as follows
 
+        ```sh
         #!/bin/bash
-
         docker network create foo
-
-        prints the long ID
-
+        # prints the long ID
         87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_network" "foo" {
-
-          name = "foo"
-
-        }
+        foo = docker.Network("foo", name="foo")
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
@@ -542,31 +546,35 @@ class Network(pulumi.CustomResource):
 
         ## Import
 
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/network:Network foo id
+        ```
+
         ### Example
 
         Assuming you created a `network` as follows
 
+        ```sh
         #!/bin/bash
-
         docker network create foo
-
-        prints the long ID
-
+        # prints the long ID
         87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_network" "foo" {
-
-          name = "foo"
-
-        }
+        foo = docker.Network("foo", name="foo")
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73

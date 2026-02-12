@@ -237,31 +237,35 @@ class Volume(pulumi.CustomResource):
 
         ## Import
 
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/volume:Volume foo id
+        ```
+
         ### Example
 
         Assuming you created a `volume` as follows
 
+        ```sh
         #!/bin/bash
-
         docker volume create
-
-        prints the long ID
-
+        # prints the long ID
         524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_volume" "foo" {
-
-          name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d"
-
-        }
+        foo = docker.Volume("foo", name="524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d")
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
@@ -296,31 +300,35 @@ class Volume(pulumi.CustomResource):
 
         ## Import
 
+        !/bin/bash
+
+        ```sh
+        $ pulumi import docker:index/volume:Volume foo id
+        ```
+
         ### Example
 
         Assuming you created a `volume` as follows
 
+        ```sh
         #!/bin/bash
-
         docker volume create
-
-        prints the long ID
-
+        # prints the long ID
         524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+        ```
 
         you provide the definition for the resource as follows
 
-        terraform
+        ```python
+        import pulumi
+        import pulumi_docker as docker
 
-        resource "docker_volume" "foo" {
-
-          name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d"
-
-        }
+        foo = docker.Volume("foo", name="524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d")
+        ```
 
         then the import command is as follows
 
-        #!/bin/bash
+        !/bin/bash
 
         ```sh
         $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d

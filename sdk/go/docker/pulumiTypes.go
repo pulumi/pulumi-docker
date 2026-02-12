@@ -4151,8 +4151,9 @@ func (o PluginGrantPermissionArrayOutput) Index(i pulumi.IntInput) PluginGrantPe
 
 type ProviderRegistryAuth struct {
 	// Address of the registry
-	Address      string `pulumi:"address"`
-	AuthDisabled *bool  `pulumi:"authDisabled"`
+	Address string `pulumi:"address"`
+	// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
+	AuthDisabled *bool `pulumi:"authDisabled"`
 	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
 	ConfigFile *string `pulumi:"configFile"`
 	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
@@ -4176,7 +4177,8 @@ type ProviderRegistryAuthInput interface {
 
 type ProviderRegistryAuthArgs struct {
 	// Address of the registry
-	Address      pulumi.StringInput  `pulumi:"address"`
+	Address pulumi.StringInput `pulumi:"address"`
+	// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
 	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
 	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
 	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
@@ -4244,6 +4246,7 @@ func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
 
+// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
 func (o ProviderRegistryAuthOutput) AuthDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *bool { return v.AuthDisabled }).(pulumi.BoolPtrOutput)
 }

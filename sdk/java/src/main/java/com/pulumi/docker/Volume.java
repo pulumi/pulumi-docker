@@ -57,31 +57,59 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
+ * !/bin/bash
+ * 
+ * ```sh
+ * $ pulumi import docker:index/volume:Volume foo id
+ * ```
+ * 
  * ### Example
  * 
  * Assuming you created a `volume` as follows
  * 
+ * ```sh
  * #!/bin/bash
- * 
  * docker volume create
- * 
- * prints the long ID
- * 
+ * # prints the long ID
  * 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+ * ```
  * 
  * you provide the definition for the resource as follows
  * 
- * terraform
+ * <pre>
+ * {@code
+ * package generated_program;
  * 
- * resource &#34;docker_volume&#34; &#34;foo&#34; {
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Volume;
+ * import com.pulumi.docker.VolumeArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
- *   name = &#34;524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d&#34;
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
  * 
+ *     public static void stack(Context ctx) {
+ *         var foo = new Volume("foo", VolumeArgs.builder()
+ *             .name("524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d")
+ *             .build());
+ * 
+ *     }
  * }
+ * }
+ * </pre>
  * 
  * then the import command is as follows
  * 
- * #!/bin/bash
+ * !/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d

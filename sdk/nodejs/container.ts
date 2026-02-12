@@ -28,41 +28,42 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
+ * !/bin/bash
+ *
+ * ```sh
+ * $ pulumi import docker:index/container:Container foo id
+ * ```
+ *
  * ### Example
  *
  * Assuming you created a `container` as follows
  *
+ * ```sh
  * #!/bin/bash
- *
- * docker run --name foo -p8080:80 -d nginx
- *
- * prints the container ID
- *
+ * docker run --name foo -p8080:80 -d nginx 
+ * # prints the container ID 
  * 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+ * ```
  *
  * you provide the definition for the resource as follows
  *
- * terraform
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
  *
- * resource "docker_container" "foo" {
- *
- *   name  = "foo"
- *
- *   image = "nginx"
- *
- *   ports {
- *
- *     internal = "80"
- *     
- *     external = "8080"
- *
- *   }
- *
- * }
+ * const foo = new docker.Container("foo", {
+ *     name: "foo",
+ *     image: "nginx",
+ *     ports: [{
+ *         internal: 80,
+ *         external: 8080,
+ *     }],
+ * });
+ * ```
  *
  * then the import command is as follows
  *
- * #!/bin/bash
+ * !/bin/bash
  *
  * ```sh
  * $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
@@ -252,6 +253,9 @@ export class Container extends pulumi.CustomResource {
      * Specification for mounts to be added to containers created as part of the service.
      */
     declare public readonly mounts: pulumi.Output<outputs.ContainerMount[] | undefined>;
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     */
     declare public readonly mustRun: pulumi.Output<boolean | undefined>;
     /**
      * The name of the container.
@@ -704,6 +708,9 @@ export interface ContainerState {
      * Specification for mounts to be added to containers created as part of the service.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     */
     mustRun?: pulumi.Input<boolean>;
     /**
      * The name of the container.
@@ -979,6 +986,9 @@ export interface ContainerArgs {
      * Specification for mounts to be added to containers created as part of the service.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
+    /**
+     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     */
     mustRun?: pulumi.Input<boolean>;
     /**
      * The name of the container.

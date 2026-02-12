@@ -12,9 +12,131 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// <!-- Bug: Type and Name are switched -->
+// Manages the lifecycle of a docker image in your docker host. It can be used to build a new docker image or to pull an existing one from a registry.
+//
+//	This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pullTriggers` field.
+//
+// ## Example Usage
+//
+// ### Basic
+//
+// Finds and downloads the latest `ubuntu:precise` image but does not check
+// for further updates of the image
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
+//				Name: pulumi.String("ubuntu:precise"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ### Dynamic updates
+//
+// To be able to update an image dynamically when the `sha256` sum changes,
+// you need to use it in combination with `RegistryImage` as follows:
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			ubuntu, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
+//				Name: "ubuntu:precise",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
+//				Name: pulumi.String(ubuntu.Name),
+//				PullTriggers: pulumi.StringArray{
+//					pulumi.String(ubuntu.Sha256Digest),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// ### Build
+//
+// You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
+//
+// > **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
+//
+// In this case the image "zoo" and "zoo:develop" are built.
+// The `context` and `dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+// There is no need to copy the files to remote hosts before creating the resource.
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewRemoteImage(ctx, "zoo", &docker.RemoteImageArgs{
+//				Name: pulumi.String("zoo"),
+//				Build: &docker.RemoteImageBuildArgs{
+//					Context: pulumi.String("."),
+//					Tags: pulumi.StringArray{
+//						pulumi.String("zoo:develop"),
+//					},
+//					BuildArgs: pulumi.StringMap{
+//						"foo": pulumi.String("zoo"),
+//					},
+//					Label: pulumi.StringMap{
+//						"author": pulumi.String("zoo"),
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 type RemoteImage struct {
 	pulumi.CustomResourceState
 
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrOutput `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrOutput `pulumi:"forceRemove"`
@@ -67,6 +189,7 @@ func GetRemoteImage(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RemoteImage resources.
 type remoteImageState struct {
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
@@ -87,6 +210,7 @@ type remoteImageState struct {
 }
 
 type RemoteImageState struct {
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
@@ -111,6 +235,7 @@ func (RemoteImageState) ElementType() reflect.Type {
 }
 
 type remoteImageArgs struct {
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
@@ -128,6 +253,7 @@ type remoteImageArgs struct {
 
 // The set of arguments for constructing a RemoteImage resource.
 type RemoteImageArgs struct {
+	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
@@ -230,6 +356,7 @@ func (o RemoteImageOutput) ToRemoteImageOutputWithContext(ctx context.Context) R
 	return o
 }
 
+// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 func (o RemoteImageOutput) Build() RemoteImageBuildPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) RemoteImageBuildPtrOutput { return v.Build }).(RemoteImageBuildPtrOutput)
 }
