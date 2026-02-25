@@ -76,7 +76,7 @@ func (dp dockerHybridProvider) Configure(
 	// Native provider returns empty response and error from Configure, just call it to propagate the information.
 	r, err := dp.nativeProvider.Configure(ctx, request)
 	if err != nil {
-		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
+		return nil, fmt.Errorf("docker native provider returned an unexpected error from Configure: %w", err)
 	}
 
 	contract.Assertf(!r.AcceptOutputs, "Unexpected AcceptOutputs=true from Docker native provider Configure")
