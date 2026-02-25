@@ -19,7 +19,6 @@ import (
 	"time"
 
 	"github.com/distribution/reference"
-	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
@@ -27,7 +26,6 @@ import (
 	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/cli/cli/connhelper"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/build"
 	buildtypes "github.com/docker/docker/api/types/build"
 	imgtypes "github.com/docker/docker/api/types/image"
 	regtypes "github.com/docker/docker/api/types/registry"
@@ -75,7 +73,7 @@ type Build struct {
 	Platform       string
 	Network        string
 	ExtraHosts     []string
-	BuilderVersion build.BuilderVersion
+	BuilderVersion buildtypes.BuilderVersion
 }
 
 type Config struct {
@@ -130,17 +128,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// if the dockerfile is in the context it will be something like "./Dockerfile" or "./sub/dir/Dockerfile"
 	// if the dockerfile is out of the context it will begin with "../"
-	dockerfileInContext := true
-	if strings.HasPrefix(relDockerfile, "../") {
-		dockerfileInContext = false
-	}
+	dockerfileInContext := !strings.HasPrefix(relDockerfile, "../")
 
 	if err := clibuild.ValidateContextDirectory(contextDir, initialIgnorePatterns); err != nil {
 		return "", nil, fmt.Errorf("error validating context: %w", err)
 	}
 
 	// un-ignore build files so the docker daemon can use them
-	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
+	ignorePatterns := clibuild.TrimBuildFilesFromExcludes(
 		initialIgnorePatterns,
 		relDockerfile,
 		false,
@@ -419,7 +414,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 // store.
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
-	opts build.ImageBuildOptions, urn resource.URN,
+	opts buildtypes.ImageBuildOptions, urn resource.URN,
 ) (string, error) {
 	if opts.Labels == nil {
 		opts.Labels = make(map[string]string)
@@ -435,7 +430,7 @@ func (p *dockerNativeProvider) runImageBuild(
 
 	var imageID string
 	extractImageID := func(rm json.RawMessage) (bool, string, error) {
-		var result build.Result
+		var result buildtypes.Result
 		err := json.Unmarshal(rm, &result)
 		if err != nil {
 			// Unmarshal failures here mean the message isn't what we expected, return handled = false
@@ -485,7 +480,7 @@ func (p *dockerNativeProvider) runImageBuild(
 		time.Sleep(1 * time.Second)
 	}
 	if !found {
-		return "", fmt.Errorf("Unable to find built image in local image store")
+		return "", fmt.Errorf("unable to find built image in local image store")
 	}
 
 	_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Image built successfully, local id %q", imageID))
@@ -509,7 +504,7 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 			Platform:     platform,
 		})
 		if err != nil {
-			return fmt.Errorf("Error pulling cached image %s: %v", cachedImage, err)
+			return fmt.Errorf("error pulling cached image %s: %v", cachedImage, err)
 		}
 
 		defer pullOutput.Close()
@@ -691,8 +686,8 @@ func marshalArgs(a resource.PropertyValue) map[string]*string {
 	return args
 }
 
-func marshalBuilder(builder resource.PropertyValue) (build.BuilderVersion, error) {
-	var version build.BuilderVersion
+func marshalBuilder(builder resource.PropertyValue) (buildtypes.BuilderVersion, error) {
+	var version buildtypes.BuilderVersion
 
 	if builder.IsNull() {
 		// set default
@@ -848,7 +843,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 		}
 		if jm.Error.Message == "EOF" {
 			return "", fmt.Errorf("%s\n: This error is most likely due to incorrect or mismatched registry "+
-				"credentials. Please double check you are using the correct credentials and registry name.",
+				"credentials. Please double check you are using the correct credentials and registry name",
 				jm.Error.Message)
 		}
 		return "", fmt.Errorf("%s", jm.Error.Message)

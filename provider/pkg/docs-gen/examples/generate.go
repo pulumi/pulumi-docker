@@ -8,8 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"gopkg.in/yaml.v3"
+
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 )
 
 //go:generate go run generate.go yaml .
@@ -24,7 +25,7 @@ func main() {
 
 	if !filepath.IsAbs(yamlPath) {
 		cwd, err := os.Getwd()
-		contract.AssertNoError(err)
+		contract.AssertNoErrorf(err, "")
 		yamlPath = filepath.Join(cwd, yamlPath)
 	}
 
@@ -82,7 +83,7 @@ func markdownExample(description string,
 
 func convert(language, tempDir, programFile string) (string, error) {
 	exampleDir := filepath.Join(tempDir, "example"+language)
-	cmd := exec.Command(
+	cmd := exec.Command( //nolint:gosec
 		"pulumi",
 		"convert",
 		"--language",
@@ -143,7 +144,7 @@ func processYaml(path string, mdDir string) error {
 		if err = yaml.NewEncoder(src).Encode(example); err != nil {
 			return err
 		}
-		contract.AssertNoError(src.Close())
+		contract.AssertNoErrorf(src.Close(), "")
 
 		typescript, err := convert("typescript", dir, "index.ts")
 		if err != nil {
@@ -174,7 +175,7 @@ func processYaml(path string, mdDir string) error {
 
 		exampleStrings = append(exampleStrings, markdownExample(description, typescript, python, csharp, golang, yaml, java))
 	}
-	contract.AssertNoError(err)
+	contract.AssertNoErrorf(err, "")
 	fmt.Fprintf(os.Stdout, "Writing %s\n", filepath.Join(mdDir, md))
 	f, err := os.OpenFile(filepath.Join(mdDir, md), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
@@ -182,6 +183,6 @@ func processYaml(path string, mdDir string) error {
 	}
 	defer contract.IgnoreClose(f)
 	_, err = f.Write([]byte(markdownExamples(exampleStrings)))
-	contract.AssertNoError(err)
+	contract.AssertNoErrorf(err, "")
 	return nil
 }
