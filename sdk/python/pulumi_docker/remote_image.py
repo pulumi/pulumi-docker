@@ -30,6 +30,7 @@ class RemoteImageArgs:
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a RemoteImage resource.
+
         :param pulumi.Input[_builtins.str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
@@ -151,6 +152,7 @@ class _RemoteImageState:
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering RemoteImage resources.
+
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
@@ -367,6 +369,7 @@ class RemoteImage(pulumi.CustomResource):
 
         You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
@@ -446,6 +449,7 @@ class RemoteImage(pulumi.CustomResource):
         ```
 
         You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
+
 
         :param str resource_name: The name of the resource.
         :param RemoteImageArgs args: The arguments to use to populate this resource's properties.

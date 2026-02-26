@@ -64,7 +64,7 @@ import (
 //				},
 //				ImageName: pulumi.String("username/image:tag1"),
 //				SkipPush:  pulumi.Bool(true),
-//			})
+//			}, pulumi.Version("v4.4.0"))
 //			if err != nil {
 //				return err
 //			}
@@ -93,7 +93,7 @@ import (
 //					Dockerfile: pulumi.String("Dockerfile"),
 //				},
 //				ImageName: pulumi.String("docker.io/username/push-image:tag1"),
-//			})
+//			}, pulumi.Version("v4.4.0"))
 //			if err != nil {
 //				return err
 //			}
@@ -156,7 +156,7 @@ import (
 //						return &authToken.UserName, nil
 //					}).(pulumi.StringPtrOutput),
 //				},
-//			})
+//			}, pulumi.Version("v4.1.2"))
 //			if err != nil {
 //				return err
 //			}

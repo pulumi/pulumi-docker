@@ -53,6 +53,8 @@ import * as utilities from "./utilities";
  *     },
  *     imageName: "username/image:tag1",
  *     skipPush: true,
+ * }, {
+ *     version: "v4.4.0",
  * });
  * export const imageName = demoImage.imageName;
  * ```
@@ -68,6 +70,8 @@ import * as utilities from "./utilities";
  *         dockerfile: "Dockerfile",
  *     },
  *     imageName: "docker.io/username/push-image:tag1",
+ * }, {
+ *     version: "v4.4.0",
  * });
  * export const imageName = demoPushImage.imageName;
  * export const repoDigest = demoPushImage.repoDigest;
@@ -100,6 +104,8 @@ import * as utilities from "./utilities";
  *         server: ecrRepository.repositoryUrl,
  *         username: authToken.apply(authToken => authToken.userName),
  *     },
+ * }, {
+ *     version: "v4.1.2",
  * });
  * export const imageName = myAppImage.imageName;
  * ```

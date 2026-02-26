@@ -26,6 +26,7 @@ class SecretArgs:
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Secret resource.
+
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded secret data
         :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: User-defined name of the secret
@@ -81,6 +82,7 @@ class _SecretState:
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Secret resources.
+
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded secret data
         :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: User-defined name of the secret
@@ -165,6 +167,7 @@ class Secret(pulumi.CustomResource):
         # Docker secret cannot be imported as the secret data, once set, is never exposed again.
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded secret data
@@ -202,6 +205,7 @@ class Secret(pulumi.CustomResource):
 
         # Docker secret cannot be imported as the secret data, once set, is never exposed again.
         ```
+
 
         :param str resource_name: The name of the resource.
         :param SecretArgs args: The arguments to use to populate this resource's properties.

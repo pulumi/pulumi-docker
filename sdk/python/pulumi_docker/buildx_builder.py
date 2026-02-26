@@ -37,6 +37,7 @@ class BuildxBuilderArgs:
                  use: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a BuildxBuilder resource.
+
         :param pulumi.Input[_builtins.bool] append: Append a node to builder instead of changing it
         :param pulumi.Input[_builtins.bool] bootstrap: Automatically boot the builder after creation. Defaults to `false`
         :param pulumi.Input[_builtins.str] buildkit_config: BuildKit daemon config file
@@ -269,6 +270,7 @@ class _BuildxBuilderState:
                  use: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         Input properties used for looking up and filtering BuildxBuilder resources.
+
         :param pulumi.Input[_builtins.bool] append: Append a node to builder instead of changing it
         :param pulumi.Input[_builtins.bool] bootstrap: Automatically boot the builder after creation. Defaults to `false`
         :param pulumi.Input[_builtins.str] buildkit_config: BuildKit daemon config file
@@ -506,6 +508,7 @@ class BuildxBuilder(pulumi.CustomResource):
         """
         Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] append: Append a node to builder instead of changing it
@@ -531,6 +534,7 @@ class BuildxBuilder(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+
 
         :param str resource_name: The name of the resource.
         :param BuildxBuilderArgs args: The arguments to use to populate this resource's properties.

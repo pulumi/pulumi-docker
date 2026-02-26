@@ -29,6 +29,7 @@ class RegistryImageArgs:
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a RegistryImage resource.
+
         :param pulumi.Input['RegistryImageAuthConfigArgs'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
         :param pulumi.Input['RegistryImageBuildArgs'] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -134,6 +135,7 @@ class _RegistryImageState:
                  triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering RegistryImage resources.
+
         :param pulumi.Input['RegistryImageAuthConfigArgs'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
         :param pulumi.Input['RegistryImageBuildArgs'] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -278,6 +280,7 @@ class RegistryImage(pulumi.CustomResource):
             keep_remotely=True)
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
@@ -315,6 +318,7 @@ class RegistryImage(pulumi.CustomResource):
             name=image.name,
             keep_remotely=True)
         ```
+
 
         :param str resource_name: The name of the resource.
         :param RegistryImageArgs args: The arguments to use to populate this resource's properties.
