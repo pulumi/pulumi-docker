@@ -16,24 +16,21 @@ package provider
 
 import (
 	"context"
+	// embed is used to store bridge-metadata.json in the compiled binary
+	_ "embed"
 	"fmt"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"unicode"
 
-	// embed is used to store bridge-metadata.json in the compiled binary
-	_ "embed"
-
-	"github.com/terraform-providers/terraform-provider-docker/shim"
-
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	tfbridgetokens "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/tokens"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
 )
 
 const (
@@ -42,13 +39,17 @@ const (
 
 	// dockerMod is the root module for unparented Docker resources.
 	dockerMod = "index"
+
+	windowsGOOS             = "windows"
+	windowsDockerDaemonHost = "npipe:////./pipe/docker_engine"
+	defaultDockerDaemonHost = "unix:///var/run/docker.sock"
 )
 
 func defaultDockerProviderHost(goos string) string {
-	if goos == "windows" {
-		return "npipe:////./pipe/docker_engine"
+	if goos == windowsGOOS {
+		return windowsDockerDaemonHost
 	}
-	return "unix:///var/run/docker.sock"
+	return defaultDockerDaemonHost
 }
 
 // dockerMember manufactures a type token for the docker package and the given module and type.
