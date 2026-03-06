@@ -31,16 +31,12 @@ func TestProviderHostDefaultMatchesPlatform(t *testing.T) {
 	require.NotNil(t, host)
 	require.NotNil(t, host.Default)
 	assert.Equal(t, []string{"DOCKER_HOST"}, host.Default.EnvVars)
+	assert.Equal(t, "npipe:////./pipe/docker_engine", defaultDockerProviderHost("windows"))
+	assert.Equal(t, "unix:///var/run/docker.sock", defaultDockerProviderHost("linux"))
 
 	value, err := host.Default.ComputeDefault(context.Background(), tfbridge.ComputeDefaultOptions{})
 	require.NoError(t, err)
-
-	if runtime.GOOS == "windows" {
-		assert.Equal(t, "npipe:////./pipe/docker_engine", value)
-		return
-	}
-
-	assert.Equal(t, "unix:///var/run/docker.sock", value)
+	assert.Equal(t, defaultDockerProviderHost(runtime.GOOS), value)
 }
 
 func TestDiffUpdates(t *testing.T) {

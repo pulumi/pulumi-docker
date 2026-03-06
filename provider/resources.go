@@ -44,6 +44,13 @@ const (
 	dockerMod = "index"
 )
 
+func defaultDockerProviderHost(goos string) string {
+	if goos == "windows" {
+		return "npipe:////./pipe/docker_engine"
+	}
+	return "unix:///var/run/docker.sock"
+}
+
 // dockerMember manufactures a type token for the docker package and the given module and type.
 func dockerMember(mod string, mem string) tokens.ModuleMember {
 	return tokens.ModuleMember(dockerPkg + ":" + mod + ":" + mem)
@@ -85,10 +92,7 @@ func Provider() tfbridge.ProviderInfo {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"DOCKER_HOST"},
 					ComputeDefault: func(_ context.Context, _ tfbridge.ComputeDefaultOptions) (interface{}, error) {
-						if runtime.GOOS == "windows" {
-							return "npipe:////./pipe/docker_engine", nil
-						}
-						return "unix:///var/run/docker.sock", nil
+						return defaultDockerProviderHost(runtime.GOOS), nil
 					},
 				},
 			},
