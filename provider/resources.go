@@ -15,9 +15,11 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"unicode"
 
 	// embed is used to store bridge-metadata.json in the compiled binary
@@ -40,7 +42,18 @@ const (
 
 	// dockerMod is the root module for unparented Docker resources.
 	dockerMod = "index"
+
+	windowsGOOS             = "windows"
+	windowsDockerDaemonHost = "npipe:////./pipe/docker_engine"
+	defaultDockerDaemonHost = "unix:///var/run/docker.sock"
 )
+
+func defaultDockerProviderHost(goos string) string {
+	if goos == windowsGOOS {
+		return windowsDockerDaemonHost
+	}
+	return defaultDockerDaemonHost
+}
 
 // dockerMember manufactures a type token for the docker package and the given module and type.
 func dockerMember(mod string, mem string) tokens.ModuleMember {
@@ -82,6 +95,9 @@ func Provider() tfbridge.ProviderInfo {
 			"host": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"DOCKER_HOST"},
+					ComputeDefault: func(_ context.Context, _ tfbridge.ComputeDefaultOptions) (interface{}, error) {
+						return defaultDockerProviderHost(runtime.GOOS), nil
+					},
 				},
 			},
 			"registry_auth": {
