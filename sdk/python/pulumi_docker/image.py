@@ -167,7 +167,8 @@ class Image(pulumi.CustomResource):
                 "platform": "linux/amd64",
             },
             image_name="username/image:tag1",
-            skip_push=True)
+            skip_push=True,
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_image.image_name)
         ```
         ### A Docker image build and push
@@ -180,7 +181,8 @@ class Image(pulumi.CustomResource):
                 "context": ".",
                 "dockerfile": "Dockerfile",
             },
-            image_name="docker.io/username/push-image:tag1")
+            image_name="docker.io/username/push-image:tag1",
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_push_image.image_name)
         pulumi.export("repoDigest", demo_push_image.repo_digest)
         ```
@@ -208,7 +210,8 @@ class Image(pulumi.CustomResource):
                 "password": pulumi.Output.secret(auth_token.password),
                 "server": ecr_repository.repository_url,
                 "username": auth_token.user_name,
-            })
+            },
+            opts = pulumi.ResourceOptions(version="v4.1.2"))
         pulumi.export("imageName", my_app_image.image_name)
         ```
 
@@ -271,7 +274,8 @@ class Image(pulumi.CustomResource):
                 "platform": "linux/amd64",
             },
             image_name="username/image:tag1",
-            skip_push=True)
+            skip_push=True,
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_image.image_name)
         ```
         ### A Docker image build and push
@@ -284,7 +288,8 @@ class Image(pulumi.CustomResource):
                 "context": ".",
                 "dockerfile": "Dockerfile",
             },
-            image_name="docker.io/username/push-image:tag1")
+            image_name="docker.io/username/push-image:tag1",
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_push_image.image_name)
         pulumi.export("repoDigest", demo_push_image.repo_digest)
         ```
@@ -312,7 +317,8 @@ class Image(pulumi.CustomResource):
                 "password": pulumi.Output.secret(auth_token.password),
                 "server": ecr_repository.repository_url,
                 "username": auth_token.user_name,
-            })
+            },
+            opts = pulumi.ResourceOptions(version="v4.1.2"))
         pulumi.export("imageName", my_app_image.image_name)
         ```
 
