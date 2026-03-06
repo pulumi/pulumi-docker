@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"runtime"
 	"syscall"
 	"testing"
 
@@ -11,10 +12,36 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 )
+
+func TestProviderHostDefaultMatchesPlatform(t *testing.T) {
+	oldVersion := version.Version
+	version.Version = "v4.0.0"
+	t.Cleanup(func() {
+		version.Version = oldVersion
+	})
+
+	info := Provider()
+	host := info.Config["host"]
+	require.NotNil(t, host)
+	require.NotNil(t, host.Default)
+	assert.Equal(t, []string{"DOCKER_HOST"}, host.Default.EnvVars)
+
+	value, err := host.Default.ComputeDefault(context.Background(), tfbridge.ComputeDefaultOptions{})
+	require.NoError(t, err)
+
+	if runtime.GOOS == "windows" {
+		assert.Equal(t, "npipe:////./pipe/docker_engine", value)
+		return
+	}
+
+	assert.Equal(t, "unix:///var/run/docker.sock", value)
+}
 
 func TestDiffUpdates(t *testing.T) {
 	t.Run("No diff happens on changed password", func(t *testing.T) {

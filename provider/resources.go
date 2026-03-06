@@ -15,9 +15,11 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"unicode"
 
 	// embed is used to store bridge-metadata.json in the compiled binary
@@ -82,6 +84,12 @@ func Provider() tfbridge.ProviderInfo {
 			"host": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"DOCKER_HOST"},
+					ComputeDefault: func(_ context.Context, _ tfbridge.ComputeDefaultOptions) (interface{}, error) {
+						if runtime.GOOS == "windows" {
+							return "npipe:////./pipe/docker_engine", nil
+						}
+						return "unix:///var/run/docker.sock", nil
+					},
 				},
 			},
 			"registry_auth": {
