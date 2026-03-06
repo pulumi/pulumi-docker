@@ -24,13 +24,15 @@ import (
 	"runtime"
 	"unicode"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
+
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	tfbridgetokens "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/tokens"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/terraform-providers/terraform-provider-docker/shim"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
 
 const (
@@ -423,5 +425,5 @@ var fixupCertPathExpansion = tfbridge.DocsEdit{
 	},
 }
 
-//go:embed cmd/pulumi-resource-docker/bridge-metadata.json
+// goembed cmd/pulumi-resource-docker/bridge-metadata.json
 var metadata []byte

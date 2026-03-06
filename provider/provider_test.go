@@ -9,13 +9,15 @@ import (
 	"testing"
 
 	"github.com/distribution/reference"
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
 
 func TestProviderHostDefaultMatchesPlatform(t *testing.T) {
