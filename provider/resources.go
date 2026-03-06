@@ -16,13 +16,14 @@ package provider
 
 import (
 	"context"
-	// embed is used to store bridge-metadata.json in the compiled binary
-	_ "embed"
 	"fmt"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"unicode"
+
+	// embed is used to store bridge-metadata.json in the compiled binary
+	_ "embed"
 
 	"github.com/terraform-providers/terraform-provider-docker/shim"
 
@@ -425,5 +426,5 @@ var fixupCertPathExpansion = tfbridge.DocsEdit{
 	},
 }
 
-// goembed cmd/pulumi-resource-docker/bridge-metadata.json
+//go:embed cmd/pulumi-resource-docker/bridge-metadata.json
 var metadata []byte
