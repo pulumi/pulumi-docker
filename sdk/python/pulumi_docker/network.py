@@ -35,6 +35,7 @@ class NetworkArgs:
                  options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Network resource.
+
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[_builtins.bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[_builtins.str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
@@ -240,6 +241,7 @@ class _NetworkState:
                  scope: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Network resources.
+
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[_builtins.bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[_builtins.str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
@@ -510,6 +512,7 @@ class Network(pulumi.CustomResource):
         $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
@@ -579,6 +582,7 @@ class Network(pulumi.CustomResource):
         ```sh
         $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
         ```
+
 
         :param str resource_name: The name of the resource.
         :param NetworkArgs args: The arguments to use to populate this resource's properties.

@@ -8290,6 +8290,7 @@ class CacheFromArgs:
                  images: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         Contains a list of images to reference when building using a cache
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] images: Specifies cached images
         """
         if images is not None:
@@ -8363,6 +8364,7 @@ class DockerBuildArgs:
                  target: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The Docker build context
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] add_hosts: Custom host-to-IP mappings to use while building (format: "host:ip")
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
         :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder.
@@ -8592,6 +8594,7 @@ class RegistryArgs:
                  username: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Describes a Docker container registry
+
         :param pulumi.Input[_builtins.str] password: The password to authenticate to the registry. Does not cause image rebuild when changed.
         :param pulumi.Input[_builtins.str] server: The URL of the Docker registry server
         :param pulumi.Input[_builtins.str] username: The username to authenticate to the registry. Does not cause image rebuild when changed.

@@ -90,6 +90,7 @@ class ContainerArgs:
                  working_dir: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Container resource.
+
         :param pulumi.Input[_builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
@@ -1173,6 +1174,7 @@ class _ContainerState:
                  working_dir: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Container resources.
+
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[_builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
@@ -2375,6 +2377,7 @@ class Container(pulumi.CustomResource):
         $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
@@ -2510,6 +2513,7 @@ class Container(pulumi.CustomResource):
         ```sh
         $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
         ```
+
 
         :param str resource_name: The name of the resource.
         :param ContainerArgs args: The arguments to use to populate this resource's properties.
