@@ -32,6 +32,7 @@ class ServiceArgs:
                  update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
         """
         The set of arguments for constructing a Service resource.
+
         :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: User modifiable task configuration
         :param pulumi.Input['ServiceAuthArgs'] auth: Configuration for the authentication for pulling the images of the service
         :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
@@ -183,6 +184,7 @@ class _ServiceState:
                  update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
         """
         Input properties used for looking up and filtering Service resources.
+
         :param pulumi.Input['ServiceAuthArgs'] auth: Configuration for the authentication for pulling the images of the service
         :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: Properties that can be configured to access and load balance a service
@@ -638,6 +640,7 @@ class Service(pulumi.CustomResource):
         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union['ServiceAuthArgs', 'ServiceAuthArgsDict']] auth: Configuration for the authentication for pulling the images of the service
@@ -956,6 +959,7 @@ class Service(pulumi.CustomResource):
         ```sh
         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
         ```
+
 
         :param str resource_name: The name of the resource.
         :param ServiceArgs args: The arguments to use to populate this resource's properties.

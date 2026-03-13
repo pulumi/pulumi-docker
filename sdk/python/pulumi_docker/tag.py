@@ -24,6 +24,7 @@ class TagArgs:
                  tag_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Tag resource.
+
         :param pulumi.Input[_builtins.str] source_image: Name of the source image.
         :param pulumi.Input[_builtins.str] target_image: Name of the target image.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tag_triggers: List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
@@ -79,6 +80,7 @@ class _TagState:
                  target_image: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Tag resources.
+
         :param pulumi.Input[_builtins.str] source_image: Name of the source image.
         :param pulumi.Input[_builtins.str] source_image_id: ImageID of the source image in the format of `sha256:<<ID>>`
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tag_triggers: List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
@@ -155,6 +157,7 @@ class Tag(pulumi.CustomResource):
         """
         Creates a docker tag. It has the exact same functionality as the `docker tag` command. Deleting the resource will neither delete the source nor target images. The source image must exist on the machine running the docker daemon.
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] source_image: Name of the source image.
@@ -169,6 +172,7 @@ class Tag(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Creates a docker tag. It has the exact same functionality as the `docker tag` command. Deleting the resource will neither delete the source nor target images. The source image must exist on the machine running the docker daemon.
+
 
         :param str resource_name: The name of the resource.
         :param TagArgs args: The arguments to use to populate this resource's properties.

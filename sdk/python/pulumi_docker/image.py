@@ -28,6 +28,7 @@ class ImageArgs:
                  skip_push: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a Image resource.
+
         :param pulumi.Input[_builtins.str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
                This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
         :param pulumi.Input['DockerBuildArgs'] build: The Docker build context
@@ -215,6 +216,7 @@ class Image(pulumi.CustomResource):
         pulumi.export("imageName", my_app_image.image_name)
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union['DockerBuildArgs', 'DockerBuildArgsDict']] build: The Docker build context
@@ -321,6 +323,7 @@ class Image(pulumi.CustomResource):
             opts = pulumi.ResourceOptions(version="v4.1.2"))
         pulumi.export("imageName", my_app_image.image_name)
         ```
+
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.

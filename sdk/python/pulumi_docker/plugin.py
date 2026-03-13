@@ -32,6 +32,7 @@ class PluginArgs:
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Plugin resource.
+
         :param pulumi.Input[_builtins.str] alias: Docker Plugin alias
         :param pulumi.Input[_builtins.int] enable_timeout: HTTP client timeout to enable the plugin
         :param pulumi.Input[_builtins.bool] enabled: If `true` the plugin is enabled. Defaults to `true`
@@ -185,6 +186,7 @@ class _PluginState:
                  plugin_reference: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Plugin resources.
+
         :param pulumi.Input[_builtins.str] alias: Docker Plugin alias
         :param pulumi.Input[_builtins.int] enable_timeout: HTTP client timeout to enable the plugin
         :param pulumi.Input[_builtins.bool] enabled: If `true` the plugin is enabled. Defaults to `true`
@@ -365,6 +367,7 @@ class Plugin(pulumi.CustomResource):
         terraform import docker_plugin.sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
         ```
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] alias: Docker Plugin alias
@@ -393,6 +396,7 @@ class Plugin(pulumi.CustomResource):
         #!/bin/bash
         terraform import docker_plugin.sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
         ```
+
 
         :param str resource_name: The name of the resource.
         :param PluginArgs args: The arguments to use to populate this resource's properties.
