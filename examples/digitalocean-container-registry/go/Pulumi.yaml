@@ -1,3 +1,0 @@
-name: cbp-do-go
-runtime: go
-description: An example of building/publishing a Docker container image to DigitalOcean Container Registry
