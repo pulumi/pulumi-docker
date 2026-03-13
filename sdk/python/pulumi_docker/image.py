@@ -28,6 +28,7 @@ class ImageArgs:
                  skip_push: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a Image resource.
+
         :param pulumi.Input[_builtins.str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
                This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
         :param pulumi.Input['DockerBuildArgs'] build: The Docker build context
@@ -167,7 +168,8 @@ class Image(pulumi.CustomResource):
                 "platform": "linux/amd64",
             },
             image_name="username/image:tag1",
-            skip_push=True)
+            skip_push=True,
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_image.image_name)
         ```
         ### A Docker image build and push
@@ -180,7 +182,8 @@ class Image(pulumi.CustomResource):
                 "context": ".",
                 "dockerfile": "Dockerfile",
             },
-            image_name="docker.io/username/push-image:tag1")
+            image_name="docker.io/username/push-image:tag1",
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_push_image.image_name)
         pulumi.export("repoDigest", demo_push_image.repo_digest)
         ```
@@ -208,9 +211,11 @@ class Image(pulumi.CustomResource):
                 "password": pulumi.Output.secret(auth_token.password),
                 "server": ecr_repository.repository_url,
                 "username": auth_token.user_name,
-            })
+            },
+            opts = pulumi.ResourceOptions(version="v4.1.2"))
         pulumi.export("imageName", my_app_image.image_name)
         ```
+
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -271,7 +276,8 @@ class Image(pulumi.CustomResource):
                 "platform": "linux/amd64",
             },
             image_name="username/image:tag1",
-            skip_push=True)
+            skip_push=True,
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_image.image_name)
         ```
         ### A Docker image build and push
@@ -284,7 +290,8 @@ class Image(pulumi.CustomResource):
                 "context": ".",
                 "dockerfile": "Dockerfile",
             },
-            image_name="docker.io/username/push-image:tag1")
+            image_name="docker.io/username/push-image:tag1",
+            opts = pulumi.ResourceOptions(version="v4.4.0"))
         pulumi.export("imageName", demo_push_image.image_name)
         pulumi.export("repoDigest", demo_push_image.repo_digest)
         ```
@@ -312,9 +319,11 @@ class Image(pulumi.CustomResource):
                 "password": pulumi.Output.secret(auth_token.password),
                 "server": ecr_repository.repository_url,
                 "username": auth_token.user_name,
-            })
+            },
+            opts = pulumi.ResourceOptions(version="v4.1.2"))
         pulumi.export("imageName", my_app_image.image_name)
         ```
+
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.
