@@ -153,6 +153,36 @@ func TestDockerContainerRegistryNode(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+// TestRegistryImageDockerHub tests that getRegistryImage works with Docker Hub
+// auth configured. This is a regression test for #1648, where Go 1.25's stricter
+// crypto/tls defaults caused Docker Hub to reject requests with 403 Forbidden.
+func TestRegistryImageDockerHub(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	if password == "" {
+		t.Skip("Skipping test due to missing DOCKER_HUB_PASSWORD environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-registry-image-dockerhub/ts"),
+			Config: map[string]string{
+				"test-registry-image-dockerhub-ts:dockerUsername": username,
+			},
+			Secrets: map[string]string{
+				"test-registry-image-dockerhub-ts:dockerPassword": password,
+			},
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				digest, ok := stack.Outputs["digest"].(string)
+				assert.True(t, ok, "expected digest output")
+				assert.NotEmpty(t, digest)
+				assert.Contains(t, digest, "sha256:")
+			},
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func TestUnknownInputsNode(t *testing.T) {
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
