@@ -1,0 +1,27 @@
+name: test-registry-image-dockerhub
+runtime: yaml
+description: Test getRegistryImage with Docker Hub auth (pulumi/pulumi-docker#1648)
+config:
+  dockerUsername:
+    type: string
+  dockerPassword:
+    type: string
+    secret: true
+resources:
+  docker-hub:
+    type: pulumi:providers:docker
+    properties:
+      registryAuth:
+        - address: registry-1.docker.io
+          username: ${dockerUsername}
+          password: ${dockerPassword}
+variables:
+  registryImage:
+    fn::invoke:
+      function: docker:getRegistryImage
+      arguments:
+        name: "postgres:18"
+      options:
+        provider: ${docker-hub}
+outputs:
+  digest: ${registryImage.sha256Digest}
