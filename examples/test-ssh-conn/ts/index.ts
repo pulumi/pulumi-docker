@@ -5,7 +5,7 @@ import * as digitalocean from "@pulumi/digitalocean";
 const remoteHost = new digitalocean.Droplet("docker-host-test", {
     image: "docker-20-04",
     region: "fra1",
-    size: "s-2vcpu-4gb",
+    size: "c-8",
     sshKeys: ["cb:dd:70:4d:49:2f:86:eb:fd:bb:e4:8b:04:fc:b0:cb"],
 })
 
