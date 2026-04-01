@@ -1,3 +1,0 @@
-name: test-registry-image-dockerhub-ts
-runtime: nodejs
-description: Test getRegistryImage with Docker Hub auth (pulumi/pulumi-docker#1648)

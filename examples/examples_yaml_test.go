@@ -30,6 +30,38 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
+// TestRegistryImageDockerHub tests that getRegistryImage works with Docker Hub
+// auth configured. This is a regression test for #1648, where Go 1.25's stricter
+// crypto/tls defaults caused Docker Hub to reject requests with 403 Forbidden.
+func TestRegistryImageDockerHub(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	if password == "" {
+		t.Skip("Skipping test due to missing DOCKER_HUB_PASSWORD environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir: path.Join(cwd, "test-registry-image-dockerhub"),
+		Config: map[string]string{
+			"test-registry-image-dockerhub:dockerUsername": username,
+		},
+		Secrets: map[string]string{
+			"test-registry-image-dockerhub:dockerPassword": password,
+		},
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			digest, ok := stack.Outputs["digest"].(string)
+			assert.True(t, ok, "expected digest output")
+			assert.NotEmpty(t, digest)
+			assert.Contains(t, digest, "sha256:")
+		},
+		Quick:       true,
+		SkipRefresh: true,
+	})
+}
+
 func TestUnknownInputsYAML(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
