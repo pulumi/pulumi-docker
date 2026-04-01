@@ -1,3 +1,0 @@
-name: test-ssh-conn
-runtime: nodejs
-description: A minimal TypeScript Pulumi program
