@@ -22,7 +22,7 @@ import * as utilities from "./utilities";
  *
  * const foo = new docker.Secret("foo", {
  *     name: "foo",
- *     data: std.index.base64encode({
+ *     data: std.base64encode({
  *         input: "{\"foo\": \"s3cr3t\"}",
  *     }).result,
  * });

@@ -83,7 +83,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			foo, err := docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
+//			foo, err := docker.GetRemoteImage(ctx, &docker.LookupRemoteImageArgs{
 //				Name: "repo.mycompany.com:8080/foo-service:v1",
 //			}, nil)
 //			if err != nil {

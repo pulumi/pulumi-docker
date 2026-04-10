@@ -65,7 +65,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			ubuntu, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
+//			ubuntu, err := docker.GetRegistryImage(ctx, &docker.LookupRegistryImageArgs{
 //				Name: "ubuntu:precise",
 //			}, nil)
 //			if err != nil {

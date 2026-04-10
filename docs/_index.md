@@ -98,13 +98,13 @@ using Docker = Pulumi.Docker;
 return await Deployment.RunAsync(() =>
 {
     // Pulls the image
-    var ubuntu = new Docker.RemoteImage("ubuntu", new()
+    var ubuntu = new Docker.Index.RemoteImage("ubuntu", new()
     {
         Name = "ubuntu:latest",
     });
 
     // Create a container
-    var foo = new Docker.Container("foo", new()
+    var foo = new Docker.Index.Container("foo", new()
     {
         Image = ubuntu.ImageId,
         Name = "foo",

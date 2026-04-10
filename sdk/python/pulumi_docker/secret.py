@@ -156,7 +156,7 @@ class Secret(pulumi.CustomResource):
 
         foo = docker.Secret("foo",
             name="foo",
-            data=std.index.base64encode(input="{\\"foo\\": \\"s3cr3t\\"}")["result"])
+            data=std.base64encode(input="{\\"foo\\": \\"s3cr3t\\"}")["result"])
         ```
 
         ## Import
@@ -195,7 +195,7 @@ class Secret(pulumi.CustomResource):
 
         foo = docker.Secret("foo",
             name="foo",
-            data=std.index.base64encode(input="{\\"foo\\": \\"s3cr3t\\"}")["result"])
+            data=std.base64encode(input="{\\"foo\\": \\"s3cr3t\\"}")["result"])
         ```
 
         ## Import

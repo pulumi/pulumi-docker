@@ -26,7 +26,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var foo = new Docker.Secret("foo", new()
+    ///     var foo = new Docker.Index.Secret("foo", new()
     ///     {
     ///         Name = "foo",
     ///         Data = Std.Index.Base64encode.Invoke(new()
