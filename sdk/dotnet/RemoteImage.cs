@@ -29,7 +29,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var ubuntu = new Docker.RemoteImage("ubuntu", new()
+    ///     var ubuntu = new Docker.Index.RemoteImage("ubuntu", new()
     ///     {
     ///         Name = "ubuntu:precise",
     ///     });
@@ -50,12 +50,12 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var ubuntu = Docker.GetRegistryImage.Invoke(new()
+    ///     var ubuntu = Docker.Index.GetRegistryImage.Invoke(new()
     ///     {
     ///         Name = "ubuntu:precise",
     ///     });
     /// 
-    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntu", new()
+    ///     var ubuntuRemoteImage = new Docker.Index.RemoteImage("ubuntu", new()
     ///     {
     ///         Name = ubuntu.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
     ///         PullTriggers = new[]
@@ -85,7 +85,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var zoo = new Docker.RemoteImage("zoo", new()
+    ///     var zoo = new Docker.Index.RemoteImage("zoo", new()
     ///     {
     ///         Name = "zoo",
     ///         Build = new Docker.Inputs.RemoteImageBuildArgs

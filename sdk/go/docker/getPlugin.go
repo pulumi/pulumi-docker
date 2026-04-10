@@ -28,14 +28,14 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			// ## With alias
-//			_, err := docker.LookupPlugin(ctx, &docker.LookupPluginArgs{
+//			_, err := docker.GetPlugin(ctx, &docker.LookupPluginArgs{
 //				Alias: pulumi.StringRef("sample-volume-plugin:latest"),
 //			}, nil)
 //			if err != nil {
 //				return err
 //			}
 //			// ## With ID
-//			_, err = docker.LookupPlugin(ctx, &docker.LookupPluginArgs{
+//			_, err = docker.GetPlugin(ctx, &docker.LookupPluginArgs{
 //				Id: pulumi.StringRef("e9a9db917b3bfd6706b5d3a66d4bceb9f"),
 //			}, nil)
 //			if err != nil {

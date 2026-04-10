@@ -33,7 +33,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var foo = new Docker.Service("foo", new()
+    ///     var foo = new Docker.Index.Service("foo", new()
     ///     {
     ///         Name = "foo-service",
     ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
@@ -73,12 +73,12 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var foo = Docker.GetRemoteImage.Invoke(new()
+    ///     var foo = Docker.Index.GetRemoteImage.Invoke(new()
     ///     {
     ///         Name = "repo.mycompany.com:8080/foo-service:v1",
     ///     });
     /// 
-    ///     var fooService = new Docker.Service("foo", new()
+    ///     var fooService = new Docker.Index.Service("foo", new()
     ///     {
     ///         Name = "foo-service",
     ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
@@ -116,35 +116,35 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var testVolume = new Docker.Volume("test_volume", new()
+    ///     var testVolume = new Docker.Index.Volume("test_volume", new()
     ///     {
     ///         Name = "tftest-volume",
     ///     });
     /// 
-    ///     var testVolume2 = new Docker.Volume("test_volume_2", new()
+    ///     var testVolume2 = new Docker.Index.Volume("test_volume_2", new()
     ///     {
     ///         Name = "tftest-volume2",
     ///     });
     /// 
-    ///     var serviceConfig = new Docker.ServiceConfig("service_config", new()
+    ///     var serviceConfig = new Docker.Index.ServiceConfig("service_config", new()
     ///     {
     ///         Name = "tftest-full-myconfig",
     ///         Data = "ewogICJwcmVmaXgiOiAiMTIzIgp9",
     ///     });
     /// 
-    ///     var serviceSecret = new Docker.Secret("service_secret", new()
+    ///     var serviceSecret = new Docker.Index.Secret("service_secret", new()
     ///     {
     ///         Name = "tftest-mysecret",
     ///         Data = "ewogICJrZXkiOiAiUVdFUlRZIgp9",
     ///     });
     /// 
-    ///     var testNetwork = new Docker.Network("test_network", new()
+    ///     var testNetwork = new Docker.Index.Network("test_network", new()
     ///     {
     ///         Name = "tftest-network",
     ///         Driver = "overlay",
     ///     });
     /// 
-    ///     var foo = new Docker.Service("foo", new()
+    ///     var foo = new Docker.Index.Service("foo", new()
     ///     {
     ///         Name = "tftest-service-basic",
     ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs
@@ -426,7 +426,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var foo = new Docker.Service("foo", new()
+    ///     var foo = new Docker.Index.Service("foo", new()
     ///     {
     ///         Name = "foo",
     ///         TaskSpec = new Docker.Inputs.ServiceTaskSpecArgs

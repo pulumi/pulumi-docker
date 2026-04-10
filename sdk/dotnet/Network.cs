@@ -23,7 +23,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var privateNetwork = new Docker.Network("private_network", new()
+    ///     var privateNetwork = new Docker.Index.Network("private_network", new()
     ///     {
     ///         Name = "my_network",
     ///     });
@@ -60,7 +60,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var foo = new Docker.Network("foo", new()
+    ///     var foo = new Docker.Index.Network("foo", new()
     ///     {
     ///         Name = "foo",
     ///     });
