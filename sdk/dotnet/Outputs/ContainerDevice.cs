@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Outputs
     public sealed class ContainerDevice
     {
         /// <summary>
-        /// The path in the container where the device will be bound.
+        /// The path in the container where the device will be bound. If not set, it defaults to the value of `HostPath`.
         /// </summary>
         public readonly string? ContainerPath;
         /// <summary>

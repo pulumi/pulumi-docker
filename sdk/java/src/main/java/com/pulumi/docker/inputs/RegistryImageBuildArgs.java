@@ -99,14 +99,14 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
     }
 
     /**
-     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      * 
      */
     @Import(name="builder")
     private @Nullable Output<String> builder;
 
     /**
-     * @return Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * @return The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      * 
      */
     public Optional<Output<String>> builder_() {
@@ -594,6 +594,21 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
     }
 
     /**
+     * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     * 
+     */
+    @Import(name="useLegacyBuilder")
+    private @Nullable Output<Boolean> useLegacyBuilder;
+
+    /**
+     * @return Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     * 
+     */
+    public Optional<Output<Boolean>> useLegacyBuilder() {
+        return Optional.ofNullable(this.useLegacyBuilder);
+    }
+
+    /**
      * Version of the underlying builder to use
      * 
      */
@@ -649,6 +664,7 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
         this.tags = $.tags;
         this.target = $.target;
         this.ulimits = $.ulimits;
+        this.useLegacyBuilder = $.useLegacyBuilder;
         this.version = $.version;
     }
 
@@ -796,7 +812,7 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
         }
 
         /**
-         * @param builder Set the name of the buildx builder to use. If not set, the legacy builder is used.
+         * @param builder The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
          * 
          * @return builder
          * 
@@ -807,7 +823,7 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
         }
 
         /**
-         * @param builder Set the name of the buildx builder to use. If not set, the legacy builder is used.
+         * @param builder The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
          * 
          * @return builder
          * 
@@ -1556,6 +1572,27 @@ public final class RegistryImageBuildArgs extends com.pulumi.resources.ResourceA
          */
         public Builder ulimits(RegistryImageBuildUlimitArgs... ulimits) {
             return ulimits(List.of(ulimits));
+        }
+
+        /**
+         * @param useLegacyBuilder Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder useLegacyBuilder(@Nullable Output<Boolean> useLegacyBuilder) {
+            $.useLegacyBuilder = useLegacyBuilder;
+            return this;
+        }
+
+        /**
+         * @param useLegacyBuilder Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder useLegacyBuilder(Boolean useLegacyBuilder) {
+            return useLegacyBuilder(Output.of(useLegacyBuilder));
         }
 
         /**

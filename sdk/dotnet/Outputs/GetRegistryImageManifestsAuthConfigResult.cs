@@ -20,19 +20,19 @@ namespace Pulumi.Docker.Outputs
         /// <summary>
         /// The password for the Docker registry.
         /// </summary>
-        public readonly string Password;
+        public readonly string? Password;
         /// <summary>
         /// The username for the Docker registry.
         /// </summary>
-        public readonly string Username;
+        public readonly string? Username;
 
         [OutputConstructor]
         private GetRegistryImageManifestsAuthConfigResult(
             string address,
 
-            string password,
+            string? password,
 
-            string username)
+            string? username)
         {
             Address = address;
             Password = password;

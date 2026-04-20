@@ -37,10 +37,16 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// The name/id of the network.
+        /// The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
         /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
+        [Input("id")]
+        public Input<string>? Id { get; set; }
+
+        /// <summary>
+        /// Deprecated attribute. The name/id of the docker network. Conflicts with `Id` attribute.
+        /// </summary>
+        [Input("name")]
+        public Input<string>? Name { get; set; }
 
         public ServiceTaskSpecNetworksAdvancedGetArgs()
         {

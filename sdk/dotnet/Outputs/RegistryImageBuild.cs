@@ -34,7 +34,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? BuildLogFile;
         /// <summary>
-        /// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        /// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
         /// </summary>
         public readonly string? Builder;
         /// <summary>
@@ -166,6 +166,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<Outputs.RegistryImageBuildUlimit> Ulimits;
         /// <summary>
+        /// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+        /// </summary>
+        public readonly bool? UseLegacyBuilder;
+        /// <summary>
         /// Version of the underlying builder to use
         /// </summary>
         public readonly string? Version;
@@ -248,6 +252,8 @@ namespace Pulumi.Docker.Outputs
 
             ImmutableArray<Outputs.RegistryImageBuildUlimit> ulimits,
 
+            bool? useLegacyBuilder,
+
             string? version)
         {
             AdditionalContexts = additionalContexts;
@@ -288,6 +294,7 @@ namespace Pulumi.Docker.Outputs
             Tags = tags;
             Target = target;
             Ulimits = ulimits;
+            UseLegacyBuilder = useLegacyBuilder;
             Version = version;
         }
     }

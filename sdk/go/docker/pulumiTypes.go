@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -1676,7 +1676,7 @@ func (o ContainerCapabilitiesPtrOutput) Drops() pulumi.StringArrayOutput {
 }
 
 type ContainerDevice struct {
-	// The path in the container where the device will be bound.
+	// The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
 	ContainerPath *string `pulumi:"containerPath"`
 	// The path on the host where the device is located.
 	HostPath string `pulumi:"hostPath"`
@@ -1696,7 +1696,7 @@ type ContainerDeviceInput interface {
 }
 
 type ContainerDeviceArgs struct {
-	// The path in the container where the device will be bound.
+	// The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
 	ContainerPath pulumi.StringPtrInput `pulumi:"containerPath"`
 	// The path on the host where the device is located.
 	HostPath pulumi.StringInput `pulumi:"hostPath"`
@@ -1755,7 +1755,7 @@ func (o ContainerDeviceOutput) ToContainerDeviceOutputWithContext(ctx context.Co
 	return o
 }
 
-// The path in the container where the device will be bound.
+// The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
 func (o ContainerDeviceOutput) ContainerPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerDevice) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
 }
@@ -1790,6 +1790,563 @@ func (o ContainerDeviceArrayOutput) Index(i pulumi.IntInput) ContainerDeviceOutp
 	}).(ContainerDeviceOutput)
 }
 
+type ContainerDeviceReadBp struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path string `pulumi:"path"`
+	// The read rate limit in bytes per second.
+	Rate int `pulumi:"rate"`
+}
+
+// ContainerDeviceReadBpInput is an input type that accepts ContainerDeviceReadBpArgs and ContainerDeviceReadBpOutput values.
+// You can construct a concrete instance of `ContainerDeviceReadBpInput` via:
+//
+//	ContainerDeviceReadBpArgs{...}
+type ContainerDeviceReadBpInput interface {
+	pulumi.Input
+
+	ToContainerDeviceReadBpOutput() ContainerDeviceReadBpOutput
+	ToContainerDeviceReadBpOutputWithContext(context.Context) ContainerDeviceReadBpOutput
+}
+
+type ContainerDeviceReadBpArgs struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path pulumi.StringInput `pulumi:"path"`
+	// The read rate limit in bytes per second.
+	Rate pulumi.IntInput `pulumi:"rate"`
+}
+
+func (ContainerDeviceReadBpArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceReadBp)(nil)).Elem()
+}
+
+func (i ContainerDeviceReadBpArgs) ToContainerDeviceReadBpOutput() ContainerDeviceReadBpOutput {
+	return i.ToContainerDeviceReadBpOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceReadBpArgs) ToContainerDeviceReadBpOutputWithContext(ctx context.Context) ContainerDeviceReadBpOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceReadBpOutput)
+}
+
+// ContainerDeviceReadBpArrayInput is an input type that accepts ContainerDeviceReadBpArray and ContainerDeviceReadBpArrayOutput values.
+// You can construct a concrete instance of `ContainerDeviceReadBpArrayInput` via:
+//
+//	ContainerDeviceReadBpArray{ ContainerDeviceReadBpArgs{...} }
+type ContainerDeviceReadBpArrayInput interface {
+	pulumi.Input
+
+	ToContainerDeviceReadBpArrayOutput() ContainerDeviceReadBpArrayOutput
+	ToContainerDeviceReadBpArrayOutputWithContext(context.Context) ContainerDeviceReadBpArrayOutput
+}
+
+type ContainerDeviceReadBpArray []ContainerDeviceReadBpInput
+
+func (ContainerDeviceReadBpArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceReadBp)(nil)).Elem()
+}
+
+func (i ContainerDeviceReadBpArray) ToContainerDeviceReadBpArrayOutput() ContainerDeviceReadBpArrayOutput {
+	return i.ToContainerDeviceReadBpArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceReadBpArray) ToContainerDeviceReadBpArrayOutputWithContext(ctx context.Context) ContainerDeviceReadBpArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceReadBpArrayOutput)
+}
+
+type ContainerDeviceReadBpOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceReadBpOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceReadBp)(nil)).Elem()
+}
+
+func (o ContainerDeviceReadBpOutput) ToContainerDeviceReadBpOutput() ContainerDeviceReadBpOutput {
+	return o
+}
+
+func (o ContainerDeviceReadBpOutput) ToContainerDeviceReadBpOutputWithContext(ctx context.Context) ContainerDeviceReadBpOutput {
+	return o
+}
+
+// The device path on the host, e.g. `/dev/sda`.
+func (o ContainerDeviceReadBpOutput) Path() pulumi.StringOutput {
+	return o.ApplyT(func(v ContainerDeviceReadBp) string { return v.Path }).(pulumi.StringOutput)
+}
+
+// The read rate limit in bytes per second.
+func (o ContainerDeviceReadBpOutput) Rate() pulumi.IntOutput {
+	return o.ApplyT(func(v ContainerDeviceReadBp) int { return v.Rate }).(pulumi.IntOutput)
+}
+
+type ContainerDeviceReadBpArrayOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceReadBpArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceReadBp)(nil)).Elem()
+}
+
+func (o ContainerDeviceReadBpArrayOutput) ToContainerDeviceReadBpArrayOutput() ContainerDeviceReadBpArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceReadBpArrayOutput) ToContainerDeviceReadBpArrayOutputWithContext(ctx context.Context) ContainerDeviceReadBpArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceReadBpArrayOutput) Index(i pulumi.IntInput) ContainerDeviceReadBpOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerDeviceReadBp {
+		return vs[0].([]ContainerDeviceReadBp)[vs[1].(int)]
+	}).(ContainerDeviceReadBpOutput)
+}
+
+type ContainerDeviceReadIop struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path string `pulumi:"path"`
+	// The read IOPS limit.
+	Rate int `pulumi:"rate"`
+}
+
+// ContainerDeviceReadIopInput is an input type that accepts ContainerDeviceReadIopArgs and ContainerDeviceReadIopOutput values.
+// You can construct a concrete instance of `ContainerDeviceReadIopInput` via:
+//
+//	ContainerDeviceReadIopArgs{...}
+type ContainerDeviceReadIopInput interface {
+	pulumi.Input
+
+	ToContainerDeviceReadIopOutput() ContainerDeviceReadIopOutput
+	ToContainerDeviceReadIopOutputWithContext(context.Context) ContainerDeviceReadIopOutput
+}
+
+type ContainerDeviceReadIopArgs struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path pulumi.StringInput `pulumi:"path"`
+	// The read IOPS limit.
+	Rate pulumi.IntInput `pulumi:"rate"`
+}
+
+func (ContainerDeviceReadIopArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceReadIop)(nil)).Elem()
+}
+
+func (i ContainerDeviceReadIopArgs) ToContainerDeviceReadIopOutput() ContainerDeviceReadIopOutput {
+	return i.ToContainerDeviceReadIopOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceReadIopArgs) ToContainerDeviceReadIopOutputWithContext(ctx context.Context) ContainerDeviceReadIopOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceReadIopOutput)
+}
+
+// ContainerDeviceReadIopArrayInput is an input type that accepts ContainerDeviceReadIopArray and ContainerDeviceReadIopArrayOutput values.
+// You can construct a concrete instance of `ContainerDeviceReadIopArrayInput` via:
+//
+//	ContainerDeviceReadIopArray{ ContainerDeviceReadIopArgs{...} }
+type ContainerDeviceReadIopArrayInput interface {
+	pulumi.Input
+
+	ToContainerDeviceReadIopArrayOutput() ContainerDeviceReadIopArrayOutput
+	ToContainerDeviceReadIopArrayOutputWithContext(context.Context) ContainerDeviceReadIopArrayOutput
+}
+
+type ContainerDeviceReadIopArray []ContainerDeviceReadIopInput
+
+func (ContainerDeviceReadIopArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceReadIop)(nil)).Elem()
+}
+
+func (i ContainerDeviceReadIopArray) ToContainerDeviceReadIopArrayOutput() ContainerDeviceReadIopArrayOutput {
+	return i.ToContainerDeviceReadIopArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceReadIopArray) ToContainerDeviceReadIopArrayOutputWithContext(ctx context.Context) ContainerDeviceReadIopArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceReadIopArrayOutput)
+}
+
+type ContainerDeviceReadIopOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceReadIopOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceReadIop)(nil)).Elem()
+}
+
+func (o ContainerDeviceReadIopOutput) ToContainerDeviceReadIopOutput() ContainerDeviceReadIopOutput {
+	return o
+}
+
+func (o ContainerDeviceReadIopOutput) ToContainerDeviceReadIopOutputWithContext(ctx context.Context) ContainerDeviceReadIopOutput {
+	return o
+}
+
+// The device path on the host, e.g. `/dev/sda`.
+func (o ContainerDeviceReadIopOutput) Path() pulumi.StringOutput {
+	return o.ApplyT(func(v ContainerDeviceReadIop) string { return v.Path }).(pulumi.StringOutput)
+}
+
+// The read IOPS limit.
+func (o ContainerDeviceReadIopOutput) Rate() pulumi.IntOutput {
+	return o.ApplyT(func(v ContainerDeviceReadIop) int { return v.Rate }).(pulumi.IntOutput)
+}
+
+type ContainerDeviceReadIopArrayOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceReadIopArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceReadIop)(nil)).Elem()
+}
+
+func (o ContainerDeviceReadIopArrayOutput) ToContainerDeviceReadIopArrayOutput() ContainerDeviceReadIopArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceReadIopArrayOutput) ToContainerDeviceReadIopArrayOutputWithContext(ctx context.Context) ContainerDeviceReadIopArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceReadIopArrayOutput) Index(i pulumi.IntInput) ContainerDeviceReadIopOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerDeviceReadIop {
+		return vs[0].([]ContainerDeviceReadIop)[vs[1].(int)]
+	}).(ContainerDeviceReadIopOutput)
+}
+
+type ContainerDeviceRequest struct {
+	// List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+	Capabilities []string `pulumi:"capabilities"`
+	// Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+	Count *int `pulumi:"count"`
+	// List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+	DeviceIds []string `pulumi:"deviceIds"`
+	// The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+	Driver *string `pulumi:"driver"`
+	// Driver-specific options.
+	Options map[string]string `pulumi:"options"`
+}
+
+// ContainerDeviceRequestInput is an input type that accepts ContainerDeviceRequestArgs and ContainerDeviceRequestOutput values.
+// You can construct a concrete instance of `ContainerDeviceRequestInput` via:
+//
+//	ContainerDeviceRequestArgs{...}
+type ContainerDeviceRequestInput interface {
+	pulumi.Input
+
+	ToContainerDeviceRequestOutput() ContainerDeviceRequestOutput
+	ToContainerDeviceRequestOutputWithContext(context.Context) ContainerDeviceRequestOutput
+}
+
+type ContainerDeviceRequestArgs struct {
+	// List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+	Capabilities pulumi.StringArrayInput `pulumi:"capabilities"`
+	// Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+	Count pulumi.IntPtrInput `pulumi:"count"`
+	// List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+	DeviceIds pulumi.StringArrayInput `pulumi:"deviceIds"`
+	// The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+	Driver pulumi.StringPtrInput `pulumi:"driver"`
+	// Driver-specific options.
+	Options pulumi.StringMapInput `pulumi:"options"`
+}
+
+func (ContainerDeviceRequestArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceRequest)(nil)).Elem()
+}
+
+func (i ContainerDeviceRequestArgs) ToContainerDeviceRequestOutput() ContainerDeviceRequestOutput {
+	return i.ToContainerDeviceRequestOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceRequestArgs) ToContainerDeviceRequestOutputWithContext(ctx context.Context) ContainerDeviceRequestOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceRequestOutput)
+}
+
+// ContainerDeviceRequestArrayInput is an input type that accepts ContainerDeviceRequestArray and ContainerDeviceRequestArrayOutput values.
+// You can construct a concrete instance of `ContainerDeviceRequestArrayInput` via:
+//
+//	ContainerDeviceRequestArray{ ContainerDeviceRequestArgs{...} }
+type ContainerDeviceRequestArrayInput interface {
+	pulumi.Input
+
+	ToContainerDeviceRequestArrayOutput() ContainerDeviceRequestArrayOutput
+	ToContainerDeviceRequestArrayOutputWithContext(context.Context) ContainerDeviceRequestArrayOutput
+}
+
+type ContainerDeviceRequestArray []ContainerDeviceRequestInput
+
+func (ContainerDeviceRequestArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceRequest)(nil)).Elem()
+}
+
+func (i ContainerDeviceRequestArray) ToContainerDeviceRequestArrayOutput() ContainerDeviceRequestArrayOutput {
+	return i.ToContainerDeviceRequestArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceRequestArray) ToContainerDeviceRequestArrayOutputWithContext(ctx context.Context) ContainerDeviceRequestArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceRequestArrayOutput)
+}
+
+type ContainerDeviceRequestOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceRequestOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceRequest)(nil)).Elem()
+}
+
+func (o ContainerDeviceRequestOutput) ToContainerDeviceRequestOutput() ContainerDeviceRequestOutput {
+	return o
+}
+
+func (o ContainerDeviceRequestOutput) ToContainerDeviceRequestOutputWithContext(ctx context.Context) ContainerDeviceRequestOutput {
+	return o
+}
+
+// List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+func (o ContainerDeviceRequestOutput) Capabilities() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ContainerDeviceRequest) []string { return v.Capabilities }).(pulumi.StringArrayOutput)
+}
+
+// Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+func (o ContainerDeviceRequestOutput) Count() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ContainerDeviceRequest) *int { return v.Count }).(pulumi.IntPtrOutput)
+}
+
+// List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+func (o ContainerDeviceRequestOutput) DeviceIds() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ContainerDeviceRequest) []string { return v.DeviceIds }).(pulumi.StringArrayOutput)
+}
+
+// The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+func (o ContainerDeviceRequestOutput) Driver() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerDeviceRequest) *string { return v.Driver }).(pulumi.StringPtrOutput)
+}
+
+// Driver-specific options.
+func (o ContainerDeviceRequestOutput) Options() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ContainerDeviceRequest) map[string]string { return v.Options }).(pulumi.StringMapOutput)
+}
+
+type ContainerDeviceRequestArrayOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceRequestArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceRequest)(nil)).Elem()
+}
+
+func (o ContainerDeviceRequestArrayOutput) ToContainerDeviceRequestArrayOutput() ContainerDeviceRequestArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceRequestArrayOutput) ToContainerDeviceRequestArrayOutputWithContext(ctx context.Context) ContainerDeviceRequestArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceRequestArrayOutput) Index(i pulumi.IntInput) ContainerDeviceRequestOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerDeviceRequest {
+		return vs[0].([]ContainerDeviceRequest)[vs[1].(int)]
+	}).(ContainerDeviceRequestOutput)
+}
+
+type ContainerDeviceWriteBp struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path string `pulumi:"path"`
+	// The write rate limit in bytes per second.
+	Rate int `pulumi:"rate"`
+}
+
+// ContainerDeviceWriteBpInput is an input type that accepts ContainerDeviceWriteBpArgs and ContainerDeviceWriteBpOutput values.
+// You can construct a concrete instance of `ContainerDeviceWriteBpInput` via:
+//
+//	ContainerDeviceWriteBpArgs{...}
+type ContainerDeviceWriteBpInput interface {
+	pulumi.Input
+
+	ToContainerDeviceWriteBpOutput() ContainerDeviceWriteBpOutput
+	ToContainerDeviceWriteBpOutputWithContext(context.Context) ContainerDeviceWriteBpOutput
+}
+
+type ContainerDeviceWriteBpArgs struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path pulumi.StringInput `pulumi:"path"`
+	// The write rate limit in bytes per second.
+	Rate pulumi.IntInput `pulumi:"rate"`
+}
+
+func (ContainerDeviceWriteBpArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceWriteBp)(nil)).Elem()
+}
+
+func (i ContainerDeviceWriteBpArgs) ToContainerDeviceWriteBpOutput() ContainerDeviceWriteBpOutput {
+	return i.ToContainerDeviceWriteBpOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceWriteBpArgs) ToContainerDeviceWriteBpOutputWithContext(ctx context.Context) ContainerDeviceWriteBpOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceWriteBpOutput)
+}
+
+// ContainerDeviceWriteBpArrayInput is an input type that accepts ContainerDeviceWriteBpArray and ContainerDeviceWriteBpArrayOutput values.
+// You can construct a concrete instance of `ContainerDeviceWriteBpArrayInput` via:
+//
+//	ContainerDeviceWriteBpArray{ ContainerDeviceWriteBpArgs{...} }
+type ContainerDeviceWriteBpArrayInput interface {
+	pulumi.Input
+
+	ToContainerDeviceWriteBpArrayOutput() ContainerDeviceWriteBpArrayOutput
+	ToContainerDeviceWriteBpArrayOutputWithContext(context.Context) ContainerDeviceWriteBpArrayOutput
+}
+
+type ContainerDeviceWriteBpArray []ContainerDeviceWriteBpInput
+
+func (ContainerDeviceWriteBpArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceWriteBp)(nil)).Elem()
+}
+
+func (i ContainerDeviceWriteBpArray) ToContainerDeviceWriteBpArrayOutput() ContainerDeviceWriteBpArrayOutput {
+	return i.ToContainerDeviceWriteBpArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceWriteBpArray) ToContainerDeviceWriteBpArrayOutputWithContext(ctx context.Context) ContainerDeviceWriteBpArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceWriteBpArrayOutput)
+}
+
+type ContainerDeviceWriteBpOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceWriteBpOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceWriteBp)(nil)).Elem()
+}
+
+func (o ContainerDeviceWriteBpOutput) ToContainerDeviceWriteBpOutput() ContainerDeviceWriteBpOutput {
+	return o
+}
+
+func (o ContainerDeviceWriteBpOutput) ToContainerDeviceWriteBpOutputWithContext(ctx context.Context) ContainerDeviceWriteBpOutput {
+	return o
+}
+
+// The device path on the host, e.g. `/dev/sda`.
+func (o ContainerDeviceWriteBpOutput) Path() pulumi.StringOutput {
+	return o.ApplyT(func(v ContainerDeviceWriteBp) string { return v.Path }).(pulumi.StringOutput)
+}
+
+// The write rate limit in bytes per second.
+func (o ContainerDeviceWriteBpOutput) Rate() pulumi.IntOutput {
+	return o.ApplyT(func(v ContainerDeviceWriteBp) int { return v.Rate }).(pulumi.IntOutput)
+}
+
+type ContainerDeviceWriteBpArrayOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceWriteBpArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceWriteBp)(nil)).Elem()
+}
+
+func (o ContainerDeviceWriteBpArrayOutput) ToContainerDeviceWriteBpArrayOutput() ContainerDeviceWriteBpArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceWriteBpArrayOutput) ToContainerDeviceWriteBpArrayOutputWithContext(ctx context.Context) ContainerDeviceWriteBpArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceWriteBpArrayOutput) Index(i pulumi.IntInput) ContainerDeviceWriteBpOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerDeviceWriteBp {
+		return vs[0].([]ContainerDeviceWriteBp)[vs[1].(int)]
+	}).(ContainerDeviceWriteBpOutput)
+}
+
+type ContainerDeviceWriteIop struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path string `pulumi:"path"`
+	// The write IOPS limit.
+	Rate int `pulumi:"rate"`
+}
+
+// ContainerDeviceWriteIopInput is an input type that accepts ContainerDeviceWriteIopArgs and ContainerDeviceWriteIopOutput values.
+// You can construct a concrete instance of `ContainerDeviceWriteIopInput` via:
+//
+//	ContainerDeviceWriteIopArgs{...}
+type ContainerDeviceWriteIopInput interface {
+	pulumi.Input
+
+	ToContainerDeviceWriteIopOutput() ContainerDeviceWriteIopOutput
+	ToContainerDeviceWriteIopOutputWithContext(context.Context) ContainerDeviceWriteIopOutput
+}
+
+type ContainerDeviceWriteIopArgs struct {
+	// The device path on the host, e.g. `/dev/sda`.
+	Path pulumi.StringInput `pulumi:"path"`
+	// The write IOPS limit.
+	Rate pulumi.IntInput `pulumi:"rate"`
+}
+
+func (ContainerDeviceWriteIopArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceWriteIop)(nil)).Elem()
+}
+
+func (i ContainerDeviceWriteIopArgs) ToContainerDeviceWriteIopOutput() ContainerDeviceWriteIopOutput {
+	return i.ToContainerDeviceWriteIopOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceWriteIopArgs) ToContainerDeviceWriteIopOutputWithContext(ctx context.Context) ContainerDeviceWriteIopOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceWriteIopOutput)
+}
+
+// ContainerDeviceWriteIopArrayInput is an input type that accepts ContainerDeviceWriteIopArray and ContainerDeviceWriteIopArrayOutput values.
+// You can construct a concrete instance of `ContainerDeviceWriteIopArrayInput` via:
+//
+//	ContainerDeviceWriteIopArray{ ContainerDeviceWriteIopArgs{...} }
+type ContainerDeviceWriteIopArrayInput interface {
+	pulumi.Input
+
+	ToContainerDeviceWriteIopArrayOutput() ContainerDeviceWriteIopArrayOutput
+	ToContainerDeviceWriteIopArrayOutputWithContext(context.Context) ContainerDeviceWriteIopArrayOutput
+}
+
+type ContainerDeviceWriteIopArray []ContainerDeviceWriteIopInput
+
+func (ContainerDeviceWriteIopArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceWriteIop)(nil)).Elem()
+}
+
+func (i ContainerDeviceWriteIopArray) ToContainerDeviceWriteIopArrayOutput() ContainerDeviceWriteIopArrayOutput {
+	return i.ToContainerDeviceWriteIopArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerDeviceWriteIopArray) ToContainerDeviceWriteIopArrayOutputWithContext(ctx context.Context) ContainerDeviceWriteIopArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceWriteIopArrayOutput)
+}
+
+type ContainerDeviceWriteIopOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceWriteIopOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerDeviceWriteIop)(nil)).Elem()
+}
+
+func (o ContainerDeviceWriteIopOutput) ToContainerDeviceWriteIopOutput() ContainerDeviceWriteIopOutput {
+	return o
+}
+
+func (o ContainerDeviceWriteIopOutput) ToContainerDeviceWriteIopOutputWithContext(ctx context.Context) ContainerDeviceWriteIopOutput {
+	return o
+}
+
+// The device path on the host, e.g. `/dev/sda`.
+func (o ContainerDeviceWriteIopOutput) Path() pulumi.StringOutput {
+	return o.ApplyT(func(v ContainerDeviceWriteIop) string { return v.Path }).(pulumi.StringOutput)
+}
+
+// The write IOPS limit.
+func (o ContainerDeviceWriteIopOutput) Rate() pulumi.IntOutput {
+	return o.ApplyT(func(v ContainerDeviceWriteIop) int { return v.Rate }).(pulumi.IntOutput)
+}
+
+type ContainerDeviceWriteIopArrayOutput struct{ *pulumi.OutputState }
+
+func (ContainerDeviceWriteIopArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerDeviceWriteIop)(nil)).Elem()
+}
+
+func (o ContainerDeviceWriteIopArrayOutput) ToContainerDeviceWriteIopArrayOutput() ContainerDeviceWriteIopArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceWriteIopArrayOutput) ToContainerDeviceWriteIopArrayOutputWithContext(ctx context.Context) ContainerDeviceWriteIopArrayOutput {
+	return o
+}
+
+func (o ContainerDeviceWriteIopArrayOutput) Index(i pulumi.IntInput) ContainerDeviceWriteIopOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerDeviceWriteIop {
+		return vs[0].([]ContainerDeviceWriteIop)[vs[1].(int)]
+	}).(ContainerDeviceWriteIopOutput)
+}
+
 type ContainerHealthcheck struct {
 	// Time between running the check (ms|s|m|h). Defaults to `0s`.
 	Interval *string `pulumi:"interval"`
@@ -1799,7 +2356,7 @@ type ContainerHealthcheck struct {
 	StartInterval *string `pulumi:"startInterval"`
 	// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 	StartPeriod *string `pulumi:"startPeriod"`
-	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 	Tests []string `pulumi:"tests"`
 	// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 	Timeout *string `pulumi:"timeout"`
@@ -1825,7 +2382,7 @@ type ContainerHealthcheckArgs struct {
 	StartInterval pulumi.StringPtrInput `pulumi:"startInterval"`
 	// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 	StartPeriod pulumi.StringPtrInput `pulumi:"startPeriod"`
-	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 	Tests pulumi.StringArrayInput `pulumi:"tests"`
 	// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
@@ -1928,7 +2485,7 @@ func (o ContainerHealthcheckOutput) StartPeriod() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
 }
 
-// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 func (o ContainerHealthcheckOutput) Tests() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
@@ -2002,7 +2559,7 @@ func (o ContainerHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
 func (o ContainerHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *ContainerHealthcheck) []string {
 		if v == nil {
@@ -3160,10 +3717,16 @@ func (o ContainerNetworkDataArrayOutput) Index(i pulumi.IntInput) ContainerNetwo
 type ContainerNetworksAdvanced struct {
 	// The network aliases of the container in the specific network.
 	Aliases []string `pulumi:"aliases"`
+	// An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+	DriverOpts []string `pulumi:"driverOpts"`
+	// Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+	GwPriority *int `pulumi:"gwPriority"`
 	// The IPV4 address of the container in the specific network.
 	Ipv4Address *string `pulumi:"ipv4Address"`
 	// The IPV6 address of the container in the specific network.
 	Ipv6Address *string `pulumi:"ipv6Address"`
+	// The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+	LinkLocalIps []string `pulumi:"linkLocalIps"`
 	// The MAC address of the container in the specific network.
 	MacAddress *string `pulumi:"macAddress"`
 	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
@@ -3184,10 +3747,16 @@ type ContainerNetworksAdvancedInput interface {
 type ContainerNetworksAdvancedArgs struct {
 	// The network aliases of the container in the specific network.
 	Aliases pulumi.StringArrayInput `pulumi:"aliases"`
+	// An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+	DriverOpts pulumi.StringArrayInput `pulumi:"driverOpts"`
+	// Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+	GwPriority pulumi.IntPtrInput `pulumi:"gwPriority"`
 	// The IPV4 address of the container in the specific network.
 	Ipv4Address pulumi.StringPtrInput `pulumi:"ipv4Address"`
 	// The IPV6 address of the container in the specific network.
 	Ipv6Address pulumi.StringPtrInput `pulumi:"ipv6Address"`
+	// The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+	LinkLocalIps pulumi.StringArrayInput `pulumi:"linkLocalIps"`
 	// The MAC address of the container in the specific network.
 	MacAddress pulumi.StringPtrInput `pulumi:"macAddress"`
 	// The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
@@ -3250,6 +3819,16 @@ func (o ContainerNetworksAdvancedOutput) Aliases() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) []string { return v.Aliases }).(pulumi.StringArrayOutput)
 }
 
+// An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+func (o ContainerNetworksAdvancedOutput) DriverOpts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ContainerNetworksAdvanced) []string { return v.DriverOpts }).(pulumi.StringArrayOutput)
+}
+
+// Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+func (o ContainerNetworksAdvancedOutput) GwPriority() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ContainerNetworksAdvanced) *int { return v.GwPriority }).(pulumi.IntPtrOutput)
+}
+
 // The IPV4 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv4Address() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv4Address }).(pulumi.StringPtrOutput)
@@ -3258,6 +3837,11 @@ func (o ContainerNetworksAdvancedOutput) Ipv4Address() pulumi.StringPtrOutput {
 // The IPV6 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv6Address() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv6Address }).(pulumi.StringPtrOutput)
+}
+
+// The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+func (o ContainerNetworksAdvancedOutput) LinkLocalIps() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ContainerNetworksAdvanced) []string { return v.LinkLocalIps }).(pulumi.StringArrayOutput)
 }
 
 // The MAC address of the container in the specific network.
@@ -3689,6 +4273,8 @@ type ContainerVolume struct {
 	HostPath *string `pulumi:"hostPath"`
 	// If `true`, this volume will be readonly. Defaults to `false`.
 	ReadOnly *bool `pulumi:"readOnly"`
+	// SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+	SelinuxRelabel *string `pulumi:"selinuxRelabel"`
 	// The name of the docker volume which should be mounted.
 	VolumeName *string `pulumi:"volumeName"`
 }
@@ -3713,6 +4299,8 @@ type ContainerVolumeArgs struct {
 	HostPath pulumi.StringPtrInput `pulumi:"hostPath"`
 	// If `true`, this volume will be readonly. Defaults to `false`.
 	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
+	// SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+	SelinuxRelabel pulumi.StringPtrInput `pulumi:"selinuxRelabel"`
 	// The name of the docker volume which should be mounted.
 	VolumeName pulumi.StringPtrInput `pulumi:"volumeName"`
 }
@@ -3786,6 +4374,11 @@ func (o ContainerVolumeOutput) HostPath() pulumi.StringPtrOutput {
 // If `true`, this volume will be readonly. Defaults to `false`.
 func (o ContainerVolumeOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+}
+
+// SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+func (o ContainerVolumeOutput) SelinuxRelabel() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerVolume) *string { return v.SelinuxRelabel }).(pulumi.StringPtrOutput)
 }
 
 // The name of the docker volume which should be mounted.
@@ -4154,7 +4747,7 @@ type ProviderRegistryAuth struct {
 	Address string `pulumi:"address"`
 	// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
 	AuthDisabled *bool `pulumi:"authDisabled"`
-	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 	ConfigFile *string `pulumi:"configFile"`
 	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent *string `pulumi:"configFileContent"`
@@ -4180,7 +4773,7 @@ type ProviderRegistryAuthArgs struct {
 	Address pulumi.StringInput `pulumi:"address"`
 	// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
 	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
-	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
 	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
@@ -4251,7 +4844,7 @@ func (o ProviderRegistryAuthOutput) AuthDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *bool { return v.AuthDisabled }).(pulumi.BoolPtrOutput)
 }
 
-// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 func (o ProviderRegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }
@@ -4295,9 +4888,9 @@ type RegistryImageAuthConfig struct {
 	// The address of the Docker registry.
 	Address string `pulumi:"address"`
 	// The password for the Docker registry.
-	Password string `pulumi:"password"`
+	Password *string `pulumi:"password"`
 	// The username for the Docker registry.
-	Username string `pulumi:"username"`
+	Username *string `pulumi:"username"`
 }
 
 // RegistryImageAuthConfigInput is an input type that accepts RegistryImageAuthConfigArgs and RegistryImageAuthConfigOutput values.
@@ -4315,9 +4908,9 @@ type RegistryImageAuthConfigArgs struct {
 	// The address of the Docker registry.
 	Address pulumi.StringInput `pulumi:"address"`
 	// The password for the Docker registry.
-	Password pulumi.StringInput `pulumi:"password"`
+	Password pulumi.StringPtrInput `pulumi:"password"`
 	// The username for the Docker registry.
-	Username pulumi.StringInput `pulumi:"username"`
+	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (RegistryImageAuthConfigArgs) ElementType() reflect.Type {
@@ -4403,13 +4996,13 @@ func (o RegistryImageAuthConfigOutput) Address() pulumi.StringOutput {
 }
 
 // The password for the Docker registry.
-func (o RegistryImageAuthConfigOutput) Password() pulumi.StringOutput {
-	return o.ApplyT(func(v RegistryImageAuthConfig) string { return v.Password }).(pulumi.StringOutput)
+func (o RegistryImageAuthConfigOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageAuthConfig) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 // The username for the Docker registry.
-func (o RegistryImageAuthConfigOutput) Username() pulumi.StringOutput {
-	return o.ApplyT(func(v RegistryImageAuthConfig) string { return v.Username }).(pulumi.StringOutput)
+func (o RegistryImageAuthConfigOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryImageAuthConfig) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
 type RegistryImageAuthConfigPtrOutput struct{ *pulumi.OutputState }
@@ -4452,7 +5045,7 @@ func (o RegistryImageAuthConfigPtrOutput) Password() pulumi.StringPtrOutput {
 		if v == nil {
 			return nil
 		}
-		return &v.Password
+		return v.Password
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -4462,7 +5055,7 @@ func (o RegistryImageAuthConfigPtrOutput) Username() pulumi.StringPtrOutput {
 		if v == nil {
 			return nil
 		}
-		return &v.Username
+		return v.Username
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -4477,7 +5070,7 @@ type RegistryImageBuild struct {
 	BuildId *string `pulumi:"buildId"`
 	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
 	BuildLogFile *string `pulumi:"buildLogFile"`
-	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+	// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 	Builder *string `pulumi:"builder"`
 	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 	CacheFroms []string `pulumi:"cacheFroms"`
@@ -4543,6 +5136,8 @@ type RegistryImageBuild struct {
 	Target *string `pulumi:"target"`
 	// Configuration for ulimits
 	Ulimits []RegistryImageBuildUlimit `pulumi:"ulimits"`
+	// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+	UseLegacyBuilder *bool `pulumi:"useLegacyBuilder"`
 	// Version of the underlying builder to use
 	Version *string `pulumi:"version"`
 }
@@ -4569,7 +5164,7 @@ type RegistryImageBuildArgs struct {
 	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
 	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
 	BuildLogFile pulumi.StringPtrInput `pulumi:"buildLogFile"`
-	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+	// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 	Builder pulumi.StringPtrInput `pulumi:"builder"`
 	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
@@ -4635,6 +5230,8 @@ type RegistryImageBuildArgs struct {
 	Target pulumi.StringPtrInput `pulumi:"target"`
 	// Configuration for ulimits
 	Ulimits RegistryImageBuildUlimitArrayInput `pulumi:"ulimits"`
+	// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+	UseLegacyBuilder pulumi.BoolPtrInput `pulumi:"useLegacyBuilder"`
 	// Version of the underlying builder to use
 	Version pulumi.StringPtrInput `pulumi:"version"`
 }
@@ -4741,7 +5338,7 @@ func (o RegistryImageBuildOutput) BuildLogFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.BuildLogFile }).(pulumi.StringPtrOutput)
 }
 
-// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 func (o RegistryImageBuildOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Builder }).(pulumi.StringPtrOutput)
 }
@@ -4906,6 +5503,11 @@ func (o RegistryImageBuildOutput) Ulimits() RegistryImageBuildUlimitArrayOutput 
 	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildUlimit { return v.Ulimits }).(RegistryImageBuildUlimitArrayOutput)
 }
 
+// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+func (o RegistryImageBuildOutput) UseLegacyBuilder() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.UseLegacyBuilder }).(pulumi.BoolPtrOutput)
+}
+
 // Version of the underlying builder to use
 func (o RegistryImageBuildOutput) Version() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Version }).(pulumi.StringPtrOutput)
@@ -4985,7 +5587,7 @@ func (o RegistryImageBuildPtrOutput) BuildLogFile() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 func (o RegistryImageBuildPtrOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -5313,6 +5915,16 @@ func (o RegistryImageBuildPtrOutput) Ulimits() RegistryImageBuildUlimitArrayOutp
 		}
 		return v.Ulimits
 	}).(RegistryImageBuildUlimitArrayOutput)
+}
+
+// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+func (o RegistryImageBuildPtrOutput) UseLegacyBuilder() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RegistryImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.UseLegacyBuilder
+	}).(pulumi.BoolPtrOutput)
 }
 
 // Version of the underlying builder to use
@@ -5726,7 +6338,7 @@ type RemoteImageBuild struct {
 	BuildId *string `pulumi:"buildId"`
 	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
 	BuildLogFile *string `pulumi:"buildLogFile"`
-	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+	// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 	Builder *string `pulumi:"builder"`
 	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 	CacheFroms []string `pulumi:"cacheFroms"`
@@ -5792,6 +6404,8 @@ type RemoteImageBuild struct {
 	Target *string `pulumi:"target"`
 	// Configuration for ulimits
 	Ulimits []RemoteImageBuildUlimit `pulumi:"ulimits"`
+	// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+	UseLegacyBuilder *bool `pulumi:"useLegacyBuilder"`
 	// Version of the underlying builder to use
 	Version *string `pulumi:"version"`
 }
@@ -5818,7 +6432,7 @@ type RemoteImageBuildArgs struct {
 	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
 	// Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
 	BuildLogFile pulumi.StringPtrInput `pulumi:"buildLogFile"`
-	// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+	// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 	Builder pulumi.StringPtrInput `pulumi:"builder"`
 	// External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
@@ -5884,6 +6498,8 @@ type RemoteImageBuildArgs struct {
 	Target pulumi.StringPtrInput `pulumi:"target"`
 	// Configuration for ulimits
 	Ulimits RemoteImageBuildUlimitArrayInput `pulumi:"ulimits"`
+	// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+	UseLegacyBuilder pulumi.BoolPtrInput `pulumi:"useLegacyBuilder"`
 	// Version of the underlying builder to use
 	Version pulumi.StringPtrInput `pulumi:"version"`
 }
@@ -5990,7 +6606,7 @@ func (o RemoteImageBuildOutput) BuildLogFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.BuildLogFile }).(pulumi.StringPtrOutput)
 }
 
-// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 func (o RemoteImageBuildOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Builder }).(pulumi.StringPtrOutput)
 }
@@ -6155,6 +6771,11 @@ func (o RemoteImageBuildOutput) Ulimits() RemoteImageBuildUlimitArrayOutput {
 	return o.ApplyT(func(v RemoteImageBuild) []RemoteImageBuildUlimit { return v.Ulimits }).(RemoteImageBuildUlimitArrayOutput)
 }
 
+// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+func (o RemoteImageBuildOutput) UseLegacyBuilder() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.UseLegacyBuilder }).(pulumi.BoolPtrOutput)
+}
+
 // Version of the underlying builder to use
 func (o RemoteImageBuildOutput) Version() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Version }).(pulumi.StringPtrOutput)
@@ -6234,7 +6855,7 @@ func (o RemoteImageBuildPtrOutput) BuildLogFile() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
 func (o RemoteImageBuildPtrOutput) Builder() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -6562,6 +7183,16 @@ func (o RemoteImageBuildPtrOutput) Ulimits() RemoteImageBuildUlimitArrayOutput {
 		}
 		return v.Ulimits
 	}).(RemoteImageBuildUlimitArrayOutput)
+}
+
+// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+func (o RemoteImageBuildPtrOutput) UseLegacyBuilder() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *RemoteImageBuild) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.UseLegacyBuilder
+	}).(pulumi.BoolPtrOutput)
 }
 
 // Version of the underlying builder to use
@@ -7245,6 +7876,112 @@ func (o ServiceAuthPtrOutput) Username() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+type ServiceConfigLabel struct {
+	// Name of the label
+	Label string `pulumi:"label"`
+	// Value of the label
+	Value string `pulumi:"value"`
+}
+
+// ServiceConfigLabelInput is an input type that accepts ServiceConfigLabelArgs and ServiceConfigLabelOutput values.
+// You can construct a concrete instance of `ServiceConfigLabelInput` via:
+//
+//	ServiceConfigLabelArgs{...}
+type ServiceConfigLabelInput interface {
+	pulumi.Input
+
+	ToServiceConfigLabelOutput() ServiceConfigLabelOutput
+	ToServiceConfigLabelOutputWithContext(context.Context) ServiceConfigLabelOutput
+}
+
+type ServiceConfigLabelArgs struct {
+	// Name of the label
+	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (ServiceConfigLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceConfigLabel)(nil)).Elem()
+}
+
+func (i ServiceConfigLabelArgs) ToServiceConfigLabelOutput() ServiceConfigLabelOutput {
+	return i.ToServiceConfigLabelOutputWithContext(context.Background())
+}
+
+func (i ServiceConfigLabelArgs) ToServiceConfigLabelOutputWithContext(ctx context.Context) ServiceConfigLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigLabelOutput)
+}
+
+// ServiceConfigLabelArrayInput is an input type that accepts ServiceConfigLabelArray and ServiceConfigLabelArrayOutput values.
+// You can construct a concrete instance of `ServiceConfigLabelArrayInput` via:
+//
+//	ServiceConfigLabelArray{ ServiceConfigLabelArgs{...} }
+type ServiceConfigLabelArrayInput interface {
+	pulumi.Input
+
+	ToServiceConfigLabelArrayOutput() ServiceConfigLabelArrayOutput
+	ToServiceConfigLabelArrayOutputWithContext(context.Context) ServiceConfigLabelArrayOutput
+}
+
+type ServiceConfigLabelArray []ServiceConfigLabelInput
+
+func (ServiceConfigLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceConfigLabel)(nil)).Elem()
+}
+
+func (i ServiceConfigLabelArray) ToServiceConfigLabelArrayOutput() ServiceConfigLabelArrayOutput {
+	return i.ToServiceConfigLabelArrayOutputWithContext(context.Background())
+}
+
+func (i ServiceConfigLabelArray) ToServiceConfigLabelArrayOutputWithContext(ctx context.Context) ServiceConfigLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigLabelArrayOutput)
+}
+
+type ServiceConfigLabelOutput struct{ *pulumi.OutputState }
+
+func (ServiceConfigLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceConfigLabel)(nil)).Elem()
+}
+
+func (o ServiceConfigLabelOutput) ToServiceConfigLabelOutput() ServiceConfigLabelOutput {
+	return o
+}
+
+func (o ServiceConfigLabelOutput) ToServiceConfigLabelOutputWithContext(ctx context.Context) ServiceConfigLabelOutput {
+	return o
+}
+
+// Name of the label
+func (o ServiceConfigLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func(v ServiceConfigLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+// Value of the label
+func (o ServiceConfigLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func(v ServiceConfigLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type ServiceConfigLabelArrayOutput struct{ *pulumi.OutputState }
+
+func (ServiceConfigLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceConfigLabel)(nil)).Elem()
+}
+
+func (o ServiceConfigLabelArrayOutput) ToServiceConfigLabelArrayOutput() ServiceConfigLabelArrayOutput {
+	return o
+}
+
+func (o ServiceConfigLabelArrayOutput) ToServiceConfigLabelArrayOutputWithContext(ctx context.Context) ServiceConfigLabelArrayOutput {
+	return o
+}
+
+func (o ServiceConfigLabelArrayOutput) Index(i pulumi.IntInput) ServiceConfigLabelOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceConfigLabel {
+		return vs[0].([]ServiceConfigLabel)[vs[1].(int)]
+	}).(ServiceConfigLabelOutput)
+}
+
 type ServiceConvergeConfig struct {
 	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 	Delay *string `pulumi:"delay"`
@@ -7560,7 +8297,7 @@ func (o ServiceEndpointSpecPtrOutput) Ports() ServiceEndpointSpecPortArrayOutput
 type ServiceEndpointSpecPort struct {
 	// A random name for the port
 	Name *string `pulumi:"name"`
-	// Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+	// Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
 	Protocol *string `pulumi:"protocol"`
 	// Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
 	PublishMode *string `pulumi:"publishMode"`
@@ -7584,7 +8321,7 @@ type ServiceEndpointSpecPortInput interface {
 type ServiceEndpointSpecPortArgs struct {
 	// A random name for the port
 	Name pulumi.StringPtrInput `pulumi:"name"`
-	// Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+	// Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
 	Protocol pulumi.StringPtrInput `pulumi:"protocol"`
 	// Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
 	PublishMode pulumi.StringPtrInput `pulumi:"publishMode"`
@@ -7650,7 +8387,7 @@ func (o ServiceEndpointSpecPortOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceEndpointSpecPort) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
-// Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+// Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
 func (o ServiceEndpointSpecPortOutput) Protocol() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceEndpointSpecPort) *string { return v.Protocol }).(pulumi.StringPtrOutput)
 }
@@ -11472,8 +12209,12 @@ type ServiceTaskSpecNetworksAdvanced struct {
 	Aliases []string `pulumi:"aliases"`
 	// An array of driver options for the network, e.g. `opts1=value`
 	DriverOpts []string `pulumi:"driverOpts"`
-	// The name/id of the network.
-	Name string `pulumi:"name"`
+	// The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+	Id *string `pulumi:"id"`
+	// Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+	//
+	// Deprecated: Use the id attribute.
+	Name *string `pulumi:"name"`
 }
 
 // ServiceTaskSpecNetworksAdvancedInput is an input type that accepts ServiceTaskSpecNetworksAdvancedArgs and ServiceTaskSpecNetworksAdvancedOutput values.
@@ -11492,8 +12233,12 @@ type ServiceTaskSpecNetworksAdvancedArgs struct {
 	Aliases pulumi.StringArrayInput `pulumi:"aliases"`
 	// An array of driver options for the network, e.g. `opts1=value`
 	DriverOpts pulumi.StringArrayInput `pulumi:"driverOpts"`
-	// The name/id of the network.
-	Name pulumi.StringInput `pulumi:"name"`
+	// The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+	Id pulumi.StringPtrInput `pulumi:"id"`
+	// Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+	//
+	// Deprecated: Use the id attribute.
+	Name pulumi.StringPtrInput `pulumi:"name"`
 }
 
 func (ServiceTaskSpecNetworksAdvancedArgs) ElementType() reflect.Type {
@@ -11557,9 +12302,16 @@ func (o ServiceTaskSpecNetworksAdvancedOutput) DriverOpts() pulumi.StringArrayOu
 	return o.ApplyT(func(v ServiceTaskSpecNetworksAdvanced) []string { return v.DriverOpts }).(pulumi.StringArrayOutput)
 }
 
-// The name/id of the network.
-func (o ServiceTaskSpecNetworksAdvancedOutput) Name() pulumi.StringOutput {
-	return o.ApplyT(func(v ServiceTaskSpecNetworksAdvanced) string { return v.Name }).(pulumi.StringOutput)
+// The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+func (o ServiceTaskSpecNetworksAdvancedOutput) Id() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ServiceTaskSpecNetworksAdvanced) *string { return v.Id }).(pulumi.StringPtrOutput)
+}
+
+// Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+//
+// Deprecated: Use the id attribute.
+func (o ServiceTaskSpecNetworksAdvancedOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ServiceTaskSpecNetworksAdvanced) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecNetworksAdvancedArrayOutput struct{ *pulumi.OutputState }
@@ -12039,7 +12791,7 @@ func (o ServiceTaskSpecResourcesPtrOutput) Reservation() ServiceTaskSpecResource
 }
 
 type ServiceTaskSpecResourcesLimits struct {
-	// The amounf of memory in bytes the container allocates
+	// The amount of memory in bytes the container allocates
 	MemoryBytes *int `pulumi:"memoryBytes"`
 	// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
 	NanoCpus *int `pulumi:"nanoCpus"`
@@ -12057,7 +12809,7 @@ type ServiceTaskSpecResourcesLimitsInput interface {
 }
 
 type ServiceTaskSpecResourcesLimitsArgs struct {
-	// The amounf of memory in bytes the container allocates
+	// The amount of memory in bytes the container allocates
 	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
 	// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
 	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
@@ -12140,7 +12892,7 @@ func (o ServiceTaskSpecResourcesLimitsOutput) ToServiceTaskSpecResourcesLimitsPt
 	}).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
-// The amounf of memory in bytes the container allocates
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesLimitsOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
@@ -12174,7 +12926,7 @@ func (o ServiceTaskSpecResourcesLimitsPtrOutput) Elem() ServiceTaskSpecResources
 	}).(ServiceTaskSpecResourcesLimitsOutput)
 }
 
-// The amounf of memory in bytes the container allocates
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimits) *int {
 		if v == nil {
@@ -12197,7 +12949,7 @@ func (o ServiceTaskSpecResourcesLimitsPtrOutput) NanoCpus() pulumi.IntPtrOutput 
 type ServiceTaskSpecResourcesReservation struct {
 	// User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
 	GenericResources *ServiceTaskSpecResourcesReservationGenericResources `pulumi:"genericResources"`
-	// The amounf of memory in bytes the container allocates
+	// The amount of memory in bytes the container allocates
 	MemoryBytes *int `pulumi:"memoryBytes"`
 	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
 	NanoCpus *int `pulumi:"nanoCpus"`
@@ -12217,7 +12969,7 @@ type ServiceTaskSpecResourcesReservationInput interface {
 type ServiceTaskSpecResourcesReservationArgs struct {
 	// User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
 	GenericResources ServiceTaskSpecResourcesReservationGenericResourcesPtrInput `pulumi:"genericResources"`
-	// The amounf of memory in bytes the container allocates
+	// The amount of memory in bytes the container allocates
 	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
 	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
 	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
@@ -12307,7 +13059,7 @@ func (o ServiceTaskSpecResourcesReservationOutput) GenericResources() ServiceTas
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
-// The amounf of memory in bytes the container allocates
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesReservationOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
@@ -12351,7 +13103,7 @@ func (o ServiceTaskSpecResourcesReservationPtrOutput) GenericResources() Service
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
-// The amounf of memory in bytes the container allocates
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesReservationPtrOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) *int {
 		if v == nil {
@@ -13799,6 +14551,148 @@ func (o DockerBuildPtrOutput) Target() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+type GetNetworkContainer struct {
+	// The container id.
+	ContainerId string `pulumi:"containerId"`
+	// The endpoint id.
+	EndpointId string `pulumi:"endpointId"`
+	// The IPv4 address.
+	Ipv4Address string `pulumi:"ipv4Address"`
+	// The IPv6 address.
+	Ipv6Address string `pulumi:"ipv6Address"`
+	// The MAC address.
+	MacAddress string `pulumi:"macAddress"`
+	// The container name.
+	Name string `pulumi:"name"`
+}
+
+// GetNetworkContainerInput is an input type that accepts GetNetworkContainerArgs and GetNetworkContainerOutput values.
+// You can construct a concrete instance of `GetNetworkContainerInput` via:
+//
+//	GetNetworkContainerArgs{...}
+type GetNetworkContainerInput interface {
+	pulumi.Input
+
+	ToGetNetworkContainerOutput() GetNetworkContainerOutput
+	ToGetNetworkContainerOutputWithContext(context.Context) GetNetworkContainerOutput
+}
+
+type GetNetworkContainerArgs struct {
+	// The container id.
+	ContainerId pulumi.StringInput `pulumi:"containerId"`
+	// The endpoint id.
+	EndpointId pulumi.StringInput `pulumi:"endpointId"`
+	// The IPv4 address.
+	Ipv4Address pulumi.StringInput `pulumi:"ipv4Address"`
+	// The IPv6 address.
+	Ipv6Address pulumi.StringInput `pulumi:"ipv6Address"`
+	// The MAC address.
+	MacAddress pulumi.StringInput `pulumi:"macAddress"`
+	// The container name.
+	Name pulumi.StringInput `pulumi:"name"`
+}
+
+func (GetNetworkContainerArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetNetworkContainer)(nil)).Elem()
+}
+
+func (i GetNetworkContainerArgs) ToGetNetworkContainerOutput() GetNetworkContainerOutput {
+	return i.ToGetNetworkContainerOutputWithContext(context.Background())
+}
+
+func (i GetNetworkContainerArgs) ToGetNetworkContainerOutputWithContext(ctx context.Context) GetNetworkContainerOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetNetworkContainerOutput)
+}
+
+// GetNetworkContainerArrayInput is an input type that accepts GetNetworkContainerArray and GetNetworkContainerArrayOutput values.
+// You can construct a concrete instance of `GetNetworkContainerArrayInput` via:
+//
+//	GetNetworkContainerArray{ GetNetworkContainerArgs{...} }
+type GetNetworkContainerArrayInput interface {
+	pulumi.Input
+
+	ToGetNetworkContainerArrayOutput() GetNetworkContainerArrayOutput
+	ToGetNetworkContainerArrayOutputWithContext(context.Context) GetNetworkContainerArrayOutput
+}
+
+type GetNetworkContainerArray []GetNetworkContainerInput
+
+func (GetNetworkContainerArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetNetworkContainer)(nil)).Elem()
+}
+
+func (i GetNetworkContainerArray) ToGetNetworkContainerArrayOutput() GetNetworkContainerArrayOutput {
+	return i.ToGetNetworkContainerArrayOutputWithContext(context.Background())
+}
+
+func (i GetNetworkContainerArray) ToGetNetworkContainerArrayOutputWithContext(ctx context.Context) GetNetworkContainerArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(GetNetworkContainerArrayOutput)
+}
+
+type GetNetworkContainerOutput struct{ *pulumi.OutputState }
+
+func (GetNetworkContainerOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*GetNetworkContainer)(nil)).Elem()
+}
+
+func (o GetNetworkContainerOutput) ToGetNetworkContainerOutput() GetNetworkContainerOutput {
+	return o
+}
+
+func (o GetNetworkContainerOutput) ToGetNetworkContainerOutputWithContext(ctx context.Context) GetNetworkContainerOutput {
+	return o
+}
+
+// The container id.
+func (o GetNetworkContainerOutput) ContainerId() pulumi.StringOutput {
+	return o.ApplyT(func(v GetNetworkContainer) string { return v.ContainerId }).(pulumi.StringOutput)
+}
+
+// The endpoint id.
+func (o GetNetworkContainerOutput) EndpointId() pulumi.StringOutput {
+	return o.ApplyT(func(v GetNetworkContainer) string { return v.EndpointId }).(pulumi.StringOutput)
+}
+
+// The IPv4 address.
+func (o GetNetworkContainerOutput) Ipv4Address() pulumi.StringOutput {
+	return o.ApplyT(func(v GetNetworkContainer) string { return v.Ipv4Address }).(pulumi.StringOutput)
+}
+
+// The IPv6 address.
+func (o GetNetworkContainerOutput) Ipv6Address() pulumi.StringOutput {
+	return o.ApplyT(func(v GetNetworkContainer) string { return v.Ipv6Address }).(pulumi.StringOutput)
+}
+
+// The MAC address.
+func (o GetNetworkContainerOutput) MacAddress() pulumi.StringOutput {
+	return o.ApplyT(func(v GetNetworkContainer) string { return v.MacAddress }).(pulumi.StringOutput)
+}
+
+// The container name.
+func (o GetNetworkContainerOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v GetNetworkContainer) string { return v.Name }).(pulumi.StringOutput)
+}
+
+type GetNetworkContainerArrayOutput struct{ *pulumi.OutputState }
+
+func (GetNetworkContainerArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]GetNetworkContainer)(nil)).Elem()
+}
+
+func (o GetNetworkContainerArrayOutput) ToGetNetworkContainerArrayOutput() GetNetworkContainerArrayOutput {
+	return o
+}
+
+func (o GetNetworkContainerArrayOutput) ToGetNetworkContainerArrayOutputWithContext(ctx context.Context) GetNetworkContainerArrayOutput {
+	return o
+}
+
+func (o GetNetworkContainerArrayOutput) Index(i pulumi.IntInput) GetNetworkContainerOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetNetworkContainer {
+		return vs[0].([]GetNetworkContainer)[vs[1].(int)]
+	}).(GetNetworkContainerOutput)
+}
+
 type GetNetworkIpamConfig struct {
 	// Auxiliary IPv4 or IPv6 addresses used by Network driver
 	AuxAddress map[string]string `pulumi:"auxAddress"`
@@ -13927,9 +14821,9 @@ type GetRegistryImageManifestsAuthConfig struct {
 	// The address of the Docker registry.
 	Address string `pulumi:"address"`
 	// The password for the Docker registry.
-	Password string `pulumi:"password"`
+	Password *string `pulumi:"password"`
 	// The username for the Docker registry.
-	Username string `pulumi:"username"`
+	Username *string `pulumi:"username"`
 }
 
 // GetRegistryImageManifestsAuthConfigInput is an input type that accepts GetRegistryImageManifestsAuthConfigArgs and GetRegistryImageManifestsAuthConfigOutput values.
@@ -13947,9 +14841,9 @@ type GetRegistryImageManifestsAuthConfigArgs struct {
 	// The address of the Docker registry.
 	Address pulumi.StringInput `pulumi:"address"`
 	// The password for the Docker registry.
-	Password pulumi.StringInput `pulumi:"password"`
+	Password pulumi.StringPtrInput `pulumi:"password"`
 	// The username for the Docker registry.
-	Username pulumi.StringInput `pulumi:"username"`
+	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (GetRegistryImageManifestsAuthConfigArgs) ElementType() reflect.Type {
@@ -14035,13 +14929,13 @@ func (o GetRegistryImageManifestsAuthConfigOutput) Address() pulumi.StringOutput
 }
 
 // The password for the Docker registry.
-func (o GetRegistryImageManifestsAuthConfigOutput) Password() pulumi.StringOutput {
-	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) string { return v.Password }).(pulumi.StringOutput)
+func (o GetRegistryImageManifestsAuthConfigOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 // The username for the Docker registry.
-func (o GetRegistryImageManifestsAuthConfigOutput) Username() pulumi.StringOutput {
-	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) string { return v.Username }).(pulumi.StringOutput)
+func (o GetRegistryImageManifestsAuthConfigOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v GetRegistryImageManifestsAuthConfig) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
 type GetRegistryImageManifestsAuthConfigPtrOutput struct{ *pulumi.OutputState }
@@ -14084,7 +14978,7 @@ func (o GetRegistryImageManifestsAuthConfigPtrOutput) Password() pulumi.StringPt
 		if v == nil {
 			return nil
 		}
-		return &v.Password
+		return v.Password
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -14094,7 +14988,7 @@ func (o GetRegistryImageManifestsAuthConfigPtrOutput) Username() pulumi.StringPt
 		if v == nil {
 			return nil
 		}
-		return &v.Username
+		return v.Username
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -14417,6 +15311,16 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerCapabilitiesPtrInput)(nil)).Elem(), ContainerCapabilitiesArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceInput)(nil)).Elem(), ContainerDeviceArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceArrayInput)(nil)).Elem(), ContainerDeviceArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceReadBpInput)(nil)).Elem(), ContainerDeviceReadBpArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceReadBpArrayInput)(nil)).Elem(), ContainerDeviceReadBpArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceReadIopInput)(nil)).Elem(), ContainerDeviceReadIopArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceReadIopArrayInput)(nil)).Elem(), ContainerDeviceReadIopArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceRequestInput)(nil)).Elem(), ContainerDeviceRequestArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceRequestArrayInput)(nil)).Elem(), ContainerDeviceRequestArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceWriteBpInput)(nil)).Elem(), ContainerDeviceWriteBpArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceWriteBpArrayInput)(nil)).Elem(), ContainerDeviceWriteBpArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceWriteIopInput)(nil)).Elem(), ContainerDeviceWriteIopArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContainerDeviceWriteIopArrayInput)(nil)).Elem(), ContainerDeviceWriteIopArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerHealthcheckInput)(nil)).Elem(), ContainerHealthcheckArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerHealthcheckPtrInput)(nil)).Elem(), ContainerHealthcheckArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerHostInput)(nil)).Elem(), ContainerHostArgs{})
@@ -14475,6 +15379,8 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*SecretLabelArrayInput)(nil)).Elem(), SecretLabelArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceAuthInput)(nil)).Elem(), ServiceAuthArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceAuthPtrInput)(nil)).Elem(), ServiceAuthArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConfigLabelInput)(nil)).Elem(), ServiceConfigLabelArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConfigLabelArrayInput)(nil)).Elem(), ServiceConfigLabelArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConvergeConfigInput)(nil)).Elem(), ServiceConvergeConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConvergeConfigPtrInput)(nil)).Elem(), ServiceConvergeConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceEndpointSpecInput)(nil)).Elem(), ServiceEndpointSpecArgs{})
@@ -14549,6 +15455,8 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromPtrInput)(nil)).Elem(), CacheFromArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildInput)(nil)).Elem(), DockerBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildPtrInput)(nil)).Elem(), DockerBuildArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkContainerInput)(nil)).Elem(), GetNetworkContainerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkContainerArrayInput)(nil)).Elem(), GetNetworkContainerArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigInput)(nil)).Elem(), GetNetworkIpamConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigArrayInput)(nil)).Elem(), GetNetworkIpamConfigArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetRegistryImageManifestsAuthConfigInput)(nil)).Elem(), GetRegistryImageManifestsAuthConfigArgs{})
@@ -14573,6 +15481,16 @@ func init() {
 	pulumi.RegisterOutputType(ContainerCapabilitiesPtrOutput{})
 	pulumi.RegisterOutputType(ContainerDeviceOutput{})
 	pulumi.RegisterOutputType(ContainerDeviceArrayOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceReadBpOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceReadBpArrayOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceReadIopOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceReadIopArrayOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceRequestOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceRequestArrayOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceWriteBpOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceWriteBpArrayOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceWriteIopOutput{})
+	pulumi.RegisterOutputType(ContainerDeviceWriteIopArrayOutput{})
 	pulumi.RegisterOutputType(ContainerHealthcheckOutput{})
 	pulumi.RegisterOutputType(ContainerHealthcheckPtrOutput{})
 	pulumi.RegisterOutputType(ContainerHostOutput{})
@@ -14631,6 +15549,8 @@ func init() {
 	pulumi.RegisterOutputType(SecretLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceAuthOutput{})
 	pulumi.RegisterOutputType(ServiceAuthPtrOutput{})
+	pulumi.RegisterOutputType(ServiceConfigLabelOutput{})
+	pulumi.RegisterOutputType(ServiceConfigLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceConvergeConfigOutput{})
 	pulumi.RegisterOutputType(ServiceConvergeConfigPtrOutput{})
 	pulumi.RegisterOutputType(ServiceEndpointSpecOutput{})
@@ -14705,6 +15625,8 @@ func init() {
 	pulumi.RegisterOutputType(CacheFromPtrOutput{})
 	pulumi.RegisterOutputType(DockerBuildOutput{})
 	pulumi.RegisterOutputType(DockerBuildPtrOutput{})
+	pulumi.RegisterOutputType(GetNetworkContainerOutput{})
+	pulumi.RegisterOutputType(GetNetworkContainerArrayOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
 	pulumi.RegisterOutputType(GetRegistryImageManifestsAuthConfigOutput{})

@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ContainerDevice {
     /**
-     * @return The path in the container where the device will be bound.
+     * @return The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      * 
      */
     private @Nullable String containerPath;
@@ -30,7 +30,7 @@ public final class ContainerDevice {
 
     private ContainerDevice() {}
     /**
-     * @return The path in the container where the device will be bound.
+     * @return The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      * 
      */
     public Optional<String> containerPath() {

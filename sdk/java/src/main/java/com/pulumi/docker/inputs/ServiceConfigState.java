@@ -5,7 +5,9 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.docker.inputs.ServiceConfigLabelArgs;
 import java.lang.String;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -31,6 +33,21 @@ public final class ServiceConfigState extends com.pulumi.resources.ResourceArgs 
     }
 
     /**
+     * User-defined key/value metadata
+     * 
+     */
+    @Import(name="labels")
+    private @Nullable Output<List<ServiceConfigLabelArgs>> labels;
+
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
+    public Optional<Output<List<ServiceConfigLabelArgs>>> labels() {
+        return Optional.ofNullable(this.labels);
+    }
+
+    /**
      * User-defined name of the config
      * 
      */
@@ -49,6 +66,7 @@ public final class ServiceConfigState extends com.pulumi.resources.ResourceArgs 
 
     private ServiceConfigState(ServiceConfigState $) {
         this.data = $.data;
+        this.labels = $.labels;
         this.name = $.name;
     }
 
@@ -89,6 +107,37 @@ public final class ServiceConfigState extends com.pulumi.resources.ResourceArgs 
          */
         public Builder data(String data) {
             return data(Output.of(data));
+        }
+
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
+        public Builder labels(@Nullable Output<List<ServiceConfigLabelArgs>> labels) {
+            $.labels = labels;
+            return this;
+        }
+
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
+        public Builder labels(List<ServiceConfigLabelArgs> labels) {
+            return labels(Output.of(labels));
+        }
+
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
+        public Builder labels(ServiceConfigLabelArgs... labels) {
+            return labels(List.of(labels));
         }
 
         /**

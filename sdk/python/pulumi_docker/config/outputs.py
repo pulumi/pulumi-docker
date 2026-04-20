@@ -30,7 +30,7 @@ class RegistryAuth(dict):
         """
         :param _builtins.str address: Address of the registry
         :param _builtins.bool auth_disabled: Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
-        :param _builtins.str config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        :param _builtins.str config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `config_file` has precedence over all other options.
         :param _builtins.str config_file_content: Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
         :param _builtins.str password: Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
         :param _builtins.str username: Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
@@ -67,7 +67,7 @@ class RegistryAuth(dict):
     @pulumi.getter(name="configFile")
     def config_file(self) -> Optional[_builtins.str]:
         """
-        Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `config_file` has precedence over all other options.
         """
         return pulumi.get(self, "config_file")
 

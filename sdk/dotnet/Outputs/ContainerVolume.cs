@@ -30,6 +30,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly bool? ReadOnly;
         /// <summary>
+        /// SELinux relabel mode for bind mounts. Supported values are `Z` and `Z`.
+        /// </summary>
+        public readonly string? SelinuxRelabel;
+        /// <summary>
         /// The name of the docker volume which should be mounted.
         /// </summary>
         public readonly string? VolumeName;
@@ -44,12 +48,15 @@ namespace Pulumi.Docker.Outputs
 
             bool? readOnly,
 
+            string? selinuxRelabel,
+
             string? volumeName)
         {
             ContainerPath = containerPath;
             FromContainer = fromContainer;
             HostPath = hostPath;
             ReadOnly = readOnly;
+            SelinuxRelabel = selinuxRelabel;
             VolumeName = volumeName;
         }
     }

@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"errors"
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -72,6 +72,8 @@ type ServiceConfig struct {
 
 	// Base64-url-safe-encoded config data
 	Data pulumi.StringOutput `pulumi:"data"`
+	// User-defined key/value metadata
+	Labels ServiceConfigLabelArrayOutput `pulumi:"labels"`
 	// User-defined name of the config
 	Name pulumi.StringOutput `pulumi:"name"`
 }
@@ -111,6 +113,8 @@ func GetServiceConfig(ctx *pulumi.Context,
 type serviceConfigState struct {
 	// Base64-url-safe-encoded config data
 	Data *string `pulumi:"data"`
+	// User-defined key/value metadata
+	Labels []ServiceConfigLabel `pulumi:"labels"`
 	// User-defined name of the config
 	Name *string `pulumi:"name"`
 }
@@ -118,6 +122,8 @@ type serviceConfigState struct {
 type ServiceConfigState struct {
 	// Base64-url-safe-encoded config data
 	Data pulumi.StringPtrInput
+	// User-defined key/value metadata
+	Labels ServiceConfigLabelArrayInput
 	// User-defined name of the config
 	Name pulumi.StringPtrInput
 }
@@ -129,6 +135,8 @@ func (ServiceConfigState) ElementType() reflect.Type {
 type serviceConfigArgs struct {
 	// Base64-url-safe-encoded config data
 	Data string `pulumi:"data"`
+	// User-defined key/value metadata
+	Labels []ServiceConfigLabel `pulumi:"labels"`
 	// User-defined name of the config
 	Name *string `pulumi:"name"`
 }
@@ -137,6 +145,8 @@ type serviceConfigArgs struct {
 type ServiceConfigArgs struct {
 	// Base64-url-safe-encoded config data
 	Data pulumi.StringInput
+	// User-defined key/value metadata
+	Labels ServiceConfigLabelArrayInput
 	// User-defined name of the config
 	Name pulumi.StringPtrInput
 }
@@ -231,6 +241,11 @@ func (o ServiceConfigOutput) ToServiceConfigOutputWithContext(ctx context.Contex
 // Base64-url-safe-encoded config data
 func (o ServiceConfigOutput) Data() pulumi.StringOutput {
 	return o.ApplyT(func(v *ServiceConfig) pulumi.StringOutput { return v.Data }).(pulumi.StringOutput)
+}
+
+// User-defined key/value metadata
+func (o ServiceConfigOutput) Labels() ServiceConfigLabelArrayOutput {
+	return o.ApplyT(func(v *ServiceConfig) ServiceConfigLabelArrayOutput { return v.Labels }).(ServiceConfigLabelArrayOutput)
 }
 
 // User-defined name of the config

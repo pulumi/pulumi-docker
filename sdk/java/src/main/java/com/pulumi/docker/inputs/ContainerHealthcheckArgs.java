@@ -5,7 +5,6 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -79,18 +78,18 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
     }
 
     /**
-     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
-    @Import(name="tests", required=true)
-    private Output<List<String>> tests;
+    @Import(name="tests")
+    private @Nullable Output<List<String>> tests;
 
     /**
-     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
-    public Output<List<String>> tests() {
-        return this.tests;
+    public Optional<Output<List<String>>> tests() {
+        return Optional.ofNullable(this.tests);
     }
 
     /**
@@ -222,18 +221,18 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
          * 
          * @return builder
          * 
          */
-        public Builder tests(Output<List<String>> tests) {
+        public Builder tests(@Nullable Output<List<String>> tests) {
             $.tests = tests;
             return this;
         }
 
         /**
-         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
          * 
          * @return builder
          * 
@@ -243,7 +242,7 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
          * 
          * @return builder
          * 
@@ -274,9 +273,6 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
         }
 
         public ContainerHealthcheckArgs build() {
-            if ($.tests == null) {
-                throw new MissingRequiredPropertyException("ContainerHealthcheckArgs", "tests");
-            }
             return $;
         }
     }

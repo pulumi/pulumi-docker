@@ -19,7 +19,7 @@ public final class ServiceEndpointSpecPort {
      */
     private @Nullable String name;
     /**
-     * @return Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * @return Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      * 
      */
     private @Nullable String protocol;
@@ -48,7 +48,7 @@ public final class ServiceEndpointSpecPort {
         return Optional.ofNullable(this.name);
     }
     /**
-     * @return Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * @return Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      * 
      */
     public Optional<String> protocol() {

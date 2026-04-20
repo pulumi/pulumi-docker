@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"errors"
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

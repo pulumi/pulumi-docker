@@ -506,7 +506,23 @@ class BuildxBuilder(pulumi.CustomResource):
                  use: Optional[pulumi.Input[_builtins.bool]] = None,
                  __props__=None):
         """
+        <!-- Bug: Type and Name are switched -->
         Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        example = docker.BuildxBuilder("example",
+            name="example-builder",
+            driver="docker-container",
+            use=True,
+            docker_container={
+                "image": "moby/buildkit:latest",
+            })
+        ```
 
 
         :param str resource_name: The name of the resource.
@@ -533,7 +549,23 @@ class BuildxBuilder(pulumi.CustomResource):
                  args: Optional[BuildxBuilderArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
+        <!-- Bug: Type and Name are switched -->
         Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        example = docker.BuildxBuilder("example",
+            name="example-builder",
+            driver="docker-container",
+            use=True,
+            docker_container={
+                "image": "moby/buildkit:latest",
+            })
+        ```
 
 
         :param str resource_name: The name of the resource.

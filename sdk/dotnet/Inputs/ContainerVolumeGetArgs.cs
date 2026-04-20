@@ -37,6 +37,12 @@ namespace Pulumi.Docker.Inputs
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
+        /// SELinux relabel mode for bind mounts. Supported values are `Z` and `Z`.
+        /// </summary>
+        [Input("selinuxRelabel")]
+        public Input<string>? SelinuxRelabel { get; set; }
+
+        /// <summary>
         /// The name of the docker volume which should be mounted.
         /// </summary>
         [Input("volumeName")]

@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceTaskSpecResourcesLimitsArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The amounf of memory in bytes the container allocates
+        /// The amount of memory in bytes the container allocates
         /// </summary>
         [Input("memoryBytes")]
         public Input<int>? MemoryBytes { get; set; }

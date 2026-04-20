@@ -77,6 +77,21 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
+     * SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+     * 
+     */
+    @Import(name="selinuxRelabel")
+    private @Nullable Output<String> selinuxRelabel;
+
+    /**
+     * @return SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+     * 
+     */
+    public Optional<Output<String>> selinuxRelabel() {
+        return Optional.ofNullable(this.selinuxRelabel);
+    }
+
+    /**
      * The name of the docker volume which should be mounted.
      * 
      */
@@ -98,6 +113,7 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
         this.fromContainer = $.fromContainer;
         this.hostPath = $.hostPath;
         this.readOnly = $.readOnly;
+        this.selinuxRelabel = $.selinuxRelabel;
         this.volumeName = $.volumeName;
     }
 
@@ -201,6 +217,27 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
          */
         public Builder readOnly(Boolean readOnly) {
             return readOnly(Output.of(readOnly));
+        }
+
+        /**
+         * @param selinuxRelabel SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder selinuxRelabel(@Nullable Output<String> selinuxRelabel) {
+            $.selinuxRelabel = selinuxRelabel;
+            return this;
+        }
+
+        /**
+         * @param selinuxRelabel SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder selinuxRelabel(String selinuxRelabel) {
+            return selinuxRelabel(Output.of(selinuxRelabel));
         }
 
         /**

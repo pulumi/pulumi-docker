@@ -8,7 +8,24 @@ import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
+ * <!-- Bug: Type and Name are switched -->
  * Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const example = new docker.BuildxBuilder("example", {
+ *     name: "example-builder",
+ *     driver: "docker-container",
+ *     use: true,
+ *     dockerContainer: {
+ *         image: "moby/buildkit:latest",
+ *     },
+ * });
+ * ```
  */
 export class BuildxBuilder extends pulumi.CustomResource {
     /**

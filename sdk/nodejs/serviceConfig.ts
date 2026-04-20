@@ -2,6 +2,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
@@ -92,6 +95,10 @@ export class ServiceConfig extends pulumi.CustomResource {
      */
     declare public readonly data: pulumi.Output<string>;
     /**
+     * User-defined key/value metadata
+     */
+    declare public readonly labels: pulumi.Output<outputs.ServiceConfigLabel[] | undefined>;
+    /**
      * User-defined name of the config
      */
     declare public readonly name: pulumi.Output<string>;
@@ -110,6 +117,7 @@ export class ServiceConfig extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as ServiceConfigState | undefined;
             resourceInputs["data"] = state?.data;
+            resourceInputs["labels"] = state?.labels;
             resourceInputs["name"] = state?.name;
         } else {
             const args = argsOrState as ServiceConfigArgs | undefined;
@@ -117,6 +125,7 @@ export class ServiceConfig extends pulumi.CustomResource {
                 throw new Error("Missing required property 'data'");
             }
             resourceInputs["data"] = args?.data;
+            resourceInputs["labels"] = args?.labels;
             resourceInputs["name"] = args?.name;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -133,6 +142,10 @@ export interface ServiceConfigState {
      */
     data?: pulumi.Input<string>;
     /**
+     * User-defined key/value metadata
+     */
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[]>;
+    /**
      * User-defined name of the config
      */
     name?: pulumi.Input<string>;
@@ -146,6 +159,10 @@ export interface ServiceConfigArgs {
      * Base64-url-safe-encoded config data
      */
     data: pulumi.Input<string>;
+    /**
+     * User-defined key/value metadata
+     */
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[]>;
     /**
      * User-defined name of the config
      */

@@ -104,14 +104,15 @@ import javax.annotation.Nullable;
  * }
  * </pre>
  * 
- * ### Build
+ * ## Build
  * 
  * You can also use the resource to build an image. If you want to use a buildx builder with all of its features, please read the section below.
  * 
  * &gt; **Note**: The default timeout for the building is 20 minutes. If you need to increase this, you can use operation timeouts.
  * 
  * In this case the image &#34;zoo&#34; and &#34;zoo:develop&#34; are built.
- * The `context` and `dockerfile` arguments are relative to the local Terraform process (`path.cwd`).
+ * The `context` path is resolved on the machine running Terraform (relative paths are relative to the current working directory, i.e. `path.cwd`).
+ * If `dockerfile` is not an absolute path, it is resolved relative to `context`.
  * There is no need to copy the files to remote hosts before creating the resource.
  * 
  * <pre>

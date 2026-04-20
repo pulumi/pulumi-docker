@@ -10,7 +10,32 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var example = new Docker.Index.BuildxBuilder("example", new()
+    ///     {
+    ///         Name = "example-builder",
+    ///         Driver = "docker-container",
+    ///         Use = true,
+    ///         DockerContainer = new Docker.Inputs.BuildxBuilderDockerContainerArgs
+    ///         {
+    ///             Image = "moby/buildkit:latest",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
     /// </summary>
     [DockerResourceType("docker:index/buildxBuilder:BuildxBuilder")]
     public partial class BuildxBuilder : global::Pulumi.CustomResource

@@ -13,6 +13,8 @@ if sys.version_info >= (3, 11):
 else:
     from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
+from . import outputs
+from ._inputs import *
 
 __all__ = ['ServiceConfigArgs', 'ServiceConfig']
 
@@ -20,14 +22,18 @@ __all__ = ['ServiceConfigArgs', 'ServiceConfig']
 class ServiceConfigArgs:
     def __init__(__self__, *,
                  data: pulumi.Input[_builtins.str],
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a ServiceConfig resource.
 
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: User-defined name of the config
         """
         pulumi.set(__self__, "data", data)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
         if name is not None:
             pulumi.set(__self__, "name", name)
 
@@ -42,6 +48,18 @@ class ServiceConfigArgs:
     @data.setter
     def data(self, value: pulumi.Input[_builtins.str]):
         pulumi.set(self, "data", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]]]:
+        """
+        User-defined key/value metadata
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
 
     @_builtins.property
     @pulumi.getter
@@ -60,15 +78,19 @@ class ServiceConfigArgs:
 class _ServiceConfigState:
     def __init__(__self__, *,
                  data: Optional[pulumi.Input[_builtins.str]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering ServiceConfig resources.
 
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: User-defined name of the config
         """
         if data is not None:
             pulumi.set(__self__, "data", data)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
         if name is not None:
             pulumi.set(__self__, "name", name)
 
@@ -83,6 +105,18 @@ class _ServiceConfigState:
     @data.setter
     def data(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "data", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]]]:
+        """
+        User-defined key/value metadata
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceConfigLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
 
     @_builtins.property
     @pulumi.getter
@@ -104,6 +138,7 @@ class ServiceConfig(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  data: Optional[pulumi.Input[_builtins.str]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ServiceConfigLabelArgs', 'ServiceConfigLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
                  __props__=None):
         """
@@ -165,6 +200,7 @@ class ServiceConfig(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ServiceConfigLabelArgs', 'ServiceConfigLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: User-defined name of the config
         """
         ...
@@ -245,6 +281,7 @@ class ServiceConfig(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  data: Optional[pulumi.Input[_builtins.str]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ServiceConfigLabelArgs', 'ServiceConfigLabelArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -258,6 +295,7 @@ class ServiceConfig(pulumi.CustomResource):
             if data is None and not opts.urn:
                 raise TypeError("Missing required property 'data'")
             __props__.__dict__["data"] = data
+            __props__.__dict__["labels"] = labels
             __props__.__dict__["name"] = name
         super(ServiceConfig, __self__).__init__(
             'docker:index/serviceConfig:ServiceConfig',
@@ -270,6 +308,7 @@ class ServiceConfig(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             data: Optional[pulumi.Input[_builtins.str]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ServiceConfigLabelArgs', 'ServiceConfigLabelArgsDict']]]]] = None,
             name: Optional[pulumi.Input[_builtins.str]] = None) -> 'ServiceConfig':
         """
         Get an existing ServiceConfig resource's state with the given name, id, and optional extra
@@ -279,6 +318,7 @@ class ServiceConfig(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ServiceConfigLabelArgs', 'ServiceConfigLabelArgsDict']]]] labels: User-defined key/value metadata
         :param pulumi.Input[_builtins.str] name: User-defined name of the config
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -286,6 +326,7 @@ class ServiceConfig(pulumi.CustomResource):
         __props__ = _ServiceConfigState.__new__(_ServiceConfigState)
 
         __props__.__dict__["data"] = data
+        __props__.__dict__["labels"] = labels
         __props__.__dict__["name"] = name
         return ServiceConfig(resource_name, opts=opts, __props__=__props__)
 
@@ -296,6 +337,14 @@ class ServiceConfig(pulumi.CustomResource):
         Base64-url-safe-encoded config data
         """
         return pulumi.get(self, "data")
+
+    @_builtins.property
+    @pulumi.getter
+    def labels(self) -> pulumi.Output[Optional[Sequence['outputs.ServiceConfigLabel']]]:
+        """
+        User-defined key/value metadata
+        """
+        return pulumi.get(self, "labels")
 
     @_builtins.property
     @pulumi.getter

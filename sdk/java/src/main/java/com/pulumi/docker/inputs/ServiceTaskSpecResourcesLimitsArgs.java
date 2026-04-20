@@ -16,14 +16,14 @@ public final class ServiceTaskSpecResourcesLimitsArgs extends com.pulumi.resourc
     public static final ServiceTaskSpecResourcesLimitsArgs Empty = new ServiceTaskSpecResourcesLimitsArgs();
 
     /**
-     * The amounf of memory in bytes the container allocates
+     * The amount of memory in bytes the container allocates
      * 
      */
     @Import(name="memoryBytes")
     private @Nullable Output<Integer> memoryBytes;
 
     /**
-     * @return The amounf of memory in bytes the container allocates
+     * @return The amount of memory in bytes the container allocates
      * 
      */
     public Optional<Output<Integer>> memoryBytes() {
@@ -71,7 +71,7 @@ public final class ServiceTaskSpecResourcesLimitsArgs extends com.pulumi.resourc
         }
 
         /**
-         * @param memoryBytes The amounf of memory in bytes the container allocates
+         * @param memoryBytes The amount of memory in bytes the container allocates
          * 
          * @return builder
          * 
@@ -82,7 +82,7 @@ public final class ServiceTaskSpecResourcesLimitsArgs extends com.pulumi.resourc
         }
 
         /**
-         * @param memoryBytes The amounf of memory in bytes the container allocates
+         * @param memoryBytes The amount of memory in bytes the container allocates
          * 
          * @return builder
          * 

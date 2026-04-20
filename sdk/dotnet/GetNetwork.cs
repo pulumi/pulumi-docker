@@ -118,6 +118,10 @@ namespace Pulumi.Docker
     public sealed class GetNetworkResult
     {
         /// <summary>
+        /// Containers attached to the network.
+        /// </summary>
+        public readonly ImmutableArray<Outputs.GetNetworkContainerResult> Containers;
+        /// <summary>
         /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         public readonly string Driver;
@@ -148,6 +152,8 @@ namespace Pulumi.Docker
 
         [OutputConstructor]
         private GetNetworkResult(
+            ImmutableArray<Outputs.GetNetworkContainerResult> containers,
+
             string driver,
 
             string id,
@@ -162,6 +168,7 @@ namespace Pulumi.Docker
 
             string scope)
         {
+            Containers = containers;
             Driver = driver;
             Id = id;
             Internal = @internal;

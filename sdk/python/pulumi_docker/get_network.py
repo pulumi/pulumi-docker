@@ -27,7 +27,10 @@ class GetNetworkResult:
     """
     A collection of values returned by getNetwork.
     """
-    def __init__(__self__, driver=None, id=None, internal=None, ipam_configs=None, name=None, options=None, scope=None):
+    def __init__(__self__, containers=None, driver=None, id=None, internal=None, ipam_configs=None, name=None, options=None, scope=None):
+        if containers and not isinstance(containers, list):
+            raise TypeError("Expected argument 'containers' to be a list")
+        pulumi.set(__self__, "containers", containers)
         if driver and not isinstance(driver, str):
             raise TypeError("Expected argument 'driver' to be a str")
         pulumi.set(__self__, "driver", driver)
@@ -49,6 +52,14 @@ class GetNetworkResult:
         if scope and not isinstance(scope, str):
             raise TypeError("Expected argument 'scope' to be a str")
         pulumi.set(__self__, "scope", scope)
+
+    @_builtins.property
+    @pulumi.getter
+    def containers(self) -> Sequence['outputs.GetNetworkContainerResult']:
+        """
+        Containers attached to the network.
+        """
+        return pulumi.get(self, "containers")
 
     @_builtins.property
     @pulumi.getter
@@ -113,6 +124,7 @@ class AwaitableGetNetworkResult(GetNetworkResult):
         if False:
             yield self
         return GetNetworkResult(
+            containers=self.containers,
             driver=self.driver,
             id=self.id,
             internal=self.internal,
@@ -145,6 +157,7 @@ def get_network(name: Optional[_builtins.str] = None,
     __ret__ = pulumi.runtime.invoke('docker:index/getNetwork:getNetwork', __args__, opts=opts, typ=GetNetworkResult).value
 
     return AwaitableGetNetworkResult(
+        containers=pulumi.get(__ret__, 'containers'),
         driver=pulumi.get(__ret__, 'driver'),
         id=pulumi.get(__ret__, 'id'),
         internal=pulumi.get(__ret__, 'internal'),
@@ -174,6 +187,7 @@ def get_network_output(name: Optional[pulumi.Input[_builtins.str]] = None,
     opts = pulumi.InvokeOutputOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
     __ret__ = pulumi.runtime.invoke_output('docker:index/getNetwork:getNetwork', __args__, opts=opts, typ=GetNetworkResult)
     return __ret__.apply(lambda __response__: GetNetworkResult(
+        containers=pulumi.get(__response__, 'containers'),
         driver=pulumi.get(__response__, 'driver'),
         id=pulumi.get(__response__, 'id'),
         internal=pulumi.get(__response__, 'internal'),

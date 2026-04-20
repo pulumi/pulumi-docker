@@ -10,7 +10,10 @@ import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.ServiceConfigArgs;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.ServiceConfigState;
+import com.pulumi.docker.outputs.ServiceConfigLabel;
 import java.lang.String;
+import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
@@ -84,6 +87,20 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
      */
     public Output<String> data() {
         return this.data;
+    }
+    /**
+     * User-defined key/value metadata
+     * 
+     */
+    @Export(name="labels", refs={List.class,ServiceConfigLabel.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ServiceConfigLabel>> labels;
+
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
+    public Output<Optional<List<ServiceConfigLabel>>> labels() {
+        return Codegen.optional(this.labels);
     }
     /**
      * User-defined name of the config

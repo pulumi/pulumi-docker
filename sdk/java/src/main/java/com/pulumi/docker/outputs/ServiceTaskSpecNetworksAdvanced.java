@@ -4,10 +4,10 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.Nullable;
 
 @CustomType
@@ -23,10 +23,19 @@ public final class ServiceTaskSpecNetworksAdvanced {
      */
     private @Nullable List<String> driverOpts;
     /**
-     * @return The name/id of the network.
+     * @return The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      * 
      */
-    private String name;
+    private @Nullable String id;
+    /**
+     * @return Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+     * 
+     * @deprecated
+     * Use the id attribute.
+     * 
+     */
+    @Deprecated /* Use the id attribute. */
+    private @Nullable String name;
 
     private ServiceTaskSpecNetworksAdvanced() {}
     /**
@@ -44,11 +53,22 @@ public final class ServiceTaskSpecNetworksAdvanced {
         return this.driverOpts == null ? List.of() : this.driverOpts;
     }
     /**
-     * @return The name/id of the network.
+     * @return The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      * 
      */
-    public String name() {
-        return this.name;
+    public Optional<String> id() {
+        return Optional.ofNullable(this.id);
+    }
+    /**
+     * @return Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+     * 
+     * @deprecated
+     * Use the id attribute.
+     * 
+     */
+    @Deprecated /* Use the id attribute. */
+    public Optional<String> name() {
+        return Optional.ofNullable(this.name);
     }
 
     public static Builder builder() {
@@ -62,12 +82,14 @@ public final class ServiceTaskSpecNetworksAdvanced {
     public static final class Builder {
         private @Nullable List<String> aliases;
         private @Nullable List<String> driverOpts;
-        private String name;
+        private @Nullable String id;
+        private @Nullable String name;
         public Builder() {}
         public Builder(ServiceTaskSpecNetworksAdvanced defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.aliases = defaults.aliases;
     	      this.driverOpts = defaults.driverOpts;
+    	      this.id = defaults.id;
     	      this.name = defaults.name;
         }
 
@@ -90,10 +112,14 @@ public final class ServiceTaskSpecNetworksAdvanced {
             return driverOpts(List.of(driverOpts));
         }
         @CustomType.Setter
-        public Builder name(String name) {
-            if (name == null) {
-              throw new MissingRequiredPropertyException("ServiceTaskSpecNetworksAdvanced", "name");
-            }
+        public Builder id(@Nullable String id) {
+
+            this.id = id;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder name(@Nullable String name) {
+
             this.name = name;
             return this;
         }
@@ -101,6 +127,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
             final var _resultValue = new ServiceTaskSpecNetworksAdvanced();
             _resultValue.aliases = aliases;
             _resultValue.driverOpts = driverOpts;
+            _resultValue.id = id;
             _resultValue.name = name;
             return _resultValue;
         }

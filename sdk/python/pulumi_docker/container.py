@@ -34,6 +34,11 @@ class ContainerArgs:
                  cpu_shares: Optional[pulumi.Input[_builtins.int]] = None,
                  cpus: Optional[pulumi.Input[_builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[_builtins.int]] = None,
+                 device_read_bps: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]] = None,
+                 device_read_iops: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]] = None,
+                 device_requests: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]] = None,
+                 device_write_bps: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]]] = None,
+                 device_write_iops: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
@@ -62,6 +67,7 @@ class ContainerArgs:
                  network_mode: Optional[pulumi.Input[_builtins.str]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]] = None,
                  pid_mode: Optional[pulumi.Input[_builtins.str]] = None,
+                 platform: Optional[pulumi.Input[_builtins.str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]]] = None,
                  privileged: Optional[pulumi.Input[_builtins.bool]] = None,
                  publish_all_ports: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -93,7 +99,7 @@ class ContainerArgs:
 
         :param pulumi.Input[_builtins.str] image: The ID of the image to back this container. The easiest way to get this value is to use the `image_id` attribute of the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
-        :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certain linux capabilities.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[_builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
@@ -104,14 +110,19 @@ class ContainerArgs:
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind devices to the container.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]] device_write_bps: Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]] device_write_iops: Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[_builtins.str] domainname: Domain name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
-        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] group_adds: Additional groups for the container user
         :param pulumi.Input['ContainerHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[_builtins.str] hostname: Hostname of the container.
@@ -127,11 +138,12 @@ class ContainerArgs:
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
-        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
-        :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
+        :param pulumi.Input[_builtins.str] pid_mode: The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[_builtins.str] platform: Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[_builtins.bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[_builtins.bool] publish_all_ports: Publish all ports of the container.
@@ -152,7 +164,7 @@ class ContainerArgs:
         :param pulumi.Input[_builtins.bool] tty: If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerUlimitArgs']]] ulimits: Ulimit options to add.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerUploadArgs']]] uploads: Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
-        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         :param pulumi.Input[_builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]] volumes: Spec for mounting volumes in the container.
         :param pulumi.Input[_builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
@@ -184,6 +196,16 @@ class ContainerArgs:
             pulumi.set(__self__, "cpus", cpus)
         if destroy_grace_seconds is not None:
             pulumi.set(__self__, "destroy_grace_seconds", destroy_grace_seconds)
+        if device_read_bps is not None:
+            pulumi.set(__self__, "device_read_bps", device_read_bps)
+        if device_read_iops is not None:
+            pulumi.set(__self__, "device_read_iops", device_read_iops)
+        if device_requests is not None:
+            pulumi.set(__self__, "device_requests", device_requests)
+        if device_write_bps is not None:
+            pulumi.set(__self__, "device_write_bps", device_write_bps)
+        if device_write_iops is not None:
+            pulumi.set(__self__, "device_write_iops", device_write_iops)
         if devices is not None:
             pulumi.set(__self__, "devices", devices)
         if dns is not None:
@@ -240,6 +262,8 @@ class ContainerArgs:
             pulumi.set(__self__, "networks_advanced", networks_advanced)
         if pid_mode is not None:
             pulumi.set(__self__, "pid_mode", pid_mode)
+        if platform is not None:
+            pulumi.set(__self__, "platform", platform)
         if ports is not None:
             pulumi.set(__self__, "ports", ports)
         if privileged is not None:
@@ -321,7 +345,7 @@ class ContainerArgs:
     @pulumi.getter
     def capabilities(self) -> Optional[pulumi.Input['ContainerCapabilitiesArgs']]:
         """
-        Add or drop certrain linux capabilities.
+        Add or drop certain linux capabilities.
         """
         return pulumi.get(self, "capabilities")
 
@@ -450,10 +474,70 @@ class ContainerArgs:
         pulumi.set(self, "destroy_grace_seconds", value)
 
     @_builtins.property
+    @pulumi.getter(name="deviceReadBps")
+    def device_read_bps(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]]:
+        """
+        Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        """
+        return pulumi.get(self, "device_read_bps")
+
+    @device_read_bps.setter
+    def device_read_bps(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]]):
+        pulumi.set(self, "device_read_bps", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceReadIops")
+    def device_read_iops(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]]:
+        """
+        Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        """
+        return pulumi.get(self, "device_read_iops")
+
+    @device_read_iops.setter
+    def device_read_iops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]]):
+        pulumi.set(self, "device_read_iops", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceRequests")
+    def device_requests(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]]:
+        """
+        Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        """
+        return pulumi.get(self, "device_requests")
+
+    @device_requests.setter
+    def device_requests(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]]):
+        pulumi.set(self, "device_requests", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceWriteBps")
+    def device_write_bps(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]]]:
+        """
+        Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        """
+        return pulumi.get(self, "device_write_bps")
+
+    @device_write_bps.setter
+    def device_write_bps(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]]]):
+        pulumi.set(self, "device_write_bps", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceWriteIops")
+    def device_write_iops(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]]]:
+        """
+        Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        """
+        return pulumi.get(self, "device_write_iops")
+
+    @device_write_iops.setter
+    def device_write_iops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]]]):
+        pulumi.set(self, "device_write_iops", value)
+
+    @_builtins.property
     @pulumi.getter
     def devices(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]]]:
         """
-        Bind devices to the container.
+        Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         """
         return pulumi.get(self, "devices")
 
@@ -537,7 +621,7 @@ class ContainerArgs:
     @pulumi.getter
     def gpus(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         """
         return pulumi.get(self, "gpus")
 
@@ -729,7 +813,7 @@ class ContainerArgs:
     @pulumi.getter(name="mustRun")
     def must_run(self) -> Optional[pulumi.Input[_builtins.bool]]:
         """
-        If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         """
         return pulumi.get(self, "must_run")
 
@@ -765,7 +849,7 @@ class ContainerArgs:
     @pulumi.getter(name="networksAdvanced")
     def networks_advanced(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]]:
         """
-        The networks the container is attached to
+        The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
         """
         return pulumi.get(self, "networks_advanced")
 
@@ -777,13 +861,25 @@ class ContainerArgs:
     @pulumi.getter(name="pidMode")
     def pid_mode(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         """
         return pulumi.get(self, "pid_mode")
 
     @pid_mode.setter
     def pid_mode(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "pid_mode", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def platform(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+        """
+        return pulumi.get(self, "platform")
+
+    @platform.setter
+    def platform(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "platform", value)
 
     @_builtins.property
     @pulumi.getter
@@ -1029,7 +1125,7 @@ class ContainerArgs:
     @pulumi.getter
     def user(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         """
         return pulumi.get(self, "user")
 
@@ -1115,6 +1211,11 @@ class _ContainerState:
                  cpu_shares: Optional[pulumi.Input[_builtins.int]] = None,
                  cpus: Optional[pulumi.Input[_builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[_builtins.int]] = None,
+                 device_read_bps: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]] = None,
+                 device_read_iops: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]] = None,
+                 device_requests: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]] = None,
+                 device_write_bps: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]]] = None,
+                 device_write_iops: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
@@ -1146,6 +1247,7 @@ class _ContainerState:
                  network_mode: Optional[pulumi.Input[_builtins.str]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]] = None,
                  pid_mode: Optional[pulumi.Input[_builtins.str]] = None,
+                 platform: Optional[pulumi.Input[_builtins.str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]]] = None,
                  privileged: Optional[pulumi.Input[_builtins.bool]] = None,
                  publish_all_ports: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -1177,7 +1279,7 @@ class _ContainerState:
 
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[_builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
-        :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certain linux capabilities.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[_builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
@@ -1189,7 +1291,12 @@ class _ContainerState:
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind devices to the container.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]] device_write_bps: Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]] device_write_iops: Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]] devices: Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
@@ -1197,7 +1304,7 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[_builtins.int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
-        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] group_adds: Additional groups for the container user
         :param pulumi.Input['ContainerHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[_builtins.str] hostname: Hostname of the container.
@@ -1214,12 +1321,13 @@ class _ContainerState:
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
-        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
-        :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
+        :param pulumi.Input[_builtins.str] pid_mode: The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[_builtins.str] platform: Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[_builtins.bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[_builtins.bool] publish_all_ports: Publish all ports of the container.
@@ -1240,7 +1348,7 @@ class _ContainerState:
         :param pulumi.Input[_builtins.bool] tty: If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerUlimitArgs']]] ulimits: Ulimit options to add.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerUploadArgs']]] uploads: Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
-        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         :param pulumi.Input[_builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]] volumes: Spec for mounting volumes in the container.
         :param pulumi.Input[_builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
@@ -1275,6 +1383,16 @@ class _ContainerState:
             pulumi.set(__self__, "cpus", cpus)
         if destroy_grace_seconds is not None:
             pulumi.set(__self__, "destroy_grace_seconds", destroy_grace_seconds)
+        if device_read_bps is not None:
+            pulumi.set(__self__, "device_read_bps", device_read_bps)
+        if device_read_iops is not None:
+            pulumi.set(__self__, "device_read_iops", device_read_iops)
+        if device_requests is not None:
+            pulumi.set(__self__, "device_requests", device_requests)
+        if device_write_bps is not None:
+            pulumi.set(__self__, "device_write_bps", device_write_bps)
+        if device_write_iops is not None:
+            pulumi.set(__self__, "device_write_iops", device_write_iops)
         if devices is not None:
             pulumi.set(__self__, "devices", devices)
         if dns is not None:
@@ -1337,6 +1455,8 @@ class _ContainerState:
             pulumi.set(__self__, "networks_advanced", networks_advanced)
         if pid_mode is not None:
             pulumi.set(__self__, "pid_mode", pid_mode)
+        if platform is not None:
+            pulumi.set(__self__, "platform", platform)
         if ports is not None:
             pulumi.set(__self__, "ports", ports)
         if privileged is not None:
@@ -1418,7 +1538,7 @@ class _ContainerState:
     @pulumi.getter
     def capabilities(self) -> Optional[pulumi.Input['ContainerCapabilitiesArgs']]:
         """
-        Add or drop certrain linux capabilities.
+        Add or drop certain linux capabilities.
         """
         return pulumi.get(self, "capabilities")
 
@@ -1559,10 +1679,70 @@ class _ContainerState:
         pulumi.set(self, "destroy_grace_seconds", value)
 
     @_builtins.property
+    @pulumi.getter(name="deviceReadBps")
+    def device_read_bps(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]]:
+        """
+        Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        """
+        return pulumi.get(self, "device_read_bps")
+
+    @device_read_bps.setter
+    def device_read_bps(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]]):
+        pulumi.set(self, "device_read_bps", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceReadIops")
+    def device_read_iops(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]]:
+        """
+        Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        """
+        return pulumi.get(self, "device_read_iops")
+
+    @device_read_iops.setter
+    def device_read_iops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]]):
+        pulumi.set(self, "device_read_iops", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceRequests")
+    def device_requests(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]]:
+        """
+        Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        """
+        return pulumi.get(self, "device_requests")
+
+    @device_requests.setter
+    def device_requests(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]]):
+        pulumi.set(self, "device_requests", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceWriteBps")
+    def device_write_bps(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]]]:
+        """
+        Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        """
+        return pulumi.get(self, "device_write_bps")
+
+    @device_write_bps.setter
+    def device_write_bps(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteBpArgs']]]]):
+        pulumi.set(self, "device_write_bps", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceWriteIops")
+    def device_write_iops(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]]]:
+        """
+        Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        """
+        return pulumi.get(self, "device_write_iops")
+
+    @device_write_iops.setter
+    def device_write_iops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceWriteIopArgs']]]]):
+        pulumi.set(self, "device_write_iops", value)
+
+    @_builtins.property
     @pulumi.getter
     def devices(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerDeviceArgs']]]]:
         """
-        Bind devices to the container.
+        Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         """
         return pulumi.get(self, "devices")
 
@@ -1658,7 +1838,7 @@ class _ContainerState:
     @pulumi.getter
     def gpus(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         """
         return pulumi.get(self, "gpus")
 
@@ -1862,7 +2042,7 @@ class _ContainerState:
     @pulumi.getter(name="mustRun")
     def must_run(self) -> Optional[pulumi.Input[_builtins.bool]]:
         """
-        If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         """
         return pulumi.get(self, "must_run")
 
@@ -1910,7 +2090,7 @@ class _ContainerState:
     @pulumi.getter(name="networksAdvanced")
     def networks_advanced(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]]:
         """
-        The networks the container is attached to
+        The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
         """
         return pulumi.get(self, "networks_advanced")
 
@@ -1922,13 +2102,25 @@ class _ContainerState:
     @pulumi.getter(name="pidMode")
     def pid_mode(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         """
         return pulumi.get(self, "pid_mode")
 
     @pid_mode.setter
     def pid_mode(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "pid_mode", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def platform(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+        """
+        return pulumi.get(self, "platform")
+
+    @platform.setter
+    def platform(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "platform", value)
 
     @_builtins.property
     @pulumi.getter
@@ -2174,7 +2366,7 @@ class _ContainerState:
     @pulumi.getter
     def user(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         """
         return pulumi.get(self, "user")
 
@@ -2261,6 +2453,11 @@ class Container(pulumi.CustomResource):
                  cpu_shares: Optional[pulumi.Input[_builtins.int]] = None,
                  cpus: Optional[pulumi.Input[_builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[_builtins.int]] = None,
+                 device_read_bps: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]]] = None,
+                 device_read_iops: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]]] = None,
+                 device_requests: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]]] = None,
+                 device_write_bps: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteBpArgs', 'ContainerDeviceWriteBpArgsDict']]]]] = None,
+                 device_write_iops: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteIopArgs', 'ContainerDeviceWriteIopArgsDict']]]]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
@@ -2290,6 +2487,7 @@ class Container(pulumi.CustomResource):
                  network_mode: Optional[pulumi.Input[_builtins.str]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]]] = None,
                  pid_mode: Optional[pulumi.Input[_builtins.str]] = None,
+                 platform: Optional[pulumi.Input[_builtins.str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]]] = None,
                  privileged: Optional[pulumi.Input[_builtins.bool]] = None,
                  publish_all_ports: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -2381,7 +2579,7 @@ class Container(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
-        :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certain linux capabilities.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[_builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
@@ -2392,14 +2590,19 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind devices to the container.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteBpArgs', 'ContainerDeviceWriteBpArgsDict']]]] device_write_bps: Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteIopArgs', 'ContainerDeviceWriteIopArgsDict']]]] device_write_iops: Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[_builtins.str] domainname: Domain name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
-        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] group_adds: Additional groups for the container user
         :param pulumi.Input[Union['ContainerHealthcheckArgs', 'ContainerHealthcheckArgsDict']] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[_builtins.str] hostname: Hostname of the container.
@@ -2416,11 +2619,12 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
-        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
-        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
-        :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
+        :param pulumi.Input[_builtins.str] pid_mode: The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[_builtins.str] platform: Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[_builtins.bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[_builtins.bool] publish_all_ports: Publish all ports of the container.
@@ -2441,7 +2645,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] tty: If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerUlimitArgs', 'ContainerUlimitArgsDict']]]] ulimits: Ulimit options to add.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerUploadArgs', 'ContainerUploadArgsDict']]]] uploads: Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
-        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         :param pulumi.Input[_builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerVolumeArgs', 'ContainerVolumeArgsDict']]]] volumes: Spec for mounting volumes in the container.
         :param pulumi.Input[_builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
@@ -2542,6 +2746,11 @@ class Container(pulumi.CustomResource):
                  cpu_shares: Optional[pulumi.Input[_builtins.int]] = None,
                  cpus: Optional[pulumi.Input[_builtins.str]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[_builtins.int]] = None,
+                 device_read_bps: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]]] = None,
+                 device_read_iops: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]]] = None,
+                 device_requests: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]]] = None,
+                 device_write_bps: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteBpArgs', 'ContainerDeviceWriteBpArgsDict']]]]] = None,
+                 device_write_iops: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteIopArgs', 'ContainerDeviceWriteIopArgsDict']]]]] = None,
                  devices: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]]] = None,
                  dns: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
@@ -2571,6 +2780,7 @@ class Container(pulumi.CustomResource):
                  network_mode: Optional[pulumi.Input[_builtins.str]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]]] = None,
                  pid_mode: Optional[pulumi.Input[_builtins.str]] = None,
+                 platform: Optional[pulumi.Input[_builtins.str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]]] = None,
                  privileged: Optional[pulumi.Input[_builtins.bool]] = None,
                  publish_all_ports: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -2618,6 +2828,11 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["cpu_shares"] = cpu_shares
             __props__.__dict__["cpus"] = cpus
             __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
+            __props__.__dict__["device_read_bps"] = device_read_bps
+            __props__.__dict__["device_read_iops"] = device_read_iops
+            __props__.__dict__["device_requests"] = device_requests
+            __props__.__dict__["device_write_bps"] = device_write_bps
+            __props__.__dict__["device_write_iops"] = device_write_iops
             __props__.__dict__["devices"] = devices
             __props__.__dict__["dns"] = dns
             __props__.__dict__["dns_opts"] = dns_opts
@@ -2649,6 +2864,7 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["network_mode"] = network_mode
             __props__.__dict__["networks_advanced"] = networks_advanced
             __props__.__dict__["pid_mode"] = pid_mode
+            __props__.__dict__["platform"] = platform
             __props__.__dict__["ports"] = ports
             __props__.__dict__["privileged"] = privileged
             __props__.__dict__["publish_all_ports"] = publish_all_ports
@@ -2703,6 +2919,11 @@ class Container(pulumi.CustomResource):
             cpu_shares: Optional[pulumi.Input[_builtins.int]] = None,
             cpus: Optional[pulumi.Input[_builtins.str]] = None,
             destroy_grace_seconds: Optional[pulumi.Input[_builtins.int]] = None,
+            device_read_bps: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]]] = None,
+            device_read_iops: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]]] = None,
+            device_requests: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]]] = None,
+            device_write_bps: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteBpArgs', 'ContainerDeviceWriteBpArgsDict']]]]] = None,
+            device_write_iops: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteIopArgs', 'ContainerDeviceWriteIopArgsDict']]]]] = None,
             devices: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]]] = None,
             dns: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
             dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
@@ -2734,6 +2955,7 @@ class Container(pulumi.CustomResource):
             network_mode: Optional[pulumi.Input[_builtins.str]] = None,
             networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]]] = None,
             pid_mode: Optional[pulumi.Input[_builtins.str]] = None,
+            platform: Optional[pulumi.Input[_builtins.str]] = None,
             ports: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]]] = None,
             privileged: Optional[pulumi.Input[_builtins.bool]] = None,
             publish_all_ports: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -2769,7 +2991,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[_builtins.str] bridge: The network bridge of the container as read from its NetworkSettings.
-        :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certrain linux capabilities.
+        :param pulumi.Input[Union['ContainerCapabilitiesArgs', 'ContainerCapabilitiesArgsDict']] capabilities: Add or drop certain linux capabilities.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
         :param pulumi.Input[_builtins.str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
@@ -2781,7 +3003,12 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind devices to the container.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteBpArgs', 'ContainerDeviceWriteBpArgsDict']]]] device_write_bps: Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceWriteIopArgs', 'ContainerDeviceWriteIopArgsDict']]]] device_write_iops: Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceArgs', 'ContainerDeviceArgsDict']]]] devices: Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns: DNS servers to use.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_opts: DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] dns_searches: DNS search domains that are used when bare unqualified hostnames are used inside of the container.
@@ -2789,7 +3016,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[_builtins.int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
-        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        :param pulumi.Input[_builtins.str] gpus: GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] group_adds: Additional groups for the container user
         :param pulumi.Input[Union['ContainerHealthcheckArgs', 'ContainerHealthcheckArgsDict']] healthcheck: A test to perform to check that the container is healthy
         :param pulumi.Input[_builtins.str] hostname: Hostname of the container.
@@ -2806,12 +3033,13 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] memory_reservation: The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
         :param pulumi.Input[_builtins.int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerMountArgs', 'ContainerMountArgsDict']]]] mounts: Specification for mounts to be added to containers created as part of the service.
-        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        :param pulumi.Input[_builtins.bool] must_run: If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         :param pulumi.Input[_builtins.str] name: The name of the container.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworkDataArgs', 'ContainerNetworkDataArgsDict']]]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[_builtins.str] network_mode: Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
-        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to
-        :param pulumi.Input[_builtins.str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerNetworksAdvancedArgs', 'ContainerNetworksAdvancedArgsDict']]]] networks_advanced: The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
+        :param pulumi.Input[_builtins.str] pid_mode: The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        :param pulumi.Input[_builtins.str] platform: Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerPortArgs', 'ContainerPortArgsDict']]]] ports: Publish a container's port(s) to the host.
         :param pulumi.Input[_builtins.bool] privileged: If `true`, the container runs in privileged mode.
         :param pulumi.Input[_builtins.bool] publish_all_ports: Publish all ports of the container.
@@ -2832,7 +3060,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] tty: If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerUlimitArgs', 'ContainerUlimitArgsDict']]]] ulimits: Ulimit options to add.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerUploadArgs', 'ContainerUploadArgsDict']]]] uploads: Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
-        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        :param pulumi.Input[_builtins.str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         :param pulumi.Input[_builtins.str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerVolumeArgs', 'ContainerVolumeArgsDict']]]] volumes: Spec for mounting volumes in the container.
         :param pulumi.Input[_builtins.bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
@@ -2857,6 +3085,11 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["cpu_shares"] = cpu_shares
         __props__.__dict__["cpus"] = cpus
         __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
+        __props__.__dict__["device_read_bps"] = device_read_bps
+        __props__.__dict__["device_read_iops"] = device_read_iops
+        __props__.__dict__["device_requests"] = device_requests
+        __props__.__dict__["device_write_bps"] = device_write_bps
+        __props__.__dict__["device_write_iops"] = device_write_iops
         __props__.__dict__["devices"] = devices
         __props__.__dict__["dns"] = dns
         __props__.__dict__["dns_opts"] = dns_opts
@@ -2888,6 +3121,7 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["network_mode"] = network_mode
         __props__.__dict__["networks_advanced"] = networks_advanced
         __props__.__dict__["pid_mode"] = pid_mode
+        __props__.__dict__["platform"] = platform
         __props__.__dict__["ports"] = ports
         __props__.__dict__["privileged"] = privileged
         __props__.__dict__["publish_all_ports"] = publish_all_ports
@@ -2936,7 +3170,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def capabilities(self) -> pulumi.Output[Optional['outputs.ContainerCapabilities']]:
         """
-        Add or drop certrain linux capabilities.
+        Add or drop certain linux capabilities.
         """
         return pulumi.get(self, "capabilities")
 
@@ -3029,10 +3263,50 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "destroy_grace_seconds")
 
     @_builtins.property
+    @pulumi.getter(name="deviceReadBps")
+    def device_read_bps(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDeviceReadBp']]]:
+        """
+        Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        """
+        return pulumi.get(self, "device_read_bps")
+
+    @_builtins.property
+    @pulumi.getter(name="deviceReadIops")
+    def device_read_iops(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDeviceReadIop']]]:
+        """
+        Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        """
+        return pulumi.get(self, "device_read_iops")
+
+    @_builtins.property
+    @pulumi.getter(name="deviceRequests")
+    def device_requests(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDeviceRequest']]]:
+        """
+        Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        """
+        return pulumi.get(self, "device_requests")
+
+    @_builtins.property
+    @pulumi.getter(name="deviceWriteBps")
+    def device_write_bps(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDeviceWriteBp']]]:
+        """
+        Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        """
+        return pulumi.get(self, "device_write_bps")
+
+    @_builtins.property
+    @pulumi.getter(name="deviceWriteIops")
+    def device_write_iops(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDeviceWriteIop']]]:
+        """
+        Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        """
+        return pulumi.get(self, "device_write_iops")
+
+    @_builtins.property
     @pulumi.getter
     def devices(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDevice']]]:
         """
-        Bind devices to the container.
+        Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `device_requests` instead.
         """
         return pulumi.get(self, "devices")
 
@@ -3096,7 +3370,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def gpus(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
-        GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+        GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         """
         return pulumi.get(self, "gpus")
 
@@ -3232,7 +3506,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="mustRun")
     def must_run(self) -> pulumi.Output[Optional[_builtins.bool]]:
         """
-        If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+        If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `must_run` to `false` and this will trigger a change. Defaults to `true`.
         """
         return pulumi.get(self, "must_run")
 
@@ -3264,7 +3538,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="networksAdvanced")
     def networks_advanced(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerNetworksAdvanced']]]:
         """
-        The networks the container is attached to
+        The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
         """
         return pulumi.get(self, "networks_advanced")
 
@@ -3272,9 +3546,17 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="pidMode")
     def pid_mode(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
-        he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+        The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         """
         return pulumi.get(self, "pid_mode")
+
+    @_builtins.property
+    @pulumi.getter
+    def platform(self) -> pulumi.Output[_builtins.str]:
+        """
+        Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+        """
+        return pulumi.get(self, "platform")
 
     @_builtins.property
     @pulumi.getter
@@ -3440,7 +3722,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def user(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
-        User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+        User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
         """
         return pulumi.get(self, "user")
 

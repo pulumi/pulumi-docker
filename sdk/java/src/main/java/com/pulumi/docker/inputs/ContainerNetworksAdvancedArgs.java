@@ -6,6 +6,7 @@ package com.pulumi.docker.inputs;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
+import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,36 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
      */
     public Optional<Output<List<String>>> aliases() {
         return Optional.ofNullable(this.aliases);
+    }
+
+    /**
+     * An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+     * 
+     */
+    @Import(name="driverOpts")
+    private @Nullable Output<List<String>> driverOpts;
+
+    /**
+     * @return An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+     * 
+     */
+    public Optional<Output<List<String>>> driverOpts() {
+        return Optional.ofNullable(this.driverOpts);
+    }
+
+    /**
+     * Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+     * 
+     */
+    @Import(name="gwPriority")
+    private @Nullable Output<Integer> gwPriority;
+
+    /**
+     * @return Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+     * 
+     */
+    public Optional<Output<Integer>> gwPriority() {
+        return Optional.ofNullable(this.gwPriority);
     }
 
     /**
@@ -60,6 +91,21 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
      */
     public Optional<Output<String>> ipv6Address() {
         return Optional.ofNullable(this.ipv6Address);
+    }
+
+    /**
+     * The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+     * 
+     */
+    @Import(name="linkLocalIps")
+    private @Nullable Output<List<String>> linkLocalIps;
+
+    /**
+     * @return The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+     * 
+     */
+    public Optional<Output<List<String>>> linkLocalIps() {
+        return Optional.ofNullable(this.linkLocalIps);
     }
 
     /**
@@ -96,8 +142,11 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
 
     private ContainerNetworksAdvancedArgs(ContainerNetworksAdvancedArgs $) {
         this.aliases = $.aliases;
+        this.driverOpts = $.driverOpts;
+        this.gwPriority = $.gwPriority;
         this.ipv4Address = $.ipv4Address;
         this.ipv6Address = $.ipv6Address;
+        this.linkLocalIps = $.linkLocalIps;
         this.macAddress = $.macAddress;
         this.name = $.name;
     }
@@ -152,6 +201,58 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
         }
 
         /**
+         * @param driverOpts An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder driverOpts(@Nullable Output<List<String>> driverOpts) {
+            $.driverOpts = driverOpts;
+            return this;
+        }
+
+        /**
+         * @param driverOpts An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder driverOpts(List<String> driverOpts) {
+            return driverOpts(Output.of(driverOpts));
+        }
+
+        /**
+         * @param driverOpts An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder driverOpts(String... driverOpts) {
+            return driverOpts(List.of(driverOpts));
+        }
+
+        /**
+         * @param gwPriority Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder gwPriority(@Nullable Output<Integer> gwPriority) {
+            $.gwPriority = gwPriority;
+            return this;
+        }
+
+        /**
+         * @param gwPriority Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder gwPriority(Integer gwPriority) {
+            return gwPriority(Output.of(gwPriority));
+        }
+
+        /**
          * @param ipv4Address The IPV4 address of the container in the specific network.
          * 
          * @return builder
@@ -191,6 +292,37 @@ public final class ContainerNetworksAdvancedArgs extends com.pulumi.resources.Re
          */
         public Builder ipv6Address(String ipv6Address) {
             return ipv6Address(Output.of(ipv6Address));
+        }
+
+        /**
+         * @param linkLocalIps The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder linkLocalIps(@Nullable Output<List<String>> linkLocalIps) {
+            $.linkLocalIps = linkLocalIps;
+            return this;
+        }
+
+        /**
+         * @param linkLocalIps The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder linkLocalIps(List<String> linkLocalIps) {
+            return linkLocalIps(Output.of(linkLocalIps));
+        }
+
+        /**
+         * @param linkLocalIps The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder linkLocalIps(String... linkLocalIps) {
+            return linkLocalIps(List.of(linkLocalIps));
         }
 
         /**

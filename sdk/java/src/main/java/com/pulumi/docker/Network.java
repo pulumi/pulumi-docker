@@ -134,24 +134,6 @@ public class Network extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.attachable);
     }
     /**
-     * Requests daemon to check for networks with same name.
-     * 
-     * @deprecated
-     * This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-     * 
-     */
-    @Deprecated /* This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks. */
-    @Export(name="checkDuplicate", refs={Boolean.class}, tree="[0]")
-    private Output</* @Nullable */ Boolean> checkDuplicate;
-
-    /**
-     * @return Requests daemon to check for networks with same name.
-     * 
-     */
-    public Output<Optional<Boolean>> checkDuplicate() {
-        return Codegen.optional(this.checkDuplicate);
-    }
-    /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */

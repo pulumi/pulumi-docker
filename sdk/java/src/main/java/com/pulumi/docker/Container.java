@@ -12,6 +12,11 @@ import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.ContainerState;
 import com.pulumi.docker.outputs.ContainerCapabilities;
 import com.pulumi.docker.outputs.ContainerDevice;
+import com.pulumi.docker.outputs.ContainerDeviceReadBp;
+import com.pulumi.docker.outputs.ContainerDeviceReadIop;
+import com.pulumi.docker.outputs.ContainerDeviceRequest;
+import com.pulumi.docker.outputs.ContainerDeviceWriteBp;
+import com.pulumi.docker.outputs.ContainerDeviceWriteIop;
 import com.pulumi.docker.outputs.ContainerHealthcheck;
 import com.pulumi.docker.outputs.ContainerHost;
 import com.pulumi.docker.outputs.ContainerLabel;
@@ -174,14 +179,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.bridge;
     }
     /**
-     * Add or drop certrain linux capabilities.
+     * Add or drop certain linux capabilities.
      * 
      */
     @Export(name="capabilities", refs={ContainerCapabilities.class}, tree="[0]")
     private Output</* @Nullable */ ContainerCapabilities> capabilities;
 
     /**
-     * @return Add or drop certrain linux capabilities.
+     * @return Add or drop certain linux capabilities.
      * 
      */
     public Output<Optional<ContainerCapabilities>> capabilities() {
@@ -342,14 +347,84 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.destroyGraceSeconds);
     }
     /**
-     * Bind devices to the container.
+     * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     * 
+     */
+    @Export(name="deviceReadBps", refs={List.class,ContainerDeviceReadBp.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ContainerDeviceReadBp>> deviceReadBps;
+
+    /**
+     * @return Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     * 
+     */
+    public Output<Optional<List<ContainerDeviceReadBp>>> deviceReadBps() {
+        return Codegen.optional(this.deviceReadBps);
+    }
+    /**
+     * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     * 
+     */
+    @Export(name="deviceReadIops", refs={List.class,ContainerDeviceReadIop.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ContainerDeviceReadIop>> deviceReadIops;
+
+    /**
+     * @return Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     * 
+     */
+    public Output<Optional<List<ContainerDeviceReadIop>>> deviceReadIops() {
+        return Codegen.optional(this.deviceReadIops);
+    }
+    /**
+     * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     * 
+     */
+    @Export(name="deviceRequests", refs={List.class,ContainerDeviceRequest.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ContainerDeviceRequest>> deviceRequests;
+
+    /**
+     * @return Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     * 
+     */
+    public Output<Optional<List<ContainerDeviceRequest>>> deviceRequests() {
+        return Codegen.optional(this.deviceRequests);
+    }
+    /**
+     * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     * 
+     */
+    @Export(name="deviceWriteBps", refs={List.class,ContainerDeviceWriteBp.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ContainerDeviceWriteBp>> deviceWriteBps;
+
+    /**
+     * @return Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     * 
+     */
+    public Output<Optional<List<ContainerDeviceWriteBp>>> deviceWriteBps() {
+        return Codegen.optional(this.deviceWriteBps);
+    }
+    /**
+     * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     * 
+     */
+    @Export(name="deviceWriteIops", refs={List.class,ContainerDeviceWriteIop.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ContainerDeviceWriteIop>> deviceWriteIops;
+
+    /**
+     * @return Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     * 
+     */
+    public Output<Optional<List<ContainerDeviceWriteIop>>> deviceWriteIops() {
+        return Codegen.optional(this.deviceWriteIops);
+    }
+    /**
+     * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      * 
      */
     @Export(name="devices", refs={List.class,ContainerDevice.class}, tree="[0,1]")
     private Output</* @Nullable */ List<ContainerDevice>> devices;
 
     /**
-     * @return Bind devices to the container.
+     * @return Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      * 
      */
     public Output<Optional<List<ContainerDevice>>> devices() {
@@ -454,14 +529,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.exitCode;
     }
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * GPU devices to add to the container. Supported values are `all` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      * 
      */
     @Export(name="gpus", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> gpus;
 
     /**
-     * @return GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * @return GPU devices to add to the container. Supported values are `all` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      * 
      */
     public Output<Optional<String>> gpus() {
@@ -692,14 +767,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.mounts);
     }
     /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      * 
      */
     @Export(name="mustRun", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> mustRun;
 
     /**
-     * @return If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * @return If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      * 
      */
     public Output<Optional<Boolean>> mustRun() {
@@ -748,32 +823,46 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.networkMode);
     }
     /**
-     * The networks the container is attached to
+     * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      * 
      */
     @Export(name="networksAdvanced", refs={List.class,ContainerNetworksAdvanced.class}, tree="[0,1]")
     private Output</* @Nullable */ List<ContainerNetworksAdvanced>> networksAdvanced;
 
     /**
-     * @return The networks the container is attached to
+     * @return The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      * 
      */
     public Output<Optional<List<ContainerNetworksAdvanced>>> networksAdvanced() {
         return Codegen.optional(this.networksAdvanced);
     }
     /**
-     * he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+     * The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
      * 
      */
     @Export(name="pidMode", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> pidMode;
 
     /**
-     * @return he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+     * @return The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
      * 
      */
     public Output<Optional<String>> pidMode() {
         return Codegen.optional(this.pidMode);
+    }
+    /**
+     * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     * 
+     */
+    @Export(name="platform", refs={String.class}, tree="[0]")
+    private Output<String> platform;
+
+    /**
+     * @return Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     * 
+     */
+    public Output<String> platform() {
+        return this.platform;
     }
     /**
      * Publish a container&#39;s port(s) to the host.
@@ -1056,14 +1145,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.uploads);
     }
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      * 
      */
     @Export(name="user", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> user;
 
     /**
-     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      * 
      */
     public Output<Optional<String>> user() {

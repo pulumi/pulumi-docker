@@ -7,6 +7,8 @@ import com.pulumi.core.annotations.CustomType;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
+import java.util.Optional;
+import javax.annotation.Nullable;
 
 @CustomType
 public final class GetRegistryImageManifestsAuthConfig {
@@ -19,12 +21,12 @@ public final class GetRegistryImageManifestsAuthConfig {
      * @return The password for the Docker registry.
      * 
      */
-    private String password;
+    private @Nullable String password;
     /**
      * @return The username for the Docker registry.
      * 
      */
-    private String username;
+    private @Nullable String username;
 
     private GetRegistryImageManifestsAuthConfig() {}
     /**
@@ -38,15 +40,15 @@ public final class GetRegistryImageManifestsAuthConfig {
      * @return The password for the Docker registry.
      * 
      */
-    public String password() {
-        return this.password;
+    public Optional<String> password() {
+        return Optional.ofNullable(this.password);
     }
     /**
      * @return The username for the Docker registry.
      * 
      */
-    public String username() {
-        return this.username;
+    public Optional<String> username() {
+        return Optional.ofNullable(this.username);
     }
 
     public static Builder builder() {
@@ -59,8 +61,8 @@ public final class GetRegistryImageManifestsAuthConfig {
     @CustomType.Builder
     public static final class Builder {
         private String address;
-        private String password;
-        private String username;
+        private @Nullable String password;
+        private @Nullable String username;
         public Builder() {}
         public Builder(GetRegistryImageManifestsAuthConfig defaults) {
     	      Objects.requireNonNull(defaults);
@@ -78,18 +80,14 @@ public final class GetRegistryImageManifestsAuthConfig {
             return this;
         }
         @CustomType.Setter
-        public Builder password(String password) {
-            if (password == null) {
-              throw new MissingRequiredPropertyException("GetRegistryImageManifestsAuthConfig", "password");
-            }
+        public Builder password(@Nullable String password) {
+
             this.password = password;
             return this;
         }
         @CustomType.Setter
-        public Builder username(String username) {
-            if (username == null) {
-              throw new MissingRequiredPropertyException("GetRegistryImageManifestsAuthConfig", "username");
-            }
+        public Builder username(@Nullable String username) {
+
             this.username = username;
             return this;
         }

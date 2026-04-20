@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"errors"
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -22,7 +22,7 @@ import (
 //
 // import (
 //
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 //	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
 // )
@@ -76,7 +76,7 @@ import (
 //
 // import (
 //
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 //	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
 // )
@@ -116,7 +116,7 @@ type Container struct {
 	Attach pulumi.BoolPtrOutput `pulumi:"attach"`
 	// The network bridge of the container as read from its NetworkSettings.
 	Bridge pulumi.StringOutput `pulumi:"bridge"`
-	// Add or drop certrain linux capabilities.
+	// Add or drop certain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrOutput `pulumi:"capabilities"`
 	// Optional parent cgroup for the container
 	CgroupParent pulumi.StringPtrOutput `pulumi:"cgroupParent"`
@@ -140,7 +140,17 @@ type Container struct {
 	Cpus pulumi.StringPtrOutput `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrOutput `pulumi:"destroyGraceSeconds"`
-	// Bind devices to the container.
+	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+	DeviceReadBps ContainerDeviceReadBpArrayOutput `pulumi:"deviceReadBps"`
+	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+	DeviceReadIops ContainerDeviceReadIopArrayOutput `pulumi:"deviceReadIops"`
+	// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+	DeviceRequests ContainerDeviceRequestArrayOutput `pulumi:"deviceRequests"`
+	// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+	DeviceWriteBps ContainerDeviceWriteBpArrayOutput `pulumi:"deviceWriteBps"`
+	// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+	DeviceWriteIops ContainerDeviceWriteIopArrayOutput `pulumi:"deviceWriteIops"`
+	// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
 	Devices ContainerDeviceArrayOutput `pulumi:"devices"`
 	// DNS servers to use.
 	Dns pulumi.StringArrayOutput `pulumi:"dns"`
@@ -156,7 +166,7 @@ type Container struct {
 	Envs pulumi.StringArrayOutput `pulumi:"envs"`
 	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode pulumi.IntOutput `pulumi:"exitCode"`
-	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+	// GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
 	Gpus pulumi.StringPtrOutput `pulumi:"gpus"`
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayOutput `pulumi:"groupAdds"`
@@ -190,7 +200,7 @@ type Container struct {
 	MemorySwap pulumi.IntPtrOutput `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts ContainerMountArrayOutput `pulumi:"mounts"`
-	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	// If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
 	MustRun pulumi.BoolPtrOutput `pulumi:"mustRun"`
 	// The name of the container.
 	Name pulumi.StringOutput `pulumi:"name"`
@@ -198,10 +208,12 @@ type Container struct {
 	NetworkDatas ContainerNetworkDataArrayOutput `pulumi:"networkDatas"`
 	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrOutput `pulumi:"networkMode"`
-	// The networks the container is attached to
+	// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
 	NetworksAdvanced ContainerNetworksAdvancedArrayOutput `pulumi:"networksAdvanced"`
-	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode pulumi.StringPtrOutput `pulumi:"pidMode"`
+	// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+	Platform pulumi.StringOutput `pulumi:"platform"`
 	// Publish a container's port(s) to the host.
 	Ports ContainerPortArrayOutput `pulumi:"ports"`
 	// If `true`, the container runs in privileged mode.
@@ -242,7 +254,7 @@ type Container struct {
 	Ulimits ContainerUlimitArrayOutput `pulumi:"ulimits"`
 	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
 	Uploads ContainerUploadArrayOutput `pulumi:"uploads"`
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
 	User pulumi.StringPtrOutput `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
@@ -293,7 +305,7 @@ type containerState struct {
 	Attach *bool `pulumi:"attach"`
 	// The network bridge of the container as read from its NetworkSettings.
 	Bridge *string `pulumi:"bridge"`
-	// Add or drop certrain linux capabilities.
+	// Add or drop certain linux capabilities.
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
 	// Optional parent cgroup for the container
 	CgroupParent *string `pulumi:"cgroupParent"`
@@ -317,7 +329,17 @@ type containerState struct {
 	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
-	// Bind devices to the container.
+	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+	DeviceReadBps []ContainerDeviceReadBp `pulumi:"deviceReadBps"`
+	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+	DeviceReadIops []ContainerDeviceReadIop `pulumi:"deviceReadIops"`
+	// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+	DeviceRequests []ContainerDeviceRequest `pulumi:"deviceRequests"`
+	// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+	DeviceWriteBps []ContainerDeviceWriteBp `pulumi:"deviceWriteBps"`
+	// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+	DeviceWriteIops []ContainerDeviceWriteIop `pulumi:"deviceWriteIops"`
+	// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
 	Devices []ContainerDevice `pulumi:"devices"`
 	// DNS servers to use.
 	Dns []string `pulumi:"dns"`
@@ -333,7 +355,7 @@ type containerState struct {
 	Envs []string `pulumi:"envs"`
 	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode *int `pulumi:"exitCode"`
-	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+	// GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
 	Gpus *string `pulumi:"gpus"`
 	// Additional groups for the container user
 	GroupAdds []string `pulumi:"groupAdds"`
@@ -367,7 +389,7 @@ type containerState struct {
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts []ContainerMount `pulumi:"mounts"`
-	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	// If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
 	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
@@ -375,10 +397,12 @@ type containerState struct {
 	NetworkDatas []ContainerNetworkData `pulumi:"networkDatas"`
 	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode *string `pulumi:"networkMode"`
-	// The networks the container is attached to
+	// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
-	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode *string `pulumi:"pidMode"`
+	// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+	Platform *string `pulumi:"platform"`
 	// Publish a container's port(s) to the host.
 	Ports []ContainerPort `pulumi:"ports"`
 	// If `true`, the container runs in privileged mode.
@@ -419,7 +443,7 @@ type containerState struct {
 	Ulimits []ContainerUlimit `pulumi:"ulimits"`
 	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
 	Uploads []ContainerUpload `pulumi:"uploads"`
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
 	User *string `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
@@ -438,7 +462,7 @@ type ContainerState struct {
 	Attach pulumi.BoolPtrInput
 	// The network bridge of the container as read from its NetworkSettings.
 	Bridge pulumi.StringPtrInput
-	// Add or drop certrain linux capabilities.
+	// Add or drop certain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrInput
 	// Optional parent cgroup for the container
 	CgroupParent pulumi.StringPtrInput
@@ -462,7 +486,17 @@ type ContainerState struct {
 	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
-	// Bind devices to the container.
+	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+	DeviceReadBps ContainerDeviceReadBpArrayInput
+	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+	DeviceReadIops ContainerDeviceReadIopArrayInput
+	// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+	DeviceRequests ContainerDeviceRequestArrayInput
+	// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+	DeviceWriteBps ContainerDeviceWriteBpArrayInput
+	// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+	DeviceWriteIops ContainerDeviceWriteIopArrayInput
+	// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
 	Devices ContainerDeviceArrayInput
 	// DNS servers to use.
 	Dns pulumi.StringArrayInput
@@ -478,7 +512,7 @@ type ContainerState struct {
 	Envs pulumi.StringArrayInput
 	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode pulumi.IntPtrInput
-	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+	// GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
 	Gpus pulumi.StringPtrInput
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayInput
@@ -512,7 +546,7 @@ type ContainerState struct {
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts ContainerMountArrayInput
-	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	// If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
@@ -520,10 +554,12 @@ type ContainerState struct {
 	NetworkDatas ContainerNetworkDataArrayInput
 	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrInput
-	// The networks the container is attached to
+	// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
-	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode pulumi.StringPtrInput
+	// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+	Platform pulumi.StringPtrInput
 	// Publish a container's port(s) to the host.
 	Ports ContainerPortArrayInput
 	// If `true`, the container runs in privileged mode.
@@ -564,7 +600,7 @@ type ContainerState struct {
 	Ulimits ContainerUlimitArrayInput
 	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
 	Uploads ContainerUploadArrayInput
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
 	User pulumi.StringPtrInput
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
@@ -585,7 +621,7 @@ func (ContainerState) ElementType() reflect.Type {
 type containerArgs struct {
 	// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
 	Attach *bool `pulumi:"attach"`
-	// Add or drop certrain linux capabilities.
+	// Add or drop certain linux capabilities.
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
 	// Optional parent cgroup for the container
 	CgroupParent *string `pulumi:"cgroupParent"`
@@ -607,7 +643,17 @@ type containerArgs struct {
 	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
-	// Bind devices to the container.
+	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+	DeviceReadBps []ContainerDeviceReadBp `pulumi:"deviceReadBps"`
+	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+	DeviceReadIops []ContainerDeviceReadIop `pulumi:"deviceReadIops"`
+	// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+	DeviceRequests []ContainerDeviceRequest `pulumi:"deviceRequests"`
+	// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+	DeviceWriteBps []ContainerDeviceWriteBp `pulumi:"deviceWriteBps"`
+	// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+	DeviceWriteIops []ContainerDeviceWriteIop `pulumi:"deviceWriteIops"`
+	// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
 	Devices []ContainerDevice `pulumi:"devices"`
 	// DNS servers to use.
 	Dns []string `pulumi:"dns"`
@@ -621,7 +667,7 @@ type containerArgs struct {
 	Entrypoints []string `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs []string `pulumi:"envs"`
-	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+	// GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
 	Gpus *string `pulumi:"gpus"`
 	// Additional groups for the container user
 	GroupAdds []string `pulumi:"groupAdds"`
@@ -655,16 +701,18 @@ type containerArgs struct {
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts []ContainerMount `pulumi:"mounts"`
-	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	// If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
 	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
 	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode *string `pulumi:"networkMode"`
-	// The networks the container is attached to
+	// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
-	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode *string `pulumi:"pidMode"`
+	// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+	Platform *string `pulumi:"platform"`
 	// Publish a container's port(s) to the host.
 	Ports []ContainerPort `pulumi:"ports"`
 	// If `true`, the container runs in privileged mode.
@@ -705,7 +753,7 @@ type containerArgs struct {
 	Ulimits []ContainerUlimit `pulumi:"ulimits"`
 	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
 	Uploads []ContainerUpload `pulumi:"uploads"`
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
 	User *string `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
@@ -723,7 +771,7 @@ type containerArgs struct {
 type ContainerArgs struct {
 	// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
 	Attach pulumi.BoolPtrInput
-	// Add or drop certrain linux capabilities.
+	// Add or drop certain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrInput
 	// Optional parent cgroup for the container
 	CgroupParent pulumi.StringPtrInput
@@ -745,7 +793,17 @@ type ContainerArgs struct {
 	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
-	// Bind devices to the container.
+	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+	DeviceReadBps ContainerDeviceReadBpArrayInput
+	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+	DeviceReadIops ContainerDeviceReadIopArrayInput
+	// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+	DeviceRequests ContainerDeviceRequestArrayInput
+	// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+	DeviceWriteBps ContainerDeviceWriteBpArrayInput
+	// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+	DeviceWriteIops ContainerDeviceWriteIopArrayInput
+	// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
 	Devices ContainerDeviceArrayInput
 	// DNS servers to use.
 	Dns pulumi.StringArrayInput
@@ -759,7 +817,7 @@ type ContainerArgs struct {
 	Entrypoints pulumi.StringArrayInput
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayInput
-	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+	// GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
 	Gpus pulumi.StringPtrInput
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayInput
@@ -793,16 +851,18 @@ type ContainerArgs struct {
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts ContainerMountArrayInput
-	// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+	// If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
 	// Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
 	NetworkMode pulumi.StringPtrInput
-	// The networks the container is attached to
+	// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
-	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode pulumi.StringPtrInput
+	// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+	Platform pulumi.StringPtrInput
 	// Publish a container's port(s) to the host.
 	Ports ContainerPortArrayInput
 	// If `true`, the container runs in privileged mode.
@@ -843,7 +903,7 @@ type ContainerArgs struct {
 	Ulimits ContainerUlimitArrayInput
 	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
 	Uploads ContainerUploadArrayInput
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
 	User pulumi.StringPtrInput
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
@@ -954,7 +1014,7 @@ func (o ContainerOutput) Bridge() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Bridge }).(pulumi.StringOutput)
 }
 
-// Add or drop certrain linux capabilities.
+// Add or drop certain linux capabilities.
 func (o ContainerOutput) Capabilities() ContainerCapabilitiesPtrOutput {
 	return o.ApplyT(func(v *Container) ContainerCapabilitiesPtrOutput { return v.Capabilities }).(ContainerCapabilitiesPtrOutput)
 }
@@ -1014,7 +1074,32 @@ func (o ContainerOutput) DestroyGraceSeconds() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.DestroyGraceSeconds }).(pulumi.IntPtrOutput)
 }
 
-// Bind devices to the container.
+// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+func (o ContainerOutput) DeviceReadBps() ContainerDeviceReadBpArrayOutput {
+	return o.ApplyT(func(v *Container) ContainerDeviceReadBpArrayOutput { return v.DeviceReadBps }).(ContainerDeviceReadBpArrayOutput)
+}
+
+// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+func (o ContainerOutput) DeviceReadIops() ContainerDeviceReadIopArrayOutput {
+	return o.ApplyT(func(v *Container) ContainerDeviceReadIopArrayOutput { return v.DeviceReadIops }).(ContainerDeviceReadIopArrayOutput)
+}
+
+// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+func (o ContainerOutput) DeviceRequests() ContainerDeviceRequestArrayOutput {
+	return o.ApplyT(func(v *Container) ContainerDeviceRequestArrayOutput { return v.DeviceRequests }).(ContainerDeviceRequestArrayOutput)
+}
+
+// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+func (o ContainerOutput) DeviceWriteBps() ContainerDeviceWriteBpArrayOutput {
+	return o.ApplyT(func(v *Container) ContainerDeviceWriteBpArrayOutput { return v.DeviceWriteBps }).(ContainerDeviceWriteBpArrayOutput)
+}
+
+// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+func (o ContainerOutput) DeviceWriteIops() ContainerDeviceWriteIopArrayOutput {
+	return o.ApplyT(func(v *Container) ContainerDeviceWriteIopArrayOutput { return v.DeviceWriteIops }).(ContainerDeviceWriteIopArrayOutput)
+}
+
+// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
 func (o ContainerOutput) Devices() ContainerDeviceArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerDeviceArrayOutput { return v.Devices }).(ContainerDeviceArrayOutput)
 }
@@ -1054,7 +1139,7 @@ func (o ContainerOutput) ExitCode() pulumi.IntOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.ExitCode }).(pulumi.IntOutput)
 }
 
-// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+// GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
 func (o ContainerOutput) Gpus() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Gpus }).(pulumi.StringPtrOutput)
 }
@@ -1139,7 +1224,7 @@ func (o ContainerOutput) Mounts() ContainerMountArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerMountArrayOutput { return v.Mounts }).(ContainerMountArrayOutput)
 }
 
-// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+// If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
 func (o ContainerOutput) MustRun() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.MustRun }).(pulumi.BoolPtrOutput)
 }
@@ -1159,14 +1244,19 @@ func (o ContainerOutput) NetworkMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.NetworkMode }).(pulumi.StringPtrOutput)
 }
 
-// The networks the container is attached to
+// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
 func (o ContainerOutput) NetworksAdvanced() ContainerNetworksAdvancedArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerNetworksAdvancedArrayOutput { return v.NetworksAdvanced }).(ContainerNetworksAdvancedArrayOutput)
 }
 
-// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 func (o ContainerOutput) PidMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.PidMode }).(pulumi.StringPtrOutput)
+}
+
+// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+func (o ContainerOutput) Platform() pulumi.StringOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Platform }).(pulumi.StringOutput)
 }
 
 // Publish a container's port(s) to the host.
@@ -1269,7 +1359,7 @@ func (o ContainerOutput) Uploads() ContainerUploadArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerUploadArrayOutput { return v.Uploads }).(ContainerUploadArrayOutput)
 }
 
-// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
 func (o ContainerOutput) User() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.User }).(pulumi.StringPtrOutput)
 }

@@ -21,7 +21,47 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
+ * &lt;!-- Bug: Type and Name are switched --&gt;
  * Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+ * 
+ * ## Example Usage
+ * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.BuildxBuilder;
+ * import com.pulumi.docker.BuildxBuilderArgs;
+ * import com.pulumi.docker.inputs.BuildxBuilderDockerContainerArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var example = new BuildxBuilder("example", BuildxBuilderArgs.builder()
+ *             .name("example-builder")
+ *             .driver("docker-container")
+ *             .use(true)
+ *             .dockerContainer(BuildxBuilderDockerContainerArgs.builder()
+ *                 .image("moby/buildkit:latest")
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
  * 
  */
 @ResourceType(type="docker:index/buildxBuilder:BuildxBuilder")

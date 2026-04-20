@@ -33,6 +33,11 @@ public final class ContainerVolume {
      */
     private @Nullable Boolean readOnly;
     /**
+     * @return SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+     * 
+     */
+    private @Nullable String selinuxRelabel;
+    /**
      * @return The name of the docker volume which should be mounted.
      * 
      */
@@ -68,6 +73,13 @@ public final class ContainerVolume {
         return Optional.ofNullable(this.readOnly);
     }
     /**
+     * @return SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+     * 
+     */
+    public Optional<String> selinuxRelabel() {
+        return Optional.ofNullable(this.selinuxRelabel);
+    }
+    /**
      * @return The name of the docker volume which should be mounted.
      * 
      */
@@ -88,6 +100,7 @@ public final class ContainerVolume {
         private @Nullable String fromContainer;
         private @Nullable String hostPath;
         private @Nullable Boolean readOnly;
+        private @Nullable String selinuxRelabel;
         private @Nullable String volumeName;
         public Builder() {}
         public Builder(ContainerVolume defaults) {
@@ -96,6 +109,7 @@ public final class ContainerVolume {
     	      this.fromContainer = defaults.fromContainer;
     	      this.hostPath = defaults.hostPath;
     	      this.readOnly = defaults.readOnly;
+    	      this.selinuxRelabel = defaults.selinuxRelabel;
     	      this.volumeName = defaults.volumeName;
         }
 
@@ -124,6 +138,12 @@ public final class ContainerVolume {
             return this;
         }
         @CustomType.Setter
+        public Builder selinuxRelabel(@Nullable String selinuxRelabel) {
+
+            this.selinuxRelabel = selinuxRelabel;
+            return this;
+        }
+        @CustomType.Setter
         public Builder volumeName(@Nullable String volumeName) {
 
             this.volumeName = volumeName;
@@ -135,6 +155,7 @@ public final class ContainerVolume {
             _resultValue.fromContainer = fromContainer;
             _resultValue.hostPath = hostPath;
             _resultValue.readOnly = readOnly;
+            _resultValue.selinuxRelabel = selinuxRelabel;
             _resultValue.volumeName = volumeName;
             return _resultValue;
         }

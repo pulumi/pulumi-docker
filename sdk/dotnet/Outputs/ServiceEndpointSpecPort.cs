@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Name;
         /// <summary>
-        /// Rrepresents the protocol of a port: `Tcp`, `Udp` or `Sctp`. Defaults to `Tcp`.
+        /// Represents the protocol of a port: `Tcp`, `Udp` or `Sctp`. Defaults to `Tcp`.
         /// </summary>
         public readonly string? Protocol;
         /// <summary>

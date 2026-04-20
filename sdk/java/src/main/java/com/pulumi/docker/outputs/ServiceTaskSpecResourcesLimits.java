@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceTaskSpecResourcesLimits {
     /**
-     * @return The amounf of memory in bytes the container allocates
+     * @return The amount of memory in bytes the container allocates
      * 
      */
     private @Nullable Integer memoryBytes;
@@ -24,7 +24,7 @@ public final class ServiceTaskSpecResourcesLimits {
 
     private ServiceTaskSpecResourcesLimits() {}
     /**
-     * @return The amounf of memory in bytes the container allocates
+     * @return The amount of memory in bytes the container allocates
      * 
      */
     public Optional<Integer> memoryBytes() {

@@ -33,14 +33,14 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
     }
 
     /**
-     * Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      * 
      */
     @Import(name="protocol")
     private @Nullable Output<String> protocol;
 
     /**
-     * @return Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * @return Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      * 
      */
     public Optional<Output<String>> protocol() {
@@ -142,7 +142,7 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
         }
 
         /**
-         * @param protocol Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+         * @param protocol Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
          * 
          * @return builder
          * 
@@ -153,7 +153,7 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
         }
 
         /**
-         * @param protocol Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+         * @param protocol Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
          * 
          * @return builder
          * 
