@@ -5,7 +5,7 @@ go 1.23.11
 toolchain go1.24.1
 
 require (
-	github.com/pulumi/pulumi-docker/sdk/v4 v4.5.1
+	github.com/pulumi/pulumi-docker/sdk/v5 v5.0.0
 	github.com/pulumi/pulumi-gcp/sdk/v9 v9.0.0
 	github.com/pulumi/pulumi-random/sdk/v4 v4.18.0
 	github.com/pulumi/pulumi/sdk/v3 v3.190.0

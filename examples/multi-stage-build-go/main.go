@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/ecr"
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -41,7 +41,7 @@ func TestNginxGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		Dir:                  path.Join(cwd, "nginx-go"),
 		ExpectRefreshChanges: true,
@@ -93,7 +93,7 @@ func TestBuildCacheFromGo(t *testing.T) {
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			step1DeployTime = time.Since(step1Start)
@@ -189,7 +189,7 @@ func TestDockerfileGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		Dir: path.Join(cwd, "dockerfile-go"),
 	})
@@ -212,7 +212,7 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 			"azure:location":    location,
 		},
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		ExpectRefreshChanges:   true,
 		ExtraRuntimeValidation: assertHasRepoDigest,
@@ -235,7 +235,7 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 			"aws:region": region,
 		},
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
@@ -259,7 +259,7 @@ func TestDigitaloceanContainerRegistryGo(t *testing.T) {
 			"digitalocean:token": token,
 		},
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
@@ -278,7 +278,7 @@ func TestGcpArtifactRegistryGo(t *testing.T) {
 			"gcp:project": project,
 		},
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
@@ -297,7 +297,7 @@ func TestDockerContainerRegistryGo(t *testing.T) {
 			"cbp-docker-go:dockerPassword": password,
 		},
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+			"github.com/pulumi/pulumi-docker/sdk/v5=../sdk",
 		},
 		ExtraRuntimeValidation: assertHasRepoDigest,
 	})

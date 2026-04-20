@@ -4,11 +4,11 @@ go 1.25.8
 
 require (
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.1.0
-	github.com/pulumi/pulumi-docker/sdk/v4 v4.0.0-00010101000000-000000000000
+	github.com/pulumi/pulumi-docker/sdk/v5 v5.0.0-00010101000000-000000000000
 	github.com/pulumi/pulumi/sdk/v3 v3.228.0
 )
 
-replace github.com/pulumi/pulumi-docker/sdk/v4 => ../../sdk
+replace github.com/pulumi/pulumi-docker/sdk/v5 => ../../sdk
 
 require (
 	dario.cat/mergo v1.0.0 // indirect

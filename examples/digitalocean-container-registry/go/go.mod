@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.18.0
-	github.com/pulumi/pulumi-docker/sdk/v4 v4.5.1
+	github.com/pulumi/pulumi-docker/sdk/v5 v5.0.0
 	github.com/pulumi/pulumi/sdk/v3 v3.104.2
 )
 
