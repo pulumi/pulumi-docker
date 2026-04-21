@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Inputs
         [Input("address", required: true)]
         public string Address { get; set; } = null!;
 
-        [Input("password", required: true)]
+        [Input("password")]
         private string? _password;
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace Pulumi.Docker.Inputs
         /// <summary>
         /// The username for the Docker registry.
         /// </summary>
-        [Input("username", required: true)]
-        public string Username { get; set; } = null!;
+        [Input("username")]
+        public string? Username { get; set; }
 
         public GetRegistryImageManifestsAuthConfigArgs()
         {

@@ -32,7 +32,12 @@
                 }
             },
             "docker_config": {
-                "current": "docker:index/serviceConfig:ServiceConfig"
+                "current": "docker:index/serviceConfig:ServiceConfig",
+                "fields": {
+                    "labels": {
+                        "maxItemsOne": false
+                    }
+                }
             },
             "docker_container": {
                 "current": "docker:index/container:Container",
@@ -51,6 +56,31 @@
                         }
                     },
                     "command": {
+                        "maxItemsOne": false
+                    },
+                    "device_read_bps": {
+                        "maxItemsOne": false
+                    },
+                    "device_read_iops": {
+                        "maxItemsOne": false
+                    },
+                    "device_requests": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "capabilities": {
+                                    "maxItemsOne": false
+                                },
+                                "device_ids": {
+                                    "maxItemsOne": false
+                                }
+                            }
+                        }
+                    },
+                    "device_write_bps": {
+                        "maxItemsOne": false
+                    },
+                    "device_write_iops": {
                         "maxItemsOne": false
                     },
                     "devices": {
@@ -121,6 +151,12 @@
                         "elem": {
                             "fields": {
                                 "aliases": {
+                                    "maxItemsOne": false
+                                },
+                                "driver_opts": {
+                                    "maxItemsOne": false
+                                },
+                                "link_local_ips": {
                                     "maxItemsOne": false
                                 }
                             }
@@ -507,6 +543,9 @@
             "docker_network": {
                 "current": "docker:index/getNetwork:getNetwork",
                 "fields": {
+                    "containers": {
+                        "maxItemsOne": false
+                    },
                     "ipam_config": {
                         "maxItemsOne": false
                     }

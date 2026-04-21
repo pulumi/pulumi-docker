@@ -1,6 +1,6 @@
 {
     "name": "@pulumi/docker",
-    "version": "4.0.0-alpha.0+dev",
+    "version": "5.0.0-alpha.0+dev",
     "description": "A Pulumi package for interacting with Docker in Pulumi programs",
     "keywords": [
         "pulumi",
@@ -24,6 +24,6 @@
     "pulumi": {
         "resource": true,
         "name": "docker",
-        "version": "4.0.0-alpha.0+dev"
+        "version": "5.0.0-alpha.0+dev"
     }
 }

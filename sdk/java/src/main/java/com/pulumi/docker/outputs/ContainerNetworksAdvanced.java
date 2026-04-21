@@ -5,6 +5,7 @@ package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
+import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,16 @@ public final class ContainerNetworksAdvanced {
      */
     private @Nullable List<String> aliases;
     /**
+     * @return An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+     * 
+     */
+    private @Nullable List<String> driverOpts;
+    /**
+     * @return Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+     * 
+     */
+    private @Nullable Integer gwPriority;
+    /**
      * @return The IPV4 address of the container in the specific network.
      * 
      */
@@ -28,6 +39,11 @@ public final class ContainerNetworksAdvanced {
      * 
      */
     private @Nullable String ipv6Address;
+    /**
+     * @return The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+     * 
+     */
+    private @Nullable List<String> linkLocalIps;
     /**
      * @return The MAC address of the container in the specific network.
      * 
@@ -48,6 +64,20 @@ public final class ContainerNetworksAdvanced {
         return this.aliases == null ? List.of() : this.aliases;
     }
     /**
+     * @return An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+     * 
+     */
+    public List<String> driverOpts() {
+        return this.driverOpts == null ? List.of() : this.driverOpts;
+    }
+    /**
+     * @return Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+     * 
+     */
+    public Optional<Integer> gwPriority() {
+        return Optional.ofNullable(this.gwPriority);
+    }
+    /**
      * @return The IPV4 address of the container in the specific network.
      * 
      */
@@ -60,6 +90,13 @@ public final class ContainerNetworksAdvanced {
      */
     public Optional<String> ipv6Address() {
         return Optional.ofNullable(this.ipv6Address);
+    }
+    /**
+     * @return The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+     * 
+     */
+    public List<String> linkLocalIps() {
+        return this.linkLocalIps == null ? List.of() : this.linkLocalIps;
     }
     /**
      * @return The MAC address of the container in the specific network.
@@ -86,16 +123,22 @@ public final class ContainerNetworksAdvanced {
     @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> aliases;
+        private @Nullable List<String> driverOpts;
+        private @Nullable Integer gwPriority;
         private @Nullable String ipv4Address;
         private @Nullable String ipv6Address;
+        private @Nullable List<String> linkLocalIps;
         private @Nullable String macAddress;
         private String name;
         public Builder() {}
         public Builder(ContainerNetworksAdvanced defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.aliases = defaults.aliases;
+    	      this.driverOpts = defaults.driverOpts;
+    	      this.gwPriority = defaults.gwPriority;
     	      this.ipv4Address = defaults.ipv4Address;
     	      this.ipv6Address = defaults.ipv6Address;
+    	      this.linkLocalIps = defaults.linkLocalIps;
     	      this.macAddress = defaults.macAddress;
     	      this.name = defaults.name;
         }
@@ -110,6 +153,21 @@ public final class ContainerNetworksAdvanced {
             return aliases(List.of(aliases));
         }
         @CustomType.Setter
+        public Builder driverOpts(@Nullable List<String> driverOpts) {
+
+            this.driverOpts = driverOpts;
+            return this;
+        }
+        public Builder driverOpts(String... driverOpts) {
+            return driverOpts(List.of(driverOpts));
+        }
+        @CustomType.Setter
+        public Builder gwPriority(@Nullable Integer gwPriority) {
+
+            this.gwPriority = gwPriority;
+            return this;
+        }
+        @CustomType.Setter
         public Builder ipv4Address(@Nullable String ipv4Address) {
 
             this.ipv4Address = ipv4Address;
@@ -120,6 +178,15 @@ public final class ContainerNetworksAdvanced {
 
             this.ipv6Address = ipv6Address;
             return this;
+        }
+        @CustomType.Setter
+        public Builder linkLocalIps(@Nullable List<String> linkLocalIps) {
+
+            this.linkLocalIps = linkLocalIps;
+            return this;
+        }
+        public Builder linkLocalIps(String... linkLocalIps) {
+            return linkLocalIps(List.of(linkLocalIps));
         }
         @CustomType.Setter
         public Builder macAddress(@Nullable String macAddress) {
@@ -138,8 +205,11 @@ public final class ContainerNetworksAdvanced {
         public ContainerNetworksAdvanced build() {
             final var _resultValue = new ContainerNetworksAdvanced();
             _resultValue.aliases = aliases;
+            _resultValue.driverOpts = driverOpts;
+            _resultValue.gwPriority = gwPriority;
             _resultValue.ipv4Address = ipv4Address;
             _resultValue.ipv6Address = ipv6Address;
+            _resultValue.linkLocalIps = linkLocalIps;
             _resultValue.macAddress = macAddress;
             _resultValue.name = name;
             return _resultValue;

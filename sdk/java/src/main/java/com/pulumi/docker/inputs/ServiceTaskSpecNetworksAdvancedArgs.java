@@ -5,7 +5,6 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -48,18 +47,41 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
     }
 
     /**
-     * The name/id of the network.
+     * The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      * 
      */
-    @Import(name="name", required=true)
-    private Output<String> name;
+    @Import(name="id")
+    private @Nullable Output<String> id;
 
     /**
-     * @return The name/id of the network.
+     * @return The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      * 
      */
-    public Output<String> name() {
-        return this.name;
+    public Optional<Output<String>> id() {
+        return Optional.ofNullable(this.id);
+    }
+
+    /**
+     * Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+     * 
+     * @deprecated
+     * Use the id attribute.
+     * 
+     */
+    @Deprecated /* Use the id attribute. */
+    @Import(name="name")
+    private @Nullable Output<String> name;
+
+    /**
+     * @return Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+     * 
+     * @deprecated
+     * Use the id attribute.
+     * 
+     */
+    @Deprecated /* Use the id attribute. */
+    public Optional<Output<String>> name() {
+        return Optional.ofNullable(this.name);
     }
 
     private ServiceTaskSpecNetworksAdvancedArgs() {}
@@ -67,6 +89,7 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
     private ServiceTaskSpecNetworksAdvancedArgs(ServiceTaskSpecNetworksAdvancedArgs $) {
         this.aliases = $.aliases;
         this.driverOpts = $.driverOpts;
+        this.id = $.id;
         this.name = $.name;
     }
 
@@ -151,30 +174,56 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
         }
 
         /**
-         * @param name The name/id of the network.
+         * @param id The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
          * 
          * @return builder
          * 
          */
-        public Builder name(Output<String> name) {
+        public Builder id(@Nullable Output<String> id) {
+            $.id = id;
+            return this;
+        }
+
+        /**
+         * @param id The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder id(String id) {
+            return id(Output.of(id));
+        }
+
+        /**
+         * @param name Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+         * 
+         * @return builder
+         * 
+         * @deprecated
+         * Use the id attribute.
+         * 
+         */
+        @Deprecated /* Use the id attribute. */
+        public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
         }
 
         /**
-         * @param name The name/id of the network.
+         * @param name Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
          * 
          * @return builder
          * 
+         * @deprecated
+         * Use the id attribute.
+         * 
          */
+        @Deprecated /* Use the id attribute. */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
         public ServiceTaskSpecNetworksAdvancedArgs build() {
-            if ($.name == null) {
-                throw new MissingRequiredPropertyException("ServiceTaskSpecNetworksAdvancedArgs", "name");
-            }
             return $;
         }
     }

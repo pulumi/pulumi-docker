@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// Rrepresents the protocol of a port: `Tcp`, `Udp` or `Sctp`. Defaults to `Tcp`.
+        /// Represents the protocol of a port: `Tcp`, `Udp` or `Sctp`. Defaults to `Tcp`.
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }

@@ -11,7 +11,7 @@ The Docker provider is available as a package in all Pulumi languages:
 
 * JavaScript/TypeScript: [`@pulumi/docker`](https://www.npmjs.com/package/@pulumi/docker)
 * Python: [`pulumi-docker`](https://pypi.org/project/pulumi-docker/)
-* Go: [`github.com/pulumi/pulumi-docker/sdk/v4/go/docker`](https://github.com/pulumi/pulumi-docker)
+* Go: [`github.com/pulumi/pulumi-docker/sdk/v5/go/docker`](https://github.com/pulumi/pulumi-docker)
 * .NET: [`Pulumi.Docker`](https://www.nuget.org/packages/Pulumi.Docker)
 * Java: [`com.pulumi/docker`](https://central.sonatype.com/artifact/com.pulumi/docker)
 
@@ -130,7 +130,7 @@ config:
 package main
 
 import (
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -255,7 +255,7 @@ config:
 
 ```
 
-When using a remote host, the daemon configuration on the remote host can apply default configuration to your resources when running `pulumi up`, for example by appling log options to containers. When running `pulumi preview` the next time, it will show up as a diff. In such cases it is recommended to use the `ignoreChanges` lifecycle meta-argument to ignore the changing attribute (See this issue for more information).
+When using a remote host, the daemon configuration on the remote host can apply default configuration to your resources when running `pulumi up`, for example by applying log options to containers. When running `pulumi preview` the next time, it will show up as a diff. In such cases it is recommended to use the `ignoreChanges` lifecycle meta-argument to ignore the changing attribute (See this issue for more information).
 ## Disabling Docker Daemon Checking
 
 The `docker.RegistryImage` `dataSource` and `resource` do not require a connection to the Docker daemon. If you want to use those in an environment without a Docker daemon, you can disable the
@@ -276,7 +276,7 @@ When passing in a config file either the corresponding `auth` string of the repo
 used to retrieve the authentication credentials.
 
 > **Note**
-`configFile` has predence over all other options. You can theoretically specify values for every attribute but the credentials obtained through the `configFile` will override the manually set `username`/`password`
+`configFile` has precedence over all other options. You can theoretically specify values for every attribute but the credentials obtained through the `configFile` will override the manually set `username`/`password`
 
 You can still use the environment variables `DOCKER_REGISTRY_USER` and `DOCKER_REGISTRY_PASS`.
 
@@ -337,7 +337,7 @@ Required:
 Optional:
 
 - `authDisabled` (Boolean) Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see <https://github.com/kreuzwerker/pulumi-provider-docker/issues/470> for more information). Defaults to `false`.
-- `configFile` (String) Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+- `configFile` (String) Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 - `configFileContent` (String) Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 - `password` (String, Sensitive) Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
 - `username` (String) Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.

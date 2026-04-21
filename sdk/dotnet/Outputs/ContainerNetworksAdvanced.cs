@@ -18,6 +18,14 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> Aliases;
         /// <summary>
+        /// An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+        /// </summary>
+        public readonly ImmutableArray<string> DriverOpts;
+        /// <summary>
+        /// Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+        /// </summary>
+        public readonly int? GwPriority;
+        /// <summary>
         /// The IPV4 address of the container in the specific network.
         /// </summary>
         public readonly string? Ipv4Address;
@@ -25,6 +33,10 @@ namespace Pulumi.Docker.Outputs
         /// The IPV6 address of the container in the specific network.
         /// </summary>
         public readonly string? Ipv6Address;
+        /// <summary>
+        /// The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+        /// </summary>
+        public readonly ImmutableArray<string> LinkLocalIps;
         /// <summary>
         /// The MAC address of the container in the specific network.
         /// </summary>
@@ -38,17 +50,26 @@ namespace Pulumi.Docker.Outputs
         private ContainerNetworksAdvanced(
             ImmutableArray<string> aliases,
 
+            ImmutableArray<string> driverOpts,
+
+            int? gwPriority,
+
             string? ipv4Address,
 
             string? ipv6Address,
+
+            ImmutableArray<string> linkLocalIps,
 
             string? macAddress,
 
             string name)
         {
             Aliases = aliases;
+            DriverOpts = driverOpts;
+            GwPriority = gwPriority;
             Ipv4Address = ipv4Address;
             Ipv6Address = ipv6Address;
+            LinkLocalIps = linkLocalIps;
             MacAddress = macAddress;
             Name = name;
         }

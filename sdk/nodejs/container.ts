@@ -106,7 +106,7 @@ export class Container extends pulumi.CustomResource {
      */
     declare public /*out*/ readonly bridge: pulumi.Output<string>;
     /**
-     * Add or drop certrain linux capabilities.
+     * Add or drop certain linux capabilities.
      */
     declare public readonly capabilities: pulumi.Output<outputs.ContainerCapabilities | undefined>;
     /**
@@ -154,7 +154,27 @@ export class Container extends pulumi.CustomResource {
      */
     declare public readonly destroyGraceSeconds: pulumi.Output<number | undefined>;
     /**
-     * Bind devices to the container.
+     * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     */
+    declare public readonly deviceReadBps: pulumi.Output<outputs.ContainerDeviceReadBp[] | undefined>;
+    /**
+     * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     */
+    declare public readonly deviceReadIops: pulumi.Output<outputs.ContainerDeviceReadIop[] | undefined>;
+    /**
+     * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     */
+    declare public readonly deviceRequests: pulumi.Output<outputs.ContainerDeviceRequest[] | undefined>;
+    /**
+     * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     */
+    declare public readonly deviceWriteBps: pulumi.Output<outputs.ContainerDeviceWriteBp[] | undefined>;
+    /**
+     * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     */
+    declare public readonly deviceWriteIops: pulumi.Output<outputs.ContainerDeviceWriteIop[] | undefined>;
+    /**
+     * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      */
     declare public readonly devices: pulumi.Output<outputs.ContainerDevice[] | undefined>;
     /**
@@ -186,7 +206,7 @@ export class Container extends pulumi.CustomResource {
      */
     declare public /*out*/ readonly exitCode: pulumi.Output<number>;
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      */
     declare public readonly gpus: pulumi.Output<string | undefined>;
     /**
@@ -254,7 +274,7 @@ export class Container extends pulumi.CustomResource {
      */
     declare public readonly mounts: pulumi.Output<outputs.ContainerMount[] | undefined>;
     /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      */
     declare public readonly mustRun: pulumi.Output<boolean | undefined>;
     /**
@@ -270,13 +290,17 @@ export class Container extends pulumi.CustomResource {
      */
     declare public readonly networkMode: pulumi.Output<string | undefined>;
     /**
-     * The networks the container is attached to
+     * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      */
     declare public readonly networksAdvanced: pulumi.Output<outputs.ContainerNetworksAdvanced[] | undefined>;
     /**
-     * he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+     * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
     declare public readonly pidMode: pulumi.Output<string | undefined>;
+    /**
+     * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     */
+    declare public readonly platform: pulumi.Output<string>;
     /**
      * Publish a container's port(s) to the host.
      */
@@ -358,7 +382,7 @@ export class Container extends pulumi.CustomResource {
      */
     declare public readonly uploads: pulumi.Output<outputs.ContainerUpload[] | undefined>;
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      */
     declare public readonly user: pulumi.Output<string | undefined>;
     /**
@@ -409,6 +433,11 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["cpuShares"] = state?.cpuShares;
             resourceInputs["cpus"] = state?.cpus;
             resourceInputs["destroyGraceSeconds"] = state?.destroyGraceSeconds;
+            resourceInputs["deviceReadBps"] = state?.deviceReadBps;
+            resourceInputs["deviceReadIops"] = state?.deviceReadIops;
+            resourceInputs["deviceRequests"] = state?.deviceRequests;
+            resourceInputs["deviceWriteBps"] = state?.deviceWriteBps;
+            resourceInputs["deviceWriteIops"] = state?.deviceWriteIops;
             resourceInputs["devices"] = state?.devices;
             resourceInputs["dns"] = state?.dns;
             resourceInputs["dnsOpts"] = state?.dnsOpts;
@@ -440,6 +469,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["networkMode"] = state?.networkMode;
             resourceInputs["networksAdvanced"] = state?.networksAdvanced;
             resourceInputs["pidMode"] = state?.pidMode;
+            resourceInputs["platform"] = state?.platform;
             resourceInputs["ports"] = state?.ports;
             resourceInputs["privileged"] = state?.privileged;
             resourceInputs["publishAllPorts"] = state?.publishAllPorts;
@@ -483,6 +513,11 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["cpuShares"] = args?.cpuShares;
             resourceInputs["cpus"] = args?.cpus;
             resourceInputs["destroyGraceSeconds"] = args?.destroyGraceSeconds;
+            resourceInputs["deviceReadBps"] = args?.deviceReadBps;
+            resourceInputs["deviceReadIops"] = args?.deviceReadIops;
+            resourceInputs["deviceRequests"] = args?.deviceRequests;
+            resourceInputs["deviceWriteBps"] = args?.deviceWriteBps;
+            resourceInputs["deviceWriteIops"] = args?.deviceWriteIops;
             resourceInputs["devices"] = args?.devices;
             resourceInputs["dns"] = args?.dns;
             resourceInputs["dnsOpts"] = args?.dnsOpts;
@@ -512,6 +547,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["networkMode"] = args?.networkMode;
             resourceInputs["networksAdvanced"] = args?.networksAdvanced;
             resourceInputs["pidMode"] = args?.pidMode;
+            resourceInputs["platform"] = args?.platform;
             resourceInputs["ports"] = args?.ports;
             resourceInputs["privileged"] = args?.privileged;
             resourceInputs["publishAllPorts"] = args?.publishAllPorts;
@@ -561,7 +597,7 @@ export interface ContainerState {
      */
     bridge?: pulumi.Input<string>;
     /**
-     * Add or drop certrain linux capabilities.
+     * Add or drop certain linux capabilities.
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
@@ -609,7 +645,27 @@ export interface ContainerState {
      */
     destroyGraceSeconds?: pulumi.Input<number>;
     /**
-     * Bind devices to the container.
+     * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     */
+    deviceReadBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadBp>[]>;
+    /**
+     * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     */
+    deviceReadIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadIop>[]>;
+    /**
+     * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     */
+    deviceRequests?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceRequest>[]>;
+    /**
+     * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     */
+    deviceWriteBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteBp>[]>;
+    /**
+     * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     */
+    deviceWriteIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteIop>[]>;
+    /**
+     * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      */
     devices?: pulumi.Input<pulumi.Input<inputs.ContainerDevice>[]>;
     /**
@@ -641,7 +697,7 @@ export interface ContainerState {
      */
     exitCode?: pulumi.Input<number>;
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      */
     gpus?: pulumi.Input<string>;
     /**
@@ -709,7 +765,7 @@ export interface ContainerState {
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
     /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      */
     mustRun?: pulumi.Input<boolean>;
     /**
@@ -725,13 +781,17 @@ export interface ContainerState {
      */
     networkMode?: pulumi.Input<string>;
     /**
-     * The networks the container is attached to
+     * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      */
     networksAdvanced?: pulumi.Input<pulumi.Input<inputs.ContainerNetworksAdvanced>[]>;
     /**
-     * he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+     * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
     pidMode?: pulumi.Input<string>;
+    /**
+     * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     */
+    platform?: pulumi.Input<string>;
     /**
      * Publish a container's port(s) to the host.
      */
@@ -813,7 +873,7 @@ export interface ContainerState {
      */
     uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[]>;
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      */
     user?: pulumi.Input<string>;
     /**
@@ -847,7 +907,7 @@ export interface ContainerArgs {
      */
     attach?: pulumi.Input<boolean>;
     /**
-     * Add or drop certrain linux capabilities.
+     * Add or drop certain linux capabilities.
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
@@ -891,7 +951,27 @@ export interface ContainerArgs {
      */
     destroyGraceSeconds?: pulumi.Input<number>;
     /**
-     * Bind devices to the container.
+     * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     */
+    deviceReadBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadBp>[]>;
+    /**
+     * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     */
+    deviceReadIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadIop>[]>;
+    /**
+     * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     */
+    deviceRequests?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceRequest>[]>;
+    /**
+     * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     */
+    deviceWriteBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteBp>[]>;
+    /**
+     * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     */
+    deviceWriteIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteIop>[]>;
+    /**
+     * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      */
     devices?: pulumi.Input<pulumi.Input<inputs.ContainerDevice>[]>;
     /**
@@ -919,7 +999,7 @@ export interface ContainerArgs {
      */
     envs?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      */
     gpus?: pulumi.Input<string>;
     /**
@@ -987,7 +1067,7 @@ export interface ContainerArgs {
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
     /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      */
     mustRun?: pulumi.Input<boolean>;
     /**
@@ -999,13 +1079,17 @@ export interface ContainerArgs {
      */
     networkMode?: pulumi.Input<string>;
     /**
-     * The networks the container is attached to
+     * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      */
     networksAdvanced?: pulumi.Input<pulumi.Input<inputs.ContainerNetworksAdvanced>[]>;
     /**
-     * he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
+     * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
     pidMode?: pulumi.Input<string>;
+    /**
+     * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     */
+    platform?: pulumi.Input<string>;
     /**
      * Publish a container's port(s) to the host.
      */
@@ -1087,7 +1171,7 @@ export interface ContainerArgs {
      */
     uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[]>;
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      */
     user?: pulumi.Input<string>;
     /**

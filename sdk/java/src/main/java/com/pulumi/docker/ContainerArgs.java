@@ -7,6 +7,11 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.ContainerCapabilitiesArgs;
 import com.pulumi.docker.inputs.ContainerDeviceArgs;
+import com.pulumi.docker.inputs.ContainerDeviceReadBpArgs;
+import com.pulumi.docker.inputs.ContainerDeviceReadIopArgs;
+import com.pulumi.docker.inputs.ContainerDeviceRequestArgs;
+import com.pulumi.docker.inputs.ContainerDeviceWriteBpArgs;
+import com.pulumi.docker.inputs.ContainerDeviceWriteIopArgs;
 import com.pulumi.docker.inputs.ContainerHealthcheckArgs;
 import com.pulumi.docker.inputs.ContainerHostArgs;
 import com.pulumi.docker.inputs.ContainerLabelArgs;
@@ -47,14 +52,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Add or drop certrain linux capabilities.
+     * Add or drop certain linux capabilities.
      * 
      */
     @Import(name="capabilities")
     private @Nullable Output<ContainerCapabilitiesArgs> capabilities;
 
     /**
-     * @return Add or drop certrain linux capabilities.
+     * @return Add or drop certain linux capabilities.
      * 
      */
     public Optional<Output<ContainerCapabilitiesArgs>> capabilities() {
@@ -212,14 +217,89 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Bind devices to the container.
+     * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     * 
+     */
+    @Import(name="deviceReadBps")
+    private @Nullable Output<List<ContainerDeviceReadBpArgs>> deviceReadBps;
+
+    /**
+     * @return Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+     * 
+     */
+    public Optional<Output<List<ContainerDeviceReadBpArgs>>> deviceReadBps() {
+        return Optional.ofNullable(this.deviceReadBps);
+    }
+
+    /**
+     * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     * 
+     */
+    @Import(name="deviceReadIops")
+    private @Nullable Output<List<ContainerDeviceReadIopArgs>> deviceReadIops;
+
+    /**
+     * @return Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+     * 
+     */
+    public Optional<Output<List<ContainerDeviceReadIopArgs>>> deviceReadIops() {
+        return Optional.ofNullable(this.deviceReadIops);
+    }
+
+    /**
+     * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     * 
+     */
+    @Import(name="deviceRequests")
+    private @Nullable Output<List<ContainerDeviceRequestArgs>> deviceRequests;
+
+    /**
+     * @return Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+     * 
+     */
+    public Optional<Output<List<ContainerDeviceRequestArgs>>> deviceRequests() {
+        return Optional.ofNullable(this.deviceRequests);
+    }
+
+    /**
+     * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     * 
+     */
+    @Import(name="deviceWriteBps")
+    private @Nullable Output<List<ContainerDeviceWriteBpArgs>> deviceWriteBps;
+
+    /**
+     * @return Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+     * 
+     */
+    public Optional<Output<List<ContainerDeviceWriteBpArgs>>> deviceWriteBps() {
+        return Optional.ofNullable(this.deviceWriteBps);
+    }
+
+    /**
+     * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     * 
+     */
+    @Import(name="deviceWriteIops")
+    private @Nullable Output<List<ContainerDeviceWriteIopArgs>> deviceWriteIops;
+
+    /**
+     * @return Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+     * 
+     */
+    public Optional<Output<List<ContainerDeviceWriteIopArgs>>> deviceWriteIops() {
+        return Optional.ofNullable(this.deviceWriteIops);
+    }
+
+    /**
+     * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      * 
      */
     @Import(name="devices")
     private @Nullable Output<List<ContainerDeviceArgs>> devices;
 
     /**
-     * @return Bind devices to the container.
+     * @return Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      * 
      */
     public Optional<Output<List<ContainerDeviceArgs>>> devices() {
@@ -317,14 +397,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * GPU devices to add to the container. Supported values are `all` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      * 
      */
     @Import(name="gpus")
     private @Nullable Output<String> gpus;
 
     /**
-     * @return GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+     * @return GPU devices to add to the container. Supported values are `all` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      * 
      */
     public Optional<Output<String>> gpus() {
@@ -572,14 +652,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      * 
      */
     @Import(name="mustRun")
     private @Nullable Output<Boolean> mustRun;
 
     /**
-     * @return If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+     * @return If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      * 
      */
     public Optional<Output<Boolean>> mustRun() {
@@ -617,14 +697,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The networks the container is attached to
+     * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      * 
      */
     @Import(name="networksAdvanced")
     private @Nullable Output<List<ContainerNetworksAdvancedArgs>> networksAdvanced;
 
     /**
-     * @return The networks the container is attached to
+     * @return The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      * 
      */
     public Optional<Output<List<ContainerNetworksAdvancedArgs>>> networksAdvanced() {
@@ -632,18 +712,33 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+     * The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
      * 
      */
     @Import(name="pidMode")
     private @Nullable Output<String> pidMode;
 
     /**
-     * @return he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+     * @return The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
      * 
      */
     public Optional<Output<String>> pidMode() {
         return Optional.ofNullable(this.pidMode);
+    }
+
+    /**
+     * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     * 
+     */
+    @Import(name="platform")
+    private @Nullable Output<String> platform;
+
+    /**
+     * @return Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+     * 
+     */
+    public Optional<Output<String>> platform() {
+        return Optional.ofNullable(this.platform);
     }
 
     /**
@@ -947,14 +1042,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      * 
      */
     @Import(name="user")
     private @Nullable Output<String> user;
 
     /**
-     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      * 
      */
     public Optional<Output<String>> user() {
@@ -1051,6 +1146,11 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.cpuShares = $.cpuShares;
         this.cpus = $.cpus;
         this.destroyGraceSeconds = $.destroyGraceSeconds;
+        this.deviceReadBps = $.deviceReadBps;
+        this.deviceReadIops = $.deviceReadIops;
+        this.deviceRequests = $.deviceRequests;
+        this.deviceWriteBps = $.deviceWriteBps;
+        this.deviceWriteIops = $.deviceWriteIops;
         this.devices = $.devices;
         this.dns = $.dns;
         this.dnsOpts = $.dnsOpts;
@@ -1080,6 +1180,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.networkMode = $.networkMode;
         this.networksAdvanced = $.networksAdvanced;
         this.pidMode = $.pidMode;
+        this.platform = $.platform;
         this.ports = $.ports;
         this.privileged = $.privileged;
         this.publishAllPorts = $.publishAllPorts;
@@ -1148,7 +1249,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param capabilities Add or drop certrain linux capabilities.
+         * @param capabilities Add or drop certain linux capabilities.
          * 
          * @return builder
          * 
@@ -1159,7 +1260,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param capabilities Add or drop certrain linux capabilities.
+         * @param capabilities Add or drop certain linux capabilities.
          * 
          * @return builder
          * 
@@ -1389,7 +1490,162 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param devices Bind devices to the container.
+         * @param deviceReadBps Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceReadBps(@Nullable Output<List<ContainerDeviceReadBpArgs>> deviceReadBps) {
+            $.deviceReadBps = deviceReadBps;
+            return this;
+        }
+
+        /**
+         * @param deviceReadBps Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceReadBps(List<ContainerDeviceReadBpArgs> deviceReadBps) {
+            return deviceReadBps(Output.of(deviceReadBps));
+        }
+
+        /**
+         * @param deviceReadBps Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceReadBps(ContainerDeviceReadBpArgs... deviceReadBps) {
+            return deviceReadBps(List.of(deviceReadBps));
+        }
+
+        /**
+         * @param deviceReadIops Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceReadIops(@Nullable Output<List<ContainerDeviceReadIopArgs>> deviceReadIops) {
+            $.deviceReadIops = deviceReadIops;
+            return this;
+        }
+
+        /**
+         * @param deviceReadIops Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceReadIops(List<ContainerDeviceReadIopArgs> deviceReadIops) {
+            return deviceReadIops(Output.of(deviceReadIops));
+        }
+
+        /**
+         * @param deviceReadIops Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceReadIops(ContainerDeviceReadIopArgs... deviceReadIops) {
+            return deviceReadIops(List.of(deviceReadIops));
+        }
+
+        /**
+         * @param deviceRequests Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceRequests(@Nullable Output<List<ContainerDeviceRequestArgs>> deviceRequests) {
+            $.deviceRequests = deviceRequests;
+            return this;
+        }
+
+        /**
+         * @param deviceRequests Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceRequests(List<ContainerDeviceRequestArgs> deviceRequests) {
+            return deviceRequests(Output.of(deviceRequests));
+        }
+
+        /**
+         * @param deviceRequests Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceRequests(ContainerDeviceRequestArgs... deviceRequests) {
+            return deviceRequests(List.of(deviceRequests));
+        }
+
+        /**
+         * @param deviceWriteBps Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceWriteBps(@Nullable Output<List<ContainerDeviceWriteBpArgs>> deviceWriteBps) {
+            $.deviceWriteBps = deviceWriteBps;
+            return this;
+        }
+
+        /**
+         * @param deviceWriteBps Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceWriteBps(List<ContainerDeviceWriteBpArgs> deviceWriteBps) {
+            return deviceWriteBps(Output.of(deviceWriteBps));
+        }
+
+        /**
+         * @param deviceWriteBps Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceWriteBps(ContainerDeviceWriteBpArgs... deviceWriteBps) {
+            return deviceWriteBps(List.of(deviceWriteBps));
+        }
+
+        /**
+         * @param deviceWriteIops Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceWriteIops(@Nullable Output<List<ContainerDeviceWriteIopArgs>> deviceWriteIops) {
+            $.deviceWriteIops = deviceWriteIops;
+            return this;
+        }
+
+        /**
+         * @param deviceWriteIops Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceWriteIops(List<ContainerDeviceWriteIopArgs> deviceWriteIops) {
+            return deviceWriteIops(Output.of(deviceWriteIops));
+        }
+
+        /**
+         * @param deviceWriteIops Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceWriteIops(ContainerDeviceWriteIopArgs... deviceWriteIops) {
+            return deviceWriteIops(List.of(deviceWriteIops));
+        }
+
+        /**
+         * @param devices Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
          * 
          * @return builder
          * 
@@ -1400,7 +1656,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param devices Bind devices to the container.
+         * @param devices Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
          * 
          * @return builder
          * 
@@ -1410,7 +1666,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param devices Bind devices to the container.
+         * @param devices Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
          * 
          * @return builder
          * 
@@ -1596,7 +1852,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param gpus GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+         * @param gpus GPU devices to add to the container. Supported values are `all` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
          * 
          * @return builder
          * 
@@ -1607,7 +1863,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param gpus GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
+         * @param gpus GPU devices to add to the container. Supported values are `all` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
          * 
          * @return builder
          * 
@@ -1993,7 +2249,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param mustRun If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+         * @param mustRun If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
          * 
          * @return builder
          * 
@@ -2004,7 +2260,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param mustRun If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.
+         * @param mustRun If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
          * 
          * @return builder
          * 
@@ -2056,7 +2312,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networksAdvanced The networks the container is attached to
+         * @param networksAdvanced The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
          * 
          * @return builder
          * 
@@ -2067,7 +2323,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networksAdvanced The networks the container is attached to
+         * @param networksAdvanced The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
          * 
          * @return builder
          * 
@@ -2077,7 +2333,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networksAdvanced The networks the container is attached to
+         * @param networksAdvanced The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
          * 
          * @return builder
          * 
@@ -2087,7 +2343,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pidMode he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+         * @param pidMode The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
          * 
          * @return builder
          * 
@@ -2098,13 +2354,34 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pidMode he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+         * @param pidMode The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
          * 
          * @return builder
          * 
          */
         public Builder pidMode(String pidMode) {
             return pidMode(Output.of(pidMode));
+        }
+
+        /**
+         * @param platform Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platform(@Nullable Output<String> platform) {
+            $.platform = platform;
+            return this;
+        }
+
+        /**
+         * @param platform Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platform(String platform) {
+            return platform(Output.of(platform));
         }
 
         /**
@@ -2568,7 +2845,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
          * 
          * @return builder
          * 
@@ -2579,7 +2856,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
          * 
          * @return builder
          * 

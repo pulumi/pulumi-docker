@@ -36,11 +36,11 @@ namespace Pulumi.Docker.Inputs
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
-        [Input("tests", required: true)]
+        [Input("tests")]
         private InputList<string>? _tests;
 
         /// <summary>
-        /// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+        /// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
         /// </summary>
         public InputList<string> Tests
         {

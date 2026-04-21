@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -18,7 +18,7 @@ type RegistryAuth struct {
 	Address string `pulumi:"address"`
 	// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
 	AuthDisabled *bool `pulumi:"authDisabled"`
-	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 	ConfigFile *string `pulumi:"configFile"`
 	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent *string `pulumi:"configFileContent"`
@@ -44,7 +44,7 @@ type RegistryAuthArgs struct {
 	Address pulumi.StringInput `pulumi:"address"`
 	// Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
 	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
-	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
 	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
@@ -115,7 +115,7 @@ func (o RegistryAuthOutput) AuthDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *bool { return v.AuthDisabled }).(pulumi.BoolPtrOutput)
 }
 
-// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 func (o RegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }

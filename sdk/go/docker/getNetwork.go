@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -20,7 +20,7 @@ import (
 //
 // import (
 //
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 //	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
 // )
@@ -56,6 +56,8 @@ type LookupNetworkArgs struct {
 
 // A collection of values returned by getNetwork.
 type LookupNetworkResult struct {
+	// Containers attached to the network.
+	Containers []GetNetworkContainer `pulumi:"containers"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver string `pulumi:"driver"`
 	// The ID of this resource.
@@ -104,6 +106,11 @@ func (o LookupNetworkResultOutput) ToLookupNetworkResultOutput() LookupNetworkRe
 
 func (o LookupNetworkResultOutput) ToLookupNetworkResultOutputWithContext(ctx context.Context) LookupNetworkResultOutput {
 	return o
+}
+
+// Containers attached to the network.
+func (o LookupNetworkResultOutput) Containers() GetNetworkContainerArrayOutput {
+	return o.ApplyT(func(v LookupNetworkResult) []GetNetworkContainer { return v.Containers }).(GetNetworkContainerArrayOutput)
 }
 
 // The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.

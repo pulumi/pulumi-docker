@@ -9,7 +9,7 @@ require (
 	golang.org/x/crypto v0.49.0
 )
 
-replace github.com/pulumi/pulumi-docker/sdk/v4 => ../sdk
+replace github.com/pulumi/pulumi-docker/sdk/v5 => ../sdk
 
 require (
 	cloud.google.com/go v0.112.1 // indirect

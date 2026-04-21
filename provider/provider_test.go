@@ -17,7 +17,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/pulumi/pulumi-docker/provider/v5/pkg/version"
 )
 
 func TestProviderHostDefaultMatchesPlatform(t *testing.T) {

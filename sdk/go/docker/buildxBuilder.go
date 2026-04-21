@@ -7,11 +7,43 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// <!-- Bug: Type and Name are switched -->
 // Manages a Docker Buildx builder instance. This resource allows you to create a  buildx builder with various configurations such as driver, nodes, and platform settings. Please see https://github.com/docker/buildx/blob/master/docs/reference/buildx_create.md for more documentation
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewBuildxBuilder(ctx, "example", &docker.BuildxBuilderArgs{
+//				Name:   pulumi.String("example-builder"),
+//				Driver: pulumi.String("docker-container"),
+//				Use:    pulumi.Bool(true),
+//				DockerContainer: &docker.BuildxBuilderDockerContainerArgs{
+//					Image: pulumi.String("moby/buildkit:latest"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 type BuildxBuilder struct {
 	pulumi.CustomResourceState
 

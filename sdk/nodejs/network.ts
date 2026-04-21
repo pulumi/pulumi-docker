@@ -89,12 +89,6 @@ export class Network extends pulumi.CustomResource {
      */
     declare public readonly attachable: pulumi.Output<boolean | undefined>;
     /**
-     * Requests daemon to check for networks with same name.
-     *
-     * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-     */
-    declare public readonly checkDuplicate: pulumi.Output<boolean | undefined>;
-    /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
     declare public readonly driver: pulumi.Output<string>;
@@ -153,7 +147,6 @@ export class Network extends pulumi.CustomResource {
         if (opts.id) {
             const state = argsOrState as NetworkState | undefined;
             resourceInputs["attachable"] = state?.attachable;
-            resourceInputs["checkDuplicate"] = state?.checkDuplicate;
             resourceInputs["driver"] = state?.driver;
             resourceInputs["ingress"] = state?.ingress;
             resourceInputs["internal"] = state?.internal;
@@ -168,7 +161,6 @@ export class Network extends pulumi.CustomResource {
         } else {
             const args = argsOrState as NetworkArgs | undefined;
             resourceInputs["attachable"] = args?.attachable;
-            resourceInputs["checkDuplicate"] = args?.checkDuplicate;
             resourceInputs["driver"] = args?.driver;
             resourceInputs["ingress"] = args?.ingress;
             resourceInputs["internal"] = args?.internal;
@@ -194,12 +186,6 @@ export interface NetworkState {
      * Enable manual container attachment to the network.
      */
     attachable?: pulumi.Input<boolean>;
-    /**
-     * Requests daemon to check for networks with same name.
-     *
-     * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-     */
-    checkDuplicate?: pulumi.Input<boolean>;
     /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
@@ -254,12 +240,6 @@ export interface NetworkArgs {
      * Enable manual container attachment to the network.
      */
     attachable?: pulumi.Input<boolean>;
-    /**
-     * Requests daemon to check for networks with same name.
-     *
-     * @deprecated This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-     */
-    checkDuplicate?: pulumi.Input<boolean>;
     /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */

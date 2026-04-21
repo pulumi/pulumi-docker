@@ -215,7 +215,7 @@ export interface ContainerCapabilities {
 
 export interface ContainerDevice {
     /**
-     * The path in the container where the device will be bound.
+     * The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      */
     containerPath?: pulumi.Input<string>;
     /**
@@ -226,6 +226,73 @@ export interface ContainerDevice {
      * The cgroup permissions given to the container to access the device. Defaults to `rwm`.
      */
     permissions?: pulumi.Input<string>;
+}
+
+export interface ContainerDeviceReadBp {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: pulumi.Input<string>;
+    /**
+     * The read rate limit in bytes per second.
+     */
+    rate: pulumi.Input<number>;
+}
+
+export interface ContainerDeviceReadIop {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: pulumi.Input<string>;
+    /**
+     * The read IOPS limit.
+     */
+    rate: pulumi.Input<number>;
+}
+
+export interface ContainerDeviceRequest {
+    /**
+     * List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+     */
+    capabilities?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+     */
+    count?: pulumi.Input<number>;
+    /**
+     * List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+     */
+    deviceIds?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+     */
+    driver?: pulumi.Input<string>;
+    /**
+     * Driver-specific options.
+     */
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+}
+
+export interface ContainerDeviceWriteBp {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: pulumi.Input<string>;
+    /**
+     * The write rate limit in bytes per second.
+     */
+    rate: pulumi.Input<number>;
+}
+
+export interface ContainerDeviceWriteIop {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: pulumi.Input<string>;
+    /**
+     * The write IOPS limit.
+     */
+    rate: pulumi.Input<number>;
 }
 
 export interface ContainerHealthcheck {
@@ -246,9 +313,9 @@ export interface ContainerHealthcheck {
      */
     startPeriod?: pulumi.Input<string>;
     /**
-     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
      */
-    tests: pulumi.Input<pulumi.Input<string>[]>;
+    tests?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
@@ -401,6 +468,14 @@ export interface ContainerNetworksAdvanced {
      */
     aliases?: pulumi.Input<pulumi.Input<string>[]>;
     /**
+     * An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+     */
+    driverOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+     */
+    gwPriority?: pulumi.Input<number>;
+    /**
      * The IPV4 address of the container in the specific network.
      */
     ipv4Address?: pulumi.Input<string>;
@@ -408,6 +483,10 @@ export interface ContainerNetworksAdvanced {
      * The IPV6 address of the container in the specific network.
      */
     ipv6Address?: pulumi.Input<string>;
+    /**
+     * The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+     */
+    linkLocalIps?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The MAC address of the container in the specific network.
      */
@@ -501,6 +580,10 @@ export interface ContainerVolume {
      */
     readOnly?: pulumi.Input<boolean>;
     /**
+     * SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+     */
+    selinuxRelabel?: pulumi.Input<string>;
+    /**
      * The name of the docker volume which should be mounted.
      */
     volumeName?: pulumi.Input<string>;
@@ -556,11 +639,11 @@ export interface GetRegistryImageManifestsAuthConfig {
     /**
      * The password for the Docker registry.
      */
-    password: string;
+    password?: string;
     /**
      * The username for the Docker registry.
      */
-    username: string;
+    username?: string;
 }
 
 export interface GetRegistryImageManifestsAuthConfigArgs {
@@ -571,11 +654,11 @@ export interface GetRegistryImageManifestsAuthConfigArgs {
     /**
      * The password for the Docker registry.
      */
-    password: pulumi.Input<string>;
+    password?: pulumi.Input<string>;
     /**
      * The username for the Docker registry.
      */
-    username: pulumi.Input<string>;
+    username?: pulumi.Input<string>;
 }
 
 export interface NetworkIpamConfig {
@@ -629,7 +712,7 @@ export interface ProviderRegistryAuth {
      */
     authDisabled?: pulumi.Input<boolean>;
     /**
-     * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+     * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
      */
     configFile?: pulumi.Input<string>;
     /**
@@ -672,11 +755,11 @@ export interface RegistryImageAuthConfig {
     /**
      * The password for the Docker registry.
      */
-    password: pulumi.Input<string>;
+    password?: pulumi.Input<string>;
     /**
      * The username for the Docker registry.
      */
-    username: pulumi.Input<string>;
+    username?: pulumi.Input<string>;
 }
 
 export interface RegistryImageBuild {
@@ -701,7 +784,7 @@ export interface RegistryImageBuild {
      */
     buildLogFile?: pulumi.Input<string>;
     /**
-     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      */
     builder?: pulumi.Input<string>;
     /**
@@ -833,6 +916,10 @@ export interface RegistryImageBuild {
      */
     ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[]>;
     /**
+     * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     */
+    useLegacyBuilder?: pulumi.Input<boolean>;
+    /**
      * Version of the underlying builder to use
      */
     version?: pulumi.Input<string>;
@@ -925,7 +1012,7 @@ export interface RemoteImageBuild {
      */
     buildLogFile?: pulumi.Input<string>;
     /**
-     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      */
     builder?: pulumi.Input<string>;
     /**
@@ -1057,6 +1144,10 @@ export interface RemoteImageBuild {
      */
     ulimits?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildUlimit>[]>;
     /**
+     * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     */
+    useLegacyBuilder?: pulumi.Input<boolean>;
+    /**
      * Version of the underlying builder to use
      */
     version?: pulumi.Input<string>;
@@ -1153,6 +1244,17 @@ export interface ServiceAuth {
     username?: pulumi.Input<string>;
 }
 
+export interface ServiceConfigLabel {
+    /**
+     * Name of the label
+     */
+    label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
+    value: pulumi.Input<string>;
+}
+
 export interface ServiceConvergeConfig {
     /**
      * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
@@ -1181,7 +1283,7 @@ export interface ServiceEndpointSpecPort {
      */
     name?: pulumi.Input<string>;
     /**
-     * Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      */
     protocol?: pulumi.Input<string>;
     /**
@@ -1643,9 +1745,15 @@ export interface ServiceTaskSpecNetworksAdvanced {
      */
     driverOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * The name/id of the network.
+     * The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      */
-    name: pulumi.Input<string>;
+    id?: pulumi.Input<string>;
+    /**
+     * Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+     *
+     * @deprecated Use the id attribute.
+     */
+    name?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecPlacement {
@@ -1691,7 +1799,7 @@ export interface ServiceTaskSpecResources {
 
 export interface ServiceTaskSpecResourcesLimits {
     /**
-     * The amounf of memory in bytes the container allocates
+     * The amount of memory in bytes the container allocates
      */
     memoryBytes?: pulumi.Input<number>;
     /**
@@ -1706,7 +1814,7 @@ export interface ServiceTaskSpecResourcesReservation {
      */
     genericResources?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservationGenericResources>;
     /**
-     * The amounf of memory in bytes the container allocates
+     * The amount of memory in bytes the container allocates
      */
     memoryBytes?: pulumi.Input<number>;
     /**

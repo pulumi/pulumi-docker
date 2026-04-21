@@ -22,9 +22,13 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> DriverOpts;
         /// <summary>
-        /// The name/id of the network.
+        /// The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
         /// </summary>
-        public readonly string Name;
+        public readonly string? Id;
+        /// <summary>
+        /// Deprecated attribute. The name/id of the docker network. Conflicts with `Id` attribute.
+        /// </summary>
+        public readonly string? Name;
 
         [OutputConstructor]
         private ServiceTaskSpecNetworksAdvanced(
@@ -32,10 +36,13 @@ namespace Pulumi.Docker.Outputs
 
             ImmutableArray<string> driverOpts,
 
-            string name)
+            string? id,
+
+            string? name)
         {
             Aliases = aliases;
             DriverOpts = driverOpts;
+            Id = id;
             Name = name;
         }
     }

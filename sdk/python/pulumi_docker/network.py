@@ -22,7 +22,6 @@ __all__ = ['NetworkArgs', 'Network']
 class NetworkArgs:
     def __init__(__self__, *,
                  attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 check_duplicate: Optional[pulumi.Input[_builtins.bool]] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  ingress: Optional[pulumi.Input[_builtins.bool]] = None,
                  internal: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -37,7 +36,6 @@ class NetworkArgs:
         The set of arguments for constructing a Network resource.
 
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
-        :param pulumi.Input[_builtins.bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[_builtins.str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[_builtins.bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[_builtins.bool] internal: Whether the network is internal.
@@ -51,11 +49,6 @@ class NetworkArgs:
         """
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
-        if check_duplicate is not None:
-            warnings.warn("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""", DeprecationWarning)
-            pulumi.log.warn("""check_duplicate is deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
-        if check_duplicate is not None:
-            pulumi.set(__self__, "check_duplicate", check_duplicate)
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
         if ingress is not None:
@@ -88,19 +81,6 @@ class NetworkArgs:
     @attachable.setter
     def attachable(self, value: Optional[pulumi.Input[_builtins.bool]]):
         pulumi.set(self, "attachable", value)
-
-    @_builtins.property
-    @pulumi.getter(name="checkDuplicate")
-    @_utilities.deprecated("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
-    def check_duplicate(self) -> Optional[pulumi.Input[_builtins.bool]]:
-        """
-        Requests daemon to check for networks with same name.
-        """
-        return pulumi.get(self, "check_duplicate")
-
-    @check_duplicate.setter
-    def check_duplicate(self, value: Optional[pulumi.Input[_builtins.bool]]):
-        pulumi.set(self, "check_duplicate", value)
 
     @_builtins.property
     @pulumi.getter
@@ -227,7 +207,6 @@ class NetworkArgs:
 class _NetworkState:
     def __init__(__self__, *,
                  attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 check_duplicate: Optional[pulumi.Input[_builtins.bool]] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  ingress: Optional[pulumi.Input[_builtins.bool]] = None,
                  internal: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -243,7 +222,6 @@ class _NetworkState:
         Input properties used for looking up and filtering Network resources.
 
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
-        :param pulumi.Input[_builtins.bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[_builtins.str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[_builtins.bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[_builtins.bool] internal: Whether the network is internal.
@@ -258,11 +236,6 @@ class _NetworkState:
         """
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
-        if check_duplicate is not None:
-            warnings.warn("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""", DeprecationWarning)
-            pulumi.log.warn("""check_duplicate is deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
-        if check_duplicate is not None:
-            pulumi.set(__self__, "check_duplicate", check_duplicate)
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
         if ingress is not None:
@@ -297,19 +270,6 @@ class _NetworkState:
     @attachable.setter
     def attachable(self, value: Optional[pulumi.Input[_builtins.bool]]):
         pulumi.set(self, "attachable", value)
-
-    @_builtins.property
-    @pulumi.getter(name="checkDuplicate")
-    @_utilities.deprecated("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
-    def check_duplicate(self) -> Optional[pulumi.Input[_builtins.bool]]:
-        """
-        Requests daemon to check for networks with same name.
-        """
-        return pulumi.get(self, "check_duplicate")
-
-    @check_duplicate.setter
-    def check_duplicate(self, value: Optional[pulumi.Input[_builtins.bool]]):
-        pulumi.set(self, "check_duplicate", value)
 
     @_builtins.property
     @pulumi.getter
@@ -451,7 +411,6 @@ class Network(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 check_duplicate: Optional[pulumi.Input[_builtins.bool]] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  ingress: Optional[pulumi.Input[_builtins.bool]] = None,
                  internal: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -516,7 +475,6 @@ class Network(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
-        :param pulumi.Input[_builtins.bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[_builtins.str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[_builtins.bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[_builtins.bool] internal: Whether the network is internal.
@@ -600,7 +558,6 @@ class Network(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 check_duplicate: Optional[pulumi.Input[_builtins.bool]] = None,
                  driver: Optional[pulumi.Input[_builtins.str]] = None,
                  ingress: Optional[pulumi.Input[_builtins.bool]] = None,
                  internal: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -621,7 +578,6 @@ class Network(pulumi.CustomResource):
             __props__ = NetworkArgs.__new__(NetworkArgs)
 
             __props__.__dict__["attachable"] = attachable
-            __props__.__dict__["check_duplicate"] = check_duplicate
             __props__.__dict__["driver"] = driver
             __props__.__dict__["ingress"] = ingress
             __props__.__dict__["internal"] = internal
@@ -644,7 +600,6 @@ class Network(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-            check_duplicate: Optional[pulumi.Input[_builtins.bool]] = None,
             driver: Optional[pulumi.Input[_builtins.str]] = None,
             ingress: Optional[pulumi.Input[_builtins.bool]] = None,
             internal: Optional[pulumi.Input[_builtins.bool]] = None,
@@ -664,7 +619,6 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] attachable: Enable manual container attachment to the network.
-        :param pulumi.Input[_builtins.bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[_builtins.str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[_builtins.bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[_builtins.bool] internal: Whether the network is internal.
@@ -682,7 +636,6 @@ class Network(pulumi.CustomResource):
         __props__ = _NetworkState.__new__(_NetworkState)
 
         __props__.__dict__["attachable"] = attachable
-        __props__.__dict__["check_duplicate"] = check_duplicate
         __props__.__dict__["driver"] = driver
         __props__.__dict__["ingress"] = ingress
         __props__.__dict__["internal"] = internal
@@ -703,15 +656,6 @@ class Network(pulumi.CustomResource):
         Enable manual container attachment to the network.
         """
         return pulumi.get(self, "attachable")
-
-    @_builtins.property
-    @pulumi.getter(name="checkDuplicate")
-    @_utilities.deprecated("""This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.""")
-    def check_duplicate(self) -> pulumi.Output[Optional[_builtins.bool]]:
-        """
-        Requests daemon to check for networks with same name.
-        """
-        return pulumi.get(self, "check_duplicate")
 
     @_builtins.property
     @pulumi.getter

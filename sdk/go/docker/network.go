@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
+	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -21,7 +21,7 @@ import (
 //
 // import (
 //
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 //	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
 // )
@@ -66,7 +66,7 @@ import (
 //
 // import (
 //
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker"
 //	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 //
 // )
@@ -97,10 +97,6 @@ type Network struct {
 
 	// Enable manual container attachment to the network.
 	Attachable pulumi.BoolPtrOutput `pulumi:"attachable"`
-	// Requests daemon to check for networks with same name.
-	//
-	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-	CheckDuplicate pulumi.BoolPtrOutput `pulumi:"checkDuplicate"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringOutput `pulumi:"driver"`
 	// Create swarm routing-mesh network. Defaults to `false`.
@@ -157,10 +153,6 @@ func GetNetwork(ctx *pulumi.Context,
 type networkState struct {
 	// Enable manual container attachment to the network.
 	Attachable *bool `pulumi:"attachable"`
-	// Requests daemon to check for networks with same name.
-	//
-	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-	CheckDuplicate *bool `pulumi:"checkDuplicate"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver *string `pulumi:"driver"`
 	// Create swarm routing-mesh network. Defaults to `false`.
@@ -188,10 +180,6 @@ type networkState struct {
 type NetworkState struct {
 	// Enable manual container attachment to the network.
 	Attachable pulumi.BoolPtrInput
-	// Requests daemon to check for networks with same name.
-	//
-	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-	CheckDuplicate pulumi.BoolPtrInput
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringPtrInput
 	// Create swarm routing-mesh network. Defaults to `false`.
@@ -223,10 +211,6 @@ func (NetworkState) ElementType() reflect.Type {
 type networkArgs struct {
 	// Enable manual container attachment to the network.
 	Attachable *bool `pulumi:"attachable"`
-	// Requests daemon to check for networks with same name.
-	//
-	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-	CheckDuplicate *bool `pulumi:"checkDuplicate"`
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver *string `pulumi:"driver"`
 	// Create swarm routing-mesh network. Defaults to `false`.
@@ -253,10 +237,6 @@ type networkArgs struct {
 type NetworkArgs struct {
 	// Enable manual container attachment to the network.
 	Attachable pulumi.BoolPtrInput
-	// Requests daemon to check for networks with same name.
-	//
-	// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-	CheckDuplicate pulumi.BoolPtrInput
 	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringPtrInput
 	// Create swarm routing-mesh network. Defaults to `false`.
@@ -369,13 +349,6 @@ func (o NetworkOutput) ToNetworkOutputWithContext(ctx context.Context) NetworkOu
 // Enable manual container attachment to the network.
 func (o NetworkOutput) Attachable() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.Attachable }).(pulumi.BoolPtrOutput)
-}
-
-// Requests daemon to check for networks with same name.
-//
-// Deprecated: This option is deprecated and will be removed in a future version. The Docker daemon will always check for duplicate networks.
-func (o NetworkOutput) CheckDuplicate() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.CheckDuplicate }).(pulumi.BoolPtrOutput)
 }
 
 // The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.

@@ -17,14 +17,14 @@ public final class ContainerDeviceArgs extends com.pulumi.resources.ResourceArgs
     public static final ContainerDeviceArgs Empty = new ContainerDeviceArgs();
 
     /**
-     * The path in the container where the device will be bound.
+     * The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      * 
      */
     @Import(name="containerPath")
     private @Nullable Output<String> containerPath;
 
     /**
-     * @return The path in the container where the device will be bound.
+     * @return The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      * 
      */
     public Optional<Output<String>> containerPath() {
@@ -88,7 +88,7 @@ public final class ContainerDeviceArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param containerPath The path in the container where the device will be bound.
+         * @param containerPath The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
          * 
          * @return builder
          * 
@@ -99,7 +99,7 @@ public final class ContainerDeviceArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param containerPath The path in the container where the device will be bound.
+         * @param containerPath The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
          * 
          * @return builder
          * 

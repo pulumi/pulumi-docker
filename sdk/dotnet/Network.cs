@@ -86,12 +86,6 @@ namespace Pulumi.Docker
         public Output<bool?> Attachable { get; private set; } = null!;
 
         /// <summary>
-        /// Requests daemon to check for networks with same name.
-        /// </summary>
-        [Output("checkDuplicate")]
-        public Output<bool?> CheckDuplicate { get; private set; } = null!;
-
-        /// <summary>
         /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Output("driver")]
@@ -210,12 +204,6 @@ namespace Pulumi.Docker
         public Input<bool>? Attachable { get; set; }
 
         /// <summary>
-        /// Requests daemon to check for networks with same name.
-        /// </summary>
-        [Input("checkDuplicate")]
-        public Input<bool>? CheckDuplicate { get; set; }
-
-        /// <summary>
         /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
@@ -312,12 +300,6 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("attachable")]
         public Input<bool>? Attachable { get; set; }
-
-        /// <summary>
-        /// Requests daemon to check for networks with same name.
-        /// </summary>
-        [Input("checkDuplicate")]
-        public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
         /// The driver of the Docker network. Possible values are `Bridge`, `Host`, `Overlay`, `Macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.

@@ -74,6 +74,12 @@ namespace Pulumi.Docker
         public Output<string> Data { get; private set; } = null!;
 
         /// <summary>
+        /// User-defined key/value metadata
+        /// </summary>
+        [Output("labels")]
+        public Output<ImmutableArray<Outputs.ServiceConfigLabel>> Labels { get; private set; } = null!;
+
+        /// <summary>
         /// User-defined name of the config
         /// </summary>
         [Output("name")]
@@ -131,6 +137,18 @@ namespace Pulumi.Docker
         [Input("data", required: true)]
         public Input<string> Data { get; set; } = null!;
 
+        [Input("labels")]
+        private InputList<Inputs.ServiceConfigLabelArgs>? _labels;
+
+        /// <summary>
+        /// User-defined key/value metadata
+        /// </summary>
+        public InputList<Inputs.ServiceConfigLabelArgs> Labels
+        {
+            get => _labels ?? (_labels = new InputList<Inputs.ServiceConfigLabelArgs>());
+            set => _labels = value;
+        }
+
         /// <summary>
         /// User-defined name of the config
         /// </summary>
@@ -150,6 +168,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("data")]
         public Input<string>? Data { get; set; }
+
+        [Input("labels")]
+        private InputList<Inputs.ServiceConfigLabelGetArgs>? _labels;
+
+        /// <summary>
+        /// User-defined key/value metadata
+        /// </summary>
+        public InputList<Inputs.ServiceConfigLabelGetArgs> Labels
+        {
+            get => _labels ?? (_labels = new InputList<Inputs.ServiceConfigLabelGetArgs>());
+            set => _labels = value;
+        }
 
         /// <summary>
         /// User-defined name of the config

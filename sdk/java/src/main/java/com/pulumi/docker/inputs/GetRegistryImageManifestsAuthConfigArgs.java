@@ -8,6 +8,8 @@ import com.pulumi.core.annotations.Import;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
+import java.util.Optional;
+import javax.annotation.Nullable;
 
 
 public final class GetRegistryImageManifestsAuthConfigArgs extends com.pulumi.resources.ResourceArgs {
@@ -33,30 +35,30 @@ public final class GetRegistryImageManifestsAuthConfigArgs extends com.pulumi.re
      * The password for the Docker registry.
      * 
      */
-    @Import(name="password", required=true)
-    private Output<String> password;
+    @Import(name="password")
+    private @Nullable Output<String> password;
 
     /**
      * @return The password for the Docker registry.
      * 
      */
-    public Output<String> password() {
-        return this.password;
+    public Optional<Output<String>> password() {
+        return Optional.ofNullable(this.password);
     }
 
     /**
      * The username for the Docker registry.
      * 
      */
-    @Import(name="username", required=true)
-    private Output<String> username;
+    @Import(name="username")
+    private @Nullable Output<String> username;
 
     /**
      * @return The username for the Docker registry.
      * 
      */
-    public Output<String> username() {
-        return this.username;
+    public Optional<Output<String>> username() {
+        return Optional.ofNullable(this.username);
     }
 
     private GetRegistryImageManifestsAuthConfigArgs() {}
@@ -112,7 +114,7 @@ public final class GetRegistryImageManifestsAuthConfigArgs extends com.pulumi.re
          * @return builder
          * 
          */
-        public Builder password(Output<String> password) {
+        public Builder password(@Nullable Output<String> password) {
             $.password = password;
             return this;
         }
@@ -133,7 +135,7 @@ public final class GetRegistryImageManifestsAuthConfigArgs extends com.pulumi.re
          * @return builder
          * 
          */
-        public Builder username(Output<String> username) {
+        public Builder username(@Nullable Output<String> username) {
             $.username = username;
             return this;
         }
@@ -151,12 +153,6 @@ public final class GetRegistryImageManifestsAuthConfigArgs extends com.pulumi.re
         public GetRegistryImageManifestsAuthConfigArgs build() {
             if ($.address == null) {
                 throw new MissingRequiredPropertyException("GetRegistryImageManifestsAuthConfigArgs", "address");
-            }
-            if ($.password == null) {
-                throw new MissingRequiredPropertyException("GetRegistryImageManifestsAuthConfigArgs", "password");
-            }
-            if ($.username == null) {
-                throw new MissingRequiredPropertyException("GetRegistryImageManifestsAuthConfigArgs", "username");
             }
             return $;
         }

@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly Outputs.ServiceTaskSpecResourcesReservationGenericResources? GenericResources;
         /// <summary>
-        /// The amounf of memory in bytes the container allocates
+        /// The amount of memory in bytes the container allocates
         /// </summary>
         public readonly int? MemoryBytes;
         /// <summary>

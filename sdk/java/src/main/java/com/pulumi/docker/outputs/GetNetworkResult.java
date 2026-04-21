@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.docker.outputs.GetNetworkContainer;
 import com.pulumi.docker.outputs.GetNetworkIpamConfig;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
@@ -14,6 +15,11 @@ import java.util.Objects;
 
 @CustomType
 public final class GetNetworkResult {
+    /**
+     * @return Containers attached to the network.
+     * 
+     */
+    private List<GetNetworkContainer> containers;
     /**
      * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
@@ -51,6 +57,13 @@ public final class GetNetworkResult {
     private String scope;
 
     private GetNetworkResult() {}
+    /**
+     * @return Containers attached to the network.
+     * 
+     */
+    public List<GetNetworkContainer> containers() {
+        return this.containers;
+    }
     /**
      * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
@@ -110,6 +123,7 @@ public final class GetNetworkResult {
     }
     @CustomType.Builder
     public static final class Builder {
+        private List<GetNetworkContainer> containers;
         private String driver;
         private String id;
         private Boolean internal;
@@ -120,6 +134,7 @@ public final class GetNetworkResult {
         public Builder() {}
         public Builder(GetNetworkResult defaults) {
     	      Objects.requireNonNull(defaults);
+    	      this.containers = defaults.containers;
     	      this.driver = defaults.driver;
     	      this.id = defaults.id;
     	      this.internal = defaults.internal;
@@ -129,6 +144,17 @@ public final class GetNetworkResult {
     	      this.scope = defaults.scope;
         }
 
+        @CustomType.Setter
+        public Builder containers(List<GetNetworkContainer> containers) {
+            if (containers == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "containers");
+            }
+            this.containers = containers;
+            return this;
+        }
+        public Builder containers(GetNetworkContainer... containers) {
+            return containers(List.of(containers));
+        }
         @CustomType.Setter
         public Builder driver(String driver) {
             if (driver == null) {
@@ -190,6 +216,7 @@ public final class GetNetworkResult {
         }
         public GetNetworkResult build() {
             final var _resultValue = new GetNetworkResult();
+            _resultValue.containers = containers;
             _resultValue.driver = driver;
             _resultValue.id = id;
             _resultValue.internal = internal;

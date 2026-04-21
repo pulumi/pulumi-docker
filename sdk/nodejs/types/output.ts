@@ -205,7 +205,7 @@ export interface ContainerCapabilities {
 
 export interface ContainerDevice {
     /**
-     * The path in the container where the device will be bound.
+     * The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      */
     containerPath?: string;
     /**
@@ -216,6 +216,73 @@ export interface ContainerDevice {
      * The cgroup permissions given to the container to access the device. Defaults to `rwm`.
      */
     permissions?: string;
+}
+
+export interface ContainerDeviceReadBp {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: string;
+    /**
+     * The read rate limit in bytes per second.
+     */
+    rate: number;
+}
+
+export interface ContainerDeviceReadIop {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: string;
+    /**
+     * The read IOPS limit.
+     */
+    rate: number;
+}
+
+export interface ContainerDeviceRequest {
+    /**
+     * List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+     */
+    capabilities?: string[];
+    /**
+     * Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+     */
+    count?: number;
+    /**
+     * List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+     */
+    deviceIds?: string[];
+    /**
+     * The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+     */
+    driver?: string;
+    /**
+     * Driver-specific options.
+     */
+    options?: {[key: string]: string};
+}
+
+export interface ContainerDeviceWriteBp {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: string;
+    /**
+     * The write rate limit in bytes per second.
+     */
+    rate: number;
+}
+
+export interface ContainerDeviceWriteIop {
+    /**
+     * The device path on the host, e.g. `/dev/sda`.
+     */
+    path: string;
+    /**
+     * The write IOPS limit.
+     */
+    rate: number;
 }
 
 export interface ContainerHealthcheck {
@@ -236,9 +303,9 @@ export interface ContainerHealthcheck {
      */
     startPeriod?: string;
     /**
-     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
+     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
      */
-    tests: string[];
+    tests?: string[];
     /**
      * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
@@ -391,6 +458,14 @@ export interface ContainerNetworksAdvanced {
      */
     aliases?: string[];
     /**
+     * An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+     */
+    driverOpts?: string[];
+    /**
+     * Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+     */
+    gwPriority?: number;
+    /**
      * The IPV4 address of the container in the specific network.
      */
     ipv4Address?: string;
@@ -398,6 +473,10 @@ export interface ContainerNetworksAdvanced {
      * The IPV6 address of the container in the specific network.
      */
     ipv6Address?: string;
+    /**
+     * The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+     */
+    linkLocalIps?: string[];
     /**
      * The MAC address of the container in the specific network.
      */
@@ -491,9 +570,40 @@ export interface ContainerVolume {
      */
     readOnly?: boolean;
     /**
+     * SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+     */
+    selinuxRelabel?: string;
+    /**
      * The name of the docker volume which should be mounted.
      */
     volumeName?: string;
+}
+
+export interface GetNetworkContainer {
+    /**
+     * The container id.
+     */
+    containerId: string;
+    /**
+     * The endpoint id.
+     */
+    endpointId: string;
+    /**
+     * The IPv4 address.
+     */
+    ipv4Address: string;
+    /**
+     * The IPv6 address.
+     */
+    ipv6Address: string;
+    /**
+     * The MAC address.
+     */
+    macAddress: string;
+    /**
+     * The container name.
+     */
+    name: string;
 }
 
 export interface GetNetworkIpamConfig {
@@ -523,11 +633,11 @@ export interface GetRegistryImageManifestsAuthConfig {
     /**
      * The password for the Docker registry.
      */
-    password: string;
+    password?: string;
     /**
      * The username for the Docker registry.
      */
-    username: string;
+    username?: string;
 }
 
 export interface GetRegistryImageManifestsManifest {
@@ -598,11 +708,11 @@ export interface RegistryImageAuthConfig {
     /**
      * The password for the Docker registry.
      */
-    password: string;
+    password?: string;
     /**
      * The username for the Docker registry.
      */
-    username: string;
+    username?: string;
 }
 
 export interface RegistryImageBuild {
@@ -627,7 +737,7 @@ export interface RegistryImageBuild {
      */
     buildLogFile?: string;
     /**
-     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      */
     builder?: string;
     /**
@@ -759,6 +869,10 @@ export interface RegistryImageBuild {
      */
     ulimits?: outputs.RegistryImageBuildUlimit[];
     /**
+     * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     */
+    useLegacyBuilder?: boolean;
+    /**
      * Version of the underlying builder to use
      */
     version?: string;
@@ -851,7 +965,7 @@ export interface RemoteImageBuild {
      */
     buildLogFile?: string;
     /**
-     * Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      */
     builder?: string;
     /**
@@ -983,6 +1097,10 @@ export interface RemoteImageBuild {
      */
     ulimits?: outputs.RemoteImageBuildUlimit[];
     /**
+     * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     */
+    useLegacyBuilder?: boolean;
+    /**
      * Version of the underlying builder to use
      */
     version?: string;
@@ -1079,6 +1197,17 @@ export interface ServiceAuth {
     username?: string;
 }
 
+export interface ServiceConfigLabel {
+    /**
+     * Name of the label
+     */
+    label: string;
+    /**
+     * Value of the label
+     */
+    value: string;
+}
+
 export interface ServiceConvergeConfig {
     /**
      * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
@@ -1107,7 +1236,7 @@ export interface ServiceEndpointSpecPort {
      */
     name?: string;
     /**
-     * Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      */
     protocol?: string;
     /**
@@ -1569,9 +1698,15 @@ export interface ServiceTaskSpecNetworksAdvanced {
      */
     driverOpts?: string[];
     /**
-     * The name/id of the network.
+     * The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      */
-    name: string;
+    id?: string;
+    /**
+     * Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+     *
+     * @deprecated Use the id attribute.
+     */
+    name?: string;
 }
 
 export interface ServiceTaskSpecPlacement {
@@ -1617,7 +1752,7 @@ export interface ServiceTaskSpecResources {
 
 export interface ServiceTaskSpecResourcesLimits {
     /**
-     * The amounf of memory in bytes the container allocates
+     * The amount of memory in bytes the container allocates
      */
     memoryBytes?: number;
     /**
@@ -1632,7 +1767,7 @@ export interface ServiceTaskSpecResourcesReservation {
      */
     genericResources?: outputs.ServiceTaskSpecResourcesReservationGenericResources;
     /**
-     * The amounf of memory in bytes the container allocates
+     * The amount of memory in bytes the container allocates
      */
     memoryBytes?: number;
     /**
@@ -1763,7 +1898,7 @@ export namespace config {
          */
         authDisabled?: boolean;
         /**
-         * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+         * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
          */
         configFile?: string;
         /**

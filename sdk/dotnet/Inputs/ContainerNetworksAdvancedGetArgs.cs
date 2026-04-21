@@ -24,6 +24,24 @@ namespace Pulumi.Docker.Inputs
             set => _aliases = value;
         }
 
+        [Input("driverOpts")]
+        private InputList<string>? _driverOpts;
+
+        /// <summary>
+        /// An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+        /// </summary>
+        public InputList<string> DriverOpts
+        {
+            get => _driverOpts ?? (_driverOpts = new InputList<string>());
+            set => _driverOpts = value;
+        }
+
+        /// <summary>
+        /// Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+        /// </summary>
+        [Input("gwPriority")]
+        public Input<int>? GwPriority { get; set; }
+
         /// <summary>
         /// The IPV4 address of the container in the specific network.
         /// </summary>
@@ -35,6 +53,18 @@ namespace Pulumi.Docker.Inputs
         /// </summary>
         [Input("ipv6Address")]
         public Input<string>? Ipv6Address { get; set; }
+
+        [Input("linkLocalIps")]
+        private InputList<string>? _linkLocalIps;
+
+        /// <summary>
+        /// The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+        /// </summary>
+        public InputList<string> LinkLocalIps
+        {
+            get => _linkLocalIps ?? (_linkLocalIps = new InputList<string>());
+            set => _linkLocalIps = value;
+        }
 
         /// <summary>
         /// The MAC address of the container in the specific network.

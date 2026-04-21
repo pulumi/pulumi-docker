@@ -45,7 +45,7 @@ public final class RegistryImageBuild {
      */
     private @Nullable String buildLogFile;
     /**
-     * @return Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * @return The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      * 
      */
     private @Nullable String builder;
@@ -210,6 +210,11 @@ public final class RegistryImageBuild {
      */
     private @Nullable List<RegistryImageBuildUlimit> ulimits;
     /**
+     * @return Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     * 
+     */
+    private @Nullable Boolean useLegacyBuilder;
+    /**
      * @return Version of the underlying builder to use
      * 
      */
@@ -252,7 +257,7 @@ public final class RegistryImageBuild {
         return Optional.ofNullable(this.buildLogFile);
     }
     /**
-     * @return Set the name of the buildx builder to use. If not set, the legacy builder is used.
+     * @return The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      * 
      */
     public Optional<String> builder_() {
@@ -483,6 +488,13 @@ public final class RegistryImageBuild {
         return this.ulimits == null ? List.of() : this.ulimits;
     }
     /**
+     * @return Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+     * 
+     */
+    public Optional<Boolean> useLegacyBuilder() {
+        return Optional.ofNullable(this.useLegacyBuilder);
+    }
+    /**
      * @return Version of the underlying builder to use
      * 
      */
@@ -537,6 +549,7 @@ public final class RegistryImageBuild {
         private @Nullable List<String> tags;
         private @Nullable String target;
         private @Nullable List<RegistryImageBuildUlimit> ulimits;
+        private @Nullable Boolean useLegacyBuilder;
         private @Nullable String version;
         public Builder() {}
         public Builder(RegistryImageBuild defaults) {
@@ -579,6 +592,7 @@ public final class RegistryImageBuild {
     	      this.tags = defaults.tags;
     	      this.target = defaults.target;
     	      this.ulimits = defaults.ulimits;
+    	      this.useLegacyBuilder = defaults.useLegacyBuilder;
     	      this.version = defaults.version;
         }
 
@@ -840,6 +854,12 @@ public final class RegistryImageBuild {
             return ulimits(List.of(ulimits));
         }
         @CustomType.Setter
+        public Builder useLegacyBuilder(@Nullable Boolean useLegacyBuilder) {
+
+            this.useLegacyBuilder = useLegacyBuilder;
+            return this;
+        }
+        @CustomType.Setter
         public Builder version(@Nullable String version) {
 
             this.version = version;
@@ -885,6 +905,7 @@ public final class RegistryImageBuild {
             _resultValue.tags = tags;
             _resultValue.target = target;
             _resultValue.ulimits = ulimits;
+            _resultValue.useLegacyBuilder = useLegacyBuilder;
             _resultValue.version = version;
             return _resultValue;
         }

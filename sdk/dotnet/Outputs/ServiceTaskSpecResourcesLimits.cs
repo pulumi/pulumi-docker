@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceTaskSpecResourcesLimits
     {
         /// <summary>
-        /// The amounf of memory in bytes the container allocates
+        /// The amount of memory in bytes the container allocates
         /// </summary>
         public readonly int? MemoryBytes;
         /// <summary>

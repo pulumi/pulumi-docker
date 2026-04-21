@@ -25,7 +25,7 @@ namespace Pulumi.Docker.Inputs
         public Input<bool>? AuthDisabled { get; set; }
 
         /// <summary>
-        /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `ConfigFile` has predencen over all other options.
+        /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `ConfigFile` has precedence over all other options.
         /// </summary>
         [Input("configFile")]
         public Input<string>? ConfigFile { get; set; }

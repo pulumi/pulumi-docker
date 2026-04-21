@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         public Input<Inputs.ServiceTaskSpecResourcesReservationGenericResourcesArgs>? GenericResources { get; set; }
 
         /// <summary>
-        /// The amounf of memory in bytes the container allocates
+        /// The amount of memory in bytes the container allocates
         /// </summary>
         [Input("memoryBytes")]
         public Input<int>? MemoryBytes { get; set; }

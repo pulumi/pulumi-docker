@@ -32,6 +32,16 @@ __all__ = [
     'ContainerCapabilitiesArgsDict',
     'ContainerDeviceArgs',
     'ContainerDeviceArgsDict',
+    'ContainerDeviceReadBpArgs',
+    'ContainerDeviceReadBpArgsDict',
+    'ContainerDeviceReadIopArgs',
+    'ContainerDeviceReadIopArgsDict',
+    'ContainerDeviceRequestArgs',
+    'ContainerDeviceRequestArgsDict',
+    'ContainerDeviceWriteBpArgs',
+    'ContainerDeviceWriteBpArgsDict',
+    'ContainerDeviceWriteIopArgs',
+    'ContainerDeviceWriteIopArgsDict',
     'ContainerHealthcheckArgs',
     'ContainerHealthcheckArgsDict',
     'ContainerHostArgs',
@@ -90,6 +100,8 @@ __all__ = [
     'SecretLabelArgsDict',
     'ServiceAuthArgs',
     'ServiceAuthArgsDict',
+    'ServiceConfigLabelArgs',
+    'ServiceConfigLabelArgsDict',
     'ServiceConvergeConfigArgs',
     'ServiceConvergeConfigArgsDict',
     'ServiceEndpointSpecArgs',
@@ -1120,7 +1132,7 @@ class ContainerDeviceArgsDict(TypedDict):
     """
     container_path: NotRequired[pulumi.Input[_builtins.str]]
     """
-    The path in the container where the device will be bound.
+    The path in the container where the device will be bound. If not set, it defaults to the value of `host_path`.
     """
     permissions: NotRequired[pulumi.Input[_builtins.str]]
     """
@@ -1135,7 +1147,7 @@ class ContainerDeviceArgs:
                  permissions: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] host_path: The path on the host where the device is located.
-        :param pulumi.Input[_builtins.str] container_path: The path in the container where the device will be bound.
+        :param pulumi.Input[_builtins.str] container_path: The path in the container where the device will be bound. If not set, it defaults to the value of `host_path`.
         :param pulumi.Input[_builtins.str] permissions: The cgroup permissions given to the container to access the device. Defaults to `rwm`.
         """
         pulumi.set(__self__, "host_path", host_path)
@@ -1160,7 +1172,7 @@ class ContainerDeviceArgs:
     @pulumi.getter(name="containerPath")
     def container_path(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        The path in the container where the device will be bound.
+        The path in the container where the device will be bound. If not set, it defaults to the value of `host_path`.
         """
         return pulumi.get(self, "container_path")
 
@@ -1181,11 +1193,304 @@ class ContainerDeviceArgs:
         pulumi.set(self, "permissions", value)
 
 
+class ContainerDeviceReadBpArgsDict(TypedDict):
+    path: pulumi.Input[_builtins.str]
+    """
+    The device path on the host, e.g. `/dev/sda`.
+    """
+    rate: pulumi.Input[_builtins.int]
+    """
+    The read rate limit in bytes per second.
+    """
+
+@pulumi.input_type
+class ContainerDeviceReadBpArgs:
+    def __init__(__self__, *,
+                 path: pulumi.Input[_builtins.str],
+                 rate: pulumi.Input[_builtins.int]):
+        """
+        :param pulumi.Input[_builtins.str] path: The device path on the host, e.g. `/dev/sda`.
+        :param pulumi.Input[_builtins.int] rate: The read rate limit in bytes per second.
+        """
+        pulumi.set(__self__, "path", path)
+        pulumi.set(__self__, "rate", rate)
+
+    @_builtins.property
+    @pulumi.getter
+    def path(self) -> pulumi.Input[_builtins.str]:
+        """
+        The device path on the host, e.g. `/dev/sda`.
+        """
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "path", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def rate(self) -> pulumi.Input[_builtins.int]:
+        """
+        The read rate limit in bytes per second.
+        """
+        return pulumi.get(self, "rate")
+
+    @rate.setter
+    def rate(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "rate", value)
+
+
+class ContainerDeviceReadIopArgsDict(TypedDict):
+    path: pulumi.Input[_builtins.str]
+    """
+    The device path on the host, e.g. `/dev/sda`.
+    """
+    rate: pulumi.Input[_builtins.int]
+    """
+    The read IOPS limit.
+    """
+
+@pulumi.input_type
+class ContainerDeviceReadIopArgs:
+    def __init__(__self__, *,
+                 path: pulumi.Input[_builtins.str],
+                 rate: pulumi.Input[_builtins.int]):
+        """
+        :param pulumi.Input[_builtins.str] path: The device path on the host, e.g. `/dev/sda`.
+        :param pulumi.Input[_builtins.int] rate: The read IOPS limit.
+        """
+        pulumi.set(__self__, "path", path)
+        pulumi.set(__self__, "rate", rate)
+
+    @_builtins.property
+    @pulumi.getter
+    def path(self) -> pulumi.Input[_builtins.str]:
+        """
+        The device path on the host, e.g. `/dev/sda`.
+        """
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "path", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def rate(self) -> pulumi.Input[_builtins.int]:
+        """
+        The read IOPS limit.
+        """
+        return pulumi.get(self, "rate")
+
+    @rate.setter
+    def rate(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "rate", value)
+
+
+class ContainerDeviceRequestArgsDict(TypedDict):
+    capabilities: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+    """
+    List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+    """
+    count: NotRequired[pulumi.Input[_builtins.int]]
+    """
+    Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+    """
+    device_ids: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+    """
+    List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+    """
+    driver: NotRequired[pulumi.Input[_builtins.str]]
+    """
+    The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+    """
+    options: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]
+    """
+    Driver-specific options.
+    """
+
+@pulumi.input_type
+class ContainerDeviceRequestArgs:
+    def __init__(__self__, *,
+                 capabilities: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 count: Optional[pulumi.Input[_builtins.int]] = None,
+                 device_ids: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 driver: Optional[pulumi.Input[_builtins.str]] = None,
+                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] capabilities: List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+        :param pulumi.Input[_builtins.int] count: Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] device_ids: List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+        :param pulumi.Input[_builtins.str] driver: The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+        :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] options: Driver-specific options.
+        """
+        if capabilities is not None:
+            pulumi.set(__self__, "capabilities", capabilities)
+        if count is not None:
+            pulumi.set(__self__, "count", count)
+        if device_ids is not None:
+            pulumi.set(__self__, "device_ids", device_ids)
+        if driver is not None:
+            pulumi.set(__self__, "driver", driver)
+        if options is not None:
+            pulumi.set(__self__, "options", options)
+
+    @_builtins.property
+    @pulumi.getter
+    def capabilities(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
+        """
+        return pulumi.get(self, "capabilities")
+
+    @capabilities.setter
+    def capabilities(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "capabilities", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def count(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
+        """
+        return pulumi.get(self, "count")
+
+    @count.setter
+    def count(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "count", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceIds")
+    def device_ids(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
+        """
+        return pulumi.get(self, "device_ids")
+
+    @device_ids.setter
+    def device_ids(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "device_ids", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
+        """
+        return pulumi.get(self, "driver")
+
+    @driver.setter
+    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "driver", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+        """
+        Driver-specific options.
+        """
+        return pulumi.get(self, "options")
+
+    @options.setter
+    def options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "options", value)
+
+
+class ContainerDeviceWriteBpArgsDict(TypedDict):
+    path: pulumi.Input[_builtins.str]
+    """
+    The device path on the host, e.g. `/dev/sda`.
+    """
+    rate: pulumi.Input[_builtins.int]
+    """
+    The write rate limit in bytes per second.
+    """
+
+@pulumi.input_type
+class ContainerDeviceWriteBpArgs:
+    def __init__(__self__, *,
+                 path: pulumi.Input[_builtins.str],
+                 rate: pulumi.Input[_builtins.int]):
+        """
+        :param pulumi.Input[_builtins.str] path: The device path on the host, e.g. `/dev/sda`.
+        :param pulumi.Input[_builtins.int] rate: The write rate limit in bytes per second.
+        """
+        pulumi.set(__self__, "path", path)
+        pulumi.set(__self__, "rate", rate)
+
+    @_builtins.property
+    @pulumi.getter
+    def path(self) -> pulumi.Input[_builtins.str]:
+        """
+        The device path on the host, e.g. `/dev/sda`.
+        """
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "path", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def rate(self) -> pulumi.Input[_builtins.int]:
+        """
+        The write rate limit in bytes per second.
+        """
+        return pulumi.get(self, "rate")
+
+    @rate.setter
+    def rate(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "rate", value)
+
+
+class ContainerDeviceWriteIopArgsDict(TypedDict):
+    path: pulumi.Input[_builtins.str]
+    """
+    The device path on the host, e.g. `/dev/sda`.
+    """
+    rate: pulumi.Input[_builtins.int]
+    """
+    The write IOPS limit.
+    """
+
+@pulumi.input_type
+class ContainerDeviceWriteIopArgs:
+    def __init__(__self__, *,
+                 path: pulumi.Input[_builtins.str],
+                 rate: pulumi.Input[_builtins.int]):
+        """
+        :param pulumi.Input[_builtins.str] path: The device path on the host, e.g. `/dev/sda`.
+        :param pulumi.Input[_builtins.int] rate: The write IOPS limit.
+        """
+        pulumi.set(__self__, "path", path)
+        pulumi.set(__self__, "rate", rate)
+
+    @_builtins.property
+    @pulumi.getter
+    def path(self) -> pulumi.Input[_builtins.str]:
+        """
+        The device path on the host, e.g. `/dev/sda`.
+        """
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "path", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def rate(self) -> pulumi.Input[_builtins.int]:
+        """
+        The write IOPS limit.
+        """
+        return pulumi.get(self, "rate")
+
+    @rate.setter
+    def rate(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "rate", value)
+
+
 class ContainerHealthcheckArgsDict(TypedDict):
-    tests: pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]
-    """
-    Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
-    """
     interval: NotRequired[pulumi.Input[_builtins.str]]
     """
     Time between running the check (ms|s|m|h). Defaults to `0s`.
@@ -1202,6 +1507,10 @@ class ContainerHealthcheckArgsDict(TypedDict):
     """
     Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
     """
+    tests: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+    """
+    Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
+    """
     timeout: NotRequired[pulumi.Input[_builtins.str]]
     """
     Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
@@ -1210,21 +1519,20 @@ class ContainerHealthcheckArgsDict(TypedDict):
 @pulumi.input_type
 class ContainerHealthcheckArgs:
     def __init__(__self__, *,
-                 tests: pulumi.Input[Sequence[pulumi.Input[_builtins.str]]],
                  interval: Optional[pulumi.Input[_builtins.str]] = None,
                  retries: Optional[pulumi.Input[_builtins.int]] = None,
                  start_interval: Optional[pulumi.Input[_builtins.str]] = None,
                  start_period: Optional[pulumi.Input[_builtins.str]] = None,
+                 tests: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  timeout: Optional[pulumi.Input[_builtins.str]] = None):
         """
-        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tests: Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
         :param pulumi.Input[_builtins.str] interval: Time between running the check (ms|s|m|h). Defaults to `0s`.
         :param pulumi.Input[_builtins.int] retries: Consecutive failures needed to report unhealthy. Defaults to `0`.
         :param pulumi.Input[_builtins.str] start_interval: Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
         :param pulumi.Input[_builtins.str] start_period: Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tests: Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
         :param pulumi.Input[_builtins.str] timeout: Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         """
-        pulumi.set(__self__, "tests", tests)
         if interval is not None:
             pulumi.set(__self__, "interval", interval)
         if retries is not None:
@@ -1233,20 +1541,10 @@ class ContainerHealthcheckArgs:
             pulumi.set(__self__, "start_interval", start_interval)
         if start_period is not None:
             pulumi.set(__self__, "start_period", start_period)
+        if tests is not None:
+            pulumi.set(__self__, "tests", tests)
         if timeout is not None:
             pulumi.set(__self__, "timeout", timeout)
-
-    @_builtins.property
-    @pulumi.getter
-    def tests(self) -> pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]:
-        """
-        Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
-        """
-        return pulumi.get(self, "tests")
-
-    @tests.setter
-    def tests(self, value: pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]):
-        pulumi.set(self, "tests", value)
 
     @_builtins.property
     @pulumi.getter
@@ -1295,6 +1593,18 @@ class ContainerHealthcheckArgs:
     @start_period.setter
     def start_period(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "start_period", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def tests(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
+        """
+        return pulumi.get(self, "tests")
+
+    @tests.setter
+    def tests(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "tests", value)
 
     @_builtins.property
     @pulumi.getter
@@ -1962,6 +2272,14 @@ class ContainerNetworksAdvancedArgsDict(TypedDict):
     """
     The network aliases of the container in the specific network.
     """
+    driver_opts: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+    """
+    An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+    """
+    gw_priority: NotRequired[pulumi.Input[_builtins.int]]
+    """
+    Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+    """
     ipv4_address: NotRequired[pulumi.Input[_builtins.str]]
     """
     The IPV4 address of the container in the specific network.
@@ -1969,6 +2287,10 @@ class ContainerNetworksAdvancedArgsDict(TypedDict):
     ipv6_address: NotRequired[pulumi.Input[_builtins.str]]
     """
     The IPV6 address of the container in the specific network.
+    """
+    link_local_ips: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+    """
+    The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
     """
     mac_address: NotRequired[pulumi.Input[_builtins.str]]
     """
@@ -1980,23 +2302,35 @@ class ContainerNetworksAdvancedArgs:
     def __init__(__self__, *,
                  name: pulumi.Input[_builtins.str],
                  aliases: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 driver_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 gw_priority: Optional[pulumi.Input[_builtins.int]] = None,
                  ipv4_address: Optional[pulumi.Input[_builtins.str]] = None,
                  ipv6_address: Optional[pulumi.Input[_builtins.str]] = None,
+                 link_local_ips: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  mac_address: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] name: The name or id of the network to use. You can use `name` or `id` attribute from a `Network` resource.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] aliases: The network aliases of the container in the specific network.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] driver_opts: An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+        :param pulumi.Input[_builtins.int] gw_priority: Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
         :param pulumi.Input[_builtins.str] ipv4_address: The IPV4 address of the container in the specific network.
         :param pulumi.Input[_builtins.str] ipv6_address: The IPV6 address of the container in the specific network.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] link_local_ips: The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
         :param pulumi.Input[_builtins.str] mac_address: The MAC address of the container in the specific network.
         """
         pulumi.set(__self__, "name", name)
         if aliases is not None:
             pulumi.set(__self__, "aliases", aliases)
+        if driver_opts is not None:
+            pulumi.set(__self__, "driver_opts", driver_opts)
+        if gw_priority is not None:
+            pulumi.set(__self__, "gw_priority", gw_priority)
         if ipv4_address is not None:
             pulumi.set(__self__, "ipv4_address", ipv4_address)
         if ipv6_address is not None:
             pulumi.set(__self__, "ipv6_address", ipv6_address)
+        if link_local_ips is not None:
+            pulumi.set(__self__, "link_local_ips", link_local_ips)
         if mac_address is not None:
             pulumi.set(__self__, "mac_address", mac_address)
 
@@ -2025,6 +2359,30 @@ class ContainerNetworksAdvancedArgs:
         pulumi.set(self, "aliases", value)
 
     @_builtins.property
+    @pulumi.getter(name="driverOpts")
+    def driver_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
+        """
+        return pulumi.get(self, "driver_opts")
+
+    @driver_opts.setter
+    def driver_opts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "driver_opts", value)
+
+    @_builtins.property
+    @pulumi.getter(name="gwPriority")
+    def gw_priority(self) -> Optional[pulumi.Input[_builtins.int]]:
+        """
+        Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
+        """
+        return pulumi.get(self, "gw_priority")
+
+    @gw_priority.setter
+    def gw_priority(self, value: Optional[pulumi.Input[_builtins.int]]):
+        pulumi.set(self, "gw_priority", value)
+
+    @_builtins.property
     @pulumi.getter(name="ipv4Address")
     def ipv4_address(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
@@ -2047,6 +2405,18 @@ class ContainerNetworksAdvancedArgs:
     @ipv6_address.setter
     def ipv6_address(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "ipv6_address", value)
+
+    @_builtins.property
+    @pulumi.getter(name="linkLocalIps")
+    def link_local_ips(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
+        """
+        return pulumi.get(self, "link_local_ips")
+
+    @link_local_ips.setter
+    def link_local_ips(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "link_local_ips", value)
 
     @_builtins.property
     @pulumi.getter(name="macAddress")
@@ -2380,6 +2750,10 @@ class ContainerVolumeArgsDict(TypedDict):
     """
     If `true`, this volume will be readonly. Defaults to `false`.
     """
+    selinux_relabel: NotRequired[pulumi.Input[_builtins.str]]
+    """
+    SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+    """
     volume_name: NotRequired[pulumi.Input[_builtins.str]]
     """
     The name of the docker volume which should be mounted.
@@ -2392,12 +2766,14 @@ class ContainerVolumeArgs:
                  from_container: Optional[pulumi.Input[_builtins.str]] = None,
                  host_path: Optional[pulumi.Input[_builtins.str]] = None,
                  read_only: Optional[pulumi.Input[_builtins.bool]] = None,
+                 selinux_relabel: Optional[pulumi.Input[_builtins.str]] = None,
                  volume_name: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] container_path: The path in the container where the volume will be mounted.
         :param pulumi.Input[_builtins.str] from_container: The container where the volume is coming from.
         :param pulumi.Input[_builtins.str] host_path: The path on the host where the volume is coming from.
         :param pulumi.Input[_builtins.bool] read_only: If `true`, this volume will be readonly. Defaults to `false`.
+        :param pulumi.Input[_builtins.str] selinux_relabel: SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
         :param pulumi.Input[_builtins.str] volume_name: The name of the docker volume which should be mounted.
         """
         if container_path is not None:
@@ -2408,6 +2784,8 @@ class ContainerVolumeArgs:
             pulumi.set(__self__, "host_path", host_path)
         if read_only is not None:
             pulumi.set(__self__, "read_only", read_only)
+        if selinux_relabel is not None:
+            pulumi.set(__self__, "selinux_relabel", selinux_relabel)
         if volume_name is not None:
             pulumi.set(__self__, "volume_name", volume_name)
 
@@ -2458,6 +2836,18 @@ class ContainerVolumeArgs:
     @read_only.setter
     def read_only(self, value: Optional[pulumi.Input[_builtins.bool]]):
         pulumi.set(self, "read_only", value)
+
+    @_builtins.property
+    @pulumi.getter(name="selinuxRelabel")
+    def selinux_relabel(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
+        """
+        return pulumi.get(self, "selinux_relabel")
+
+    @selinux_relabel.setter
+    def selinux_relabel(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "selinux_relabel", value)
 
     @_builtins.property
     @pulumi.getter(name="volumeName")
@@ -2666,7 +3056,7 @@ class ProviderRegistryAuthArgsDict(TypedDict):
     """
     config_file: NotRequired[pulumi.Input[_builtins.str]]
     """
-    Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+    Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `config_file` has precedence over all other options.
     """
     config_file_content: NotRequired[pulumi.Input[_builtins.str]]
     """
@@ -2693,7 +3083,7 @@ class ProviderRegistryAuthArgs:
         """
         :param pulumi.Input[_builtins.str] address: Address of the registry
         :param pulumi.Input[_builtins.bool] auth_disabled: Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
-        :param pulumi.Input[_builtins.str] config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        :param pulumi.Input[_builtins.str] config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `config_file` has precedence over all other options.
         :param pulumi.Input[_builtins.str] config_file_content: Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
         :param pulumi.Input[_builtins.str] password: Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
         :param pulumi.Input[_builtins.str] username: Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
@@ -2738,7 +3128,7 @@ class ProviderRegistryAuthArgs:
     @pulumi.getter(name="configFile")
     def config_file(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `config_file` has precedence over all other options.
         """
         return pulumi.get(self, "config_file")
 
@@ -2788,11 +3178,11 @@ class RegistryImageAuthConfigArgsDict(TypedDict):
     """
     The address of the Docker registry.
     """
-    password: pulumi.Input[_builtins.str]
+    password: NotRequired[pulumi.Input[_builtins.str]]
     """
     The password for the Docker registry.
     """
-    username: pulumi.Input[_builtins.str]
+    username: NotRequired[pulumi.Input[_builtins.str]]
     """
     The username for the Docker registry.
     """
@@ -2801,16 +3191,18 @@ class RegistryImageAuthConfigArgsDict(TypedDict):
 class RegistryImageAuthConfigArgs:
     def __init__(__self__, *,
                  address: pulumi.Input[_builtins.str],
-                 password: pulumi.Input[_builtins.str],
-                 username: pulumi.Input[_builtins.str]):
+                 password: Optional[pulumi.Input[_builtins.str]] = None,
+                 username: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] address: The address of the Docker registry.
         :param pulumi.Input[_builtins.str] password: The password for the Docker registry.
         :param pulumi.Input[_builtins.str] username: The username for the Docker registry.
         """
         pulumi.set(__self__, "address", address)
-        pulumi.set(__self__, "password", password)
-        pulumi.set(__self__, "username", username)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
 
     @_builtins.property
     @pulumi.getter
@@ -2826,26 +3218,26 @@ class RegistryImageAuthConfigArgs:
 
     @_builtins.property
     @pulumi.getter
-    def password(self) -> pulumi.Input[_builtins.str]:
+    def password(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
         The password for the Docker registry.
         """
         return pulumi.get(self, "password")
 
     @password.setter
-    def password(self, value: pulumi.Input[_builtins.str]):
+    def password(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "password", value)
 
     @_builtins.property
     @pulumi.getter
-    def username(self) -> pulumi.Input[_builtins.str]:
+    def username(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
         The username for the Docker registry.
         """
         return pulumi.get(self, "username")
 
     @username.setter
-    def username(self, value: pulumi.Input[_builtins.str]):
+    def username(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "username", value)
 
 
@@ -2876,7 +3268,7 @@ class RegistryImageBuildArgsDict(TypedDict):
     """
     builder: NotRequired[pulumi.Input[_builtins.str]]
     """
-    Set the name of the buildx builder to use. If not set, the legacy builder is used.
+    The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
     """
     cache_froms: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
     """
@@ -3002,6 +3394,10 @@ class RegistryImageBuildArgsDict(TypedDict):
     """
     Configuration for ulimits
     """
+    use_legacy_builder: NotRequired[pulumi.Input[_builtins.bool]]
+    """
+    Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+    """
     version: NotRequired[pulumi.Input[_builtins.str]]
     """
     Version of the underlying builder to use
@@ -3048,6 +3444,7 @@ class RegistryImageBuildArgs:
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  target: Optional[pulumi.Input[_builtins.str]] = None,
                  ulimits: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]]] = None,
+                 use_legacy_builder: Optional[pulumi.Input[_builtins.bool]] = None,
                  version: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
@@ -3056,7 +3453,7 @@ class RegistryImageBuildArgs:
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         :param pulumi.Input[_builtins.str] build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param pulumi.Input[_builtins.str] build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
-        :param pulumi.Input[_builtins.str] builder: Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        :param pulumi.Input[_builtins.str] builder: The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_froms: External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_tos: Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
@@ -3088,6 +3485,7 @@ class RegistryImageBuildArgs:
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tags: Name and optionally a tag in the 'name:tag' format
         :param pulumi.Input[_builtins.str] target: Set the target build stage to build
         :param pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]] ulimits: Configuration for ulimits
+        :param pulumi.Input[_builtins.bool] use_legacy_builder: Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
         :param pulumi.Input[_builtins.str] version: Version of the underlying builder to use
         """
         pulumi.set(__self__, "context", context)
@@ -3165,6 +3563,8 @@ class RegistryImageBuildArgs:
             pulumi.set(__self__, "target", target)
         if ulimits is not None:
             pulumi.set(__self__, "ulimits", ulimits)
+        if use_legacy_builder is not None:
+            pulumi.set(__self__, "use_legacy_builder", use_legacy_builder)
         if version is not None:
             pulumi.set(__self__, "version", version)
 
@@ -3244,7 +3644,7 @@ class RegistryImageBuildArgs:
     @pulumi.getter
     def builder(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
         """
         return pulumi.get(self, "builder")
 
@@ -3625,6 +4025,18 @@ class RegistryImageBuildArgs:
         pulumi.set(self, "ulimits", value)
 
     @_builtins.property
+    @pulumi.getter(name="useLegacyBuilder")
+    def use_legacy_builder(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+        """
+        return pulumi.get(self, "use_legacy_builder")
+
+    @use_legacy_builder.setter
+    def use_legacy_builder(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "use_legacy_builder", value)
+
+    @_builtins.property
     @pulumi.getter
     def version(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
@@ -3966,7 +4378,7 @@ class RemoteImageBuildArgsDict(TypedDict):
     """
     builder: NotRequired[pulumi.Input[_builtins.str]]
     """
-    Set the name of the buildx builder to use. If not set, the legacy builder is used.
+    The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
     """
     cache_froms: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
     """
@@ -4092,6 +4504,10 @@ class RemoteImageBuildArgsDict(TypedDict):
     """
     Configuration for ulimits
     """
+    use_legacy_builder: NotRequired[pulumi.Input[_builtins.bool]]
+    """
+    Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+    """
     version: NotRequired[pulumi.Input[_builtins.str]]
     """
     Version of the underlying builder to use
@@ -4138,6 +4554,7 @@ class RemoteImageBuildArgs:
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  target: Optional[pulumi.Input[_builtins.str]] = None,
                  ulimits: Optional[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]]] = None,
+                 use_legacy_builder: Optional[pulumi.Input[_builtins.bool]] = None,
                  version: Optional[pulumi.Input[_builtins.str]] = None):
         """
         :param pulumi.Input[_builtins.str] context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
@@ -4146,7 +4563,7 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] build_args: Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
         :param pulumi.Input[_builtins.str] build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param pulumi.Input[_builtins.str] build_log_file: Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
-        :param pulumi.Input[_builtins.str] builder: Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        :param pulumi.Input[_builtins.str] builder: The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_froms: External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] cache_tos: Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
         :param pulumi.Input[_builtins.str] cgroup_parent: Optional parent cgroup for the container
@@ -4178,6 +4595,7 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] tags: Name and optionally a tag in the 'name:tag' format
         :param pulumi.Input[_builtins.str] target: Set the target build stage to build
         :param pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]] ulimits: Configuration for ulimits
+        :param pulumi.Input[_builtins.bool] use_legacy_builder: Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
         :param pulumi.Input[_builtins.str] version: Version of the underlying builder to use
         """
         pulumi.set(__self__, "context", context)
@@ -4255,6 +4673,8 @@ class RemoteImageBuildArgs:
             pulumi.set(__self__, "target", target)
         if ulimits is not None:
             pulumi.set(__self__, "ulimits", ulimits)
+        if use_legacy_builder is not None:
+            pulumi.set(__self__, "use_legacy_builder", use_legacy_builder)
         if version is not None:
             pulumi.set(__self__, "version", version)
 
@@ -4334,7 +4754,7 @@ class RemoteImageBuildArgs:
     @pulumi.getter
     def builder(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
         """
         return pulumi.get(self, "builder")
 
@@ -4713,6 +5133,18 @@ class RemoteImageBuildArgs:
     @ulimits.setter
     def ulimits(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]]]):
         pulumi.set(self, "ulimits", value)
+
+    @_builtins.property
+    @pulumi.getter(name="useLegacyBuilder")
+    def use_legacy_builder(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+        """
+        return pulumi.get(self, "use_legacy_builder")
+
+    @use_legacy_builder.setter
+    def use_legacy_builder(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "use_legacy_builder", value)
 
     @_builtins.property
     @pulumi.getter
@@ -5144,6 +5576,53 @@ class ServiceAuthArgs:
         pulumi.set(self, "username", value)
 
 
+class ServiceConfigLabelArgsDict(TypedDict):
+    label: pulumi.Input[_builtins.str]
+    """
+    Name of the label
+    """
+    value: pulumi.Input[_builtins.str]
+    """
+    Value of the label
+    """
+
+@pulumi.input_type
+class ServiceConfigLabelArgs:
+    def __init__(__self__, *,
+                 label: pulumi.Input[_builtins.str],
+                 value: pulumi.Input[_builtins.str]):
+        """
+        :param pulumi.Input[_builtins.str] label: Name of the label
+        :param pulumi.Input[_builtins.str] value: Value of the label
+        """
+        pulumi.set(__self__, "label", label)
+        pulumi.set(__self__, "value", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def label(self) -> pulumi.Input[_builtins.str]:
+        """
+        Name of the label
+        """
+        return pulumi.get(self, "label")
+
+    @label.setter
+    def label(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "label", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def value(self) -> pulumi.Input[_builtins.str]:
+        """
+        Value of the label
+        """
+        return pulumi.get(self, "value")
+
+    @value.setter
+    def value(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "value", value)
+
+
 class ServiceConvergeConfigArgsDict(TypedDict):
     delay: NotRequired[pulumi.Input[_builtins.str]]
     """
@@ -5253,7 +5732,7 @@ class ServiceEndpointSpecPortArgsDict(TypedDict):
     """
     protocol: NotRequired[pulumi.Input[_builtins.str]]
     """
-    Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+    Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
     """
     publish_mode: NotRequired[pulumi.Input[_builtins.str]]
     """
@@ -5275,7 +5754,7 @@ class ServiceEndpointSpecPortArgs:
         """
         :param pulumi.Input[_builtins.int] target_port: The port inside the container
         :param pulumi.Input[_builtins.str] name: A random name for the port
-        :param pulumi.Input[_builtins.str] protocol: Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+        :param pulumi.Input[_builtins.str] protocol: Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
         :param pulumi.Input[_builtins.str] publish_mode: Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
         :param pulumi.Input[_builtins.int] published_port: The port on the swarm hosts
         """
@@ -5317,7 +5796,7 @@ class ServiceEndpointSpecPortArgs:
     @pulumi.getter
     def protocol(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+        Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
         """
         return pulumi.get(self, "protocol")
 
@@ -7382,10 +7861,6 @@ class ServiceTaskSpecLogDriverArgs:
 
 
 class ServiceTaskSpecNetworksAdvancedArgsDict(TypedDict):
-    name: pulumi.Input[_builtins.str]
-    """
-    The name/id of the network.
-    """
     aliases: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
     """
     The network aliases of the container in the specific network.
@@ -7394,35 +7869,39 @@ class ServiceTaskSpecNetworksAdvancedArgsDict(TypedDict):
     """
     An array of driver options for the network, e.g. `opts1=value`
     """
+    id: NotRequired[pulumi.Input[_builtins.str]]
+    """
+    The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+    """
+    name: NotRequired[pulumi.Input[_builtins.str]]
+    """
+    Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+    """
 
 @pulumi.input_type
 class ServiceTaskSpecNetworksAdvancedArgs:
     def __init__(__self__, *,
-                 name: pulumi.Input[_builtins.str],
                  aliases: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 driver_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
+                 driver_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 id: Optional[pulumi.Input[_builtins.str]] = None,
+                 name: Optional[pulumi.Input[_builtins.str]] = None):
         """
-        :param pulumi.Input[_builtins.str] name: The name/id of the network.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] aliases: The network aliases of the container in the specific network.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] driver_opts: An array of driver options for the network, e.g. `opts1=value`
+        :param pulumi.Input[_builtins.str] id: The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+        :param pulumi.Input[_builtins.str] name: Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
         """
-        pulumi.set(__self__, "name", name)
         if aliases is not None:
             pulumi.set(__self__, "aliases", aliases)
         if driver_opts is not None:
             pulumi.set(__self__, "driver_opts", driver_opts)
-
-    @_builtins.property
-    @pulumi.getter
-    def name(self) -> pulumi.Input[_builtins.str]:
-        """
-        The name/id of the network.
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: pulumi.Input[_builtins.str]):
-        pulumi.set(self, "name", value)
+        if id is not None:
+            pulumi.set(__self__, "id", id)
+        if name is not None:
+            warnings.warn("""Use the id attribute.""", DeprecationWarning)
+            pulumi.log.warn("""name is deprecated: Use the id attribute.""")
+        if name is not None:
+            pulumi.set(__self__, "name", name)
 
     @_builtins.property
     @pulumi.getter
@@ -7447,6 +7926,31 @@ class ServiceTaskSpecNetworksAdvancedArgs:
     @driver_opts.setter
     def driver_opts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "driver_opts", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def id(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
+        """
+        return pulumi.get(self, "id")
+
+    @id.setter
+    def id(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "id", value)
+
+    @_builtins.property
+    @pulumi.getter
+    @_utilities.deprecated("""Use the id attribute.""")
+    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "name", value)
 
 
 class ServiceTaskSpecPlacementArgsDict(TypedDict):
@@ -7637,7 +8141,7 @@ class ServiceTaskSpecResourcesArgs:
 class ServiceTaskSpecResourcesLimitsArgsDict(TypedDict):
     memory_bytes: NotRequired[pulumi.Input[_builtins.int]]
     """
-    The amounf of memory in bytes the container allocates
+    The amount of memory in bytes the container allocates
     """
     nano_cpus: NotRequired[pulumi.Input[_builtins.int]]
     """
@@ -7650,7 +8154,7 @@ class ServiceTaskSpecResourcesLimitsArgs:
                  memory_bytes: Optional[pulumi.Input[_builtins.int]] = None,
                  nano_cpus: Optional[pulumi.Input[_builtins.int]] = None):
         """
-        :param pulumi.Input[_builtins.int] memory_bytes: The amounf of memory in bytes the container allocates
+        :param pulumi.Input[_builtins.int] memory_bytes: The amount of memory in bytes the container allocates
         :param pulumi.Input[_builtins.int] nano_cpus: CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
         """
         if memory_bytes is not None:
@@ -7662,7 +8166,7 @@ class ServiceTaskSpecResourcesLimitsArgs:
     @pulumi.getter(name="memoryBytes")
     def memory_bytes(self) -> Optional[pulumi.Input[_builtins.int]]:
         """
-        The amounf of memory in bytes the container allocates
+        The amount of memory in bytes the container allocates
         """
         return pulumi.get(self, "memory_bytes")
 
@@ -7690,7 +8194,7 @@ class ServiceTaskSpecResourcesReservationArgsDict(TypedDict):
     """
     memory_bytes: NotRequired[pulumi.Input[_builtins.int]]
     """
-    The amounf of memory in bytes the container allocates
+    The amount of memory in bytes the container allocates
     """
     nano_cpus: NotRequired[pulumi.Input[_builtins.int]]
     """
@@ -7705,7 +8209,7 @@ class ServiceTaskSpecResourcesReservationArgs:
                  nano_cpus: Optional[pulumi.Input[_builtins.int]] = None):
         """
         :param pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs'] generic_resources: User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
-        :param pulumi.Input[_builtins.int] memory_bytes: The amounf of memory in bytes the container allocates
+        :param pulumi.Input[_builtins.int] memory_bytes: The amount of memory in bytes the container allocates
         :param pulumi.Input[_builtins.int] nano_cpus: CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
         """
         if generic_resources is not None:
@@ -7731,7 +8235,7 @@ class ServiceTaskSpecResourcesReservationArgs:
     @pulumi.getter(name="memoryBytes")
     def memory_bytes(self) -> Optional[pulumi.Input[_builtins.int]]:
         """
-        The amounf of memory in bytes the container allocates
+        The amount of memory in bytes the container allocates
         """
         return pulumi.get(self, "memory_bytes")
 
@@ -8508,11 +9012,11 @@ class GetRegistryImageManifestsAuthConfigArgsDict(TypedDict):
     """
     The address of the Docker registry.
     """
-    password: _builtins.str
+    password: NotRequired[_builtins.str]
     """
     The password for the Docker registry.
     """
-    username: _builtins.str
+    username: NotRequired[_builtins.str]
     """
     The username for the Docker registry.
     """
@@ -8521,16 +9025,18 @@ class GetRegistryImageManifestsAuthConfigArgsDict(TypedDict):
 class GetRegistryImageManifestsAuthConfigArgs:
     def __init__(__self__, *,
                  address: _builtins.str,
-                 password: _builtins.str,
-                 username: _builtins.str):
+                 password: Optional[_builtins.str] = None,
+                 username: Optional[_builtins.str] = None):
         """
         :param _builtins.str address: The address of the Docker registry.
         :param _builtins.str password: The password for the Docker registry.
         :param _builtins.str username: The username for the Docker registry.
         """
         pulumi.set(__self__, "address", address)
-        pulumi.set(__self__, "password", password)
-        pulumi.set(__self__, "username", username)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
 
     @_builtins.property
     @pulumi.getter
@@ -8546,26 +9052,26 @@ class GetRegistryImageManifestsAuthConfigArgs:
 
     @_builtins.property
     @pulumi.getter
-    def password(self) -> _builtins.str:
+    def password(self) -> Optional[_builtins.str]:
         """
         The password for the Docker registry.
         """
         return pulumi.get(self, "password")
 
     @password.setter
-    def password(self, value: _builtins.str):
+    def password(self, value: Optional[_builtins.str]):
         pulumi.set(self, "password", value)
 
     @_builtins.property
     @pulumi.getter
-    def username(self) -> _builtins.str:
+    def username(self) -> Optional[_builtins.str]:
         """
         The username for the Docker registry.
         """
         return pulumi.get(self, "username")
 
     @username.setter
-    def username(self, value: _builtins.str):
+    def username(self, value: Optional[_builtins.str]):
         pulumi.set(self, "username", value)
 
 

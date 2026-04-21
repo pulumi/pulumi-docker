@@ -3,7 +3,7 @@ module cbp-aws-go
 go 1.21
 
 require (
-	github.com/pulumi/pulumi-docker/sdk/v4 v4.4.5
+	github.com/pulumi/pulumi-docker/sdk/v5 v5.0.0
 	github.com/pulumi/pulumi/sdk/v3 v3.104.2
 )
 

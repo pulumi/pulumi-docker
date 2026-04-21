@@ -61,7 +61,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? BuildLogFile { get; set; }
 
         /// <summary>
-        /// Set the name of the buildx builder to use. If not set, the legacy builder is used.
+        /// The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
         /// </summary>
         [Input("builder")]
         public Input<string>? Builder { get; set; }
@@ -311,6 +311,12 @@ namespace Pulumi.Docker.Inputs
             get => _ulimits ?? (_ulimits = new InputList<Inputs.RegistryImageBuildUlimitGetArgs>());
             set => _ulimits = value;
         }
+
+        /// <summary>
+        /// Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
+        /// </summary>
+        [Input("useLegacyBuilder")]
+        public Input<bool>? UseLegacyBuilder { get; set; }
 
         /// <summary>
         /// Version of the underlying builder to use

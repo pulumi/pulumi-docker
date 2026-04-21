@@ -4,7 +4,6 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -35,10 +34,10 @@ public final class ContainerHealthcheck {
      */
     private @Nullable String startPeriod;
     /**
-     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
-    private List<String> tests;
+    private @Nullable List<String> tests;
     /**
      * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
@@ -75,11 +74,11 @@ public final class ContainerHealthcheck {
         return Optional.ofNullable(this.startPeriod);
     }
     /**
-     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service&#39;s Docker image. Your Compose file can override the values set in the Dockerfile.
      * 
      */
     public List<String> tests() {
-        return this.tests;
+        return this.tests == null ? List.of() : this.tests;
     }
     /**
      * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
@@ -102,7 +101,7 @@ public final class ContainerHealthcheck {
         private @Nullable Integer retries;
         private @Nullable String startInterval;
         private @Nullable String startPeriod;
-        private List<String> tests;
+        private @Nullable List<String> tests;
         private @Nullable String timeout;
         public Builder() {}
         public Builder(ContainerHealthcheck defaults) {
@@ -140,10 +139,8 @@ public final class ContainerHealthcheck {
             return this;
         }
         @CustomType.Setter
-        public Builder tests(List<String> tests) {
-            if (tests == null) {
-              throw new MissingRequiredPropertyException("ContainerHealthcheck", "tests");
-            }
+        public Builder tests(@Nullable List<String> tests) {
+
             this.tests = tests;
             return this;
         }

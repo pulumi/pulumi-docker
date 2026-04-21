@@ -18,7 +18,7 @@ public final class ServiceTaskSpecResourcesReservation {
      */
     private @Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources;
     /**
-     * @return The amounf of memory in bytes the container allocates
+     * @return The amount of memory in bytes the container allocates
      * 
      */
     private @Nullable Integer memoryBytes;
@@ -37,7 +37,7 @@ public final class ServiceTaskSpecResourcesReservation {
         return Optional.ofNullable(this.genericResources);
     }
     /**
-     * @return The amounf of memory in bytes the container allocates
+     * @return The amount of memory in bytes the container allocates
      * 
      */
     public Optional<Integer> memoryBytes() {

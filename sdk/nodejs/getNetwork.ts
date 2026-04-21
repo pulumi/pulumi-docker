@@ -43,6 +43,10 @@ export interface GetNetworkArgs {
  */
 export interface GetNetworkResult {
     /**
+     * Containers attached to the network.
+     */
+    readonly containers: outputs.GetNetworkContainer[];
+    /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
     readonly driver: string;

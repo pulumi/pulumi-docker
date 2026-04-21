@@ -109,7 +109,7 @@ namespace Pulumi.Docker
         public Output<string> Bridge { get; private set; } = null!;
 
         /// <summary>
-        /// Add or drop certrain linux capabilities.
+        /// Add or drop certain linux capabilities.
         /// </summary>
         [Output("capabilities")]
         public Output<Outputs.ContainerCapabilities?> Capabilities { get; private set; } = null!;
@@ -181,7 +181,37 @@ namespace Pulumi.Docker
         public Output<int?> DestroyGraceSeconds { get; private set; } = null!;
 
         /// <summary>
-        /// Bind devices to the container.
+        /// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        /// </summary>
+        [Output("deviceReadBps")]
+        public Output<ImmutableArray<Outputs.ContainerDeviceReadBp>> DeviceReadBps { get; private set; } = null!;
+
+        /// <summary>
+        /// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        /// </summary>
+        [Output("deviceReadIops")]
+        public Output<ImmutableArray<Outputs.ContainerDeviceReadIop>> DeviceReadIops { get; private set; } = null!;
+
+        /// <summary>
+        /// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        /// </summary>
+        [Output("deviceRequests")]
+        public Output<ImmutableArray<Outputs.ContainerDeviceRequest>> DeviceRequests { get; private set; } = null!;
+
+        /// <summary>
+        /// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        /// </summary>
+        [Output("deviceWriteBps")]
+        public Output<ImmutableArray<Outputs.ContainerDeviceWriteBp>> DeviceWriteBps { get; private set; } = null!;
+
+        /// <summary>
+        /// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        /// </summary>
+        [Output("deviceWriteIops")]
+        public Output<ImmutableArray<Outputs.ContainerDeviceWriteIop>> DeviceWriteIops { get; private set; } = null!;
+
+        /// <summary>
+        /// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `DeviceRequests` instead.
         /// </summary>
         [Output("devices")]
         public Output<ImmutableArray<Outputs.ContainerDevice>> Devices { get; private set; } = null!;
@@ -229,7 +259,7 @@ namespace Pulumi.Docker
         public Output<int> ExitCode { get; private set; } = null!;
 
         /// <summary>
-        /// GPU devices to add to the container. Currently, only the value `All` is supported. Passing any other value will result in unexpected behavior.
+        /// GPU devices to add to the container. Supported values are `All` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         /// </summary>
         [Output("gpus")]
         public Output<string?> Gpus { get; private set; } = null!;
@@ -331,7 +361,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerMount>> Mounts { get; private set; } = null!;
 
         /// <summary>
-        /// If `True`, then the Docker container will be kept running. If `False`, then as long as the container exists, Terraform assumes it is successful. Defaults to `True`.
+        /// If `True`, then the Docker container will be kept running. If `False`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `MustRun` to `False` and this will trigger a change. Defaults to `True`.
         /// </summary>
         [Output("mustRun")]
         public Output<bool?> MustRun { get; private set; } = null!;
@@ -355,16 +385,22 @@ namespace Pulumi.Docker
         public Output<string?> NetworkMode { get; private set; } = null!;
 
         /// <summary>
-        /// The networks the container is attached to
+        /// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
         /// </summary>
         [Output("networksAdvanced")]
         public Output<ImmutableArray<Outputs.ContainerNetworksAdvanced>> NetworksAdvanced { get; private set; } = null!;
 
         /// <summary>
-        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
+        /// The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Output("pidMode")]
         public Output<string?> PidMode { get; private set; } = null!;
+
+        /// <summary>
+        /// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+        /// </summary>
+        [Output("platform")]
+        public Output<string> Platform { get; private set; } = null!;
 
         /// <summary>
         /// Publish a container's port(s) to the host.
@@ -487,7 +523,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerUpload>> Uploads { get; private set; } = null!;
 
         /// <summary>
-        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literraly or by name.
+        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literally or by name.
         /// </summary>
         [Output("user")]
         public Output<string?> User { get; private set; } = null!;
@@ -575,7 +611,7 @@ namespace Pulumi.Docker
         public Input<bool>? Attach { get; set; }
 
         /// <summary>
-        /// Add or drop certrain linux capabilities.
+        /// Add or drop certain linux capabilities.
         /// </summary>
         [Input("capabilities")]
         public Input<Inputs.ContainerCapabilitiesArgs>? Capabilities { get; set; }
@@ -646,11 +682,71 @@ namespace Pulumi.Docker
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
 
+        [Input("deviceReadBps")]
+        private InputList<Inputs.ContainerDeviceReadBpArgs>? _deviceReadBps;
+
+        /// <summary>
+        /// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceReadBpArgs> DeviceReadBps
+        {
+            get => _deviceReadBps ?? (_deviceReadBps = new InputList<Inputs.ContainerDeviceReadBpArgs>());
+            set => _deviceReadBps = value;
+        }
+
+        [Input("deviceReadIops")]
+        private InputList<Inputs.ContainerDeviceReadIopArgs>? _deviceReadIops;
+
+        /// <summary>
+        /// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceReadIopArgs> DeviceReadIops
+        {
+            get => _deviceReadIops ?? (_deviceReadIops = new InputList<Inputs.ContainerDeviceReadIopArgs>());
+            set => _deviceReadIops = value;
+        }
+
+        [Input("deviceRequests")]
+        private InputList<Inputs.ContainerDeviceRequestArgs>? _deviceRequests;
+
+        /// <summary>
+        /// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceRequestArgs> DeviceRequests
+        {
+            get => _deviceRequests ?? (_deviceRequests = new InputList<Inputs.ContainerDeviceRequestArgs>());
+            set => _deviceRequests = value;
+        }
+
+        [Input("deviceWriteBps")]
+        private InputList<Inputs.ContainerDeviceWriteBpArgs>? _deviceWriteBps;
+
+        /// <summary>
+        /// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceWriteBpArgs> DeviceWriteBps
+        {
+            get => _deviceWriteBps ?? (_deviceWriteBps = new InputList<Inputs.ContainerDeviceWriteBpArgs>());
+            set => _deviceWriteBps = value;
+        }
+
+        [Input("deviceWriteIops")]
+        private InputList<Inputs.ContainerDeviceWriteIopArgs>? _deviceWriteIops;
+
+        /// <summary>
+        /// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceWriteIopArgs> DeviceWriteIops
+        {
+            get => _deviceWriteIops ?? (_deviceWriteIops = new InputList<Inputs.ContainerDeviceWriteIopArgs>());
+            set => _deviceWriteIops = value;
+        }
+
         [Input("devices")]
         private InputList<Inputs.ContainerDeviceArgs>? _devices;
 
         /// <summary>
-        /// Bind devices to the container.
+        /// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `DeviceRequests` instead.
         /// </summary>
         public InputList<Inputs.ContainerDeviceArgs> Devices
         {
@@ -725,7 +821,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// GPU devices to add to the container. Currently, only the value `All` is supported. Passing any other value will result in unexpected behavior.
+        /// GPU devices to add to the container. Supported values are `All` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         /// </summary>
         [Input("gpus")]
         public Input<string>? Gpus { get; set; }
@@ -857,7 +953,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `True`, then the Docker container will be kept running. If `False`, then as long as the container exists, Terraform assumes it is successful. Defaults to `True`.
+        /// If `True`, then the Docker container will be kept running. If `False`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `MustRun` to `False` and this will trigger a change. Defaults to `True`.
         /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
@@ -878,7 +974,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerNetworksAdvancedArgs>? _networksAdvanced;
 
         /// <summary>
-        /// The networks the container is attached to
+        /// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
         /// </summary>
         public InputList<Inputs.ContainerNetworksAdvancedArgs> NetworksAdvanced
         {
@@ -887,10 +983,16 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
+        /// The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Input("pidMode")]
         public Input<string>? PidMode { get; set; }
+
+        /// <summary>
+        /// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+        /// </summary>
+        [Input("platform")]
+        public Input<string>? Platform { get; set; }
 
         [Input("ports")]
         private InputList<Inputs.ContainerPortArgs>? _ports;
@@ -1055,7 +1157,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literraly or by name.
+        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literally or by name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
@@ -1117,7 +1219,7 @@ namespace Pulumi.Docker
         public Input<string>? Bridge { get; set; }
 
         /// <summary>
-        /// Add or drop certrain linux capabilities.
+        /// Add or drop certain linux capabilities.
         /// </summary>
         [Input("capabilities")]
         public Input<Inputs.ContainerCapabilitiesGetArgs>? Capabilities { get; set; }
@@ -1194,11 +1296,71 @@ namespace Pulumi.Docker
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
 
+        [Input("deviceReadBps")]
+        private InputList<Inputs.ContainerDeviceReadBpGetArgs>? _deviceReadBps;
+
+        /// <summary>
+        /// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceReadBpGetArgs> DeviceReadBps
+        {
+            get => _deviceReadBps ?? (_deviceReadBps = new InputList<Inputs.ContainerDeviceReadBpGetArgs>());
+            set => _deviceReadBps = value;
+        }
+
+        [Input("deviceReadIops")]
+        private InputList<Inputs.ContainerDeviceReadIopGetArgs>? _deviceReadIops;
+
+        /// <summary>
+        /// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceReadIopGetArgs> DeviceReadIops
+        {
+            get => _deviceReadIops ?? (_deviceReadIops = new InputList<Inputs.ContainerDeviceReadIopGetArgs>());
+            set => _deviceReadIops = value;
+        }
+
+        [Input("deviceRequests")]
+        private InputList<Inputs.ContainerDeviceRequestGetArgs>? _deviceRequests;
+
+        /// <summary>
+        /// Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceRequestGetArgs> DeviceRequests
+        {
+            get => _deviceRequests ?? (_deviceRequests = new InputList<Inputs.ContainerDeviceRequestGetArgs>());
+            set => _deviceRequests = value;
+        }
+
+        [Input("deviceWriteBps")]
+        private InputList<Inputs.ContainerDeviceWriteBpGetArgs>? _deviceWriteBps;
+
+        /// <summary>
+        /// Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceWriteBpGetArgs> DeviceWriteBps
+        {
+            get => _deviceWriteBps ?? (_deviceWriteBps = new InputList<Inputs.ContainerDeviceWriteBpGetArgs>());
+            set => _deviceWriteBps = value;
+        }
+
+        [Input("deviceWriteIops")]
+        private InputList<Inputs.ContainerDeviceWriteIopGetArgs>? _deviceWriteIops;
+
+        /// <summary>
+        /// Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
+        /// </summary>
+        public InputList<Inputs.ContainerDeviceWriteIopGetArgs> DeviceWriteIops
+        {
+            get => _deviceWriteIops ?? (_deviceWriteIops = new InputList<Inputs.ContainerDeviceWriteIopGetArgs>());
+            set => _deviceWriteIops = value;
+        }
+
         [Input("devices")]
         private InputList<Inputs.ContainerDeviceGetArgs>? _devices;
 
         /// <summary>
-        /// Bind devices to the container.
+        /// Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `DeviceRequests` instead.
         /// </summary>
         public InputList<Inputs.ContainerDeviceGetArgs> Devices
         {
@@ -1279,7 +1441,7 @@ namespace Pulumi.Docker
         public Input<int>? ExitCode { get; set; }
 
         /// <summary>
-        /// GPU devices to add to the container. Currently, only the value `All` is supported. Passing any other value will result in unexpected behavior.
+        /// GPU devices to add to the container. Supported values are `All` or `device=&lt;id[,id...]&gt;`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
         /// </summary>
         [Input("gpus")]
         public Input<string>? Gpus { get; set; }
@@ -1411,7 +1573,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// If `True`, then the Docker container will be kept running. If `False`, then as long as the container exists, Terraform assumes it is successful. Defaults to `True`.
+        /// If `True`, then the Docker container will be kept running. If `False`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `MustRun` to `False` and this will trigger a change. Defaults to `True`.
         /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
@@ -1444,7 +1606,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerNetworksAdvancedGetArgs>? _networksAdvanced;
 
         /// <summary>
-        /// The networks the container is attached to
+        /// The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
         /// </summary>
         public InputList<Inputs.ContainerNetworksAdvancedGetArgs> NetworksAdvanced
         {
@@ -1453,10 +1615,16 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
+        /// The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `Host`.
         /// </summary>
         [Input("pidMode")]
         public Input<string>? PidMode { get; set; }
+
+        /// <summary>
+        /// Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
+        /// </summary>
+        [Input("platform")]
+        public Input<string>? Platform { get; set; }
 
         [Input("ports")]
         private InputList<Inputs.ContainerPortGetArgs>? _ports;
@@ -1621,7 +1789,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literraly or by name.
+        /// User used for run the first process. Format is `User` or `user:group` which user and group can be passed literally or by name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
