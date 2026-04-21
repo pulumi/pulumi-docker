@@ -1,3 +1,0 @@
-name: dockerfile-python
-runtime: python
-description: A pulumi application that builds a Dockerfile
