@@ -17,14 +17,14 @@ public final class ServiceModeArgs extends com.pulumi.resources.ResourceArgs {
     public static final ServiceModeArgs Empty = new ServiceModeArgs();
 
     /**
-     * When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * The global service mode. Defaults to `false`
      * 
      */
     @Import(name="global")
     private @Nullable Output<Boolean> global;
 
     /**
-     * @return When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * @return The global service mode. Defaults to `false`
      * 
      */
     public Optional<Output<Boolean>> global() {
@@ -72,7 +72,7 @@ public final class ServiceModeArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param global When `true`, tasks will run on every worker node. Conflicts with `replicated`
+         * @param global The global service mode. Defaults to `false`
          * 
          * @return builder
          * 
@@ -83,7 +83,7 @@ public final class ServiceModeArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param global When `true`, tasks will run on every worker node. Conflicts with `replicated`
+         * @param global The global service mode. Defaults to `false`
          * 
          * @return builder
          * 
