@@ -4073,7 +4073,7 @@ class ServiceMode(dict):
                  global_: Optional[_builtins.bool] = None,
                  replicated: Optional['outputs.ServiceModeReplicated'] = None):
         """
-        :param _builtins.bool global_: When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        :param _builtins.bool global_: The global service mode. Defaults to `false`
         :param 'ServiceModeReplicatedArgs' replicated: The replicated service mode
         """
         if global_ is not None:
@@ -4085,7 +4085,7 @@ class ServiceMode(dict):
     @pulumi.getter(name="global")
     def global_(self) -> Optional[_builtins.bool]:
         """
-        When `true`, tasks will run on every worker node. Conflicts with `replicated`
+        The global service mode. Defaults to `false`
         """
         return pulumi.get(self, "global_")
 

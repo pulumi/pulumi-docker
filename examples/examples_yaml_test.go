@@ -152,6 +152,8 @@ func TestDockerSwarmYAML(t *testing.T) {
 	})
 
 	t.Run("service-replicated", func(t *testing.T) {
+		// Regression coverage for omitted mode.global with mode.replicated. The bridge
+		// must not materialize the upstream false default as an explicit conflicting input.
 		integration.ProgramTest(t, &integration.ProgramTestOptions{
 			Dir:         path.Join(cwd, "test-swarm", "service-replicated"),
 			Quick:       true,

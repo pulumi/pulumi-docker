@@ -1857,7 +1857,7 @@
             "properties": {
                 "global": {
                     "type": "boolean",
-                    "description": "When \u003cspan pulumi-lang-nodejs=\"`true`\" pulumi-lang-dotnet=\"`True`\" pulumi-lang-go=\"`true`\" pulumi-lang-python=\"`true`\" pulumi-lang-yaml=\"`true`\" pulumi-lang-java=\"`true`\"\u003e`true`\u003c/span\u003e, tasks will run on every worker node. Conflicts with \u003cspan pulumi-lang-nodejs=\"`replicated`\" pulumi-lang-dotnet=\"`Replicated`\" pulumi-lang-go=\"`replicated`\" pulumi-lang-python=\"`replicated`\" pulumi-lang-yaml=\"`replicated`\" pulumi-lang-java=\"`replicated`\"\u003e`replicated`\u003c/span\u003e\n"
+                    "description": "The global service mode. Defaults to \u003cspan pulumi-lang-nodejs=\"`false`\" pulumi-lang-dotnet=\"`False`\" pulumi-lang-go=\"`false`\" pulumi-lang-python=\"`false`\" pulumi-lang-yaml=\"`false`\" pulumi-lang-java=\"`false`\"\u003e`false`\u003c/span\u003e\n"
                 },
                 "replicated": {
                     "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated",
