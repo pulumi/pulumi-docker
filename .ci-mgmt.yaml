@@ -4,6 +4,7 @@ upstreamProviderOrg: kreuzwerker
 aws: true
 gcp: true
 gcpRegistry: true
+allowMajorProviderUpgrades: true
 esc:
     enabled: true
 env:
