@@ -79,8 +79,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetNetworkArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -119,8 +119,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetNetworkArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -159,8 +159,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetNetworkArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -199,8 +199,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetNetworkArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -239,8 +239,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetNetworkArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -279,8 +279,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -325,8 +325,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -371,8 +371,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -417,8 +417,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -463,8 +463,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -509,8 +509,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -555,8 +555,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetPluginArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -603,8 +603,8 @@ public final class DockerFunctions {
      * import com.pulumi.docker.inputs.GetRegistryImageArgs;
      * import com.pulumi.docker.RemoteImage;
      * import com.pulumi.docker.RemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -650,8 +650,8 @@ public final class DockerFunctions {
      * import com.pulumi.docker.inputs.GetRegistryImageArgs;
      * import com.pulumi.docker.RemoteImage;
      * import com.pulumi.docker.RemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -697,8 +697,8 @@ public final class DockerFunctions {
      * import com.pulumi.docker.inputs.GetRegistryImageArgs;
      * import com.pulumi.docker.RemoteImage;
      * import com.pulumi.docker.RemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -744,8 +744,8 @@ public final class DockerFunctions {
      * import com.pulumi.docker.inputs.GetRegistryImageArgs;
      * import com.pulumi.docker.RemoteImage;
      * import com.pulumi.docker.RemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -791,8 +791,8 @@ public final class DockerFunctions {
      * import com.pulumi.docker.inputs.GetRegistryImageArgs;
      * import com.pulumi.docker.RemoteImage;
      * import com.pulumi.docker.RemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -871,8 +871,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetRemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -927,8 +927,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetRemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -983,8 +983,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetRemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -1039,8 +1039,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetRemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;
@@ -1095,8 +1095,8 @@ public final class DockerFunctions {
      * import com.pulumi.core.Output;
      * import com.pulumi.docker.DockerFunctions;
      * import com.pulumi.docker.inputs.GetRemoteImageArgs;
-     * import java.util.List;
      * import java.util.ArrayList;
+     * import java.util.Arrays;
      * import java.util.Map;
      * import java.io.File;
      * import java.nio.file.Files;

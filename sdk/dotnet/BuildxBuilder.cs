@@ -23,7 +23,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var example = new Docker.Index.BuildxBuilder("example", new()
+    ///     var example = new Docker.BuildxBuilder("example", new()
     ///     {
     ///         Name = "example-builder",
     ///         Driver = "docker-container",

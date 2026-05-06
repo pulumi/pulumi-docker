@@ -98,13 +98,13 @@ using Docker = Pulumi.Docker;
 return await Deployment.RunAsync(() =>
 {
     // Pulls the image
-    var ubuntu = new Docker.Index.RemoteImage("ubuntu", new()
+    var ubuntu = new Docker.RemoteImage("ubuntu", new()
     {
         Name = "ubuntu:latest",
     });
 
     // Create a container
-    var foo = new Docker.Index.Container("foo", new()
+    var foo = new Docker.Container("foo", new()
     {
         Image = ubuntu.ImageId,
         Name = "foo",
@@ -205,8 +205,8 @@ import com.pulumi.docker.RemoteImage;
 import com.pulumi.docker.RemoteImageArgs;
 import com.pulumi.docker.Container;
 import com.pulumi.docker.ContainerArgs;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.io.File;
 import java.nio.file.Files;

@@ -26,7 +26,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var image = new Docker.Index.RemoteImage("image", new()
+    ///     var image = new Docker.RemoteImage("image", new()
     ///     {
     ///         Name = "registry.com/somename:1.0",
     ///         Build = new Docker.Inputs.RemoteImageBuildArgs
@@ -35,7 +35,7 @@ namespace Pulumi.Docker
     ///         },
     ///     });
     /// 
-    ///     var helloworld = new Docker.Index.RegistryImage("helloworld", new()
+    ///     var helloworld = new Docker.RegistryImage("helloworld", new()
     ///     {
     ///         Name = image.Name,
     ///         KeepRemotely = true,
