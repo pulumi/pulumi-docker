@@ -107,24 +107,24 @@ export function getLogsOutput(args: GetLogsOutputArgs, opts?: pulumi.InvokeOutpu
  * A collection of arguments for invoking getLogs.
  */
 export interface GetLogsOutputArgs {
-    details?: pulumi.Input<boolean>;
+    details?: pulumi.Input<boolean | undefined>;
     /**
      * Discard headers that docker appends to each log entry
      */
-    discardHeaders?: pulumi.Input<boolean>;
-    follow?: pulumi.Input<boolean>;
+    discardHeaders?: pulumi.Input<boolean | undefined>;
+    follow?: pulumi.Input<boolean | undefined>;
     /**
      * If true populate computed value `logsListString`
      */
-    logsListStringEnabled?: pulumi.Input<boolean>;
+    logsListStringEnabled?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the Docker Container
      */
     name: pulumi.Input<string>;
-    showStderr?: pulumi.Input<boolean>;
-    showStdout?: pulumi.Input<boolean>;
-    since?: pulumi.Input<string>;
-    tail?: pulumi.Input<string>;
-    timestamps?: pulumi.Input<boolean>;
-    until?: pulumi.Input<string>;
+    showStderr?: pulumi.Input<boolean | undefined>;
+    showStdout?: pulumi.Input<boolean | undefined>;
+    since?: pulumi.Input<string | undefined>;
+    tail?: pulumi.Input<string | undefined>;
+    timestamps?: pulumi.Input<boolean | undefined>;
+    until?: pulumi.Input<string | undefined>;
 }

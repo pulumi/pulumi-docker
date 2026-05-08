@@ -106,7 +106,7 @@ def get_remote_image(name: Optional[_builtins.str] = None,
         id=pulumi.get(__ret__, 'id'),
         name=pulumi.get(__ret__, 'name'),
         repo_digest=pulumi.get(__ret__, 'repo_digest'))
-def get_remote_image_output(name: Optional[pulumi.Input[_builtins.str]] = None,
+def get_remote_image_output(name: pulumi.Input[Optional[_builtins.str]] = None,
                             opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetRemoteImageResult]:
     """
     `RemoteImage` provides details about a specific Docker Image which need to be present on the Docker Host

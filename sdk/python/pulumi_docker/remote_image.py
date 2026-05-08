@@ -22,12 +22,12 @@ __all__ = ['RemoteImageArgs', 'RemoteImage']
 class RemoteImageArgs:
     def __init__(__self__, *,
                  name: pulumi.Input[_builtins.str],
-                 build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
-                 force_remove: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_locally: Optional[pulumi.Input[_builtins.bool]] = None,
-                 platform: Optional[pulumi.Input[_builtins.str]] = None,
-                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+                 build: pulumi.Input[Optional['RemoteImageBuildArgs']] = None,
+                 force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
+                 platform: pulumi.Input[Optional[_builtins.str]] = None,
+                 pull_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a RemoteImage resource.
 
@@ -67,89 +67,89 @@ class RemoteImageArgs:
 
     @_builtins.property
     @pulumi.getter
-    def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
+    def build(self) -> pulumi.Input[Optional['RemoteImageBuildArgs']]:
         """
         Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
     @build.setter
-    def build(self, value: Optional[pulumi.Input['RemoteImageBuildArgs']]):
+    def build(self, value: pulumi.Input[Optional['RemoteImageBuildArgs']]):
         pulumi.set(self, "build", value)
 
     @_builtins.property
     @pulumi.getter(name="forceRemove")
-    def force_remove(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def force_remove(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the image is removed forcibly when the resource is destroyed.
         """
         return pulumi.get(self, "force_remove")
 
     @force_remove.setter
-    def force_remove(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def force_remove(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "force_remove", value)
 
     @_builtins.property
     @pulumi.getter(name="keepLocally")
-    def keep_locally(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def keep_locally(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         """
         return pulumi.get(self, "keep_locally")
 
     @keep_locally.setter
-    def keep_locally(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def keep_locally(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "keep_locally", value)
 
     @_builtins.property
     @pulumi.getter
-    def platform(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def platform(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
         return pulumi.get(self, "platform")
 
     @platform.setter
-    def platform(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def platform(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "platform", value)
 
     @_builtins.property
     @pulumi.getter(name="pullTriggers")
-    def pull_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def pull_triggers(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         return pulumi.get(self, "pull_triggers")
 
     @pull_triggers.setter
-    def pull_triggers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def pull_triggers(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "pull_triggers", value)
 
     @_builtins.property
     @pulumi.getter
-    def triggers(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def triggers(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
         return pulumi.get(self, "triggers")
 
     @triggers.setter
-    def triggers(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def triggers(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "triggers", value)
 
 
 @pulumi.input_type
 class _RemoteImageState:
     def __init__(__self__, *,
-                 build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
-                 force_remove: Optional[pulumi.Input[_builtins.bool]] = None,
-                 image_id: Optional[pulumi.Input[_builtins.str]] = None,
-                 keep_locally: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 platform: Optional[pulumi.Input[_builtins.str]] = None,
-                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 repo_digest: Optional[pulumi.Input[_builtins.str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+                 build: pulumi.Input[Optional['RemoteImageBuildArgs']] = None,
+                 force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
+                 image_id: pulumi.Input[Optional[_builtins.str]] = None,
+                 keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 platform: pulumi.Input[Optional[_builtins.str]] = None,
+                 pull_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 repo_digest: pulumi.Input[Optional[_builtins.str]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering RemoteImage resources.
 
@@ -184,110 +184,110 @@ class _RemoteImageState:
 
     @_builtins.property
     @pulumi.getter
-    def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
+    def build(self) -> pulumi.Input[Optional['RemoteImageBuildArgs']]:
         """
         Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
     @build.setter
-    def build(self, value: Optional[pulumi.Input['RemoteImageBuildArgs']]):
+    def build(self, value: pulumi.Input[Optional['RemoteImageBuildArgs']]):
         pulumi.set(self, "build", value)
 
     @_builtins.property
     @pulumi.getter(name="forceRemove")
-    def force_remove(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def force_remove(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the image is removed forcibly when the resource is destroyed.
         """
         return pulumi.get(self, "force_remove")
 
     @force_remove.setter
-    def force_remove(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def force_remove(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "force_remove", value)
 
     @_builtins.property
     @pulumi.getter(name="imageId")
-    def image_id(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def image_id(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         """
         return pulumi.get(self, "image_id")
 
     @image_id.setter
-    def image_id(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def image_id(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "image_id", value)
 
     @_builtins.property
     @pulumi.getter(name="keepLocally")
-    def keep_locally(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def keep_locally(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         """
         return pulumi.get(self, "keep_locally")
 
     @keep_locally.setter
-    def keep_locally(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def keep_locally(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "keep_locally", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker image, including any tags or SHA256 repo digests.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter
-    def platform(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def platform(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
         return pulumi.get(self, "platform")
 
     @platform.setter
-    def platform(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def platform(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "platform", value)
 
     @_builtins.property
     @pulumi.getter(name="pullTriggers")
-    def pull_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def pull_triggers(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         return pulumi.get(self, "pull_triggers")
 
     @pull_triggers.setter
-    def pull_triggers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def pull_triggers(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "pull_triggers", value)
 
     @_builtins.property
     @pulumi.getter(name="repoDigest")
-    def repo_digest(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def repo_digest(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `RegistryImage`) in a previous run.
         """
         return pulumi.get(self, "repo_digest")
 
     @repo_digest.setter
-    def repo_digest(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def repo_digest(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "repo_digest", value)
 
     @_builtins.property
     @pulumi.getter
-    def triggers(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def triggers(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
         return pulumi.get(self, "triggers")
 
     @triggers.setter
-    def triggers(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def triggers(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "triggers", value)
 
 
@@ -297,13 +297,13 @@ class RemoteImage(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: Optional[pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
-                 force_remove: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_locally: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 platform: Optional[pulumi.Input[_builtins.str]] = None,
-                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
+                 force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 platform: pulumi.Input[Optional[_builtins.str]] = None,
+                 pull_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -468,13 +468,13 @@ class RemoteImage(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: Optional[pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
-                 force_remove: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_locally: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 platform: Optional[pulumi.Input[_builtins.str]] = None,
-                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
+                 force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 platform: pulumi.Input[Optional[_builtins.str]] = None,
+                 pull_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -505,15 +505,15 @@ class RemoteImage(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            build: Optional[pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
-            force_remove: Optional[pulumi.Input[_builtins.bool]] = None,
-            image_id: Optional[pulumi.Input[_builtins.str]] = None,
-            keep_locally: Optional[pulumi.Input[_builtins.bool]] = None,
-            name: Optional[pulumi.Input[_builtins.str]] = None,
-            platform: Optional[pulumi.Input[_builtins.str]] = None,
-            pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-            repo_digest: Optional[pulumi.Input[_builtins.str]] = None,
-            triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None) -> 'RemoteImage':
+            build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
+            force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
+            image_id: pulumi.Input[Optional[_builtins.str]] = None,
+            keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            platform: pulumi.Input[Optional[_builtins.str]] = None,
+            pull_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            repo_digest: pulumi.Input[Optional[_builtins.str]] = None,
+            triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None) -> 'RemoteImage':
         """
         Get an existing RemoteImage resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

@@ -94,19 +94,19 @@ export interface TagState {
     /**
      * Name of the source image.
      */
-    sourceImage?: pulumi.Input<string>;
+    sourceImage?: pulumi.Input<string | undefined>;
     /**
      * ImageID of the source image in the format of `sha256:<<ID>>`
      */
-    sourceImageId?: pulumi.Input<string>;
+    sourceImageId?: pulumi.Input<string | undefined>;
     /**
      * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
      */
-    tagTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    tagTriggers?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Name of the target image.
      */
-    targetImage?: pulumi.Input<string>;
+    targetImage?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -120,7 +120,7 @@ export interface TagArgs {
     /**
      * List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
      */
-    tagTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    tagTriggers?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Name of the target image.
      */

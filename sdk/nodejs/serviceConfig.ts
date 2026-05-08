@@ -140,15 +140,15 @@ export interface ServiceConfigState {
     /**
      * Base64-url-safe-encoded config data
      */
-    data?: pulumi.Input<string>;
+    data?: pulumi.Input<string | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[] | undefined>;
     /**
      * User-defined name of the config
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -162,9 +162,9 @@ export interface ServiceConfigArgs {
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[] | undefined>;
     /**
      * User-defined name of the config
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }

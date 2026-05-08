@@ -20,15 +20,15 @@ __all__ = ['ProviderArgs', 'Provider']
 @pulumi.input_type
 class ProviderArgs:
     def __init__(__self__, *,
-                 ca_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 cert_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 cert_path: Optional[pulumi.Input[_builtins.str]] = None,
-                 context: Optional[pulumi.Input[_builtins.str]] = None,
-                 disable_docker_daemon_check: Optional[pulumi.Input[_builtins.bool]] = None,
-                 host: Optional[pulumi.Input[_builtins.str]] = None,
-                 key_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None,
-                 ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
+                 ca_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 cert_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 cert_path: pulumi.Input[Optional[_builtins.str]] = None,
+                 context: pulumi.Input[Optional[_builtins.str]] = None,
+                 disable_docker_daemon_check: pulumi.Input[Optional[_builtins.bool]] = None,
+                 host: pulumi.Input[Optional[_builtins.str]] = None,
+                 key_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 registry_auth: pulumi.Input[Optional[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None,
+                 ssh_opts: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Provider resource.
 
@@ -64,107 +64,107 @@ class ProviderArgs:
 
     @_builtins.property
     @pulumi.getter(name="caMaterial")
-    def ca_material(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def ca_material(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         PEM-encoded content of Docker host CA certificate
         """
         return pulumi.get(self, "ca_material")
 
     @ca_material.setter
-    def ca_material(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def ca_material(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "ca_material", value)
 
     @_builtins.property
     @pulumi.getter(name="certMaterial")
-    def cert_material(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def cert_material(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         PEM-encoded content of Docker client certificate
         """
         return pulumi.get(self, "cert_material")
 
     @cert_material.setter
-    def cert_material(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def cert_material(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "cert_material", value)
 
     @_builtins.property
     @pulumi.getter(name="certPath")
-    def cert_path(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def cert_path(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Path to directory with Docker TLS config
         """
         return pulumi.get(self, "cert_path")
 
     @cert_path.setter
-    def cert_path(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def cert_path(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "cert_path", value)
 
     @_builtins.property
     @pulumi.getter
-    def context(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def context(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
         """
         return pulumi.get(self, "context")
 
     @context.setter
-    def context(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def context(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "context", value)
 
     @_builtins.property
     @pulumi.getter(name="disableDockerDaemonCheck")
-    def disable_docker_daemon_check(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def disable_docker_daemon_check(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `RegistryImage`.
         """
         return pulumi.get(self, "disable_docker_daemon_check")
 
     @disable_docker_daemon_check.setter
-    def disable_docker_daemon_check(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def disable_docker_daemon_check(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "disable_docker_daemon_check", value)
 
     @_builtins.property
     @pulumi.getter
-    def host(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def host(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The Docker daemon address
         """
         return pulumi.get(self, "host")
 
     @host.setter
-    def host(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def host(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "host", value)
 
     @_builtins.property
     @pulumi.getter(name="keyMaterial")
-    def key_material(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def key_material(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         PEM-encoded content of Docker client private key
         """
         return pulumi.get(self, "key_material")
 
     @key_material.setter
-    def key_material(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def key_material(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "key_material", value)
 
     @_builtins.property
     @pulumi.getter(name="registryAuth")
-    def registry_auth(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]:
+    def registry_auth(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]:
         return pulumi.get(self, "registry_auth")
 
     @registry_auth.setter
-    def registry_auth(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]):
+    def registry_auth(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]):
         pulumi.set(self, "registry_auth", value)
 
     @_builtins.property
     @pulumi.getter(name="sshOpts")
-    def ssh_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def ssh_opts(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         Additional SSH option flags to be appended when using `ssh://` protocol
         """
         return pulumi.get(self, "ssh_opts")
 
     @ssh_opts.setter
-    def ssh_opts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def ssh_opts(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "ssh_opts", value)
 
 
@@ -174,15 +174,15 @@ class Provider(pulumi.ProviderResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 ca_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 cert_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 cert_path: Optional[pulumi.Input[_builtins.str]] = None,
-                 context: Optional[pulumi.Input[_builtins.str]] = None,
-                 disable_docker_daemon_check: Optional[pulumi.Input[_builtins.bool]] = None,
-                 host: Optional[pulumi.Input[_builtins.str]] = None,
-                 key_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
-                 ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 ca_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 cert_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 cert_path: pulumi.Input[Optional[_builtins.str]] = None,
+                 context: pulumi.Input[Optional[_builtins.str]] = None,
+                 disable_docker_daemon_check: pulumi.Input[Optional[_builtins.bool]] = None,
+                 host: pulumi.Input[Optional[_builtins.str]] = None,
+                 key_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 registry_auth: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
+                 ssh_opts: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         """
         The provider type for the docker package. By default, resources use package-wide configuration
@@ -230,15 +230,15 @@ class Provider(pulumi.ProviderResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 ca_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 cert_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 cert_path: Optional[pulumi.Input[_builtins.str]] = None,
-                 context: Optional[pulumi.Input[_builtins.str]] = None,
-                 disable_docker_daemon_check: Optional[pulumi.Input[_builtins.bool]] = None,
-                 host: Optional[pulumi.Input[_builtins.str]] = None,
-                 key_material: Optional[pulumi.Input[_builtins.str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
-                 ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 ca_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 cert_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 cert_path: pulumi.Input[Optional[_builtins.str]] = None,
+                 context: pulumi.Input[Optional[_builtins.str]] = None,
+                 disable_docker_daemon_check: pulumi.Input[Optional[_builtins.bool]] = None,
+                 host: pulumi.Input[Optional[_builtins.str]] = None,
+                 key_material: pulumi.Input[Optional[_builtins.str]] = None,
+                 registry_auth: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ProviderRegistryAuthArgs', 'ProviderRegistryAuthArgsDict']]]]] = None,
+                 ssh_opts: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):

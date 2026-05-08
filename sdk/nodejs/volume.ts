@@ -149,27 +149,27 @@ export interface VolumeState {
     /**
      * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
      */
-    cluster?: pulumi.Input<inputs.VolumeCluster>;
+    cluster?: pulumi.Input<inputs.VolumeCluster | undefined>;
     /**
      * Driver type for the volume. Defaults to `local`.
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Options specific to the driver.
      */
-    driverOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    driverOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[] | undefined>;
     /**
      * The mountpoint of the volume.
      */
-    mountpoint?: pulumi.Input<string>;
+    mountpoint?: pulumi.Input<string | undefined>;
     /**
      * The name of the Docker volume (will be generated if not provided).
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -179,21 +179,21 @@ export interface VolumeArgs {
     /**
      * Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
      */
-    cluster?: pulumi.Input<inputs.VolumeCluster>;
+    cluster?: pulumi.Input<inputs.VolumeCluster | undefined>;
     /**
      * Driver type for the volume. Defaults to `local`.
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Options specific to the driver.
      */
-    driverOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    driverOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[] | undefined>;
     /**
      * The name of the Docker volume (will be generated if not provided).
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }

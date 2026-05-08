@@ -165,7 +165,7 @@ def get_network(name: Optional[_builtins.str] = None,
         name=pulumi.get(__ret__, 'name'),
         options=pulumi.get(__ret__, 'options'),
         scope=pulumi.get(__ret__, 'scope'))
-def get_network_output(name: Optional[pulumi.Input[_builtins.str]] = None,
+def get_network_output(name: pulumi.Input[Optional[_builtins.str]] = None,
                        opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetNetworkResult]:
     """
     `Network` provides details about a specific Docker Network.

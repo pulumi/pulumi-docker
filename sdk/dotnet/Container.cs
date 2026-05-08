@@ -24,13 +24,13 @@ namespace Pulumi.Docker
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
     ///     // Find the latest Ubuntu precise image.
-    ///     var ubuntuRemoteImage = new Docker.Index.RemoteImage("ubuntu", new()
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntu", new()
     ///     {
     ///         Name = "ubuntu:precise",
     ///     });
     /// 
     ///     // Start a container
-    ///     var ubuntu = new Docker.Index.Container("ubuntu", new()
+    ///     var ubuntu = new Docker.Container("ubuntu", new()
     ///     {
     ///         Name = "foo",
     ///         Image = ubuntuRemoteImage.ImageId,
@@ -68,7 +68,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var foo = new Docker.Index.Container("foo", new()
+    ///     var foo = new Docker.Container("foo", new()
     ///     {
     ///         Name = "foo",
     ///         Image = "nginx",

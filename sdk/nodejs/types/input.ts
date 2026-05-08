@@ -10,186 +10,186 @@ export interface BuildxBuilderDockerContainer {
     /**
      * Sets the cgroup parent of the container if Docker is using the "cgroupfs" driver.
      */
-    cgroupParent?: pulumi.Input<string>;
+    cgroupParent?: pulumi.Input<string | undefined>;
     /**
      * Sets the CPU CFS scheduler period for the container.
      */
-    cpuPeriod?: pulumi.Input<string>;
+    cpuPeriod?: pulumi.Input<string | undefined>;
     /**
      * Imposes a CPU CFS quota on the container.
      */
-    cpuQuota?: pulumi.Input<string>;
+    cpuQuota?: pulumi.Input<string | undefined>;
     /**
      * Configures CPU shares (relative weight) of the container.
      */
-    cpuShares?: pulumi.Input<string>;
+    cpuShares?: pulumi.Input<string | undefined>;
     /**
      * Limits the set of CPU cores the container can use.
      */
-    cpusetCpus?: pulumi.Input<string>;
+    cpusetCpus?: pulumi.Input<string | undefined>;
     /**
      * Limits the set of CPU memory nodes the container can use.
      */
-    cpusetMems?: pulumi.Input<string>;
+    cpusetMems?: pulumi.Input<string | undefined>;
     /**
      * Automatically load images to the Docker Engine image store. Defaults to `false`
      */
-    defaultLoad?: pulumi.Input<boolean>;
+    defaultLoad?: pulumi.Input<boolean | undefined>;
     /**
      * Sets environment variables in the container.
      */
-    env?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    env?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Sets the BuildKit image to use for the container.
      */
-    image?: pulumi.Input<string>;
+    image?: pulumi.Input<string | undefined>;
     /**
      * Sets the amount of memory the container can use.
      */
-    memory?: pulumi.Input<string>;
+    memory?: pulumi.Input<string | undefined>;
     /**
      * Sets the memory swap limit for the container.
      */
-    memorySwap?: pulumi.Input<string>;
+    memorySwap?: pulumi.Input<string | undefined>;
     /**
      * Sets the network mode for the container.
      */
-    network?: pulumi.Input<string>;
+    network?: pulumi.Input<string | undefined>;
     /**
      * Sets the container's restart policy.
      */
-    restartPolicy?: pulumi.Input<string>;
+    restartPolicy?: pulumi.Input<string | undefined>;
 }
 
 export interface BuildxBuilderKubernetes {
     /**
      * Sets additional annotations on the deployments and pods.
      */
-    annotations?: pulumi.Input<string>;
+    annotations?: pulumi.Input<string | undefined>;
     /**
      * Automatically load images to the Docker Engine image store. Defaults to `false`
      */
-    defaultLoad?: pulumi.Input<boolean>;
+    defaultLoad?: pulumi.Input<boolean | undefined>;
     /**
      * Sets the image to use for running BuildKit.
      */
-    image?: pulumi.Input<string>;
+    image?: pulumi.Input<string | undefined>;
     /**
      * Sets additional labels on the deployments and pods.
      */
-    labels?: pulumi.Input<string>;
+    labels?: pulumi.Input<string | undefined>;
     /**
      * Resource limits for CPU, memory, and ephemeral storage.
      */
-    limits?: pulumi.Input<inputs.BuildxBuilderKubernetesLimits>;
+    limits?: pulumi.Input<inputs.BuildxBuilderKubernetesLimits | undefined>;
     /**
      * Load-balancing strategy (sticky or random).
      */
-    loadbalance?: pulumi.Input<string>;
+    loadbalance?: pulumi.Input<string | undefined>;
     /**
      * Sets the Kubernetes namespace.
      */
-    namespace?: pulumi.Input<string>;
+    namespace?: pulumi.Input<string | undefined>;
     /**
      * Sets the pod's nodeSelector label(s).
      */
-    nodeselector?: pulumi.Input<string>;
+    nodeselector?: pulumi.Input<string | undefined>;
     /**
      * QEMU emulation configuration.
      */
-    qemu?: pulumi.Input<inputs.BuildxBuilderKubernetesQemu>;
+    qemu?: pulumi.Input<inputs.BuildxBuilderKubernetesQemu | undefined>;
     /**
      * Sets the number of Pod replicas to create.
      */
-    replicas?: pulumi.Input<number>;
+    replicas?: pulumi.Input<number | undefined>;
     /**
      * Resource requests for CPU, memory, and ephemeral storage.
      */
-    requests?: pulumi.Input<inputs.BuildxBuilderKubernetesRequests>;
+    requests?: pulumi.Input<inputs.BuildxBuilderKubernetesRequests | undefined>;
     /**
      * Run the container as a non-root user.
      */
-    rootless?: pulumi.Input<boolean>;
+    rootless?: pulumi.Input<boolean | undefined>;
     /**
      * Sets the scheduler responsible for scheduling the pod.
      */
-    schedulername?: pulumi.Input<string>;
+    schedulername?: pulumi.Input<string | undefined>;
     /**
      * Sets the pod's serviceAccountName.
      */
-    serviceaccount?: pulumi.Input<string>;
+    serviceaccount?: pulumi.Input<string | undefined>;
     /**
      * Set the timeout limit for pod provisioning.
      */
-    timeout?: pulumi.Input<string>;
+    timeout?: pulumi.Input<string | undefined>;
     /**
      * Configures the pod's taint toleration.
      */
-    tolerations?: pulumi.Input<string>;
+    tolerations?: pulumi.Input<string | undefined>;
 }
 
 export interface BuildxBuilderKubernetesLimits {
     /**
      * CPU limit for the Kubernetes pod.
      */
-    cpu?: pulumi.Input<string>;
+    cpu?: pulumi.Input<string | undefined>;
     /**
      * Ephemeral storage limit for the Kubernetes pod.
      */
-    ephemeralStorage?: pulumi.Input<string>;
+    ephemeralStorage?: pulumi.Input<string | undefined>;
     /**
      * Memory limit for the Kubernetes pod.
      */
-    memory?: pulumi.Input<string>;
+    memory?: pulumi.Input<string | undefined>;
 }
 
 export interface BuildxBuilderKubernetesQemu {
     /**
      * Sets the QEMU emulation image.
      */
-    image?: pulumi.Input<string>;
+    image?: pulumi.Input<string | undefined>;
     /**
      * Install QEMU emulation for multi-platform support.
      */
-    install?: pulumi.Input<boolean>;
+    install?: pulumi.Input<boolean | undefined>;
 }
 
 export interface BuildxBuilderKubernetesRequests {
     /**
      * CPU limit for the Kubernetes pod.
      */
-    cpu?: pulumi.Input<string>;
+    cpu?: pulumi.Input<string | undefined>;
     /**
      * Ephemeral storage limit for the Kubernetes pod.
      */
-    ephemeralStorage?: pulumi.Input<string>;
+    ephemeralStorage?: pulumi.Input<string | undefined>;
     /**
      * Memory limit for the Kubernetes pod.
      */
-    memory?: pulumi.Input<string>;
+    memory?: pulumi.Input<string | undefined>;
 }
 
 export interface BuildxBuilderRemote {
     /**
      * Absolute path to the TLS certificate authority used for validation.
      */
-    cacert?: pulumi.Input<string>;
+    cacert?: pulumi.Input<string | undefined>;
     /**
      * Absolute path to the TLS client certificate to present to buildkitd.
      */
-    cert?: pulumi.Input<string>;
+    cert?: pulumi.Input<string | undefined>;
     /**
      * Automatically load images to the Docker Engine image store. Defaults to `false`
      */
-    defaultLoad?: pulumi.Input<boolean>;
+    defaultLoad?: pulumi.Input<boolean | undefined>;
     /**
      * Sets the TLS client key.
      */
-    key?: pulumi.Input<string>;
+    key?: pulumi.Input<string | undefined>;
     /**
      * TLS server name used in requests.
      */
-    servername?: pulumi.Input<string>;
+    servername?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -199,25 +199,25 @@ export interface CacheFrom {
     /**
      * Specifies cached images
      */
-    images?: pulumi.Input<pulumi.Input<string>[]>;
+    images?: pulumi.Input<pulumi.Input<string>[] | undefined>;
 }
 
 export interface ContainerCapabilities {
     /**
      * List of linux capabilities to add.
      */
-    adds?: pulumi.Input<pulumi.Input<string>[]>;
+    adds?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * List of linux capabilities to drop.
      */
-    drops?: pulumi.Input<pulumi.Input<string>[]>;
+    drops?: pulumi.Input<pulumi.Input<string>[] | undefined>;
 }
 
 export interface ContainerDevice {
     /**
      * The path in the container where the device will be bound. If not set, it defaults to the value of `hostPath`.
      */
-    containerPath?: pulumi.Input<string>;
+    containerPath?: pulumi.Input<string | undefined>;
     /**
      * The path on the host where the device is located.
      */
@@ -225,7 +225,7 @@ export interface ContainerDevice {
     /**
      * The cgroup permissions given to the container to access the device. Defaults to `rwm`.
      */
-    permissions?: pulumi.Input<string>;
+    permissions?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerDeviceReadBp {
@@ -254,23 +254,23 @@ export interface ContainerDeviceRequest {
     /**
      * List of device capabilities. Only used with `nvidia` driver (e.g., `gpu`, `compute`, `utility`).
      */
-    capabilities?: pulumi.Input<pulumi.Input<string>[]>;
+    capabilities?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Number of devices to request. Use -1 for all devices. Only used with `nvidia` driver.
      */
-    count?: pulumi.Input<number>;
+    count?: pulumi.Input<number | undefined>;
     /**
      * List of device IDs or CDI device identifiers (e.g., `nvidia.com/gpu=all`).
      */
-    deviceIds?: pulumi.Input<pulumi.Input<string>[]>;
+    deviceIds?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The device driver to use. Common values: `cdi` for CDI devices, `nvidia` for NVIDIA GPU requests.
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Driver-specific options.
      */
-    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }
 
 export interface ContainerDeviceWriteBp {
@@ -299,27 +299,27 @@ export interface ContainerHealthcheck {
     /**
      * Time between running the check (ms|s|m|h). Defaults to `0s`.
      */
-    interval?: pulumi.Input<string>;
+    interval?: pulumi.Input<string | undefined>;
     /**
      * Consecutive failures needed to report unhealthy. Defaults to `0`.
      */
-    retries?: pulumi.Input<number>;
+    retries?: pulumi.Input<number | undefined>;
     /**
      * Interval before the healthcheck starts (ms|s|m|h). Defaults to `0s`.
      */
-    startInterval?: pulumi.Input<string>;
+    startInterval?: pulumi.Input<string | undefined>;
     /**
      * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      */
-    startPeriod?: pulumi.Input<string>;
+    startPeriod?: pulumi.Input<string | undefined>;
     /**
      * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
      */
-    tests?: pulumi.Input<pulumi.Input<string>[]>;
+    tests?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
-    timeout?: pulumi.Input<string>;
+    timeout?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerHost {
@@ -348,15 +348,15 @@ export interface ContainerMount {
     /**
      * Optional configuration for the bind type.
      */
-    bindOptions?: pulumi.Input<inputs.ContainerMountBindOptions>;
+    bindOptions?: pulumi.Input<inputs.ContainerMountBindOptions | undefined>;
     /**
      * Whether the mount should be read-only.
      */
-    readOnly?: pulumi.Input<boolean>;
+    readOnly?: pulumi.Input<boolean | undefined>;
     /**
      * Mount source (e.g. a volume name, a host path).
      */
-    source?: pulumi.Input<string>;
+    source?: pulumi.Input<string | undefined>;
     /**
      * Container path
      */
@@ -364,7 +364,7 @@ export interface ContainerMount {
     /**
      * Optional configuration for the tmpfs type.
      */
-    tmpfsOptions?: pulumi.Input<inputs.ContainerMountTmpfsOptions>;
+    tmpfsOptions?: pulumi.Input<inputs.ContainerMountTmpfsOptions | undefined>;
     /**
      * The mount type
      */
@@ -372,48 +372,48 @@ export interface ContainerMount {
     /**
      * Optional configuration for the volume type.
      */
-    volumeOptions?: pulumi.Input<inputs.ContainerMountVolumeOptions>;
+    volumeOptions?: pulumi.Input<inputs.ContainerMountVolumeOptions | undefined>;
 }
 
 export interface ContainerMountBindOptions {
     /**
      * A propagation mode with the value.
      */
-    propagation?: pulumi.Input<string>;
+    propagation?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerMountTmpfsOptions {
     /**
      * The permission mode for the tmpfs mount in an integer.
      */
-    mode?: pulumi.Input<number>;
+    mode?: pulumi.Input<number | undefined>;
     /**
      * The size for the tmpfs mount in bytes.
      */
-    sizeBytes?: pulumi.Input<number>;
+    sizeBytes?: pulumi.Input<number | undefined>;
 }
 
 export interface ContainerMountVolumeOptions {
     /**
      * Name of the driver to use to create the volume.
      */
-    driverName?: pulumi.Input<string>;
+    driverName?: pulumi.Input<string | undefined>;
     /**
      * key/value map of driver specific options.
      */
-    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * User-defined key/value metadata.
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ContainerMountVolumeOptionsLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ContainerMountVolumeOptionsLabel>[] | undefined>;
     /**
      * Populate volume with data from the target.
      */
-    noCopy?: pulumi.Input<boolean>;
+    noCopy?: pulumi.Input<boolean | undefined>;
     /**
      * Path within the volume to mount. Requires docker server version 1.45 or higher.
      */
-    subpath?: pulumi.Input<string>;
+    subpath?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerMountVolumeOptionsLabel {
@@ -431,66 +431,66 @@ export interface ContainerNetworkData {
     /**
      * The network gateway of the container.
      */
-    gateway?: pulumi.Input<string>;
+    gateway?: pulumi.Input<string | undefined>;
     /**
      * The IPV6 address of the container.
      */
-    globalIpv6Address?: pulumi.Input<string>;
+    globalIpv6Address?: pulumi.Input<string | undefined>;
     /**
      * The IPV6 prefix length address of the container.
      */
-    globalIpv6PrefixLength?: pulumi.Input<number>;
+    globalIpv6PrefixLength?: pulumi.Input<number | undefined>;
     /**
      * The IP address of the container.
      */
-    ipAddress?: pulumi.Input<string>;
+    ipAddress?: pulumi.Input<string | undefined>;
     /**
      * The IP prefix length of the container.
      */
-    ipPrefixLength?: pulumi.Input<number>;
+    ipPrefixLength?: pulumi.Input<number | undefined>;
     /**
      * The IPV6 gateway of the container.
      */
-    ipv6Gateway?: pulumi.Input<string>;
+    ipv6Gateway?: pulumi.Input<string | undefined>;
     /**
      * The MAC address of the container.
      */
-    macAddress?: pulumi.Input<string>;
+    macAddress?: pulumi.Input<string | undefined>;
     /**
      * The name of the network
      */
-    networkName?: pulumi.Input<string>;
+    networkName?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerNetworksAdvanced {
     /**
      * The network aliases of the container in the specific network.
      */
-    aliases?: pulumi.Input<pulumi.Input<string>[]>;
+    aliases?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * An array of driver options for the network endpoint, e.g. `opts1=value`. This is the equivalent to repeating `--driver-opt` for `docker run`.
      */
-    driverOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    driverOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Gateway priority for this endpoint. The endpoint with the highest priority will provide the default gateway for the container. This is the equivalent to `--gw-priority` for `docker run`.
      */
-    gwPriority?: pulumi.Input<number>;
+    gwPriority?: pulumi.Input<number | undefined>;
     /**
      * The IPV4 address of the container in the specific network.
      */
-    ipv4Address?: pulumi.Input<string>;
+    ipv4Address?: pulumi.Input<string | undefined>;
     /**
      * The IPV6 address of the container in the specific network.
      */
-    ipv6Address?: pulumi.Input<string>;
+    ipv6Address?: pulumi.Input<string | undefined>;
     /**
      * The link-local IPs of the container in the specific network. This is the equivalent to repeating `--link-local-ip` for `docker run`.
      */
-    linkLocalIps?: pulumi.Input<pulumi.Input<string>[]>;
+    linkLocalIps?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The MAC address of the container in the specific network.
      */
-    macAddress?: pulumi.Input<string>;
+    macAddress?: pulumi.Input<string | undefined>;
     /**
      * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
@@ -501,7 +501,7 @@ export interface ContainerPort {
     /**
      * Port exposed out of the container. If not given a free random port `>= 32768` will be used.
      */
-    external?: pulumi.Input<number>;
+    external?: pulumi.Input<number | undefined>;
     /**
      * Port within the container.
      */
@@ -509,11 +509,11 @@ export interface ContainerPort {
     /**
      * IP address/mask that can access this port. Defaults to `0.0.0.0`.
      */
-    ip?: pulumi.Input<string>;
+    ip?: pulumi.Input<string | undefined>;
     /**
      * Protocol that can be used over this port. Defaults to `tcp`.
      */
-    protocol?: pulumi.Input<string>;
+    protocol?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerUlimit {
@@ -535,15 +535,15 @@ export interface ContainerUpload {
     /**
      * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
      */
-    content?: pulumi.Input<string>;
+    content?: pulumi.Input<string | undefined>;
     /**
      * Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
      */
-    contentBase64?: pulumi.Input<string>;
+    contentBase64?: pulumi.Input<string | undefined>;
     /**
      * If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
      */
-    executable?: pulumi.Input<boolean>;
+    executable?: pulumi.Input<boolean | undefined>;
     /**
      * Path to the file in the container where is upload goes to
      */
@@ -551,42 +551,42 @@ export interface ContainerUpload {
     /**
      * The permission mode for the file in the container. Has precedence over `executable`.
      */
-    permissions?: pulumi.Input<string>;
+    permissions?: pulumi.Input<string | undefined>;
     /**
      * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
      */
-    source?: pulumi.Input<string>;
+    source?: pulumi.Input<string | undefined>;
     /**
      * If using `source`, this will force an update if the file content has updated but the filename has not.
      */
-    sourceHash?: pulumi.Input<string>;
+    sourceHash?: pulumi.Input<string | undefined>;
 }
 
 export interface ContainerVolume {
     /**
      * The path in the container where the volume will be mounted.
      */
-    containerPath?: pulumi.Input<string>;
+    containerPath?: pulumi.Input<string | undefined>;
     /**
      * The container where the volume is coming from.
      */
-    fromContainer?: pulumi.Input<string>;
+    fromContainer?: pulumi.Input<string | undefined>;
     /**
      * The path on the host where the volume is coming from.
      */
-    hostPath?: pulumi.Input<string>;
+    hostPath?: pulumi.Input<string | undefined>;
     /**
      * If `true`, this volume will be readonly. Defaults to `false`.
      */
-    readOnly?: pulumi.Input<boolean>;
+    readOnly?: pulumi.Input<boolean | undefined>;
     /**
      * SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
      */
-    selinuxRelabel?: pulumi.Input<string>;
+    selinuxRelabel?: pulumi.Input<string | undefined>;
     /**
      * The name of the docker volume which should be mounted.
      */
-    volumeName?: pulumi.Input<string>;
+    volumeName?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -596,39 +596,39 @@ export interface DockerBuild {
     /**
      * Custom host-to-IP mappings to use while building (format: "host:ip")
      */
-    addHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    addHosts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
      */
-    args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    args?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * The version of the Docker builder.
      */
-    builderVersion?: pulumi.Input<enums.BuilderVersion>;
+    builderVersion?: pulumi.Input<enums.BuilderVersion | undefined>;
     /**
      * A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
      */
-    cacheFrom?: pulumi.Input<inputs.CacheFrom>;
+    cacheFrom?: pulumi.Input<inputs.CacheFrom | undefined>;
     /**
      * The path to the build context to use.
      */
-    context?: pulumi.Input<string>;
+    context?: pulumi.Input<string | undefined>;
     /**
      * The path to the Dockerfile to use.
      */
-    dockerfile?: pulumi.Input<string>;
+    dockerfile?: pulumi.Input<string | undefined>;
     /**
      * Set the networking mode for RUN instructions
      */
-    network?: pulumi.Input<string>;
+    network?: pulumi.Input<string | undefined>;
     /**
      * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * The target of the Dockerfile to build
      */
-    target?: pulumi.Input<string>;
+    target?: pulumi.Input<string | undefined>;
 }
 
 export interface GetRegistryImageManifestsAuthConfig {
@@ -654,30 +654,30 @@ export interface GetRegistryImageManifestsAuthConfigArgs {
     /**
      * The password for the Docker registry.
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * The username for the Docker registry.
      */
-    username?: pulumi.Input<string>;
+    username?: pulumi.Input<string | undefined>;
 }
 
 export interface NetworkIpamConfig {
     /**
      * Auxiliary IPv4 or IPv6 addresses used by Network driver
      */
-    auxAddress?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    auxAddress?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * The IP address of the gateway
      */
-    gateway?: pulumi.Input<string>;
+    gateway?: pulumi.Input<string | undefined>;
     /**
      * The ip range in CIDR form
      */
-    ipRange?: pulumi.Input<string>;
+    ipRange?: pulumi.Input<string | undefined>;
     /**
      * The subnet in CIDR form
      */
-    subnet?: pulumi.Input<string>;
+    subnet?: pulumi.Input<string | undefined>;
 }
 
 export interface NetworkLabel {
@@ -710,23 +710,23 @@ export interface ProviderRegistryAuth {
     /**
      * Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.
      */
-    authDisabled?: pulumi.Input<boolean>;
+    authDisabled?: pulumi.Input<boolean | undefined>;
     /**
      * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
      */
-    configFile?: pulumi.Input<string>;
+    configFile?: pulumi.Input<string | undefined>;
     /**
      * Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
      */
-    configFileContent?: pulumi.Input<string>;
+    configFileContent?: pulumi.Input<string | undefined>;
     /**
      * Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
      */
-    username?: pulumi.Input<string>;
+    username?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -736,15 +736,15 @@ export interface Registry {
     /**
      * The password to authenticate to the registry. Does not cause image rebuild when changed.
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * The URL of the Docker registry server
      */
-    server?: pulumi.Input<string>;
+    server?: pulumi.Input<string | undefined>;
     /**
      * The username to authenticate to the registry. Does not cause image rebuild when changed.
      */
-    username?: pulumi.Input<string>;
+    username?: pulumi.Input<string | undefined>;
 }
 
 export interface RegistryImageAuthConfig {
@@ -755,50 +755,50 @@ export interface RegistryImageAuthConfig {
     /**
      * The password for the Docker registry.
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * The username for the Docker registry.
      */
-    username?: pulumi.Input<string>;
+    username?: pulumi.Input<string | undefined>;
 }
 
 export interface RegistryImageBuild {
     /**
      * A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
      */
-    additionalContexts?: pulumi.Input<pulumi.Input<string>[]>;
+    additionalContexts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The configuration for the authentication
      */
-    authConfigs?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildAuthConfig>[]>;
+    authConfigs?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildAuthConfig>[] | undefined>;
     /**
      * Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
      */
-    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
      */
-    buildId?: pulumi.Input<string>;
+    buildId?: pulumi.Input<string | undefined>;
     /**
      * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
      */
-    buildLogFile?: pulumi.Input<string>;
+    buildLogFile?: pulumi.Input<string | undefined>;
     /**
      * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      */
-    builder?: pulumi.Input<string>;
+    builder?: pulumi.Input<string | undefined>;
     /**
      * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      */
-    cacheFroms?: pulumi.Input<pulumi.Input<string>[]>;
+    cacheFroms?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
      */
-    cacheTos?: pulumi.Input<pulumi.Input<string>[]>;
+    cacheTos?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Optional parent cgroup for the container
      */
-    cgroupParent?: pulumi.Input<string>;
+    cgroupParent?: pulumi.Input<string | undefined>;
     /**
      * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      */
@@ -806,134 +806,134 @@ export interface RegistryImageBuild {
     /**
      * The length of a CPU period in microseconds
      */
-    cpuPeriod?: pulumi.Input<number>;
+    cpuPeriod?: pulumi.Input<number | undefined>;
     /**
      * Microseconds of CPU time that the container can get in a CPU period
      */
-    cpuQuota?: pulumi.Input<number>;
+    cpuQuota?: pulumi.Input<number | undefined>;
     /**
      * CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
      */
-    cpuSetCpus?: pulumi.Input<string>;
+    cpuSetCpus?: pulumi.Input<string | undefined>;
     /**
      * MEMs in which to allow execution (`0-3`, `0`, `1`)
      */
-    cpuSetMems?: pulumi.Input<string>;
+    cpuSetMems?: pulumi.Input<string | undefined>;
     /**
      * CPU shares (relative weight)
      */
-    cpuShares?: pulumi.Input<number>;
+    cpuShares?: pulumi.Input<number | undefined>;
     /**
      * Name of the Dockerfile. Defaults to `Dockerfile`.
      */
-    dockerfile?: pulumi.Input<string>;
+    dockerfile?: pulumi.Input<string | undefined>;
     /**
      * A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
      */
-    extraHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    extraHosts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Always remove intermediate containers
      */
-    forceRemove?: pulumi.Input<boolean>;
+    forceRemove?: pulumi.Input<boolean | undefined>;
     /**
      * Isolation represents the isolation technology of a container. The supported values are
      */
-    isolation?: pulumi.Input<string>;
+    isolation?: pulumi.Input<string | undefined>;
     /**
      * Set metadata for an image
      */
-    label?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    label?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Set memory limit for build
      */
-    memory?: pulumi.Input<number>;
+    memory?: pulumi.Input<number | undefined>;
     /**
      * Total memory (memory + swap), -1 to enable unlimited swap
      */
-    memorySwap?: pulumi.Input<number>;
+    memorySwap?: pulumi.Input<number | undefined>;
     /**
      * Set the networking mode for the RUN instructions during build
      */
-    networkMode?: pulumi.Input<string>;
+    networkMode?: pulumi.Input<string | undefined>;
     /**
      * Do not use the cache when building the image
      */
-    noCache?: pulumi.Input<boolean>;
+    noCache?: pulumi.Input<boolean | undefined>;
     /**
      * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * Attempt to pull the image even if an older image exists locally
      */
-    pullParent?: pulumi.Input<boolean>;
+    pullParent?: pulumi.Input<boolean | undefined>;
     /**
      * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      */
-    remoteContext?: pulumi.Input<string>;
+    remoteContext?: pulumi.Input<string | undefined>;
     /**
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
-    remove?: pulumi.Input<boolean>;
+    remove?: pulumi.Input<boolean | undefined>;
     /**
      * Set build-time secrets. Only available when you use a buildx builder.
      */
-    secrets?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildSecret>[]>;
+    secrets?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildSecret>[] | undefined>;
     /**
      * The security options
      */
-    securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    securityOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Set an ID for the build session
      */
-    sessionId?: pulumi.Input<string>;
+    sessionId?: pulumi.Input<string | undefined>;
     /**
      * Size of /dev/shm in bytes. The size must be greater than 0
      */
-    shmSize?: pulumi.Input<number>;
+    shmSize?: pulumi.Input<number | undefined>;
     /**
      * If true the new layers are squashed into a new image with a single new layer
      */
-    squash?: pulumi.Input<boolean>;
+    squash?: pulumi.Input<boolean | undefined>;
     /**
      * Suppress the build output and print image ID on success
      */
-    suppressOutput?: pulumi.Input<boolean>;
+    suppressOutput?: pulumi.Input<boolean | undefined>;
     /**
      * Name and optionally a tag in the 'name:tag' format
      */
-    tags?: pulumi.Input<pulumi.Input<string>[]>;
+    tags?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Set the target build stage to build
      */
-    target?: pulumi.Input<string>;
+    target?: pulumi.Input<string | undefined>;
     /**
      * Configuration for ulimits
      */
-    ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[]>;
+    ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[] | undefined>;
     /**
      * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
      */
-    useLegacyBuilder?: pulumi.Input<boolean>;
+    useLegacyBuilder?: pulumi.Input<boolean | undefined>;
     /**
      * Version of the underlying builder to use
      */
-    version?: pulumi.Input<string>;
+    version?: pulumi.Input<string | undefined>;
 }
 
 export interface RegistryImageBuildAuthConfig {
     /**
      * the auth token
      */
-    auth?: pulumi.Input<string>;
+    auth?: pulumi.Input<string | undefined>;
     /**
      * the user emal
      */
-    email?: pulumi.Input<string>;
+    email?: pulumi.Input<string | undefined>;
     /**
      * hostname of the registry
      */
@@ -941,30 +941,30 @@ export interface RegistryImageBuildAuthConfig {
     /**
      * the identity token
      */
-    identityToken?: pulumi.Input<string>;
+    identityToken?: pulumi.Input<string | undefined>;
     /**
      * the registry password
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * the registry token
      */
-    registryToken?: pulumi.Input<string>;
+    registryToken?: pulumi.Input<string | undefined>;
     /**
      * the server address
      */
-    serverAddress?: pulumi.Input<string>;
+    serverAddress?: pulumi.Input<string | undefined>;
     /**
      * the registry user name
      */
-    userName?: pulumi.Input<string>;
+    userName?: pulumi.Input<string | undefined>;
 }
 
 export interface RegistryImageBuildSecret {
     /**
      * Environment variable source of the secret
      */
-    env?: pulumi.Input<string>;
+    env?: pulumi.Input<string | undefined>;
     /**
      * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
      */
@@ -972,7 +972,7 @@ export interface RegistryImageBuildSecret {
     /**
      * File source of the secret. Takes precedence over `env`
      */
-    src?: pulumi.Input<string>;
+    src?: pulumi.Input<string | undefined>;
 }
 
 export interface RegistryImageBuildUlimit {
@@ -994,39 +994,39 @@ export interface RemoteImageBuild {
     /**
      * A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
      */
-    additionalContexts?: pulumi.Input<pulumi.Input<string>[]>;
+    additionalContexts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The configuration for the authentication
      */
-    authConfigs?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildAuthConfig>[]>;
+    authConfigs?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildAuthConfig>[] | undefined>;
     /**
      * Pairs for build-time variables in the form of `ENDPOINT : "https://example.com"`
      */
-    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
      */
-    buildId?: pulumi.Input<string>;
+    buildId?: pulumi.Input<string | undefined>;
     /**
      * Path to a file where the buildx log are written to. Only available when `builder` is set. If not set, no logs are available. The path is taken as is, so make sure to use a path that is available.
      */
-    buildLogFile?: pulumi.Input<string>;
+    buildLogFile?: pulumi.Input<string | undefined>;
     /**
      * The name of the buildx builder to use. If BUILDX_BUILDER environment variable is set, it will be used. If left empty, the provider tries to resolve to the default builder - which might not always work. If you are in Windows, the legacy builder is used.
      */
-    builder?: pulumi.Input<string>;
+    builder?: pulumi.Input<string | undefined>;
     /**
      * External cache sources (e.g., `user/app:cache`, `type=local,src=path/to/dir`). Only supported when using a buildx builder.
      */
-    cacheFroms?: pulumi.Input<pulumi.Input<string>[]>;
+    cacheFroms?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Cache export destinations (e.g., `user/app:cache`, `type=local,dest=path/to/dir`). Only supported when using a buildx builder.
      */
-    cacheTos?: pulumi.Input<pulumi.Input<string>[]>;
+    cacheTos?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Optional parent cgroup for the container
      */
-    cgroupParent?: pulumi.Input<string>;
+    cgroupParent?: pulumi.Input<string | undefined>;
     /**
      * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. This always refers to the local working directory, even when building images on remote hosts. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      */
@@ -1034,134 +1034,134 @@ export interface RemoteImageBuild {
     /**
      * The length of a CPU period in microseconds
      */
-    cpuPeriod?: pulumi.Input<number>;
+    cpuPeriod?: pulumi.Input<number | undefined>;
     /**
      * Microseconds of CPU time that the container can get in a CPU period
      */
-    cpuQuota?: pulumi.Input<number>;
+    cpuQuota?: pulumi.Input<number | undefined>;
     /**
      * CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
      */
-    cpuSetCpus?: pulumi.Input<string>;
+    cpuSetCpus?: pulumi.Input<string | undefined>;
     /**
      * MEMs in which to allow execution (`0-3`, `0`, `1`)
      */
-    cpuSetMems?: pulumi.Input<string>;
+    cpuSetMems?: pulumi.Input<string | undefined>;
     /**
      * CPU shares (relative weight)
      */
-    cpuShares?: pulumi.Input<number>;
+    cpuShares?: pulumi.Input<number | undefined>;
     /**
      * Name of the Dockerfile. Defaults to `Dockerfile`.
      */
-    dockerfile?: pulumi.Input<string>;
+    dockerfile?: pulumi.Input<string | undefined>;
     /**
      * A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
      */
-    extraHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    extraHosts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Always remove intermediate containers
      */
-    forceRemove?: pulumi.Input<boolean>;
+    forceRemove?: pulumi.Input<boolean | undefined>;
     /**
      * Isolation represents the isolation technology of a container. The supported values are
      */
-    isolation?: pulumi.Input<string>;
+    isolation?: pulumi.Input<string | undefined>;
     /**
      * Set metadata for an image
      */
-    label?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    label?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Set memory limit for build
      */
-    memory?: pulumi.Input<number>;
+    memory?: pulumi.Input<number | undefined>;
     /**
      * Total memory (memory + swap), -1 to enable unlimited swap
      */
-    memorySwap?: pulumi.Input<number>;
+    memorySwap?: pulumi.Input<number | undefined>;
     /**
      * Set the networking mode for the RUN instructions during build
      */
-    networkMode?: pulumi.Input<string>;
+    networkMode?: pulumi.Input<string | undefined>;
     /**
      * Do not use the cache when building the image
      */
-    noCache?: pulumi.Input<boolean>;
+    noCache?: pulumi.Input<boolean | undefined>;
     /**
      * Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * Attempt to pull the image even if an older image exists locally
      */
-    pullParent?: pulumi.Input<boolean>;
+    pullParent?: pulumi.Input<boolean | undefined>;
     /**
      * A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
      */
-    remoteContext?: pulumi.Input<string>;
+    remoteContext?: pulumi.Input<string | undefined>;
     /**
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
-    remove?: pulumi.Input<boolean>;
+    remove?: pulumi.Input<boolean | undefined>;
     /**
      * Set build-time secrets. Only available when you use a buildx builder.
      */
-    secrets?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildSecret>[]>;
+    secrets?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildSecret>[] | undefined>;
     /**
      * The security options
      */
-    securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    securityOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Set an ID for the build session
      */
-    sessionId?: pulumi.Input<string>;
+    sessionId?: pulumi.Input<string | undefined>;
     /**
      * Size of /dev/shm in bytes. The size must be greater than 0
      */
-    shmSize?: pulumi.Input<number>;
+    shmSize?: pulumi.Input<number | undefined>;
     /**
      * If true the new layers are squashed into a new image with a single new layer
      */
-    squash?: pulumi.Input<boolean>;
+    squash?: pulumi.Input<boolean | undefined>;
     /**
      * Suppress the build output and print image ID on success
      */
-    suppressOutput?: pulumi.Input<boolean>;
+    suppressOutput?: pulumi.Input<boolean | undefined>;
     /**
      * Name and optionally a tag in the 'name:tag' format
      */
-    tags?: pulumi.Input<pulumi.Input<string>[]>;
+    tags?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Set the target build stage to build
      */
-    target?: pulumi.Input<string>;
+    target?: pulumi.Input<string | undefined>;
     /**
      * Configuration for ulimits
      */
-    ulimits?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildUlimit>[]>;
+    ulimits?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildUlimit>[] | undefined>;
     /**
      * Force using the legacy Docker builder for image builds, even if buildx/buildkit would be available.
      */
-    useLegacyBuilder?: pulumi.Input<boolean>;
+    useLegacyBuilder?: pulumi.Input<boolean | undefined>;
     /**
      * Version of the underlying builder to use
      */
-    version?: pulumi.Input<string>;
+    version?: pulumi.Input<string | undefined>;
 }
 
 export interface RemoteImageBuildAuthConfig {
     /**
      * the auth token
      */
-    auth?: pulumi.Input<string>;
+    auth?: pulumi.Input<string | undefined>;
     /**
      * the user emal
      */
-    email?: pulumi.Input<string>;
+    email?: pulumi.Input<string | undefined>;
     /**
      * hostname of the registry
      */
@@ -1169,30 +1169,30 @@ export interface RemoteImageBuildAuthConfig {
     /**
      * the identity token
      */
-    identityToken?: pulumi.Input<string>;
+    identityToken?: pulumi.Input<string | undefined>;
     /**
      * the registry password
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * the registry token
      */
-    registryToken?: pulumi.Input<string>;
+    registryToken?: pulumi.Input<string | undefined>;
     /**
      * the server address
      */
-    serverAddress?: pulumi.Input<string>;
+    serverAddress?: pulumi.Input<string | undefined>;
     /**
      * the registry user name
      */
-    userName?: pulumi.Input<string>;
+    userName?: pulumi.Input<string | undefined>;
 }
 
 export interface RemoteImageBuildSecret {
     /**
      * Environment variable source of the secret
      */
-    env?: pulumi.Input<string>;
+    env?: pulumi.Input<string | undefined>;
     /**
      * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
      */
@@ -1200,7 +1200,7 @@ export interface RemoteImageBuildSecret {
     /**
      * File source of the secret. Takes precedence over `env`
      */
-    src?: pulumi.Input<string>;
+    src?: pulumi.Input<string | undefined>;
 }
 
 export interface RemoteImageBuildUlimit {
@@ -1233,7 +1233,7 @@ export interface ServiceAuth {
     /**
      * The password
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * The address of the server for the authentication
      */
@@ -1241,7 +1241,7 @@ export interface ServiceAuth {
     /**
      * The username
      */
-    username?: pulumi.Input<string>;
+    username?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceConfigLabel {
@@ -1259,41 +1259,41 @@ export interface ServiceConvergeConfig {
     /**
      * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
      */
-    delay?: pulumi.Input<string>;
+    delay?: pulumi.Input<string | undefined>;
     /**
      * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
      */
-    timeout?: pulumi.Input<string>;
+    timeout?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceEndpointSpec {
     /**
      * The mode of resolution to use for internal load balancing between tasks
      */
-    mode?: pulumi.Input<string>;
+    mode?: pulumi.Input<string | undefined>;
     /**
      * List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
      */
-    ports?: pulumi.Input<pulumi.Input<inputs.ServiceEndpointSpecPort>[]>;
+    ports?: pulumi.Input<pulumi.Input<inputs.ServiceEndpointSpecPort>[] | undefined>;
 }
 
 export interface ServiceEndpointSpecPort {
     /**
      * A random name for the port
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Represents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
      */
-    protocol?: pulumi.Input<string>;
+    protocol?: pulumi.Input<string | undefined>;
     /**
      * Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
      */
-    publishMode?: pulumi.Input<string>;
+    publishMode?: pulumi.Input<string | undefined>;
     /**
      * The port on the swarm hosts
      */
-    publishedPort?: pulumi.Input<number>;
+    publishedPort?: pulumi.Input<number | undefined>;
     /**
      * The port inside the container
      */
@@ -1315,45 +1315,45 @@ export interface ServiceMode {
     /**
      * The global service mode. Defaults to `false`
      */
-    global?: pulumi.Input<boolean>;
+    global?: pulumi.Input<boolean | undefined>;
     /**
      * The replicated service mode
      */
-    replicated?: pulumi.Input<inputs.ServiceModeReplicated>;
+    replicated?: pulumi.Input<inputs.ServiceModeReplicated | undefined>;
 }
 
 export interface ServiceModeReplicated {
     /**
      * The amount of replicas of the service. Defaults to `1`
      */
-    replicas?: pulumi.Input<number>;
+    replicas?: pulumi.Input<number | undefined>;
 }
 
 export interface ServiceRollbackConfig {
     /**
      * Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
      */
-    delay?: pulumi.Input<string>;
+    delay?: pulumi.Input<string | undefined>;
     /**
      * Action on rollback failure: pause | continue. Defaults to `pause`.
      */
-    failureAction?: pulumi.Input<string>;
+    failureAction?: pulumi.Input<string | undefined>;
     /**
      * Failure rate to tolerate during a rollback. Defaults to `0.0`.
      */
-    maxFailureRatio?: pulumi.Input<string>;
+    maxFailureRatio?: pulumi.Input<string | undefined>;
     /**
      * Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
      */
-    monitor?: pulumi.Input<string>;
+    monitor?: pulumi.Input<string | undefined>;
     /**
      * Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
      */
-    order?: pulumi.Input<string>;
+    order?: pulumi.Input<string | undefined>;
     /**
      * Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
      */
-    parallelism?: pulumi.Input<number>;
+    parallelism?: pulumi.Input<number | undefined>;
 }
 
 export interface ServiceTaskSpec {
@@ -1364,82 +1364,82 @@ export interface ServiceTaskSpec {
     /**
      * A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
      */
-    forceUpdate?: pulumi.Input<number>;
+    forceUpdate?: pulumi.Input<number | undefined>;
     /**
      * Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
      */
-    logDriver?: pulumi.Input<inputs.ServiceTaskSpecLogDriver>;
+    logDriver?: pulumi.Input<inputs.ServiceTaskSpecLogDriver | undefined>;
     /**
      * The networks the container is attached to
      */
-    networksAdvanceds?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecNetworksAdvanced>[]>;
+    networksAdvanceds?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecNetworksAdvanced>[] | undefined>;
     /**
      * The placement preferences
      */
-    placement?: pulumi.Input<inputs.ServiceTaskSpecPlacement>;
+    placement?: pulumi.Input<inputs.ServiceTaskSpecPlacement | undefined>;
     /**
      * Resource requirements which apply to each individual container created as part of the service
      */
-    resources?: pulumi.Input<inputs.ServiceTaskSpecResources>;
+    resources?: pulumi.Input<inputs.ServiceTaskSpecResources | undefined>;
     /**
      * Specification for the restart policy which applies to containers created as part of this service.
      */
-    restartPolicy?: pulumi.Input<inputs.ServiceTaskSpecRestartPolicy>;
+    restartPolicy?: pulumi.Input<inputs.ServiceTaskSpecRestartPolicy | undefined>;
     /**
      * Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
      */
-    runtime?: pulumi.Input<string>;
+    runtime?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpec {
     /**
      * Arguments to the command
      */
-    args?: pulumi.Input<pulumi.Input<string>[]>;
+    args?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * List of Linux capabilities to add to the container
      */
-    capAdds?: pulumi.Input<pulumi.Input<string>[]>;
+    capAdds?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * List of Linux capabilities to drop from the container
      */
-    capDrops?: pulumi.Input<pulumi.Input<string>[]>;
+    capDrops?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
      */
-    commands?: pulumi.Input<pulumi.Input<string>[]>;
+    commands?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * References to zero or more configs that will be exposed to the service
      */
-    configs?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecConfig>[]>;
+    configs?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecConfig>[] | undefined>;
     /**
      * The working directory for commands to run in
      */
-    dir?: pulumi.Input<string>;
+    dir?: pulumi.Input<string | undefined>;
     /**
      * Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
      */
-    dnsConfig?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecDnsConfig>;
+    dnsConfig?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecDnsConfig | undefined>;
     /**
      * A list of environment variables in the form VAR="value"
      */
-    env?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    env?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * A list of additional groups that the container process will run as
      */
-    groups?: pulumi.Input<pulumi.Input<string>[]>;
+    groups?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
      */
-    healthcheck?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecHealthcheck>;
+    healthcheck?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecHealthcheck | undefined>;
     /**
      * The hostname to use for the container, as a valid RFC 1123 hostname
      */
-    hostname?: pulumi.Input<string>;
+    hostname?: pulumi.Input<string | undefined>;
     /**
      * A list of hostname/IP mappings to add to the container's hosts file
      */
-    hosts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecHost>[]>;
+    hosts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecHost>[] | undefined>;
     /**
      * The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repoDigest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
      */
@@ -1447,43 +1447,43 @@ export interface ServiceTaskSpecContainerSpec {
     /**
      * Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
      */
-    isolation?: pulumi.Input<string>;
+    isolation?: pulumi.Input<string | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecLabel>[] | undefined>;
     /**
      * Specification for mounts to be added to containers created as part of the service
      */
-    mounts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMount>[]>;
+    mounts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMount>[] | undefined>;
     /**
      * Security options for the container
      */
-    privileges?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivileges>;
+    privileges?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivileges | undefined>;
     /**
      * Mount the container's root filesystem as read only
      */
-    readOnly?: pulumi.Input<boolean>;
+    readOnly?: pulumi.Input<boolean | undefined>;
     /**
      * References to zero or more secrets that will be exposed to the service
      */
-    secrets?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecSecret>[]>;
+    secrets?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecSecret>[] | undefined>;
     /**
      * Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
      */
-    stopGracePeriod?: pulumi.Input<string>;
+    stopGracePeriod?: pulumi.Input<string | undefined>;
     /**
      * Signal to stop the container
      */
-    stopSignal?: pulumi.Input<string>;
+    stopSignal?: pulumi.Input<string | undefined>;
     /**
      * Sysctls config (Linux only)
      */
-    sysctl?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    sysctl?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * The user inside the container
      */
-    user?: pulumi.Input<string>;
+    user?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecConfig {
@@ -1494,15 +1494,15 @@ export interface ServiceTaskSpecContainerSpecConfig {
     /**
      * Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
      */
-    configName?: pulumi.Input<string>;
+    configName?: pulumi.Input<string | undefined>;
     /**
      * Represents the file GID. Defaults to `0`.
      */
-    fileGid?: pulumi.Input<string>;
+    fileGid?: pulumi.Input<string | undefined>;
     /**
      * Represents represents the FileMode of the file. Defaults to `0o444`.
      */
-    fileMode?: pulumi.Input<number>;
+    fileMode?: pulumi.Input<number | undefined>;
     /**
      * Represents the final filename in the filesystem
      */
@@ -1510,7 +1510,7 @@ export interface ServiceTaskSpecContainerSpecConfig {
     /**
      * Represents the file UID. Defaults to `0`.
      */
-    fileUid?: pulumi.Input<string>;
+    fileUid?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
@@ -1521,34 +1521,34 @@ export interface ServiceTaskSpecContainerSpecDnsConfig {
     /**
      * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
      */
-    options?: pulumi.Input<pulumi.Input<string>[]>;
+    options?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * A search list for host-name lookup
      */
-    searches?: pulumi.Input<pulumi.Input<string>[]>;
+    searches?: pulumi.Input<pulumi.Input<string>[] | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecHealthcheck {
     /**
      * Time between running the check (ms|s|m|h). Defaults to `0s`.
      */
-    interval?: pulumi.Input<string>;
+    interval?: pulumi.Input<string | undefined>;
     /**
      * Consecutive failures needed to report unhealthy. Defaults to `0`
      */
-    retries?: pulumi.Input<number>;
+    retries?: pulumi.Input<number | undefined>;
     /**
      * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      */
-    startPeriod?: pulumi.Input<string>;
+    startPeriod?: pulumi.Input<string | undefined>;
     /**
      * The test to perform as list
      */
-    tests?: pulumi.Input<pulumi.Input<string>[]>;
+    tests?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
-    timeout?: pulumi.Input<string>;
+    timeout?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecHost {
@@ -1577,15 +1577,15 @@ export interface ServiceTaskSpecContainerSpecMount {
     /**
      * Optional configuration for the bind type
      */
-    bindOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountBindOptions>;
+    bindOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountBindOptions | undefined>;
     /**
      * Whether the mount should be read-only
      */
-    readOnly?: pulumi.Input<boolean>;
+    readOnly?: pulumi.Input<boolean | undefined>;
     /**
      * Mount source (e.g. a volume name, a host path)
      */
-    source?: pulumi.Input<string>;
+    source?: pulumi.Input<string | undefined>;
     /**
      * Container path
      */
@@ -1593,7 +1593,7 @@ export interface ServiceTaskSpecContainerSpecMount {
     /**
      * Optional configuration for the tmpfs type
      */
-    tmpfsOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountTmpfsOptions>;
+    tmpfsOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountTmpfsOptions | undefined>;
     /**
      * The mount type
      */
@@ -1601,44 +1601,44 @@ export interface ServiceTaskSpecContainerSpecMount {
     /**
      * Optional configuration for the volume type
      */
-    volumeOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptions>;
+    volumeOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptions | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountBindOptions {
     /**
      * Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
      */
-    propagation?: pulumi.Input<string>;
+    propagation?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
      * The permission mode for the tmpfs mount in an integer
      */
-    mode?: pulumi.Input<number>;
+    mode?: pulumi.Input<number | undefined>;
     /**
      * The size for the tmpfs mount in bytes
      */
-    sizeBytes?: pulumi.Input<number>;
+    sizeBytes?: pulumi.Input<number | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
     /**
      * Name of the driver to use to create the volume
      */
-    driverName?: pulumi.Input<string>;
+    driverName?: pulumi.Input<string | undefined>;
     /**
      * key/value map of driver specific options
      */
-    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel>[] | undefined>;
     /**
      * Populate volume with data from the target
      */
-    noCopy?: pulumi.Input<boolean>;
+    noCopy?: pulumi.Input<boolean | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
@@ -1656,56 +1656,56 @@ export interface ServiceTaskSpecContainerSpecPrivileges {
     /**
      * CredentialSpec for managed service account (Windows only)
      */
-    credentialSpec?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec>;
+    credentialSpec?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec | undefined>;
     /**
      * SELinux labels of the container
      */
-    seLinuxContext?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext>;
+    seLinuxContext?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
     /**
      * Load credential spec from this file
      */
-    file?: pulumi.Input<string>;
+    file?: pulumi.Input<string | undefined>;
     /**
      * Load credential spec from this value in the Windows registry
      */
-    registry?: pulumi.Input<string>;
+    registry?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
     /**
      * Disable SELinux
      */
-    disable?: pulumi.Input<boolean>;
+    disable?: pulumi.Input<boolean | undefined>;
     /**
      * SELinux level label
      */
-    level?: pulumi.Input<string>;
+    level?: pulumi.Input<string | undefined>;
     /**
      * SELinux role label
      */
-    role?: pulumi.Input<string>;
+    role?: pulumi.Input<string | undefined>;
     /**
      * SELinux type label
      */
-    type?: pulumi.Input<string>;
+    type?: pulumi.Input<string | undefined>;
     /**
      * SELinux user label
      */
-    user?: pulumi.Input<string>;
+    user?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecContainerSpecSecret {
     /**
      * Represents the file GID. Defaults to `0`
      */
-    fileGid?: pulumi.Input<string>;
+    fileGid?: pulumi.Input<string | undefined>;
     /**
      * Represents represents the FileMode of the file. Defaults to `0o444`
      */
-    fileMode?: pulumi.Input<number>;
+    fileMode?: pulumi.Input<number | undefined>;
     /**
      * Represents the final filename in the filesystem
      */
@@ -1713,7 +1713,7 @@ export interface ServiceTaskSpecContainerSpecSecret {
     /**
      * Represents the file UID. Defaults to `0`
      */
-    fileUid?: pulumi.Input<string>;
+    fileUid?: pulumi.Input<string | undefined>;
     /**
      * ID of the specific secret that we're referencing
      */
@@ -1721,7 +1721,7 @@ export interface ServiceTaskSpecContainerSpecSecret {
     /**
      * Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
      */
-    secretName?: pulumi.Input<string>;
+    secretName?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecLogDriver {
@@ -1732,47 +1732,47 @@ export interface ServiceTaskSpecLogDriver {
     /**
      * The options for the logging driver
      */
-    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }
 
 export interface ServiceTaskSpecNetworksAdvanced {
     /**
      * The network aliases of the container in the specific network.
      */
-    aliases?: pulumi.Input<pulumi.Input<string>[]>;
+    aliases?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * An array of driver options for the network, e.g. `opts1=value`
      */
-    driverOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    driverOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The id of the docker network to use. Please use `docker_network.id`. Using the name attribute of the docker network will lead to constant replacements.
      */
-    id?: pulumi.Input<string>;
+    id?: pulumi.Input<string | undefined>;
     /**
      * Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
      *
      * @deprecated Use the id attribute.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceTaskSpecPlacement {
     /**
      * An array of constraints. e.g.: `node.role==manager`
      */
-    constraints?: pulumi.Input<pulumi.Input<string>[]>;
+    constraints?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Maximum number of replicas for per node (default value is `0`, which is unlimited)
      */
-    maxReplicas?: pulumi.Input<number>;
+    maxReplicas?: pulumi.Input<number | undefined>;
     /**
      * Platforms stores all the platforms that the service's image can run on
      */
-    platforms?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecPlacementPlatform>[]>;
+    platforms?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecPlacementPlatform>[] | undefined>;
     /**
      * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
      */
-    prefs?: pulumi.Input<pulumi.Input<string>[]>;
+    prefs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
 }
 
 export interface ServiceTaskSpecPlacementPlatform {
@@ -1790,137 +1790,137 @@ export interface ServiceTaskSpecResources {
     /**
      * Describes the resources which can be advertised by a node and requested by a task
      */
-    limits?: pulumi.Input<inputs.ServiceTaskSpecResourcesLimits>;
+    limits?: pulumi.Input<inputs.ServiceTaskSpecResourcesLimits | undefined>;
     /**
      * An object describing the resources which can be advertised by a node and requested by a task
      */
-    reservation?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservation>;
+    reservation?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservation | undefined>;
 }
 
 export interface ServiceTaskSpecResourcesLimits {
     /**
      * The amount of memory in bytes the container allocates
      */
-    memoryBytes?: pulumi.Input<number>;
+    memoryBytes?: pulumi.Input<number | undefined>;
     /**
      * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
      */
-    nanoCpus?: pulumi.Input<number>;
+    nanoCpus?: pulumi.Input<number | undefined>;
 }
 
 export interface ServiceTaskSpecResourcesReservation {
     /**
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
      */
-    genericResources?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservationGenericResources>;
+    genericResources?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservationGenericResources | undefined>;
     /**
      * The amount of memory in bytes the container allocates
      */
-    memoryBytes?: pulumi.Input<number>;
+    memoryBytes?: pulumi.Input<number | undefined>;
     /**
      * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      */
-    nanoCpus?: pulumi.Input<number>;
+    nanoCpus?: pulumi.Input<number | undefined>;
 }
 
 export interface ServiceTaskSpecResourcesReservationGenericResources {
     /**
      * The Integer resources
      */
-    discreteResourcesSpecs?: pulumi.Input<pulumi.Input<string>[]>;
+    discreteResourcesSpecs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The String resources
      */
-    namedResourcesSpecs?: pulumi.Input<pulumi.Input<string>[]>;
+    namedResourcesSpecs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
 }
 
 export interface ServiceTaskSpecRestartPolicy {
     /**
      * Condition for restart
      */
-    condition?: pulumi.Input<string>;
+    condition?: pulumi.Input<string | undefined>;
     /**
      * Delay between restart attempts (ms|s|m|h)
      */
-    delay?: pulumi.Input<string>;
+    delay?: pulumi.Input<string | undefined>;
     /**
      * Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
      */
-    maxAttempts?: pulumi.Input<number>;
+    maxAttempts?: pulumi.Input<number | undefined>;
     /**
      * The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
      */
-    window?: pulumi.Input<string>;
+    window?: pulumi.Input<string | undefined>;
 }
 
 export interface ServiceUpdateConfig {
     /**
      * Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
      */
-    delay?: pulumi.Input<string>;
+    delay?: pulumi.Input<string | undefined>;
     /**
      * Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
      */
-    failureAction?: pulumi.Input<string>;
+    failureAction?: pulumi.Input<string | undefined>;
     /**
      * Failure rate to tolerate during an update. Defaults to `0.0`.
      */
-    maxFailureRatio?: pulumi.Input<string>;
+    maxFailureRatio?: pulumi.Input<string | undefined>;
     /**
      * Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
      */
-    monitor?: pulumi.Input<string>;
+    monitor?: pulumi.Input<string | undefined>;
     /**
      * Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
      */
-    order?: pulumi.Input<string>;
+    order?: pulumi.Input<string | undefined>;
     /**
      * Maximum number of tasks to be updated in one iteration. Defaults to `1`
      */
-    parallelism?: pulumi.Input<number>;
+    parallelism?: pulumi.Input<number | undefined>;
 }
 
 export interface VolumeCluster {
     /**
      * Availability of the volume. Can be `active` (default), `pause`, or `drain`.
      */
-    availability?: pulumi.Input<string>;
+    availability?: pulumi.Input<string | undefined>;
     /**
      * Cluster Volume group
      */
-    group?: pulumi.Input<string>;
+    group?: pulumi.Input<string | undefined>;
     /**
      * The ID of the cluster volume.
      */
-    id?: pulumi.Input<string>;
+    id?: pulumi.Input<string | undefined>;
     /**
      * Minimum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
      */
-    limitBytes?: pulumi.Input<string>;
+    limitBytes?: pulumi.Input<string | undefined>;
     /**
      * Maximum size of the Cluster Volume in human readable memory bytes (like 128MiB, 2GiB, etc). Must be in format of KiB, MiB, Gib, Tib or PiB.
      */
-    requiredBytes?: pulumi.Input<string>;
+    requiredBytes?: pulumi.Input<string | undefined>;
     /**
      * The scope of the volume. Can be `single` (default) or `multi`.
      */
-    scope?: pulumi.Input<string>;
+    scope?: pulumi.Input<string | undefined>;
     /**
      * The sharing mode. Can be `none` (default), `readonly`, `onewriter` or `all`.
      */
-    sharing?: pulumi.Input<string>;
+    sharing?: pulumi.Input<string | undefined>;
     /**
      * A topology that the Cluster Volume would be preferred in
      */
-    topologyPreferred?: pulumi.Input<string>;
+    topologyPreferred?: pulumi.Input<string | undefined>;
     /**
      * A topology that the Cluster Volume must be accessible from
      */
-    topologyRequired?: pulumi.Input<string>;
+    topologyRequired?: pulumi.Input<string | undefined>;
     /**
      * Cluster Volume access type. Can be `mount` or `block` (default).
      */
-    type?: pulumi.Input<string>;
+    type?: pulumi.Input<string | undefined>;
 }
 
 export interface VolumeLabel {

@@ -116,15 +116,15 @@ export interface SecretState {
     /**
      * Base64-url-safe-encoded secret data
      */
-    data?: pulumi.Input<string>;
+    data?: pulumi.Input<string | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[] | undefined>;
     /**
      * User-defined name of the secret
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -138,9 +138,9 @@ export interface SecretArgs {
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[] | undefined>;
     /**
      * User-defined name of the secret
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }

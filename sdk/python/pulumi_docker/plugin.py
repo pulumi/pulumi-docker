@@ -21,15 +21,15 @@ __all__ = ['PluginArgs', 'Plugin']
 @pulumi.input_type
 class PluginArgs:
     def __init__(__self__, *,
-                 alias: Optional[pulumi.Input[_builtins.str]] = None,
-                 enable_timeout: Optional[pulumi.Input[_builtins.int]] = None,
-                 enabled: Optional[pulumi.Input[_builtins.bool]] = None,
-                 envs: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 force_destroy: Optional[pulumi.Input[_builtins.bool]] = None,
-                 force_disable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_all_permissions: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None):
+                 alias: pulumi.Input[Optional[_builtins.str]] = None,
+                 enable_timeout: pulumi.Input[Optional[_builtins.int]] = None,
+                 enabled: pulumi.Input[Optional[_builtins.bool]] = None,
+                 envs: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
+                 force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None):
         """
         The set of arguments for constructing a Plugin resource.
 
@@ -64,126 +64,126 @@ class PluginArgs:
 
     @_builtins.property
     @pulumi.getter
-    def alias(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def alias(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Docker Plugin alias
         """
         return pulumi.get(self, "alias")
 
     @alias.setter
-    def alias(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def alias(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "alias", value)
 
     @_builtins.property
     @pulumi.getter(name="enableTimeout")
-    def enable_timeout(self) -> Optional[pulumi.Input[_builtins.int]]:
+    def enable_timeout(self) -> pulumi.Input[Optional[_builtins.int]]:
         """
         HTTP client timeout to enable the plugin
         """
         return pulumi.get(self, "enable_timeout")
 
     @enable_timeout.setter
-    def enable_timeout(self, value: Optional[pulumi.Input[_builtins.int]]):
+    def enable_timeout(self, value: pulumi.Input[Optional[_builtins.int]]):
         pulumi.set(self, "enable_timeout", value)
 
     @_builtins.property
     @pulumi.getter
-    def enabled(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def enabled(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If `true` the plugin is enabled. Defaults to `true`
         """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
-    def enabled(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def enabled(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "enabled", value)
 
     @_builtins.property
     @pulumi.getter
-    def envs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def envs(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         """
         return pulumi.get(self, "envs")
 
     @envs.setter
-    def envs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def envs(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "envs", value)
 
     @_builtins.property
     @pulumi.getter(name="forceDestroy")
-    def force_destroy(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def force_destroy(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the plugin is destroyed forcibly
         """
         return pulumi.get(self, "force_destroy")
 
     @force_destroy.setter
-    def force_destroy(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def force_destroy(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "force_destroy", value)
 
     @_builtins.property
     @pulumi.getter(name="forceDisable")
-    def force_disable(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def force_disable(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the plugin is disabled forcibly
         """
         return pulumi.get(self, "force_disable")
 
     @force_disable.setter
-    def force_disable(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def force_disable(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "force_disable", value)
 
     @_builtins.property
     @pulumi.getter(name="grantAllPermissions")
-    def grant_all_permissions(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def grant_all_permissions(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, grant all permissions necessary to run the plugin
         """
         return pulumi.get(self, "grant_all_permissions")
 
     @grant_all_permissions.setter
-    def grant_all_permissions(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def grant_all_permissions(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "grant_all_permissions", value)
 
     @_builtins.property
     @pulumi.getter(name="grantPermissions")
-    def grant_permissions(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]:
+    def grant_permissions(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]:
         """
         Grant specific permissions only
         """
         return pulumi.get(self, "grant_permissions")
 
     @grant_permissions.setter
-    def grant_permissions(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]):
+    def grant_permissions(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]):
         pulumi.set(self, "grant_permissions", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Docker Plugin name
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
 
 @pulumi.input_type
 class _PluginState:
     def __init__(__self__, *,
-                 alias: Optional[pulumi.Input[_builtins.str]] = None,
-                 enable_timeout: Optional[pulumi.Input[_builtins.int]] = None,
-                 enabled: Optional[pulumi.Input[_builtins.bool]] = None,
-                 envs: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 force_destroy: Optional[pulumi.Input[_builtins.bool]] = None,
-                 force_disable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_all_permissions: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 plugin_reference: Optional[pulumi.Input[_builtins.str]] = None):
+                 alias: pulumi.Input[Optional[_builtins.str]] = None,
+                 enable_timeout: pulumi.Input[Optional[_builtins.int]] = None,
+                 enabled: pulumi.Input[Optional[_builtins.bool]] = None,
+                 envs: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
+                 force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 plugin_reference: pulumi.Input[Optional[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Plugin resources.
 
@@ -221,122 +221,122 @@ class _PluginState:
 
     @_builtins.property
     @pulumi.getter
-    def alias(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def alias(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Docker Plugin alias
         """
         return pulumi.get(self, "alias")
 
     @alias.setter
-    def alias(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def alias(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "alias", value)
 
     @_builtins.property
     @pulumi.getter(name="enableTimeout")
-    def enable_timeout(self) -> Optional[pulumi.Input[_builtins.int]]:
+    def enable_timeout(self) -> pulumi.Input[Optional[_builtins.int]]:
         """
         HTTP client timeout to enable the plugin
         """
         return pulumi.get(self, "enable_timeout")
 
     @enable_timeout.setter
-    def enable_timeout(self, value: Optional[pulumi.Input[_builtins.int]]):
+    def enable_timeout(self, value: pulumi.Input[Optional[_builtins.int]]):
         pulumi.set(self, "enable_timeout", value)
 
     @_builtins.property
     @pulumi.getter
-    def enabled(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def enabled(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If `true` the plugin is enabled. Defaults to `true`
         """
         return pulumi.get(self, "enabled")
 
     @enabled.setter
-    def enabled(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def enabled(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "enabled", value)
 
     @_builtins.property
     @pulumi.getter
-    def envs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def envs(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         """
         return pulumi.get(self, "envs")
 
     @envs.setter
-    def envs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def envs(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "envs", value)
 
     @_builtins.property
     @pulumi.getter(name="forceDestroy")
-    def force_destroy(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def force_destroy(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the plugin is destroyed forcibly
         """
         return pulumi.get(self, "force_destroy")
 
     @force_destroy.setter
-    def force_destroy(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def force_destroy(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "force_destroy", value)
 
     @_builtins.property
     @pulumi.getter(name="forceDisable")
-    def force_disable(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def force_disable(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the plugin is disabled forcibly
         """
         return pulumi.get(self, "force_disable")
 
     @force_disable.setter
-    def force_disable(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def force_disable(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "force_disable", value)
 
     @_builtins.property
     @pulumi.getter(name="grantAllPermissions")
-    def grant_all_permissions(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def grant_all_permissions(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, grant all permissions necessary to run the plugin
         """
         return pulumi.get(self, "grant_all_permissions")
 
     @grant_all_permissions.setter
-    def grant_all_permissions(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def grant_all_permissions(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "grant_all_permissions", value)
 
     @_builtins.property
     @pulumi.getter(name="grantPermissions")
-    def grant_permissions(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]:
+    def grant_permissions(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]:
         """
         Grant specific permissions only
         """
         return pulumi.get(self, "grant_permissions")
 
     @grant_permissions.setter
-    def grant_permissions(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]):
+    def grant_permissions(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]):
         pulumi.set(self, "grant_permissions", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Docker Plugin name
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter(name="pluginReference")
-    def plugin_reference(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def plugin_reference(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Docker Plugin Reference
         """
         return pulumi.get(self, "plugin_reference")
 
     @plugin_reference.setter
-    def plugin_reference(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def plugin_reference(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "plugin_reference", value)
 
 
@@ -346,15 +346,15 @@ class Plugin(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 alias: Optional[pulumi.Input[_builtins.str]] = None,
-                 enable_timeout: Optional[pulumi.Input[_builtins.int]] = None,
-                 enabled: Optional[pulumi.Input[_builtins.bool]] = None,
-                 envs: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 force_destroy: Optional[pulumi.Input[_builtins.bool]] = None,
-                 force_disable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_all_permissions: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
+                 alias: pulumi.Input[Optional[_builtins.str]] = None,
+                 enable_timeout: pulumi.Input[Optional[_builtins.int]] = None,
+                 enabled: pulumi.Input[Optional[_builtins.bool]] = None,
+                 envs: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
+                 force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -413,15 +413,15 @@ class Plugin(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 alias: Optional[pulumi.Input[_builtins.str]] = None,
-                 enable_timeout: Optional[pulumi.Input[_builtins.int]] = None,
-                 enabled: Optional[pulumi.Input[_builtins.bool]] = None,
-                 envs: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 force_destroy: Optional[pulumi.Input[_builtins.bool]] = None,
-                 force_disable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_all_permissions: Optional[pulumi.Input[_builtins.bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
+                 alias: pulumi.Input[Optional[_builtins.str]] = None,
+                 enable_timeout: pulumi.Input[Optional[_builtins.int]] = None,
+                 enabled: pulumi.Input[Optional[_builtins.bool]] = None,
+                 envs: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
+                 force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
+                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -451,16 +451,16 @@ class Plugin(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            alias: Optional[pulumi.Input[_builtins.str]] = None,
-            enable_timeout: Optional[pulumi.Input[_builtins.int]] = None,
-            enabled: Optional[pulumi.Input[_builtins.bool]] = None,
-            envs: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-            force_destroy: Optional[pulumi.Input[_builtins.bool]] = None,
-            force_disable: Optional[pulumi.Input[_builtins.bool]] = None,
-            grant_all_permissions: Optional[pulumi.Input[_builtins.bool]] = None,
-            grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
-            name: Optional[pulumi.Input[_builtins.str]] = None,
-            plugin_reference: Optional[pulumi.Input[_builtins.str]] = None) -> 'Plugin':
+            alias: pulumi.Input[Optional[_builtins.str]] = None,
+            enable_timeout: pulumi.Input[Optional[_builtins.int]] = None,
+            enabled: pulumi.Input[Optional[_builtins.bool]] = None,
+            envs: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
+            force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
+            grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
+            grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            plugin_reference: pulumi.Input[Optional[_builtins.str]] = None) -> 'Plugin':
         """
         Get an existing Plugin resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

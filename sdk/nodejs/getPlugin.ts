@@ -114,9 +114,9 @@ export interface GetPluginOutputArgs {
     /**
      * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
      */
-    alias?: pulumi.Input<string>;
+    alias?: pulumi.Input<string | undefined>;
     /**
      * The ID of the plugin, which has precedence over the `alias` of both are given
      */
-    id?: pulumi.Input<string>;
+    id?: pulumi.Input<string | undefined>;
 }

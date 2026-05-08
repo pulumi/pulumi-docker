@@ -24,7 +24,7 @@ namespace Pulumi.Docker
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     var main = Docker.Index.GetNetwork.Invoke(new()
+        ///     var main = Docker.GetNetwork.Invoke(new()
         ///     {
         ///         Name = "main",
         ///     });
@@ -48,7 +48,7 @@ namespace Pulumi.Docker
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     var main = Docker.Index.GetNetwork.Invoke(new()
+        ///     var main = Docker.GetNetwork.Invoke(new()
         ///     {
         ///         Name = "main",
         ///     });
@@ -72,7 +72,7 @@ namespace Pulumi.Docker
         /// 
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     var main = Docker.Index.GetNetwork.Invoke(new()
+        ///     var main = Docker.GetNetwork.Invoke(new()
         ///     {
         ///         Name = "main",
         ///     });

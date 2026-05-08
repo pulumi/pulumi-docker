@@ -51,8 +51,8 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
- * import java.util.List;
  * import java.util.ArrayList;
+ * import java.util.Arrays;
  * import java.util.Map;
  * import java.io.File;
  * import java.nio.file.Files;
@@ -104,8 +104,8 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
- * import java.util.List;
  * import java.util.ArrayList;
+ * import java.util.Arrays;
  * import java.util.Map;
  * import java.io.File;
  * import java.nio.file.Files;
@@ -179,8 +179,8 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceUpdateConfigArgs;
  * import com.pulumi.docker.inputs.ServiceRollbackConfigArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
- * import java.util.List;
  * import java.util.ArrayList;
+ * import java.util.Arrays;
  * import java.util.Map;
  * import java.io.File;
  * import java.nio.file.Files;
@@ -336,7 +336,7 @@ import javax.annotation.Nullable;
  *                     .build())
  *                 .forceUpdate(0)
  *                 .runtime("container")
- *                 .networks(List.of(testNetwork.id()))
+ *                 .networks(Arrays.asList(testNetwork.id()))
  *                 .logDriver(ServiceTaskSpecLogDriverArgs.builder()
  *                     .name("json-file")
  *                     .options(Map.ofEntries(
@@ -419,8 +419,8 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
- * import java.util.List;
  * import java.util.ArrayList;
+ * import java.util.Arrays;
  * import java.util.Map;
  * import java.io.File;
  * import java.nio.file.Files;

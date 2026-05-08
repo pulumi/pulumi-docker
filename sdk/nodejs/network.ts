@@ -185,51 +185,51 @@ export interface NetworkState {
     /**
      * Enable manual container attachment to the network.
      */
-    attachable?: pulumi.Input<boolean>;
+    attachable?: pulumi.Input<boolean | undefined>;
     /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Create swarm routing-mesh network. Defaults to `false`.
      */
-    ingress?: pulumi.Input<boolean>;
+    ingress?: pulumi.Input<boolean | undefined>;
     /**
      * Whether the network is internal.
      */
-    internal?: pulumi.Input<boolean>;
+    internal?: pulumi.Input<boolean | undefined>;
     /**
      * The IPAM configuration options
      */
-    ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
+    ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[] | undefined>;
     /**
      * Driver used by the custom IP scheme of the network. Defaults to `default`
      */
-    ipamDriver?: pulumi.Input<string>;
+    ipamDriver?: pulumi.Input<string | undefined>;
     /**
      * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
      */
-    ipamOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    ipamOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
-    ipv6?: pulumi.Input<boolean>;
+    ipv6?: pulumi.Input<boolean | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[] | undefined>;
     /**
      * The name of the Docker network.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Scope of the network. One of `swarm`, `global`, or `local`.
      */
-    scope?: pulumi.Input<string>;
+    scope?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -239,45 +239,45 @@ export interface NetworkArgs {
     /**
      * Enable manual container attachment to the network.
      */
-    attachable?: pulumi.Input<boolean>;
+    attachable?: pulumi.Input<boolean | undefined>;
     /**
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Create swarm routing-mesh network. Defaults to `false`.
      */
-    ingress?: pulumi.Input<boolean>;
+    ingress?: pulumi.Input<boolean | undefined>;
     /**
      * Whether the network is internal.
      */
-    internal?: pulumi.Input<boolean>;
+    internal?: pulumi.Input<boolean | undefined>;
     /**
      * The IPAM configuration options
      */
-    ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
+    ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[] | undefined>;
     /**
      * Driver used by the custom IP scheme of the network. Defaults to `default`
      */
-    ipamDriver?: pulumi.Input<string>;
+    ipamDriver?: pulumi.Input<string | undefined>;
     /**
      * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
      */
-    ipamOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    ipamOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
-    ipv6?: pulumi.Input<boolean>;
+    ipv6?: pulumi.Input<boolean | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[] | undefined>;
     /**
      * The name of the Docker network.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
-    options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    options?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }
