@@ -25,13 +25,13 @@ namespace Pulumi.Docker
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
         ///     //## With alias
-        ///     var byAlias = Docker.Index.GetPlugin.Invoke(new()
+        ///     var byAlias = Docker.GetPlugin.Invoke(new()
         ///     {
         ///         Alias = "sample-volume-plugin:latest",
         ///     });
         /// 
         ///     //## With ID
-        ///     var byId = Docker.Index.GetPlugin.Invoke(new()
+        ///     var byId = Docker.GetPlugin.Invoke(new()
         ///     {
         ///         Id = "e9a9db917b3bfd6706b5d3a66d4bceb9f",
         ///     });
@@ -56,13 +56,13 @@ namespace Pulumi.Docker
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
         ///     //## With alias
-        ///     var byAlias = Docker.Index.GetPlugin.Invoke(new()
+        ///     var byAlias = Docker.GetPlugin.Invoke(new()
         ///     {
         ///         Alias = "sample-volume-plugin:latest",
         ///     });
         /// 
         ///     //## With ID
-        ///     var byId = Docker.Index.GetPlugin.Invoke(new()
+        ///     var byId = Docker.GetPlugin.Invoke(new()
         ///     {
         ///         Id = "e9a9db917b3bfd6706b5d3a66d4bceb9f",
         ///     });
@@ -87,13 +87,13 @@ namespace Pulumi.Docker
         /// return await Deployment.RunAsync(() =&gt; 
         /// {
         ///     //## With alias
-        ///     var byAlias = Docker.Index.GetPlugin.Invoke(new()
+        ///     var byAlias = Docker.GetPlugin.Invoke(new()
         ///     {
         ///         Alias = "sample-volume-plugin:latest",
         ///     });
         /// 
         ///     //## With ID
-        ///     var byId = Docker.Index.GetPlugin.Invoke(new()
+        ///     var byId = Docker.GetPlugin.Invoke(new()
         ///     {
         ///         Id = "e9a9db917b3bfd6706b5d3a66d4bceb9f",
         ///     });

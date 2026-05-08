@@ -21,20 +21,20 @@ __all__ = ['BuildxBuilderArgs', 'BuildxBuilder']
 @pulumi.input_type
 class BuildxBuilderArgs:
     def __init__(__self__, *,
-                 append: Optional[pulumi.Input[_builtins.bool]] = None,
-                 bootstrap: Optional[pulumi.Input[_builtins.bool]] = None,
-                 buildkit_config: Optional[pulumi.Input[_builtins.str]] = None,
-                 buildkit_flags: Optional[pulumi.Input[_builtins.str]] = None,
-                 docker_container: Optional[pulumi.Input['BuildxBuilderDockerContainerArgs']] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 endpoint: Optional[pulumi.Input[_builtins.str]] = None,
-                 kubernetes: Optional[pulumi.Input['BuildxBuilderKubernetesArgs']] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 node: Optional[pulumi.Input[_builtins.str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 remote: Optional[pulumi.Input['BuildxBuilderRemoteArgs']] = None,
-                 use: Optional[pulumi.Input[_builtins.bool]] = None):
+                 append: pulumi.Input[Optional[_builtins.bool]] = None,
+                 bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
+                 buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
+                 buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
+                 docker_container: pulumi.Input[Optional['BuildxBuilderDockerContainerArgs']] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+                 kubernetes: pulumi.Input[Optional['BuildxBuilderKubernetesArgs']] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 node: pulumi.Input[Optional[_builtins.str]] = None,
+                 platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 remote: pulumi.Input[Optional['BuildxBuilderRemoteArgs']] = None,
+                 use: pulumi.Input[Optional[_builtins.bool]] = None):
         """
         The set of arguments for constructing a BuildxBuilder resource.
 
@@ -84,190 +84,190 @@ class BuildxBuilderArgs:
 
     @_builtins.property
     @pulumi.getter
-    def append(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def append(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Append a node to builder instead of changing it
         """
         return pulumi.get(self, "append")
 
     @append.setter
-    def append(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def append(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "append", value)
 
     @_builtins.property
     @pulumi.getter
-    def bootstrap(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def bootstrap(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Automatically boot the builder after creation. Defaults to `false`
         """
         return pulumi.get(self, "bootstrap")
 
     @bootstrap.setter
-    def bootstrap(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def bootstrap(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "bootstrap", value)
 
     @_builtins.property
     @pulumi.getter(name="buildkitConfig")
-    def buildkit_config(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def buildkit_config(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         BuildKit daemon config file
         """
         return pulumi.get(self, "buildkit_config")
 
     @buildkit_config.setter
-    def buildkit_config(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def buildkit_config(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "buildkit_config", value)
 
     @_builtins.property
     @pulumi.getter(name="buildkitFlags")
-    def buildkit_flags(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def buildkit_flags(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         BuildKit flags to set for the builder.
         """
         return pulumi.get(self, "buildkit_flags")
 
     @buildkit_flags.setter
-    def buildkit_flags(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def buildkit_flags(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "buildkit_flags", value)
 
     @_builtins.property
     @pulumi.getter(name="dockerContainer")
-    def docker_container(self) -> Optional[pulumi.Input['BuildxBuilderDockerContainerArgs']]:
+    def docker_container(self) -> pulumi.Input[Optional['BuildxBuilderDockerContainerArgs']]:
         """
         Configuration block for the Docker-Container driver.
         """
         return pulumi.get(self, "docker_container")
 
     @docker_container.setter
-    def docker_container(self, value: Optional[pulumi.Input['BuildxBuilderDockerContainerArgs']]):
+    def docker_container(self, value: pulumi.Input[Optional['BuildxBuilderDockerContainerArgs']]):
         pulumi.set(self, "docker_container", value)
 
     @_builtins.property
     @pulumi.getter
-    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
         """
         return pulumi.get(self, "driver")
 
     @driver.setter
-    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "driver", value)
 
     @_builtins.property
     @pulumi.getter(name="driverOptions")
-    def driver_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def driver_options(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
         """
         return pulumi.get(self, "driver_options")
 
     @driver_options.setter
-    def driver_options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def driver_options(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "driver_options", value)
 
     @_builtins.property
     @pulumi.getter
-    def endpoint(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def endpoint(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
         """
         return pulumi.get(self, "endpoint")
 
     @endpoint.setter
-    def endpoint(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def endpoint(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "endpoint", value)
 
     @_builtins.property
     @pulumi.getter
-    def kubernetes(self) -> Optional[pulumi.Input['BuildxBuilderKubernetesArgs']]:
+    def kubernetes(self) -> pulumi.Input[Optional['BuildxBuilderKubernetesArgs']]:
         """
         Configuration block for the Kubernetes driver.
         """
         return pulumi.get(self, "kubernetes")
 
     @kubernetes.setter
-    def kubernetes(self, value: Optional[pulumi.Input['BuildxBuilderKubernetesArgs']]):
+    def kubernetes(self, value: pulumi.Input[Optional['BuildxBuilderKubernetesArgs']]):
         pulumi.set(self, "kubernetes", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Buildx builder. IF not specified, a random name will be generated.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter
-    def node(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def node(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Create/modify node with given name
         """
         return pulumi.get(self, "node")
 
     @node.setter
-    def node(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def node(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "node", value)
 
     @_builtins.property
     @pulumi.getter
-    def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def platforms(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         Fixed platforms for current node
         """
         return pulumi.get(self, "platforms")
 
     @platforms.setter
-    def platforms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def platforms(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "platforms", value)
 
     @_builtins.property
     @pulumi.getter
-    def remote(self) -> Optional[pulumi.Input['BuildxBuilderRemoteArgs']]:
+    def remote(self) -> pulumi.Input[Optional['BuildxBuilderRemoteArgs']]:
         """
         Configuration block for the Remote driver.
         """
         return pulumi.get(self, "remote")
 
     @remote.setter
-    def remote(self, value: Optional[pulumi.Input['BuildxBuilderRemoteArgs']]):
+    def remote(self, value: pulumi.Input[Optional['BuildxBuilderRemoteArgs']]):
         pulumi.set(self, "remote", value)
 
     @_builtins.property
     @pulumi.getter
-    def use(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def use(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Set the current builder instance as the default for the current context.
         """
         return pulumi.get(self, "use")
 
     @use.setter
-    def use(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def use(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "use", value)
 
 
 @pulumi.input_type
 class _BuildxBuilderState:
     def __init__(__self__, *,
-                 append: Optional[pulumi.Input[_builtins.bool]] = None,
-                 bootstrap: Optional[pulumi.Input[_builtins.bool]] = None,
-                 buildkit_config: Optional[pulumi.Input[_builtins.str]] = None,
-                 buildkit_flags: Optional[pulumi.Input[_builtins.str]] = None,
-                 docker_container: Optional[pulumi.Input['BuildxBuilderDockerContainerArgs']] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 endpoint: Optional[pulumi.Input[_builtins.str]] = None,
-                 kubernetes: Optional[pulumi.Input['BuildxBuilderKubernetesArgs']] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 node: Optional[pulumi.Input[_builtins.str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 remote: Optional[pulumi.Input['BuildxBuilderRemoteArgs']] = None,
-                 use: Optional[pulumi.Input[_builtins.bool]] = None):
+                 append: pulumi.Input[Optional[_builtins.bool]] = None,
+                 bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
+                 buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
+                 buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
+                 docker_container: pulumi.Input[Optional['BuildxBuilderDockerContainerArgs']] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+                 kubernetes: pulumi.Input[Optional['BuildxBuilderKubernetesArgs']] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 node: pulumi.Input[Optional[_builtins.str]] = None,
+                 platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 remote: pulumi.Input[Optional['BuildxBuilderRemoteArgs']] = None,
+                 use: pulumi.Input[Optional[_builtins.bool]] = None):
         """
         Input properties used for looking up and filtering BuildxBuilder resources.
 
@@ -317,170 +317,170 @@ class _BuildxBuilderState:
 
     @_builtins.property
     @pulumi.getter
-    def append(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def append(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Append a node to builder instead of changing it
         """
         return pulumi.get(self, "append")
 
     @append.setter
-    def append(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def append(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "append", value)
 
     @_builtins.property
     @pulumi.getter
-    def bootstrap(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def bootstrap(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Automatically boot the builder after creation. Defaults to `false`
         """
         return pulumi.get(self, "bootstrap")
 
     @bootstrap.setter
-    def bootstrap(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def bootstrap(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "bootstrap", value)
 
     @_builtins.property
     @pulumi.getter(name="buildkitConfig")
-    def buildkit_config(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def buildkit_config(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         BuildKit daemon config file
         """
         return pulumi.get(self, "buildkit_config")
 
     @buildkit_config.setter
-    def buildkit_config(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def buildkit_config(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "buildkit_config", value)
 
     @_builtins.property
     @pulumi.getter(name="buildkitFlags")
-    def buildkit_flags(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def buildkit_flags(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         BuildKit flags to set for the builder.
         """
         return pulumi.get(self, "buildkit_flags")
 
     @buildkit_flags.setter
-    def buildkit_flags(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def buildkit_flags(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "buildkit_flags", value)
 
     @_builtins.property
     @pulumi.getter(name="dockerContainer")
-    def docker_container(self) -> Optional[pulumi.Input['BuildxBuilderDockerContainerArgs']]:
+    def docker_container(self) -> pulumi.Input[Optional['BuildxBuilderDockerContainerArgs']]:
         """
         Configuration block for the Docker-Container driver.
         """
         return pulumi.get(self, "docker_container")
 
     @docker_container.setter
-    def docker_container(self, value: Optional[pulumi.Input['BuildxBuilderDockerContainerArgs']]):
+    def docker_container(self, value: pulumi.Input[Optional['BuildxBuilderDockerContainerArgs']]):
         pulumi.set(self, "docker_container", value)
 
     @_builtins.property
     @pulumi.getter
-    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
         """
         return pulumi.get(self, "driver")
 
     @driver.setter
-    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "driver", value)
 
     @_builtins.property
     @pulumi.getter(name="driverOptions")
-    def driver_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def driver_options(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
         """
         return pulumi.get(self, "driver_options")
 
     @driver_options.setter
-    def driver_options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def driver_options(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "driver_options", value)
 
     @_builtins.property
     @pulumi.getter
-    def endpoint(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def endpoint(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
         """
         return pulumi.get(self, "endpoint")
 
     @endpoint.setter
-    def endpoint(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def endpoint(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "endpoint", value)
 
     @_builtins.property
     @pulumi.getter
-    def kubernetes(self) -> Optional[pulumi.Input['BuildxBuilderKubernetesArgs']]:
+    def kubernetes(self) -> pulumi.Input[Optional['BuildxBuilderKubernetesArgs']]:
         """
         Configuration block for the Kubernetes driver.
         """
         return pulumi.get(self, "kubernetes")
 
     @kubernetes.setter
-    def kubernetes(self, value: Optional[pulumi.Input['BuildxBuilderKubernetesArgs']]):
+    def kubernetes(self, value: pulumi.Input[Optional['BuildxBuilderKubernetesArgs']]):
         pulumi.set(self, "kubernetes", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Buildx builder. IF not specified, a random name will be generated.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter
-    def node(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def node(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Create/modify node with given name
         """
         return pulumi.get(self, "node")
 
     @node.setter
-    def node(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def node(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "node", value)
 
     @_builtins.property
     @pulumi.getter
-    def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def platforms(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         Fixed platforms for current node
         """
         return pulumi.get(self, "platforms")
 
     @platforms.setter
-    def platforms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def platforms(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "platforms", value)
 
     @_builtins.property
     @pulumi.getter
-    def remote(self) -> Optional[pulumi.Input['BuildxBuilderRemoteArgs']]:
+    def remote(self) -> pulumi.Input[Optional['BuildxBuilderRemoteArgs']]:
         """
         Configuration block for the Remote driver.
         """
         return pulumi.get(self, "remote")
 
     @remote.setter
-    def remote(self, value: Optional[pulumi.Input['BuildxBuilderRemoteArgs']]):
+    def remote(self, value: pulumi.Input[Optional['BuildxBuilderRemoteArgs']]):
         pulumi.set(self, "remote", value)
 
     @_builtins.property
     @pulumi.getter
-    def use(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def use(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Set the current builder instance as the default for the current context.
         """
         return pulumi.get(self, "use")
 
     @use.setter
-    def use(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def use(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "use", value)
 
 
@@ -490,20 +490,20 @@ class BuildxBuilder(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 append: Optional[pulumi.Input[_builtins.bool]] = None,
-                 bootstrap: Optional[pulumi.Input[_builtins.bool]] = None,
-                 buildkit_config: Optional[pulumi.Input[_builtins.str]] = None,
-                 buildkit_flags: Optional[pulumi.Input[_builtins.str]] = None,
-                 docker_container: Optional[pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 endpoint: Optional[pulumi.Input[_builtins.str]] = None,
-                 kubernetes: Optional[pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 node: Optional[pulumi.Input[_builtins.str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 remote: Optional[pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
-                 use: Optional[pulumi.Input[_builtins.bool]] = None,
+                 append: pulumi.Input[Optional[_builtins.bool]] = None,
+                 bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
+                 buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
+                 buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
+                 docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+                 kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 node: pulumi.Input[Optional[_builtins.str]] = None,
+                 platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
+                 use: pulumi.Input[Optional[_builtins.bool]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -583,20 +583,20 @@ class BuildxBuilder(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 append: Optional[pulumi.Input[_builtins.bool]] = None,
-                 bootstrap: Optional[pulumi.Input[_builtins.bool]] = None,
-                 buildkit_config: Optional[pulumi.Input[_builtins.str]] = None,
-                 buildkit_flags: Optional[pulumi.Input[_builtins.str]] = None,
-                 docker_container: Optional[pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 endpoint: Optional[pulumi.Input[_builtins.str]] = None,
-                 kubernetes: Optional[pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 node: Optional[pulumi.Input[_builtins.str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 remote: Optional[pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
-                 use: Optional[pulumi.Input[_builtins.bool]] = None,
+                 append: pulumi.Input[Optional[_builtins.bool]] = None,
+                 bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
+                 buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
+                 buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
+                 docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+                 kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 node: pulumi.Input[Optional[_builtins.str]] = None,
+                 platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
+                 use: pulumi.Input[Optional[_builtins.bool]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -630,20 +630,20 @@ class BuildxBuilder(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            append: Optional[pulumi.Input[_builtins.bool]] = None,
-            bootstrap: Optional[pulumi.Input[_builtins.bool]] = None,
-            buildkit_config: Optional[pulumi.Input[_builtins.str]] = None,
-            buildkit_flags: Optional[pulumi.Input[_builtins.str]] = None,
-            docker_container: Optional[pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
-            driver: Optional[pulumi.Input[_builtins.str]] = None,
-            driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-            endpoint: Optional[pulumi.Input[_builtins.str]] = None,
-            kubernetes: Optional[pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
-            name: Optional[pulumi.Input[_builtins.str]] = None,
-            node: Optional[pulumi.Input[_builtins.str]] = None,
-            platforms: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-            remote: Optional[pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
-            use: Optional[pulumi.Input[_builtins.bool]] = None) -> 'BuildxBuilder':
+            append: pulumi.Input[Optional[_builtins.bool]] = None,
+            bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
+            buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
+            buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
+            docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
+            driver: pulumi.Input[Optional[_builtins.str]] = None,
+            driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+            kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            node: pulumi.Input[Optional[_builtins.str]] = None,
+            platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
+            use: pulumi.Input[Optional[_builtins.bool]] = None) -> 'BuildxBuilder':
         """
         Get an existing BuildxBuilder resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

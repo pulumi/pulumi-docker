@@ -220,11 +220,11 @@ export interface ImageArgs {
     /**
      * The Docker build context
      */
-    build?: pulumi.Input<inputs.DockerBuild>;
+    build?: pulumi.Input<inputs.DockerBuild | undefined>;
     /**
      * A flag to build an image on preview
      */
-    buildOnPreview?: pulumi.Input<boolean>;
+    buildOnPreview?: pulumi.Input<boolean | undefined>;
     /**
      * The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
      * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
@@ -233,9 +233,9 @@ export interface ImageArgs {
     /**
      * The registry to push the image to
      */
-    registry?: pulumi.Input<inputs.Registry>;
+    registry?: pulumi.Input<inputs.Registry | undefined>;
     /**
      * A flag to skip a registry push.
      */
-    skipPush?: pulumi.Input<boolean>;
+    skipPush?: pulumi.Input<boolean | undefined>;
 }

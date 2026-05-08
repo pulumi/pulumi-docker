@@ -26,6 +26,48 @@ import javax.annotation.Nullable;
  * 
  * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
  * 
+ * <pre>
+ * {@code
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
+ * import com.pulumi.docker.RegistryImage;
+ * import com.pulumi.docker.RegistryImageArgs;
+ * import java.util.ArrayList;
+ * import java.util.Arrays;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new RemoteImage("image", RemoteImageArgs.builder()
+ *             .name("registry.com/somename:1.0")
+ *             .build(RemoteImageBuildArgs.builder()
+ *                 .context(String.format("%s/absolutePathToContextFolder", System.getProperty("user.dir")))
+ *                 .build())
+ *             .build());
+ * 
+ *         var helloworld = new RegistryImage("helloworld", RegistryImageArgs.builder()
+ *             .name(image.name())
+ *             .keepRemotely(true)
+ *             .build());
+ * 
+ *     }
+ * }
+ * }
+ * </pre>
+ * 
  */
 @ResourceType(type="docker:index/registryImage:RegistryImage")
 public class RegistryImage extends com.pulumi.resources.CustomResource {

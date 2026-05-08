@@ -81,11 +81,11 @@ export interface GetRegistryImageManifestsOutputArgs {
     /**
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
-    authConfig?: pulumi.Input<inputs.GetRegistryImageManifestsAuthConfigArgs>;
+    authConfig?: pulumi.Input<inputs.GetRegistryImageManifestsAuthConfigArgs | undefined>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
-    insecureSkipVerify?: pulumi.Input<boolean>;
+    insecureSkipVerify?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the Docker image, including any tags. e.g. `alpine:latest`
      */

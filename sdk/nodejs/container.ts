@@ -591,311 +591,311 @@ export interface ContainerState {
     /**
      * If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
      */
-    attach?: pulumi.Input<boolean>;
+    attach?: pulumi.Input<boolean | undefined>;
     /**
      * The network bridge of the container as read from its NetworkSettings.
      */
-    bridge?: pulumi.Input<string>;
+    bridge?: pulumi.Input<string | undefined>;
     /**
      * Add or drop certain linux capabilities.
      */
-    capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
+    capabilities?: pulumi.Input<inputs.ContainerCapabilities | undefined>;
     /**
      * Optional parent cgroup for the container
      */
-    cgroupParent?: pulumi.Input<string>;
+    cgroupParent?: pulumi.Input<string | undefined>;
     /**
      * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
      */
-    cgroupnsMode?: pulumi.Input<string>;
+    cgroupnsMode?: pulumi.Input<string | undefined>;
     /**
      * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
      */
-    command?: pulumi.Input<pulumi.Input<string>[]>;
+    command?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
-    containerLogs?: pulumi.Input<string>;
+    containerLogs?: pulumi.Input<string | undefined>;
     /**
      * The total number of milliseconds to wait for the container to reach status 'running'
      */
-    containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number>;
+    containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number | undefined>;
     /**
      * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
      */
-    cpuPeriod?: pulumi.Input<number>;
+    cpuPeriod?: pulumi.Input<number | undefined>;
     /**
      * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
      */
-    cpuQuota?: pulumi.Input<number>;
+    cpuQuota?: pulumi.Input<number | undefined>;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
-    cpuSet?: pulumi.Input<string>;
+    cpuSet?: pulumi.Input<string | undefined>;
     /**
      * CPU shares (relative weight) for the container.
      */
-    cpuShares?: pulumi.Input<number>;
+    cpuShares?: pulumi.Input<number | undefined>;
     /**
      * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      */
-    cpus?: pulumi.Input<string>;
+    cpus?: pulumi.Input<string | undefined>;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
-    destroyGraceSeconds?: pulumi.Input<number>;
+    destroyGraceSeconds?: pulumi.Input<number | undefined>;
     /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      */
-    deviceReadBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadBp>[]>;
+    deviceReadBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadBp>[] | undefined>;
     /**
      * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
      */
-    deviceReadIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadIop>[]>;
+    deviceReadIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadIop>[] | undefined>;
     /**
      * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
      */
-    deviceRequests?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceRequest>[]>;
+    deviceRequests?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceRequest>[] | undefined>;
     /**
      * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
      */
-    deviceWriteBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteBp>[]>;
+    deviceWriteBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteBp>[] | undefined>;
     /**
      * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
      */
-    deviceWriteIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteIop>[]>;
+    deviceWriteIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteIop>[] | undefined>;
     /**
      * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      */
-    devices?: pulumi.Input<pulumi.Input<inputs.ContainerDevice>[]>;
+    devices?: pulumi.Input<pulumi.Input<inputs.ContainerDevice>[] | undefined>;
     /**
      * DNS servers to use.
      */
-    dns?: pulumi.Input<pulumi.Input<string>[]>;
+    dns?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    dnsOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    dnsOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
-    dnsSearches?: pulumi.Input<pulumi.Input<string>[]>;
+    dnsSearches?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Domain name of the container.
      */
-    domainname?: pulumi.Input<string>;
+    domainname?: pulumi.Input<string | undefined>;
     /**
      * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
      */
-    entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
+    entrypoints?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      */
-    envs?: pulumi.Input<pulumi.Input<string>[]>;
+    envs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
-    exitCode?: pulumi.Input<number>;
+    exitCode?: pulumi.Input<number | undefined>;
     /**
      * GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      */
-    gpus?: pulumi.Input<string>;
+    gpus?: pulumi.Input<string | undefined>;
     /**
      * Additional groups for the container user
      */
-    groupAdds?: pulumi.Input<pulumi.Input<string>[]>;
+    groupAdds?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * A test to perform to check that the container is healthy
      */
-    healthcheck?: pulumi.Input<inputs.ContainerHealthcheck>;
+    healthcheck?: pulumi.Input<inputs.ContainerHealthcheck | undefined>;
     /**
      * Hostname of the container.
      */
-    hostname?: pulumi.Input<string>;
+    hostname?: pulumi.Input<string | undefined>;
     /**
      * Additional hosts to add to the container.
      */
-    hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
+    hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[] | undefined>;
     /**
      * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      */
-    image?: pulumi.Input<string>;
+    image?: pulumi.Input<string | undefined>;
     /**
      * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      */
-    init?: pulumi.Input<boolean>;
+    init?: pulumi.Input<boolean | undefined>;
     /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
-    ipcMode?: pulumi.Input<string>;
+    ipcMode?: pulumi.Input<string | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[] | undefined>;
     /**
      * The logging driver to use for the container.
      */
-    logDriver?: pulumi.Input<string>;
+    logDriver?: pulumi.Input<string | undefined>;
     /**
      * Key/value pairs to use as options for the logging driver.
      */
-    logOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    logOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Save the container logs (`attach` must be enabled). Defaults to `false`.
      */
-    logs?: pulumi.Input<boolean>;
+    logs?: pulumi.Input<boolean | undefined>;
     /**
      * The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
      */
-    maxRetryCount?: pulumi.Input<number>;
+    maxRetryCount?: pulumi.Input<number | undefined>;
     /**
      * The memory limit for the container in MBs.
      */
-    memory?: pulumi.Input<number>;
+    memory?: pulumi.Input<number | undefined>;
     /**
      * The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
      */
-    memoryReservation?: pulumi.Input<number>;
+    memoryReservation?: pulumi.Input<number | undefined>;
     /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
-    memorySwap?: pulumi.Input<number>;
+    memorySwap?: pulumi.Input<number | undefined>;
     /**
      * Specification for mounts to be added to containers created as part of the service.
      */
-    mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
+    mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[] | undefined>;
     /**
      * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      */
-    mustRun?: pulumi.Input<boolean>;
+    mustRun?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the container.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * The data of the networks the container is connected to.
      */
-    networkDatas?: pulumi.Input<pulumi.Input<inputs.ContainerNetworkData>[]>;
+    networkDatas?: pulumi.Input<pulumi.Input<inputs.ContainerNetworkData>[] | undefined>;
     /**
      * Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      */
-    networkMode?: pulumi.Input<string>;
+    networkMode?: pulumi.Input<string | undefined>;
     /**
      * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      */
-    networksAdvanced?: pulumi.Input<pulumi.Input<inputs.ContainerNetworksAdvanced>[]>;
+    networksAdvanced?: pulumi.Input<pulumi.Input<inputs.ContainerNetworksAdvanced>[] | undefined>;
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
-    pidMode?: pulumi.Input<string>;
+    pidMode?: pulumi.Input<string | undefined>;
     /**
      * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * Publish a container's port(s) to the host.
      */
-    ports?: pulumi.Input<pulumi.Input<inputs.ContainerPort>[]>;
+    ports?: pulumi.Input<pulumi.Input<inputs.ContainerPort>[] | undefined>;
     /**
      * If `true`, the container runs in privileged mode.
      */
-    privileged?: pulumi.Input<boolean>;
+    privileged?: pulumi.Input<boolean | undefined>;
     /**
      * Publish all ports of the container.
      */
-    publishAllPorts?: pulumi.Input<boolean>;
+    publishAllPorts?: pulumi.Input<boolean | undefined>;
     /**
      * If `true`, the container will be started as readonly. Defaults to `false`.
      */
-    readOnly?: pulumi.Input<boolean>;
+    readOnly?: pulumi.Input<boolean | undefined>;
     /**
      * If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
      */
-    removeVolumes?: pulumi.Input<boolean>;
+    removeVolumes?: pulumi.Input<boolean | undefined>;
     /**
      * The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
      */
-    restart?: pulumi.Input<string>;
+    restart?: pulumi.Input<string | undefined>;
     /**
      * If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
      */
-    rm?: pulumi.Input<boolean>;
+    rm?: pulumi.Input<boolean | undefined>;
     /**
      * Runtime to use for the container.
      */
-    runtime?: pulumi.Input<string>;
+    runtime?: pulumi.Input<string | undefined>;
     /**
      * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      */
-    securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    securityOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Size of `/dev/shm` in MBs.
      */
-    shmSize?: pulumi.Input<number>;
+    shmSize?: pulumi.Input<number | undefined>;
     /**
      * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      */
-    start?: pulumi.Input<boolean>;
+    start?: pulumi.Input<boolean | undefined>;
     /**
      * If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
      */
-    stdinOpen?: pulumi.Input<boolean>;
+    stdinOpen?: pulumi.Input<boolean | undefined>;
     /**
      * Signal to stop a container (default `SIGTERM`).
      */
-    stopSignal?: pulumi.Input<string>;
+    stopSignal?: pulumi.Input<string | undefined>;
     /**
      * Timeout (in seconds) to stop a container.
      */
-    stopTimeout?: pulumi.Input<number>;
+    stopTimeout?: pulumi.Input<number | undefined>;
     /**
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      */
-    storageOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    storageOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
-    sysctls?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    sysctls?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
-    tmpfs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    tmpfs?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
      */
-    tty?: pulumi.Input<boolean>;
+    tty?: pulumi.Input<boolean | undefined>;
     /**
      * Ulimit options to add.
      */
-    ulimits?: pulumi.Input<pulumi.Input<inputs.ContainerUlimit>[]>;
+    ulimits?: pulumi.Input<pulumi.Input<inputs.ContainerUlimit>[] | undefined>;
     /**
      * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      */
-    uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[]>;
+    uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[] | undefined>;
     /**
      * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      */
-    user?: pulumi.Input<string>;
+    user?: pulumi.Input<string | undefined>;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
-    usernsMode?: pulumi.Input<string>;
+    usernsMode?: pulumi.Input<string | undefined>;
     /**
      * Spec for mounting volumes in the container.
      */
-    volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[] | undefined>;
     /**
      * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      */
-    wait?: pulumi.Input<boolean>;
+    wait?: pulumi.Input<boolean | undefined>;
     /**
      * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
      */
-    waitTimeout?: pulumi.Input<number>;
+    waitTimeout?: pulumi.Input<number | undefined>;
     /**
      * The working directory for commands to run in.
      */
-    workingDir?: pulumi.Input<string>;
+    workingDir?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -905,119 +905,119 @@ export interface ContainerArgs {
     /**
      * If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
      */
-    attach?: pulumi.Input<boolean>;
+    attach?: pulumi.Input<boolean | undefined>;
     /**
      * Add or drop certain linux capabilities.
      */
-    capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
+    capabilities?: pulumi.Input<inputs.ContainerCapabilities | undefined>;
     /**
      * Optional parent cgroup for the container
      */
-    cgroupParent?: pulumi.Input<string>;
+    cgroupParent?: pulumi.Input<string | undefined>;
     /**
      * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
      */
-    cgroupnsMode?: pulumi.Input<string>;
+    cgroupnsMode?: pulumi.Input<string | undefined>;
     /**
      * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.conf"]`.
      */
-    command?: pulumi.Input<pulumi.Input<string>[]>;
+    command?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The total number of milliseconds to wait for the container to reach status 'running'
      */
-    containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number>;
+    containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number | undefined>;
     /**
      * Specify the CPU CFS scheduler period (in microseconds), which is used alongside `cpu-quota`. Is ignored if `cpus` is set.
      */
-    cpuPeriod?: pulumi.Input<number>;
+    cpuPeriod?: pulumi.Input<number | undefined>;
     /**
      * Impose a CPU CFS quota on the container (in microseconds). The number of microseconds per `cpu-period` that the container is limited to before throttled. Is ignored if `cpus` is set.
      */
-    cpuQuota?: pulumi.Input<number>;
+    cpuQuota?: pulumi.Input<number | undefined>;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
-    cpuSet?: pulumi.Input<string>;
+    cpuSet?: pulumi.Input<string | undefined>;
     /**
      * CPU shares (relative weight) for the container.
      */
-    cpuShares?: pulumi.Input<number>;
+    cpuShares?: pulumi.Input<number | undefined>;
     /**
      * Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpuPeriod` and `cpuQuota`.
      */
-    cpus?: pulumi.Input<string>;
+    cpus?: pulumi.Input<string | undefined>;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
-    destroyGraceSeconds?: pulumi.Input<number>;
+    destroyGraceSeconds?: pulumi.Input<number | undefined>;
     /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      */
-    deviceReadBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadBp>[]>;
+    deviceReadBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadBp>[] | undefined>;
     /**
      * Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
      */
-    deviceReadIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadIop>[]>;
+    deviceReadIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceReadIop>[] | undefined>;
     /**
      * Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
      */
-    deviceRequests?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceRequest>[]>;
+    deviceRequests?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceRequest>[] | undefined>;
     /**
      * Limit write rate (bytes per second) to a device. This is the equivalent to repeating `--device-write-bps` for `docker run`.
      */
-    deviceWriteBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteBp>[]>;
+    deviceWriteBps?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteBp>[] | undefined>;
     /**
      * Limit write rate (IO per second) to a device. This is the equivalent to repeating `--device-write-iops` for `docker run`.
      */
-    deviceWriteIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteIop>[]>;
+    deviceWriteIops?: pulumi.Input<pulumi.Input<inputs.ContainerDeviceWriteIop>[] | undefined>;
     /**
      * Bind traditional devices to the container (e.g., `/dev/nvidia0`). For CDI devices, use `deviceRequests` instead.
      */
-    devices?: pulumi.Input<pulumi.Input<inputs.ContainerDevice>[]>;
+    devices?: pulumi.Input<pulumi.Input<inputs.ContainerDevice>[] | undefined>;
     /**
      * DNS servers to use.
      */
-    dns?: pulumi.Input<pulumi.Input<string>[]>;
+    dns?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    dnsOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    dnsOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
-    dnsSearches?: pulumi.Input<pulumi.Input<string>[]>;
+    dnsSearches?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Domain name of the container.
      */
-    domainname?: pulumi.Input<string>;
+    domainname?: pulumi.Input<string | undefined>;
     /**
      * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogram"]`.
      */
-    entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
+    entrypoints?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      */
-    envs?: pulumi.Input<pulumi.Input<string>[]>;
+    envs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * GPU devices to add to the container. Supported values are `all` or `device=<id[,id...]>`, for example `device=0,2` or `device=GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a`.
      */
-    gpus?: pulumi.Input<string>;
+    gpus?: pulumi.Input<string | undefined>;
     /**
      * Additional groups for the container user
      */
-    groupAdds?: pulumi.Input<pulumi.Input<string>[]>;
+    groupAdds?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * A test to perform to check that the container is healthy
      */
-    healthcheck?: pulumi.Input<inputs.ContainerHealthcheck>;
+    healthcheck?: pulumi.Input<inputs.ContainerHealthcheck | undefined>;
     /**
      * Hostname of the container.
      */
-    hostname?: pulumi.Input<string>;
+    hostname?: pulumi.Input<string | undefined>;
     /**
      * Additional hosts to add to the container.
      */
-    hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
+    hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[] | undefined>;
     /**
      * The ID of the image to back this container. The easiest way to get this value is to use the `imageId` attribute of the `docker.RemoteImage` resource as is shown in the example.
      */
@@ -1025,173 +1025,173 @@ export interface ContainerArgs {
     /**
      * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      */
-    init?: pulumi.Input<boolean>;
+    init?: pulumi.Input<boolean | undefined>;
     /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
-    ipcMode?: pulumi.Input<string>;
+    ipcMode?: pulumi.Input<string | undefined>;
     /**
      * User-defined key/value metadata
      */
-    labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[] | undefined>;
     /**
      * The logging driver to use for the container.
      */
-    logDriver?: pulumi.Input<string>;
+    logDriver?: pulumi.Input<string | undefined>;
     /**
      * Key/value pairs to use as options for the logging driver.
      */
-    logOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    logOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Save the container logs (`attach` must be enabled). Defaults to `false`.
      */
-    logs?: pulumi.Input<boolean>;
+    logs?: pulumi.Input<boolean | undefined>;
     /**
      * The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
      */
-    maxRetryCount?: pulumi.Input<number>;
+    maxRetryCount?: pulumi.Input<number | undefined>;
     /**
      * The memory limit for the container in MBs.
      */
-    memory?: pulumi.Input<number>;
+    memory?: pulumi.Input<number | undefined>;
     /**
      * The memory-resveration for the container in MBs. Defaults to 0. Allows you to specify a soft limit smaller than `memory` which is activated when Docker detects contention or low memory on the host machine. If you use `memory-reservation`, it must be set lower than `memory` for it to take precedence. Because it is a soft limit, it doesn't guarantee that the container doesn't exceed the limit.
      */
-    memoryReservation?: pulumi.Input<number>;
+    memoryReservation?: pulumi.Input<number | undefined>;
     /**
      * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
-    memorySwap?: pulumi.Input<number>;
+    memorySwap?: pulumi.Input<number | undefined>;
     /**
      * Specification for mounts to be added to containers created as part of the service.
      */
-    mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[]>;
+    mounts?: pulumi.Input<pulumi.Input<inputs.ContainerMount>[] | undefined>;
     /**
      * If `true`, then the Docker container will be kept running. If `false`, Terraform leaves the container alone. This attribute is also used to trigger a restart of a stopped container. If your container is stopped, Terraform will set `mustRun` to `false` and this will trigger a change. Defaults to `true`.
      */
-    mustRun?: pulumi.Input<boolean>;
+    mustRun?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the container.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Network mode of the container. Defaults to `bridge`. If your host OS is any other OS, you need to set this value explicitly, e.g. `nat` when your container will be running on an Windows host. See https://docs.docker.com/engine/network/ for more information.
      */
-    networkMode?: pulumi.Input<string>;
+    networkMode?: pulumi.Input<string | undefined>;
     /**
      * The networks the container is attached to. This is the equivalent to the `--network` option of `docker run`
      */
-    networksAdvanced?: pulumi.Input<pulumi.Input<inputs.ContainerNetworksAdvanced>[]>;
+    networksAdvanced?: pulumi.Input<pulumi.Input<inputs.ContainerNetworksAdvanced>[] | undefined>;
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
-    pidMode?: pulumi.Input<string>;
+    pidMode?: pulumi.Input<string | undefined>;
     /**
      * Platform in the format `os[/arch[/variant]]` used for image lookup and container runtime, for example `linux/amd64`.
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * Publish a container's port(s) to the host.
      */
-    ports?: pulumi.Input<pulumi.Input<inputs.ContainerPort>[]>;
+    ports?: pulumi.Input<pulumi.Input<inputs.ContainerPort>[] | undefined>;
     /**
      * If `true`, the container runs in privileged mode.
      */
-    privileged?: pulumi.Input<boolean>;
+    privileged?: pulumi.Input<boolean | undefined>;
     /**
      * Publish all ports of the container.
      */
-    publishAllPorts?: pulumi.Input<boolean>;
+    publishAllPorts?: pulumi.Input<boolean | undefined>;
     /**
      * If `true`, the container will be started as readonly. Defaults to `false`.
      */
-    readOnly?: pulumi.Input<boolean>;
+    readOnly?: pulumi.Input<boolean | undefined>;
     /**
      * If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
      */
-    removeVolumes?: pulumi.Input<boolean>;
+    removeVolumes?: pulumi.Input<boolean | undefined>;
     /**
      * The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
      */
-    restart?: pulumi.Input<string>;
+    restart?: pulumi.Input<string | undefined>;
     /**
      * If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
      */
-    rm?: pulumi.Input<boolean>;
+    rm?: pulumi.Input<boolean | undefined>;
     /**
      * Runtime to use for the container.
      */
-    runtime?: pulumi.Input<string>;
+    runtime?: pulumi.Input<string | undefined>;
     /**
      * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      */
-    securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    securityOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Size of `/dev/shm` in MBs.
      */
-    shmSize?: pulumi.Input<number>;
+    shmSize?: pulumi.Input<number | undefined>;
     /**
      * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      */
-    start?: pulumi.Input<boolean>;
+    start?: pulumi.Input<boolean | undefined>;
     /**
      * If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
      */
-    stdinOpen?: pulumi.Input<boolean>;
+    stdinOpen?: pulumi.Input<boolean | undefined>;
     /**
      * Signal to stop a container (default `SIGTERM`).
      */
-    stopSignal?: pulumi.Input<string>;
+    stopSignal?: pulumi.Input<string | undefined>;
     /**
      * Timeout (in seconds) to stop a container.
      */
-    stopTimeout?: pulumi.Input<number>;
+    stopTimeout?: pulumi.Input<number | undefined>;
     /**
      * Key/value pairs for the storage driver options, e.g. `size`: `120G`
      */
-    storageOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    storageOpts?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
-    sysctls?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    sysctls?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
-    tmpfs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    tmpfs?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
      */
-    tty?: pulumi.Input<boolean>;
+    tty?: pulumi.Input<boolean | undefined>;
     /**
      * Ulimit options to add.
      */
-    ulimits?: pulumi.Input<pulumi.Input<inputs.ContainerUlimit>[]>;
+    ulimits?: pulumi.Input<pulumi.Input<inputs.ContainerUlimit>[] | undefined>;
     /**
      * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      */
-    uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[]>;
+    uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[] | undefined>;
     /**
      * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literally or by name.
      */
-    user?: pulumi.Input<string>;
+    user?: pulumi.Input<string | undefined>;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
-    usernsMode?: pulumi.Input<string>;
+    usernsMode?: pulumi.Input<string | undefined>;
     /**
      * Spec for mounting volumes in the container.
      */
-    volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[] | undefined>;
     /**
      * If `true`, then the Docker container is waited for being healthy state after creation. This requires your container to have a healthcheck, otherwise this provider will error. If `false`, then the container health state is not checked. Defaults to `false`.
      */
-    wait?: pulumi.Input<boolean>;
+    wait?: pulumi.Input<boolean | undefined>;
     /**
      * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
      */
-    waitTimeout?: pulumi.Input<number>;
+    waitTimeout?: pulumi.Input<number | undefined>;
     /**
      * The working directory for commands to run in.
      */
-    workingDir?: pulumi.Input<string>;
+    workingDir?: pulumi.Input<string | undefined>;
 }

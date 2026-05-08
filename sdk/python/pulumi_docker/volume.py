@@ -21,11 +21,11 @@ __all__ = ['VolumeArgs', 'Volume']
 @pulumi.input_type
 class VolumeArgs:
     def __init__(__self__, *,
-                 cluster: Optional[pulumi.Input['VolumeClusterArgs']] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None):
+                 cluster: pulumi.Input[Optional['VolumeClusterArgs']] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_opts: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None):
         """
         The set of arguments for constructing a Volume resource.
 
@@ -48,74 +48,74 @@ class VolumeArgs:
 
     @_builtins.property
     @pulumi.getter
-    def cluster(self) -> Optional[pulumi.Input['VolumeClusterArgs']]:
+    def cluster(self) -> pulumi.Input[Optional['VolumeClusterArgs']]:
         """
         Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
         """
         return pulumi.get(self, "cluster")
 
     @cluster.setter
-    def cluster(self, value: Optional[pulumi.Input['VolumeClusterArgs']]):
+    def cluster(self, value: pulumi.Input[Optional['VolumeClusterArgs']]):
         pulumi.set(self, "cluster", value)
 
     @_builtins.property
     @pulumi.getter
-    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Driver type for the volume. Defaults to `local`.
         """
         return pulumi.get(self, "driver")
 
     @driver.setter
-    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "driver", value)
 
     @_builtins.property
     @pulumi.getter(name="driverOpts")
-    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def driver_opts(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Options specific to the driver.
         """
         return pulumi.get(self, "driver_opts")
 
     @driver_opts.setter
-    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def driver_opts(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "driver_opts", value)
 
     @_builtins.property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
+    def labels(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
         """
         User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
+    def labels(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker volume (will be generated if not provided).
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
 
 @pulumi.input_type
 class _VolumeState:
     def __init__(__self__, *,
-                 cluster: Optional[pulumi.Input['VolumeClusterArgs']] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
-                 mountpoint: Optional[pulumi.Input[_builtins.str]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None):
+                 cluster: pulumi.Input[Optional['VolumeClusterArgs']] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_opts: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
+                 mountpoint: pulumi.Input[Optional[_builtins.str]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Volume resources.
 
@@ -141,74 +141,74 @@ class _VolumeState:
 
     @_builtins.property
     @pulumi.getter
-    def cluster(self) -> Optional[pulumi.Input['VolumeClusterArgs']]:
+    def cluster(self) -> pulumi.Input[Optional['VolumeClusterArgs']]:
         """
         Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
         """
         return pulumi.get(self, "cluster")
 
     @cluster.setter
-    def cluster(self, value: Optional[pulumi.Input['VolumeClusterArgs']]):
+    def cluster(self, value: pulumi.Input[Optional['VolumeClusterArgs']]):
         pulumi.set(self, "cluster", value)
 
     @_builtins.property
     @pulumi.getter
-    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Driver type for the volume. Defaults to `local`.
         """
         return pulumi.get(self, "driver")
 
     @driver.setter
-    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "driver", value)
 
     @_builtins.property
     @pulumi.getter(name="driverOpts")
-    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def driver_opts(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Options specific to the driver.
         """
         return pulumi.get(self, "driver_opts")
 
     @driver_opts.setter
-    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def driver_opts(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "driver_opts", value)
 
     @_builtins.property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
+    def labels(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
         """
         User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
+    def labels(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @_builtins.property
     @pulumi.getter
-    def mountpoint(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def mountpoint(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The mountpoint of the volume.
         """
         return pulumi.get(self, "mountpoint")
 
     @mountpoint.setter
-    def mountpoint(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def mountpoint(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "mountpoint", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker volume (will be generated if not provided).
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
 
@@ -218,11 +218,11 @@ class Volume(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 cluster: Optional[pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
+                 cluster: pulumi.Input[Optional[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_opts: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -353,11 +353,11 @@ class Volume(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 cluster: Optional[pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
+                 cluster: pulumi.Input[Optional[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 driver_opts: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -383,12 +383,12 @@ class Volume(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            cluster: Optional[pulumi.Input[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
-            driver: Optional[pulumi.Input[_builtins.str]] = None,
-            driver_opts: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
-            mountpoint: Optional[pulumi.Input[_builtins.str]] = None,
-            name: Optional[pulumi.Input[_builtins.str]] = None) -> 'Volume':
+            cluster: pulumi.Input[Optional[Union['VolumeClusterArgs', 'VolumeClusterArgsDict']]] = None,
+            driver: pulumi.Input[Optional[_builtins.str]] = None,
+            driver_opts: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict']]]]] = None,
+            mountpoint: pulumi.Input[Optional[_builtins.str]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None) -> 'Volume':
         """
         Get an existing Volume resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

@@ -135,43 +135,43 @@ export interface PluginState {
     /**
      * Docker Plugin alias
      */
-    alias?: pulumi.Input<string>;
+    alias?: pulumi.Input<string | undefined>;
     /**
      * HTTP client timeout to enable the plugin
      */
-    enableTimeout?: pulumi.Input<number>;
+    enableTimeout?: pulumi.Input<number | undefined>;
     /**
      * If `true` the plugin is enabled. Defaults to `true`
      */
-    enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean | undefined>;
     /**
      * The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      */
-    envs?: pulumi.Input<pulumi.Input<string>[]>;
+    envs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * If true, then the plugin is destroyed forcibly
      */
-    forceDestroy?: pulumi.Input<boolean>;
+    forceDestroy?: pulumi.Input<boolean | undefined>;
     /**
      * If true, then the plugin is disabled forcibly
      */
-    forceDisable?: pulumi.Input<boolean>;
+    forceDisable?: pulumi.Input<boolean | undefined>;
     /**
      * If true, grant all permissions necessary to run the plugin
      */
-    grantAllPermissions?: pulumi.Input<boolean>;
+    grantAllPermissions?: pulumi.Input<boolean | undefined>;
     /**
      * Grant specific permissions only
      */
-    grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
+    grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[] | undefined>;
     /**
      * Docker Plugin name
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Docker Plugin Reference
      */
-    pluginReference?: pulumi.Input<string>;
+    pluginReference?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -181,37 +181,37 @@ export interface PluginArgs {
     /**
      * Docker Plugin alias
      */
-    alias?: pulumi.Input<string>;
+    alias?: pulumi.Input<string | undefined>;
     /**
      * HTTP client timeout to enable the plugin
      */
-    enableTimeout?: pulumi.Input<number>;
+    enableTimeout?: pulumi.Input<number | undefined>;
     /**
      * If `true` the plugin is enabled. Defaults to `true`
      */
-    enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean | undefined>;
     /**
      * The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      */
-    envs?: pulumi.Input<pulumi.Input<string>[]>;
+    envs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * If true, then the plugin is destroyed forcibly
      */
-    forceDestroy?: pulumi.Input<boolean>;
+    forceDestroy?: pulumi.Input<boolean | undefined>;
     /**
      * If true, then the plugin is disabled forcibly
      */
-    forceDisable?: pulumi.Input<boolean>;
+    forceDisable?: pulumi.Input<boolean | undefined>;
     /**
      * If true, grant all permissions necessary to run the plugin
      */
-    grantAllPermissions?: pulumi.Input<boolean>;
+    grantAllPermissions?: pulumi.Input<boolean | undefined>;
     /**
      * Grant specific permissions only
      */
-    grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
+    grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[] | undefined>;
     /**
      * Docker Plugin name
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }

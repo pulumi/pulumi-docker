@@ -21,7 +21,7 @@ class TagArgs:
     def __init__(__self__, *,
                  source_image: pulumi.Input[_builtins.str],
                  target_image: pulumi.Input[_builtins.str],
-                 tag_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
+                 tag_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Tag resource.
 
@@ -60,24 +60,24 @@ class TagArgs:
 
     @_builtins.property
     @pulumi.getter(name="tagTriggers")
-    def tag_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def tag_triggers(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
         """
         return pulumi.get(self, "tag_triggers")
 
     @tag_triggers.setter
-    def tag_triggers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def tag_triggers(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "tag_triggers", value)
 
 
 @pulumi.input_type
 class _TagState:
     def __init__(__self__, *,
-                 source_image: Optional[pulumi.Input[_builtins.str]] = None,
-                 source_image_id: Optional[pulumi.Input[_builtins.str]] = None,
-                 tag_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 target_image: Optional[pulumi.Input[_builtins.str]] = None):
+                 source_image: pulumi.Input[Optional[_builtins.str]] = None,
+                 source_image_id: pulumi.Input[Optional[_builtins.str]] = None,
+                 tag_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 target_image: pulumi.Input[Optional[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Tag resources.
 
@@ -97,50 +97,50 @@ class _TagState:
 
     @_builtins.property
     @pulumi.getter(name="sourceImage")
-    def source_image(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def source_image(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Name of the source image.
         """
         return pulumi.get(self, "source_image")
 
     @source_image.setter
-    def source_image(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def source_image(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "source_image", value)
 
     @_builtins.property
     @pulumi.getter(name="sourceImageId")
-    def source_image_id(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def source_image_id(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         ImageID of the source image in the format of `sha256:<<ID>>`
         """
         return pulumi.get(self, "source_image_id")
 
     @source_image_id.setter
-    def source_image_id(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def source_image_id(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "source_image_id", value)
 
     @_builtins.property
     @pulumi.getter(name="tagTriggers")
-    def tag_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+    def tag_triggers(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
         """
         List of values which cause the tag to be (re)created. This is useful for triggering a new tag when the source image changes.
         """
         return pulumi.get(self, "tag_triggers")
 
     @tag_triggers.setter
-    def tag_triggers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+    def tag_triggers(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "tag_triggers", value)
 
     @_builtins.property
     @pulumi.getter(name="targetImage")
-    def target_image(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def target_image(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Name of the target image.
         """
         return pulumi.get(self, "target_image")
 
     @target_image.setter
-    def target_image(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def target_image(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "target_image", value)
 
 
@@ -150,9 +150,9 @@ class Tag(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 source_image: Optional[pulumi.Input[_builtins.str]] = None,
-                 tag_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 target_image: Optional[pulumi.Input[_builtins.str]] = None,
+                 source_image: pulumi.Input[Optional[_builtins.str]] = None,
+                 tag_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 target_image: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         """
         Creates a docker tag. It has the exact same functionality as the `docker tag` command. Deleting the resource will neither delete the source nor target images. The source image must exist on the machine running the docker daemon.
@@ -189,9 +189,9 @@ class Tag(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 source_image: Optional[pulumi.Input[_builtins.str]] = None,
-                 tag_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 target_image: Optional[pulumi.Input[_builtins.str]] = None,
+                 source_image: pulumi.Input[Optional[_builtins.str]] = None,
+                 tag_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 target_image: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -219,10 +219,10 @@ class Tag(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            source_image: Optional[pulumi.Input[_builtins.str]] = None,
-            source_image_id: Optional[pulumi.Input[_builtins.str]] = None,
-            tag_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
-            target_image: Optional[pulumi.Input[_builtins.str]] = None) -> 'Tag':
+            source_image: pulumi.Input[Optional[_builtins.str]] = None,
+            source_image_id: pulumi.Input[Optional[_builtins.str]] = None,
+            tag_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            target_image: pulumi.Input[Optional[_builtins.str]] = None) -> 'Tag':
         """
         Get an existing Tag resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

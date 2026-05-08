@@ -95,36 +95,36 @@ export interface ProviderArgs {
     /**
      * PEM-encoded content of Docker host CA certificate
      */
-    caMaterial?: pulumi.Input<string>;
+    caMaterial?: pulumi.Input<string | undefined>;
     /**
      * PEM-encoded content of Docker client certificate
      */
-    certMaterial?: pulumi.Input<string>;
+    certMaterial?: pulumi.Input<string | undefined>;
     /**
      * Path to directory with Docker TLS config
      */
-    certPath?: pulumi.Input<string>;
+    certPath?: pulumi.Input<string | undefined>;
     /**
      * The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
      */
-    context?: pulumi.Input<string>;
+    context?: pulumi.Input<string | undefined>;
     /**
      * If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the data source `docker.RegistryImage`.
      */
-    disableDockerDaemonCheck?: pulumi.Input<boolean>;
+    disableDockerDaemonCheck?: pulumi.Input<boolean | undefined>;
     /**
      * The Docker daemon address
      */
-    host?: pulumi.Input<string>;
+    host?: pulumi.Input<string | undefined>;
     /**
      * PEM-encoded content of Docker client private key
      */
-    keyMaterial?: pulumi.Input<string>;
-    registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
+    keyMaterial?: pulumi.Input<string | undefined>;
+    registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[] | undefined>;
     /**
      * Additional SSH option flags to be appended when using `ssh://` protocol
      */
-    sshOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    sshOpts?: pulumi.Input<pulumi.Input<string>[] | undefined>;
 }
 
 export namespace Provider {

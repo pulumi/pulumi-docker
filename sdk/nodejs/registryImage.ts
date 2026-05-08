@@ -130,31 +130,31 @@ export interface RegistryImageState {
     /**
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
-    authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
+    authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig | undefined>;
     /**
      * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
-    build?: pulumi.Input<inputs.RegistryImageBuild>;
+    build?: pulumi.Input<inputs.RegistryImageBuild | undefined>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
-    insecureSkipVerify?: pulumi.Input<boolean>;
+    insecureSkipVerify?: pulumi.Input<boolean | undefined>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      */
-    keepRemotely?: pulumi.Input<boolean>;
+    keepRemotely?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the Docker image.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * The sha256 digest of the image.
      */
-    sha256Digest?: pulumi.Input<string>;
+    sha256Digest?: pulumi.Input<string | undefined>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */
-    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }
 
 /**
@@ -164,25 +164,25 @@ export interface RegistryImageArgs {
     /**
      * Authentication configuration for the Docker registry. It is only used for this resource.
      */
-    authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig>;
+    authConfig?: pulumi.Input<inputs.RegistryImageAuthConfig | undefined>;
     /**
      * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
-    build?: pulumi.Input<inputs.RegistryImageBuild>;
+    build?: pulumi.Input<inputs.RegistryImageBuild | undefined>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
-    insecureSkipVerify?: pulumi.Input<boolean>;
+    insecureSkipVerify?: pulumi.Input<boolean | undefined>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      */
-    keepRemotely?: pulumi.Input<boolean>;
+    keepRemotely?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the Docker image.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */
-    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }

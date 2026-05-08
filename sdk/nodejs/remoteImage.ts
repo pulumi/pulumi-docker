@@ -190,39 +190,39 @@ export interface RemoteImageState {
     /**
      * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
-    build?: pulumi.Input<inputs.RemoteImageBuild>;
+    build?: pulumi.Input<inputs.RemoteImageBuild | undefined>;
     /**
      * If true, then the image is removed forcibly when the resource is destroyed.
      */
-    forceRemove?: pulumi.Input<boolean>;
+    forceRemove?: pulumi.Input<boolean | undefined>;
     /**
      * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
      */
-    imageId?: pulumi.Input<string>;
+    imageId?: pulumi.Input<string | undefined>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
-    keepLocally?: pulumi.Input<boolean>;
+    keepLocally?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
-    pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    pullTriggers?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. This may not be populated when building an image, because it is read from the local Docker client and so may be available only when the image was either pulled from the repo or pushed to the repo (perhaps using `docker.RegistryImage`) in a previous run.
      */
-    repoDigest?: pulumi.Input<string>;
+    repoDigest?: pulumi.Input<string | undefined>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      */
-    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }
 
 /**
@@ -232,15 +232,15 @@ export interface RemoteImageArgs {
     /**
      * Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
-    build?: pulumi.Input<inputs.RemoteImageBuild>;
+    build?: pulumi.Input<inputs.RemoteImageBuild | undefined>;
     /**
      * If true, then the image is removed forcibly when the resource is destroyed.
      */
-    forceRemove?: pulumi.Input<boolean>;
+    forceRemove?: pulumi.Input<boolean | undefined>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
-    keepLocally?: pulumi.Input<boolean>;
+    keepLocally?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
@@ -248,13 +248,13 @@ export interface RemoteImageArgs {
     /**
      * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<string | undefined>;
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
-    pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    pullTriggers?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      */
-    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    triggers?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }

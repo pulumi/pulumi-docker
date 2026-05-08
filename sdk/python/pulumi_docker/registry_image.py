@@ -21,12 +21,12 @@ __all__ = ['RegistryImageArgs', 'RegistryImage']
 @pulumi.input_type
 class RegistryImageArgs:
     def __init__(__self__, *,
-                 auth_config: Optional[pulumi.Input['RegistryImageAuthConfigArgs']] = None,
-                 build: Optional[pulumi.Input['RegistryImageBuildArgs']] = None,
-                 insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+                 auth_config: pulumi.Input[Optional['RegistryImageAuthConfigArgs']] = None,
+                 build: pulumi.Input[Optional['RegistryImageBuildArgs']] = None,
+                 insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a RegistryImage resource.
 
@@ -52,87 +52,87 @@ class RegistryImageArgs:
 
     @_builtins.property
     @pulumi.getter(name="authConfig")
-    def auth_config(self) -> Optional[pulumi.Input['RegistryImageAuthConfigArgs']]:
+    def auth_config(self) -> pulumi.Input[Optional['RegistryImageAuthConfigArgs']]:
         """
         Authentication configuration for the Docker registry. It is only used for this resource.
         """
         return pulumi.get(self, "auth_config")
 
     @auth_config.setter
-    def auth_config(self, value: Optional[pulumi.Input['RegistryImageAuthConfigArgs']]):
+    def auth_config(self, value: pulumi.Input[Optional['RegistryImageAuthConfigArgs']]):
         pulumi.set(self, "auth_config", value)
 
     @_builtins.property
     @pulumi.getter
-    def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
+    def build(self) -> pulumi.Input[Optional['RegistryImageBuildArgs']]:
         """
         Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
     @build.setter
-    def build(self, value: Optional[pulumi.Input['RegistryImageBuildArgs']]):
+    def build(self, value: pulumi.Input[Optional['RegistryImageBuildArgs']]):
         pulumi.set(self, "build", value)
 
     @_builtins.property
     @pulumi.getter(name="insecureSkipVerify")
-    def insecure_skip_verify(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def insecure_skip_verify(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         """
         return pulumi.get(self, "insecure_skip_verify")
 
     @insecure_skip_verify.setter
-    def insecure_skip_verify(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def insecure_skip_verify(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "insecure_skip_verify", value)
 
     @_builtins.property
     @pulumi.getter(name="keepRemotely")
-    def keep_remotely(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def keep_remotely(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
     @keep_remotely.setter
-    def keep_remotely(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def keep_remotely(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "keep_remotely", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker image.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter
-    def triggers(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def triggers(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         return pulumi.get(self, "triggers")
 
     @triggers.setter
-    def triggers(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def triggers(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "triggers", value)
 
 
 @pulumi.input_type
 class _RegistryImageState:
     def __init__(__self__, *,
-                 auth_config: Optional[pulumi.Input['RegistryImageAuthConfigArgs']] = None,
-                 build: Optional[pulumi.Input['RegistryImageBuildArgs']] = None,
-                 insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 sha256_digest: Optional[pulumi.Input[_builtins.str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+                 auth_config: pulumi.Input[Optional['RegistryImageAuthConfigArgs']] = None,
+                 build: pulumi.Input[Optional['RegistryImageBuildArgs']] = None,
+                 insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 sha256_digest: pulumi.Input[Optional[_builtins.str]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering RegistryImage resources.
 
@@ -161,86 +161,86 @@ class _RegistryImageState:
 
     @_builtins.property
     @pulumi.getter(name="authConfig")
-    def auth_config(self) -> Optional[pulumi.Input['RegistryImageAuthConfigArgs']]:
+    def auth_config(self) -> pulumi.Input[Optional['RegistryImageAuthConfigArgs']]:
         """
         Authentication configuration for the Docker registry. It is only used for this resource.
         """
         return pulumi.get(self, "auth_config")
 
     @auth_config.setter
-    def auth_config(self, value: Optional[pulumi.Input['RegistryImageAuthConfigArgs']]):
+    def auth_config(self, value: pulumi.Input[Optional['RegistryImageAuthConfigArgs']]):
         pulumi.set(self, "auth_config", value)
 
     @_builtins.property
     @pulumi.getter
-    def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
+    def build(self) -> pulumi.Input[Optional['RegistryImageBuildArgs']]:
         """
         Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
     @build.setter
-    def build(self, value: Optional[pulumi.Input['RegistryImageBuildArgs']]):
+    def build(self, value: pulumi.Input[Optional['RegistryImageBuildArgs']]):
         pulumi.set(self, "build", value)
 
     @_builtins.property
     @pulumi.getter(name="insecureSkipVerify")
-    def insecure_skip_verify(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def insecure_skip_verify(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         """
         return pulumi.get(self, "insecure_skip_verify")
 
     @insecure_skip_verify.setter
-    def insecure_skip_verify(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def insecure_skip_verify(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "insecure_skip_verify", value)
 
     @_builtins.property
     @pulumi.getter(name="keepRemotely")
-    def keep_remotely(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def keep_remotely(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
     @keep_remotely.setter
-    def keep_remotely(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def keep_remotely(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "keep_remotely", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker image.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter(name="sha256Digest")
-    def sha256_digest(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def sha256_digest(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The sha256 digest of the image.
         """
         return pulumi.get(self, "sha256_digest")
 
     @sha256_digest.setter
-    def sha256_digest(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def sha256_digest(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "sha256_digest", value)
 
     @_builtins.property
     @pulumi.getter
-    def triggers(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def triggers(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
         return pulumi.get(self, "triggers")
 
     @triggers.setter
-    def triggers(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def triggers(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "triggers", value)
 
 
@@ -250,12 +250,12 @@ class RegistryImage(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
-                 build: Optional[pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
-                 insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
+                 build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
+                 insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -335,12 +335,12 @@ class RegistryImage(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
-                 build: Optional[pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
-                 insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
-                 keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
+                 build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
+                 insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
+                 keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -367,13 +367,13 @@ class RegistryImage(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            auth_config: Optional[pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
-            build: Optional[pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
-            insecure_skip_verify: Optional[pulumi.Input[_builtins.bool]] = None,
-            keep_remotely: Optional[pulumi.Input[_builtins.bool]] = None,
-            name: Optional[pulumi.Input[_builtins.str]] = None,
-            sha256_digest: Optional[pulumi.Input[_builtins.str]] = None,
-            triggers: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None) -> 'RegistryImage':
+            auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
+            build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
+            insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
+            keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            sha256_digest: pulumi.Input[Optional[_builtins.str]] = None,
+            triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None) -> 'RegistryImage':
         """
         Get an existing RegistryImage resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

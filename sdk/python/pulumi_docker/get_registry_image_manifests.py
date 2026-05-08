@@ -124,9 +124,9 @@ def get_registry_image_manifests(auth_config: Optional[Union['GetRegistryImageMa
         insecure_skip_verify=pulumi.get(__ret__, 'insecure_skip_verify'),
         manifests=pulumi.get(__ret__, 'manifests'),
         name=pulumi.get(__ret__, 'name'))
-def get_registry_image_manifests_output(auth_config: Optional[pulumi.Input[Optional[Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict']]]] = None,
-                                        insecure_skip_verify: Optional[pulumi.Input[Optional[_builtins.bool]]] = None,
-                                        name: Optional[pulumi.Input[_builtins.str]] = None,
+def get_registry_image_manifests_output(auth_config: pulumi.Input[Optional[Optional[Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict']]]] = None,
+                                        insecure_skip_verify: pulumi.Input[Optional[Optional[_builtins.bool]]] = None,
+                                        name: pulumi.Input[Optional[_builtins.str]] = None,
                                         opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetRegistryImageManifestsResult]:
     """
     Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.

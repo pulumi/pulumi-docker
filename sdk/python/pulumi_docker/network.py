@@ -21,17 +21,17 @@ __all__ = ['NetworkArgs', 'Network']
 @pulumi.input_type
 class NetworkArgs:
     def __init__(__self__, *,
-                 attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ingress: Optional[pulumi.Input[_builtins.bool]] = None,
-                 internal: Optional[pulumi.Input[_builtins.bool]] = None,
-                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
-                 ipam_driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 ipv6: Optional[pulumi.Input[_builtins.bool]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+                 attachable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ingress: pulumi.Input[Optional[_builtins.bool]] = None,
+                 internal: pulumi.Input[Optional[_builtins.bool]] = None,
+                 ipam_configs: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
+                 ipam_driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ipam_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 ipv6: pulumi.Input[Optional[_builtins.bool]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Network resource.
 
@@ -72,152 +72,152 @@ class NetworkArgs:
 
     @_builtins.property
     @pulumi.getter
-    def attachable(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def attachable(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Enable manual container attachment to the network.
         """
         return pulumi.get(self, "attachable")
 
     @attachable.setter
-    def attachable(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def attachable(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "attachable", value)
 
     @_builtins.property
     @pulumi.getter
-    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         """
         return pulumi.get(self, "driver")
 
     @driver.setter
-    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "driver", value)
 
     @_builtins.property
     @pulumi.getter
-    def ingress(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def ingress(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Create swarm routing-mesh network. Defaults to `false`.
         """
         return pulumi.get(self, "ingress")
 
     @ingress.setter
-    def ingress(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def ingress(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "ingress", value)
 
     @_builtins.property
     @pulumi.getter
-    def internal(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def internal(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Whether the network is internal.
         """
         return pulumi.get(self, "internal")
 
     @internal.setter
-    def internal(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def internal(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "internal", value)
 
     @_builtins.property
     @pulumi.getter(name="ipamConfigs")
-    def ipam_configs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]:
+    def ipam_configs(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]:
         """
         The IPAM configuration options
         """
         return pulumi.get(self, "ipam_configs")
 
     @ipam_configs.setter
-    def ipam_configs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]):
+    def ipam_configs(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]):
         pulumi.set(self, "ipam_configs", value)
 
     @_builtins.property
     @pulumi.getter(name="ipamDriver")
-    def ipam_driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def ipam_driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Driver used by the custom IP scheme of the network. Defaults to `default`
         """
         return pulumi.get(self, "ipam_driver")
 
     @ipam_driver.setter
-    def ipam_driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def ipam_driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "ipam_driver", value)
 
     @_builtins.property
     @pulumi.getter(name="ipamOptions")
-    def ipam_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def ipam_options(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         """
         return pulumi.get(self, "ipam_options")
 
     @ipam_options.setter
-    def ipam_options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def ipam_options(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "ipam_options", value)
 
     @_builtins.property
     @pulumi.getter
-    def ipv6(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def ipv6(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Enable IPv6 networking. Defaults to `false`.
         """
         return pulumi.get(self, "ipv6")
 
     @ipv6.setter
-    def ipv6(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def ipv6(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "ipv6", value)
 
     @_builtins.property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]:
+    def labels(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['NetworkLabelArgs']]]]:
         """
         User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]):
+    def labels(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker network.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter
-    def options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def options(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 
     @options.setter
-    def options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def options(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "options", value)
 
 
 @pulumi.input_type
 class _NetworkState:
     def __init__(__self__, *,
-                 attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ingress: Optional[pulumi.Input[_builtins.bool]] = None,
-                 internal: Optional[pulumi.Input[_builtins.bool]] = None,
-                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
-                 ipam_driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 ipv6: Optional[pulumi.Input[_builtins.bool]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 scope: Optional[pulumi.Input[_builtins.str]] = None):
+                 attachable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ingress: pulumi.Input[Optional[_builtins.bool]] = None,
+                 internal: pulumi.Input[Optional[_builtins.bool]] = None,
+                 ipam_configs: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
+                 ipam_driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ipam_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 ipv6: pulumi.Input[Optional[_builtins.bool]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 scope: pulumi.Input[Optional[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Network resources.
 
@@ -261,146 +261,146 @@ class _NetworkState:
 
     @_builtins.property
     @pulumi.getter
-    def attachable(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def attachable(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Enable manual container attachment to the network.
         """
         return pulumi.get(self, "attachable")
 
     @attachable.setter
-    def attachable(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def attachable(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "attachable", value)
 
     @_builtins.property
     @pulumi.getter
-    def driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         """
         return pulumi.get(self, "driver")
 
     @driver.setter
-    def driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "driver", value)
 
     @_builtins.property
     @pulumi.getter
-    def ingress(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def ingress(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Create swarm routing-mesh network. Defaults to `false`.
         """
         return pulumi.get(self, "ingress")
 
     @ingress.setter
-    def ingress(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def ingress(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "ingress", value)
 
     @_builtins.property
     @pulumi.getter
-    def internal(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def internal(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Whether the network is internal.
         """
         return pulumi.get(self, "internal")
 
     @internal.setter
-    def internal(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def internal(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "internal", value)
 
     @_builtins.property
     @pulumi.getter(name="ipamConfigs")
-    def ipam_configs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]:
+    def ipam_configs(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]:
         """
         The IPAM configuration options
         """
         return pulumi.get(self, "ipam_configs")
 
     @ipam_configs.setter
-    def ipam_configs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]):
+    def ipam_configs(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]):
         pulumi.set(self, "ipam_configs", value)
 
     @_builtins.property
     @pulumi.getter(name="ipamDriver")
-    def ipam_driver(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def ipam_driver(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Driver used by the custom IP scheme of the network. Defaults to `default`
         """
         return pulumi.get(self, "ipam_driver")
 
     @ipam_driver.setter
-    def ipam_driver(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def ipam_driver(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "ipam_driver", value)
 
     @_builtins.property
     @pulumi.getter(name="ipamOptions")
-    def ipam_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def ipam_options(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         """
         return pulumi.get(self, "ipam_options")
 
     @ipam_options.setter
-    def ipam_options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def ipam_options(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "ipam_options", value)
 
     @_builtins.property
     @pulumi.getter
-    def ipv6(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def ipv6(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Enable IPv6 networking. Defaults to `false`.
         """
         return pulumi.get(self, "ipv6")
 
     @ipv6.setter
-    def ipv6(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def ipv6(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "ipv6", value)
 
     @_builtins.property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]:
+    def labels(self) -> pulumi.Input[Optional[Sequence[pulumi.Input['NetworkLabelArgs']]]]:
         """
         User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]):
+    def labels(self, value: pulumi.Input[Optional[Sequence[pulumi.Input['NetworkLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The name of the Docker network.
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
     @_builtins.property
     @pulumi.getter
-    def options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def options(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 
     @options.setter
-    def options(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def options(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "options", value)
 
     @_builtins.property
     @pulumi.getter
-    def scope(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def scope(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Scope of the network. One of `swarm`, `global`, or `local`.
         """
         return pulumi.get(self, "scope")
 
     @scope.setter
-    def scope(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def scope(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "scope", value)
 
 
@@ -410,17 +410,17 @@ class Network(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ingress: Optional[pulumi.Input[_builtins.bool]] = None,
-                 internal: Optional[pulumi.Input[_builtins.bool]] = None,
-                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
-                 ipam_driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 ipv6: Optional[pulumi.Input[_builtins.bool]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 attachable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ingress: pulumi.Input[Optional[_builtins.bool]] = None,
+                 internal: pulumi.Input[Optional[_builtins.bool]] = None,
+                 ipam_configs: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
+                 ipam_driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ipam_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 ipv6: pulumi.Input[Optional[_builtins.bool]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -557,17 +557,17 @@ class Network(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-                 driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ingress: Optional[pulumi.Input[_builtins.bool]] = None,
-                 internal: Optional[pulumi.Input[_builtins.bool]] = None,
-                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
-                 ipam_driver: Optional[pulumi.Input[_builtins.str]] = None,
-                 ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 ipv6: Optional[pulumi.Input[_builtins.bool]] = None,
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None,
-                 options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 attachable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ingress: pulumi.Input[Optional[_builtins.bool]] = None,
+                 internal: pulumi.Input[Optional[_builtins.bool]] = None,
+                 ipam_configs: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
+                 ipam_driver: pulumi.Input[Optional[_builtins.str]] = None,
+                 ipam_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 ipv6: pulumi.Input[Optional[_builtins.bool]] = None,
+                 labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None,
+                 options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -599,18 +599,18 @@ class Network(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            attachable: Optional[pulumi.Input[_builtins.bool]] = None,
-            driver: Optional[pulumi.Input[_builtins.str]] = None,
-            ingress: Optional[pulumi.Input[_builtins.bool]] = None,
-            internal: Optional[pulumi.Input[_builtins.bool]] = None,
-            ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
-            ipam_driver: Optional[pulumi.Input[_builtins.str]] = None,
-            ipam_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-            ipv6: Optional[pulumi.Input[_builtins.bool]] = None,
-            labels: Optional[pulumi.Input[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
-            name: Optional[pulumi.Input[_builtins.str]] = None,
-            options: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-            scope: Optional[pulumi.Input[_builtins.str]] = None) -> 'Network':
+            attachable: pulumi.Input[Optional[_builtins.bool]] = None,
+            driver: pulumi.Input[Optional[_builtins.str]] = None,
+            ingress: pulumi.Input[Optional[_builtins.bool]] = None,
+            internal: pulumi.Input[Optional[_builtins.bool]] = None,
+            ipam_configs: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict']]]]] = None,
+            ipam_driver: pulumi.Input[Optional[_builtins.str]] = None,
+            ipam_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            ipv6: pulumi.Input[Optional[_builtins.bool]] = None,
+            labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict']]]]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            scope: pulumi.Input[Optional[_builtins.str]] = None) -> 'Network':
         """
         Get an existing Network resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.

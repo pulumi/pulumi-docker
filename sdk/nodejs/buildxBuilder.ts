@@ -168,59 +168,59 @@ export interface BuildxBuilderState {
     /**
      * Append a node to builder instead of changing it
      */
-    append?: pulumi.Input<boolean>;
+    append?: pulumi.Input<boolean | undefined>;
     /**
      * Automatically boot the builder after creation. Defaults to `false`
      */
-    bootstrap?: pulumi.Input<boolean>;
+    bootstrap?: pulumi.Input<boolean | undefined>;
     /**
      * BuildKit daemon config file
      */
-    buildkitConfig?: pulumi.Input<string>;
+    buildkitConfig?: pulumi.Input<string | undefined>;
     /**
      * BuildKit flags to set for the builder.
      */
-    buildkitFlags?: pulumi.Input<string>;
+    buildkitFlags?: pulumi.Input<string | undefined>;
     /**
      * Configuration block for the Docker-Container driver.
      */
-    dockerContainer?: pulumi.Input<inputs.BuildxBuilderDockerContainer>;
+    dockerContainer?: pulumi.Input<inputs.BuildxBuilderDockerContainer | undefined>;
     /**
      * The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
      */
-    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
      */
-    endpoint?: pulumi.Input<string>;
+    endpoint?: pulumi.Input<string | undefined>;
     /**
      * Configuration block for the Kubernetes driver.
      */
-    kubernetes?: pulumi.Input<inputs.BuildxBuilderKubernetes>;
+    kubernetes?: pulumi.Input<inputs.BuildxBuilderKubernetes | undefined>;
     /**
      * The name of the Buildx builder. IF not specified, a random name will be generated.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Create/modify node with given name
      */
-    node?: pulumi.Input<string>;
+    node?: pulumi.Input<string | undefined>;
     /**
      * Fixed platforms for current node
      */
-    platforms?: pulumi.Input<pulumi.Input<string>[]>;
+    platforms?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Configuration block for the Remote driver.
      */
-    remote?: pulumi.Input<inputs.BuildxBuilderRemote>;
+    remote?: pulumi.Input<inputs.BuildxBuilderRemote | undefined>;
     /**
      * Set the current builder instance as the default for the current context.
      */
-    use?: pulumi.Input<boolean>;
+    use?: pulumi.Input<boolean | undefined>;
 }
 
 /**
@@ -230,57 +230,57 @@ export interface BuildxBuilderArgs {
     /**
      * Append a node to builder instead of changing it
      */
-    append?: pulumi.Input<boolean>;
+    append?: pulumi.Input<boolean | undefined>;
     /**
      * Automatically boot the builder after creation. Defaults to `false`
      */
-    bootstrap?: pulumi.Input<boolean>;
+    bootstrap?: pulumi.Input<boolean | undefined>;
     /**
      * BuildKit daemon config file
      */
-    buildkitConfig?: pulumi.Input<string>;
+    buildkitConfig?: pulumi.Input<string | undefined>;
     /**
      * BuildKit flags to set for the builder.
      */
-    buildkitFlags?: pulumi.Input<string>;
+    buildkitFlags?: pulumi.Input<string | undefined>;
     /**
      * Configuration block for the Docker-Container driver.
      */
-    dockerContainer?: pulumi.Input<inputs.BuildxBuilderDockerContainer>;
+    dockerContainer?: pulumi.Input<inputs.BuildxBuilderDockerContainer | undefined>;
     /**
      * The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
      */
-    driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string | undefined>;
     /**
      * Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
      */
-    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
      */
-    endpoint?: pulumi.Input<string>;
+    endpoint?: pulumi.Input<string | undefined>;
     /**
      * Configuration block for the Kubernetes driver.
      */
-    kubernetes?: pulumi.Input<inputs.BuildxBuilderKubernetes>;
+    kubernetes?: pulumi.Input<inputs.BuildxBuilderKubernetes | undefined>;
     /**
      * The name of the Buildx builder. IF not specified, a random name will be generated.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Create/modify node with given name
      */
-    node?: pulumi.Input<string>;
+    node?: pulumi.Input<string | undefined>;
     /**
      * Fixed platforms for current node
      */
-    platforms?: pulumi.Input<pulumi.Input<string>[]>;
+    platforms?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Configuration block for the Remote driver.
      */
-    remote?: pulumi.Input<inputs.BuildxBuilderRemote>;
+    remote?: pulumi.Input<inputs.BuildxBuilderRemote | undefined>;
     /**
      * Set the current builder instance as the default for the current context.
      */
-    use?: pulumi.Input<boolean>;
+    use?: pulumi.Input<boolean | undefined>;
 }
