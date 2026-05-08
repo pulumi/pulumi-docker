@@ -53,6 +53,9 @@ return await Deployment.RunAsync(() =>
         },
         ImageName = "username/image:tag1",
         SkipPush = true,
+    }, new CustomResourceOptions
+    {
+        Version = "v4.4.0",
     });
 
     return new Dictionary<string, object?>
@@ -119,8 +122,9 @@ import com.pulumi.core.Output;
 import com.pulumi.docker.Image;
 import com.pulumi.docker.ImageArgs;
 import com.pulumi.docker.inputs.DockerBuildArgs;
-import java.util.List;
+import com.pulumi.resources.CustomResourceOptions;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.io.File;
 import java.nio.file.Files;
@@ -140,7 +144,9 @@ public class App {
                 .build())
             .imageName("username/image:tag1")
             .skipPush(true)
-            .build());
+            .build(), CustomResourceOptions.builder()
+                .version("v4.4.0")
+                .build());
 
         ctx.export("imageName", demoImage.imageName());
     }
@@ -196,6 +202,9 @@ return await Deployment.RunAsync(() =>
             Dockerfile = "Dockerfile",
         },
         ImageName = "docker.io/username/push-image:tag1",
+    }, new CustomResourceOptions
+    {
+        Version = "v4.4.0",
     });
 
     return new Dictionary<string, object?>
@@ -261,8 +270,9 @@ import com.pulumi.core.Output;
 import com.pulumi.docker.Image;
 import com.pulumi.docker.ImageArgs;
 import com.pulumi.docker.inputs.DockerBuildArgs;
-import java.util.List;
+import com.pulumi.resources.CustomResourceOptions;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.io.File;
 import java.nio.file.Files;
@@ -280,7 +290,9 @@ public class App {
                 .dockerfile("Dockerfile")
                 .build())
             .imageName("docker.io/username/push-image:tag1")
-            .build());
+            .build(), CustomResourceOptions.builder()
+                .version("v4.4.0")
+                .build());
 
         ctx.export("imageName", demoPushImage.imageName());
         ctx.export("repoDigest", demoPushImage.repoDigest());
@@ -393,6 +405,9 @@ return await Deployment.RunAsync(() =>
             Server = ecrRepository.RepositoryUrl,
             Username = authToken.Apply(getAuthorizationTokenResult => getAuthorizationTokenResult.UserName),
         },
+    }, new CustomResourceOptions
+    {
+        Version = "v4.1.2",
     });
 
     return new Dictionary<string, object?>
@@ -511,8 +526,9 @@ import com.pulumi.docker.ImageArgs;
 import com.pulumi.docker.inputs.DockerBuildArgs;
 import com.pulumi.docker.inputs.CacheFromArgs;
 import com.pulumi.docker.inputs.RegistryArgs;
-import java.util.List;
+import com.pulumi.resources.CustomResourceOptions;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.io.File;
 import java.nio.file.Files;
@@ -547,7 +563,9 @@ public class App {
                 .server(ecrRepository.repositoryUrl())
                 .username(authToken.applyValue(_authToken -> _authToken.userName()))
                 .build())
-            .build());
+            .build(), CustomResourceOptions.builder()
+                .version("v4.1.2")
+                .build());
 
         ctx.export("imageName", myAppImage.imageName());
     }
