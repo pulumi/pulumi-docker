@@ -821,6 +821,10 @@ export interface RegistryImageBuild {
      */
     platform?: string;
     /**
+     * Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     */
+    provenance?: string;
+    /**
      * Attempt to pull the image even if an older image exists locally
      */
     pullParent?: boolean;
@@ -832,6 +836,10 @@ export interface RegistryImageBuild {
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: boolean;
+    /**
+     * Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     */
+    sbom?: string;
     /**
      * Set build-time secrets. Only available when you use a buildx builder.
      */
@@ -1049,6 +1057,10 @@ export interface RemoteImageBuild {
      */
     platform?: string;
     /**
+     * Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     */
+    provenance?: string;
+    /**
      * Attempt to pull the image even if an older image exists locally
      */
     pullParent?: boolean;
@@ -1060,6 +1072,10 @@ export interface RemoteImageBuild {
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: boolean;
+    /**
+     * Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     */
+    sbom?: string;
     /**
      * Set build-time secrets. Only available when you use a buildx builder.
      */

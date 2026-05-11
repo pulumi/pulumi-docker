@@ -150,6 +150,11 @@ public final class RemoteImageBuild {
      */
     private @Nullable String platform;
     /**
+     * @return Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don&#39;t support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     * 
+     */
+    private @Nullable String provenance;
+    /**
      * @return Attempt to pull the image even if an older image exists locally
      * 
      */
@@ -164,6 +169,11 @@ public final class RemoteImageBuild {
      * 
      */
     private @Nullable Boolean remove;
+    /**
+     * @return Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     * 
+     */
+    private @Nullable String sbom;
     /**
      * @return Set build-time secrets. Only available when you use a buildx builder.
      * 
@@ -404,6 +414,13 @@ public final class RemoteImageBuild {
         return Optional.ofNullable(this.platform);
     }
     /**
+     * @return Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don&#39;t support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     * 
+     */
+    public Optional<String> provenance() {
+        return Optional.ofNullable(this.provenance);
+    }
+    /**
      * @return Attempt to pull the image even if an older image exists locally
      * 
      */
@@ -423,6 +440,13 @@ public final class RemoteImageBuild {
      */
     public Optional<Boolean> remove() {
         return Optional.ofNullable(this.remove);
+    }
+    /**
+     * @return Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     * 
+     */
+    public Optional<String> sbom() {
+        return Optional.ofNullable(this.sbom);
     }
     /**
      * @return Set build-time secrets. Only available when you use a buildx builder.
@@ -537,9 +561,11 @@ public final class RemoteImageBuild {
         private @Nullable String networkMode;
         private @Nullable Boolean noCache;
         private @Nullable String platform;
+        private @Nullable String provenance;
         private @Nullable Boolean pullParent;
         private @Nullable String remoteContext;
         private @Nullable Boolean remove;
+        private @Nullable String sbom;
         private @Nullable List<RemoteImageBuildSecret> secrets;
         private @Nullable List<String> securityOpts;
         private @Nullable String sessionId;
@@ -580,9 +606,11 @@ public final class RemoteImageBuild {
     	      this.networkMode = defaults.networkMode;
     	      this.noCache = defaults.noCache;
     	      this.platform = defaults.platform;
+    	      this.provenance = defaults.provenance;
     	      this.pullParent = defaults.pullParent;
     	      this.remoteContext = defaults.remoteContext;
     	      this.remove = defaults.remove;
+    	      this.sbom = defaults.sbom;
     	      this.secrets = defaults.secrets;
     	      this.securityOpts = defaults.securityOpts;
     	      this.sessionId = defaults.sessionId;
@@ -770,6 +798,12 @@ public final class RemoteImageBuild {
             return this;
         }
         @CustomType.Setter
+        public Builder provenance(@Nullable String provenance) {
+
+            this.provenance = provenance;
+            return this;
+        }
+        @CustomType.Setter
         public Builder pullParent(@Nullable Boolean pullParent) {
 
             this.pullParent = pullParent;
@@ -785,6 +819,12 @@ public final class RemoteImageBuild {
         public Builder remove(@Nullable Boolean remove) {
 
             this.remove = remove;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder sbom(@Nullable String sbom) {
+
+            this.sbom = sbom;
             return this;
         }
         @CustomType.Setter
@@ -893,9 +933,11 @@ public final class RemoteImageBuild {
             _resultValue.networkMode = networkMode;
             _resultValue.noCache = noCache;
             _resultValue.platform = platform;
+            _resultValue.provenance = provenance;
             _resultValue.pullParent = pullParent;
             _resultValue.remoteContext = remoteContext;
             _resultValue.remove = remove;
+            _resultValue.sbom = sbom;
             _resultValue.secrets = secrets;
             _resultValue.securityOpts = securityOpts;
             _resultValue.sessionId = sessionId;

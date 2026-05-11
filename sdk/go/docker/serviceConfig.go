@@ -7,7 +7,6 @@ import (
 	"context"
 	"reflect"
 
-	"errors"
 	"github.com/pulumi/pulumi-docker/sdk/v5/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -71,7 +70,9 @@ type ServiceConfig struct {
 	pulumi.CustomResourceState
 
 	// Base64-url-safe-encoded config data
-	Data pulumi.StringOutput `pulumi:"data"`
+	Data pulumi.StringPtrOutput `pulumi:"data"`
+	// Raw (plain text) config data
+	DataRaw pulumi.StringPtrOutput `pulumi:"dataRaw"`
 	// User-defined key/value metadata
 	Labels ServiceConfigLabelArrayOutput `pulumi:"labels"`
 	// User-defined name of the config
@@ -82,12 +83,9 @@ type ServiceConfig struct {
 func NewServiceConfig(ctx *pulumi.Context,
 	name string, args *ServiceConfigArgs, opts ...pulumi.ResourceOption) (*ServiceConfig, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &ServiceConfigArgs{}
 	}
 
-	if args.Data == nil {
-		return nil, errors.New("invalid value for required argument 'Data'")
-	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource ServiceConfig
 	err := ctx.RegisterResource("docker:index/serviceConfig:ServiceConfig", name, args, &resource, opts...)
@@ -113,6 +111,8 @@ func GetServiceConfig(ctx *pulumi.Context,
 type serviceConfigState struct {
 	// Base64-url-safe-encoded config data
 	Data *string `pulumi:"data"`
+	// Raw (plain text) config data
+	DataRaw *string `pulumi:"dataRaw"`
 	// User-defined key/value metadata
 	Labels []ServiceConfigLabel `pulumi:"labels"`
 	// User-defined name of the config
@@ -122,6 +122,8 @@ type serviceConfigState struct {
 type ServiceConfigState struct {
 	// Base64-url-safe-encoded config data
 	Data pulumi.StringPtrInput
+	// Raw (plain text) config data
+	DataRaw pulumi.StringPtrInput
 	// User-defined key/value metadata
 	Labels ServiceConfigLabelArrayInput
 	// User-defined name of the config
@@ -134,7 +136,9 @@ func (ServiceConfigState) ElementType() reflect.Type {
 
 type serviceConfigArgs struct {
 	// Base64-url-safe-encoded config data
-	Data string `pulumi:"data"`
+	Data *string `pulumi:"data"`
+	// Raw (plain text) config data
+	DataRaw *string `pulumi:"dataRaw"`
 	// User-defined key/value metadata
 	Labels []ServiceConfigLabel `pulumi:"labels"`
 	// User-defined name of the config
@@ -144,7 +148,9 @@ type serviceConfigArgs struct {
 // The set of arguments for constructing a ServiceConfig resource.
 type ServiceConfigArgs struct {
 	// Base64-url-safe-encoded config data
-	Data pulumi.StringInput
+	Data pulumi.StringPtrInput
+	// Raw (plain text) config data
+	DataRaw pulumi.StringPtrInput
 	// User-defined key/value metadata
 	Labels ServiceConfigLabelArrayInput
 	// User-defined name of the config
@@ -239,8 +245,13 @@ func (o ServiceConfigOutput) ToServiceConfigOutputWithContext(ctx context.Contex
 }
 
 // Base64-url-safe-encoded config data
-func (o ServiceConfigOutput) Data() pulumi.StringOutput {
-	return o.ApplyT(func(v *ServiceConfig) pulumi.StringOutput { return v.Data }).(pulumi.StringOutput)
+func (o ServiceConfigOutput) Data() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceConfig) pulumi.StringPtrOutput { return v.Data }).(pulumi.StringPtrOutput)
+}
+
+// Raw (plain text) config data
+func (o ServiceConfigOutput) DataRaw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceConfig) pulumi.StringPtrOutput { return v.DataRaw }).(pulumi.StringPtrOutput)
 }
 
 // User-defined key/value metadata

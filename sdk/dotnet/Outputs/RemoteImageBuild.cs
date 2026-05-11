@@ -118,6 +118,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Platform;
         /// <summary>
+        /// Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `False` to disable. Valid values: `False`, `True`, `Min`, `Max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+        /// </summary>
+        public readonly string? Provenance;
+        /// <summary>
         /// Attempt to pull the image even if an older image exists locally
         /// </summary>
         public readonly bool? PullParent;
@@ -129,6 +133,10 @@ namespace Pulumi.Docker.Outputs
         /// Remove intermediate containers after a successful build. Defaults to `True`.
         /// </summary>
         public readonly bool? Remove;
+        /// <summary>
+        /// Set SBOM (Software Bill of Materials) attestation for the build. Set to `False` to disable. Valid values: `False`, `True`, or a full SBOM specification. Only available when using a buildx builder.
+        /// </summary>
+        public readonly string? Sbom;
         /// <summary>
         /// Set build-time secrets. Only available when you use a buildx builder.
         /// </summary>
@@ -228,11 +236,15 @@ namespace Pulumi.Docker.Outputs
 
             string? platform,
 
+            string? provenance,
+
             bool? pullParent,
 
             string? remoteContext,
 
             bool? remove,
+
+            string? sbom,
 
             ImmutableArray<Outputs.RemoteImageBuildSecret> secrets,
 
@@ -282,9 +294,11 @@ namespace Pulumi.Docker.Outputs
             NetworkMode = networkMode;
             NoCache = noCache;
             Platform = platform;
+            Provenance = provenance;
             PullParent = pullParent;
             RemoteContext = remoteContext;
             Remove = remove;
+            Sbom = sbom;
             Secrets = secrets;
             SecurityOpts = securityOpts;
             SessionId = sessionId;

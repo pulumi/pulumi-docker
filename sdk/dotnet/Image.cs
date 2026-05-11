@@ -60,6 +60,9 @@ namespace Pulumi.Docker
     ///         },
     ///         ImageName = "username/image:tag1",
     ///         SkipPush = true,
+    ///     }, new CustomResourceOptions
+    ///     {
+    ///         Version = "v4.4.0",
     ///     });
     /// 
     ///     return new Dictionary&lt;string, object?&gt;
@@ -86,6 +89,9 @@ namespace Pulumi.Docker
     ///             Dockerfile = "Dockerfile",
     ///         },
     ///         ImageName = "docker.io/username/push-image:tag1",
+    ///     }, new CustomResourceOptions
+    ///     {
+    ///         Version = "v4.4.0",
     ///     });
     /// 
     ///     return new Dictionary&lt;string, object?&gt;
@@ -141,6 +147,9 @@ namespace Pulumi.Docker
     ///             Server = ecrRepository.RepositoryUrl,
     ///             Username = authToken.Apply(getAuthorizationTokenResult =&gt; getAuthorizationTokenResult.UserName),
     ///         },
+    ///     }, new CustomResourceOptions
+    ///     {
+    ///         Version = "v4.1.2",
     ///     });
     /// 
     ///     return new Dictionary&lt;string, object?&gt;

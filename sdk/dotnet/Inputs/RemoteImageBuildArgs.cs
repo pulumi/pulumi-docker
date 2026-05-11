@@ -217,6 +217,12 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Platform { get; set; }
 
         /// <summary>
+        /// Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `False` to disable. Valid values: `False`, `True`, `Min`, `Max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+        /// </summary>
+        [Input("provenance")]
+        public Input<string>? Provenance { get; set; }
+
+        /// <summary>
         /// Attempt to pull the image even if an older image exists locally
         /// </summary>
         [Input("pullParent")]
@@ -233,6 +239,12 @@ namespace Pulumi.Docker.Inputs
         /// </summary>
         [Input("remove")]
         public Input<bool>? Remove { get; set; }
+
+        /// <summary>
+        /// Set SBOM (Software Bill of Materials) attestation for the build. Set to `False` to disable. Valid values: `False`, `True`, or a full SBOM specification. Only available when using a buildx builder.
+        /// </summary>
+        [Input("sbom")]
+        public Input<string>? Sbom { get; set; }
 
         [Input("secrets")]
         private InputList<Inputs.RemoteImageBuildSecretArgs>? _secrets;

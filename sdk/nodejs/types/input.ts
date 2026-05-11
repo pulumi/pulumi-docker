@@ -868,6 +868,10 @@ export interface RegistryImageBuild {
      */
     platform?: pulumi.Input<string | undefined>;
     /**
+     * Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     */
+    provenance?: pulumi.Input<string | undefined>;
+    /**
      * Attempt to pull the image even if an older image exists locally
      */
     pullParent?: pulumi.Input<boolean | undefined>;
@@ -879,6 +883,10 @@ export interface RegistryImageBuild {
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: pulumi.Input<boolean | undefined>;
+    /**
+     * Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     */
+    sbom?: pulumi.Input<string | undefined>;
     /**
      * Set build-time secrets. Only available when you use a buildx builder.
      */
@@ -1096,6 +1104,10 @@ export interface RemoteImageBuild {
      */
     platform?: pulumi.Input<string | undefined>;
     /**
+     * Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     */
+    provenance?: pulumi.Input<string | undefined>;
+    /**
      * Attempt to pull the image even if an older image exists locally
      */
     pullParent?: pulumi.Input<boolean | undefined>;
@@ -1107,6 +1119,10 @@ export interface RemoteImageBuild {
      * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: pulumi.Input<boolean | undefined>;
+    /**
+     * Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     */
+    sbom?: pulumi.Input<string | undefined>;
     /**
      * Set build-time secrets. Only available when you use a buildx builder.
      */
