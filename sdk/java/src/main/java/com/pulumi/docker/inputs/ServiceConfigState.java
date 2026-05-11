@@ -33,6 +33,21 @@ public final class ServiceConfigState extends com.pulumi.resources.ResourceArgs 
     }
 
     /**
+     * Raw (plain text) config data
+     * 
+     */
+    @Import(name="dataRaw")
+    private @Nullable Output<String> dataRaw;
+
+    /**
+     * @return Raw (plain text) config data
+     * 
+     */
+    public Optional<Output<String>> dataRaw() {
+        return Optional.ofNullable(this.dataRaw);
+    }
+
+    /**
      * User-defined key/value metadata
      * 
      */
@@ -66,6 +81,7 @@ public final class ServiceConfigState extends com.pulumi.resources.ResourceArgs 
 
     private ServiceConfigState(ServiceConfigState $) {
         this.data = $.data;
+        this.dataRaw = $.dataRaw;
         this.labels = $.labels;
         this.name = $.name;
     }
@@ -107,6 +123,27 @@ public final class ServiceConfigState extends com.pulumi.resources.ResourceArgs 
          */
         public Builder data(String data) {
             return data(Output.of(data));
+        }
+
+        /**
+         * @param dataRaw Raw (plain text) config data
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dataRaw(@Nullable Output<String> dataRaw) {
+            $.dataRaw = dataRaw;
+            return this;
+        }
+
+        /**
+         * @param dataRaw Raw (plain text) config data
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dataRaw(String dataRaw) {
+            return dataRaw(Output.of(dataRaw));
         }
 
         /**

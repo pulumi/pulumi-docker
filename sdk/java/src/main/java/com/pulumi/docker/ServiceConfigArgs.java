@@ -6,7 +6,6 @@ package com.pulumi.docker;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.ServiceConfigLabelArgs;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -22,15 +21,30 @@ public final class ServiceConfigArgs extends com.pulumi.resources.ResourceArgs {
      * Base64-url-safe-encoded config data
      * 
      */
-    @Import(name="data", required=true)
-    private Output<String> data;
+    @Import(name="data")
+    private @Nullable Output<String> data;
 
     /**
      * @return Base64-url-safe-encoded config data
      * 
      */
-    public Output<String> data() {
-        return this.data;
+    public Optional<Output<String>> data() {
+        return Optional.ofNullable(this.data);
+    }
+
+    /**
+     * Raw (plain text) config data
+     * 
+     */
+    @Import(name="dataRaw")
+    private @Nullable Output<String> dataRaw;
+
+    /**
+     * @return Raw (plain text) config data
+     * 
+     */
+    public Optional<Output<String>> dataRaw() {
+        return Optional.ofNullable(this.dataRaw);
     }
 
     /**
@@ -67,6 +81,7 @@ public final class ServiceConfigArgs extends com.pulumi.resources.ResourceArgs {
 
     private ServiceConfigArgs(ServiceConfigArgs $) {
         this.data = $.data;
+        this.dataRaw = $.dataRaw;
         this.labels = $.labels;
         this.name = $.name;
     }
@@ -95,7 +110,7 @@ public final class ServiceConfigArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder data(Output<String> data) {
+        public Builder data(@Nullable Output<String> data) {
             $.data = data;
             return this;
         }
@@ -108,6 +123,27 @@ public final class ServiceConfigArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder data(String data) {
             return data(Output.of(data));
+        }
+
+        /**
+         * @param dataRaw Raw (plain text) config data
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dataRaw(@Nullable Output<String> dataRaw) {
+            $.dataRaw = dataRaw;
+            return this;
+        }
+
+        /**
+         * @param dataRaw Raw (plain text) config data
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dataRaw(String dataRaw) {
+            return dataRaw(Output.of(dataRaw));
         }
 
         /**
@@ -163,9 +199,6 @@ public final class ServiceConfigArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ServiceConfigArgs build() {
-            if ($.data == null) {
-                throw new MissingRequiredPropertyException("ServiceConfigArgs", "data");
-            }
             return $;
         }
     }

@@ -71,7 +71,13 @@ namespace Pulumi.Docker
         /// Base64-url-safe-encoded config data
         /// </summary>
         [Output("data")]
-        public Output<string> Data { get; private set; } = null!;
+        public Output<string?> Data { get; private set; } = null!;
+
+        /// <summary>
+        /// Raw (plain text) config data
+        /// </summary>
+        [Output("dataRaw")]
+        public Output<string?> DataRaw { get; private set; } = null!;
 
         /// <summary>
         /// User-defined key/value metadata
@@ -93,7 +99,7 @@ namespace Pulumi.Docker
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public ServiceConfig(string name, ServiceConfigArgs args, CustomResourceOptions? options = null)
+        public ServiceConfig(string name, ServiceConfigArgs? args = null, CustomResourceOptions? options = null)
             : base("docker:index/serviceConfig:ServiceConfig", name, args ?? new ServiceConfigArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -134,8 +140,14 @@ namespace Pulumi.Docker
         /// <summary>
         /// Base64-url-safe-encoded config data
         /// </summary>
-        [Input("data", required: true)]
-        public Input<string> Data { get; set; } = null!;
+        [Input("data")]
+        public Input<string>? Data { get; set; }
+
+        /// <summary>
+        /// Raw (plain text) config data
+        /// </summary>
+        [Input("dataRaw")]
+        public Input<string>? DataRaw { get; set; }
 
         [Input("labels")]
         private InputList<Inputs.ServiceConfigLabelArgs>? _labels;
@@ -168,6 +180,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("data")]
         public Input<string>? Data { get; set; }
+
+        /// <summary>
+        /// Raw (plain text) config data
+        /// </summary>
+        [Input("dataRaw")]
+        public Input<string>? DataRaw { get; set; }
 
         [Input("labels")]
         private InputList<Inputs.ServiceConfigLabelGetArgs>? _labels;

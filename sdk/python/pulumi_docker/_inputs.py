@@ -3346,6 +3346,10 @@ class RegistryImageBuildArgsDict(TypedDict):
     """
     Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
     """
+    provenance: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    """
+    Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+    """
     pull_parent: NotRequired[pulumi.Input[Optional[_builtins.bool]]]
     """
     Attempt to pull the image even if an older image exists locally
@@ -3357,6 +3361,10 @@ class RegistryImageBuildArgsDict(TypedDict):
     remove: NotRequired[pulumi.Input[Optional[_builtins.bool]]]
     """
     Remove intermediate containers after a successful build. Defaults to `true`.
+    """
+    sbom: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    """
+    Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
     """
     secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]]]]
     """
@@ -3432,9 +3440,11 @@ class RegistryImageBuildArgs:
                  network_mode: pulumi.Input[Optional[_builtins.str]] = None,
                  no_cache: pulumi.Input[Optional[_builtins.bool]] = None,
                  platform: pulumi.Input[Optional[_builtins.str]] = None,
+                 provenance: pulumi.Input[Optional[_builtins.str]] = None,
                  pull_parent: pulumi.Input[Optional[_builtins.bool]] = None,
                  remote_context: pulumi.Input[Optional[_builtins.str]] = None,
                  remove: pulumi.Input[Optional[_builtins.bool]] = None,
+                 sbom: pulumi.Input[Optional[_builtins.str]] = None,
                  secrets: pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]]] = None,
                  security_opts: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  session_id: pulumi.Input[Optional[_builtins.str]] = None,
@@ -3473,9 +3483,11 @@ class RegistryImageBuildArgs:
         :param pulumi.Input[_builtins.str] network_mode: Set the networking mode for the RUN instructions during build
         :param pulumi.Input[_builtins.bool] no_cache: Do not use the cache when building the image
         :param pulumi.Input[_builtins.str] platform: Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+        :param pulumi.Input[_builtins.str] provenance: Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
         :param pulumi.Input[_builtins.bool] pull_parent: Attempt to pull the image even if an older image exists locally
         :param pulumi.Input[_builtins.str] remote_context: A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         :param pulumi.Input[_builtins.bool] remove: Remove intermediate containers after a successful build. Defaults to `true`.
+        :param pulumi.Input[_builtins.str] sbom: Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
         :param pulumi.Input[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]] secrets: Set build-time secrets. Only available when you use a buildx builder.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] security_opts: The security options
         :param pulumi.Input[_builtins.str] session_id: Set an ID for the build session
@@ -3539,12 +3551,16 @@ class RegistryImageBuildArgs:
             pulumi.set(__self__, "no_cache", no_cache)
         if platform is not None:
             pulumi.set(__self__, "platform", platform)
+        if provenance is not None:
+            pulumi.set(__self__, "provenance", provenance)
         if pull_parent is not None:
             pulumi.set(__self__, "pull_parent", pull_parent)
         if remote_context is not None:
             pulumi.set(__self__, "remote_context", remote_context)
         if remove is not None:
             pulumi.set(__self__, "remove", remove)
+        if sbom is not None:
+            pulumi.set(__self__, "sbom", sbom)
         if secrets is not None:
             pulumi.set(__self__, "secrets", secrets)
         if security_opts is not None:
@@ -3881,6 +3897,18 @@ class RegistryImageBuildArgs:
         pulumi.set(self, "platform", value)
 
     @_builtins.property
+    @pulumi.getter
+    def provenance(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+        """
+        return pulumi.get(self, "provenance")
+
+    @provenance.setter
+    def provenance(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "provenance", value)
+
+    @_builtins.property
     @pulumi.getter(name="pullParent")
     def pull_parent(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
@@ -3915,6 +3943,18 @@ class RegistryImageBuildArgs:
     @remove.setter
     def remove(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "remove", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def sbom(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+        """
+        return pulumi.get(self, "sbom")
+
+    @sbom.setter
+    def sbom(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "sbom", value)
 
     @_builtins.property
     @pulumi.getter
@@ -4456,6 +4496,10 @@ class RemoteImageBuildArgsDict(TypedDict):
     """
     Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
     """
+    provenance: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    """
+    Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+    """
     pull_parent: NotRequired[pulumi.Input[Optional[_builtins.bool]]]
     """
     Attempt to pull the image even if an older image exists locally
@@ -4467,6 +4511,10 @@ class RemoteImageBuildArgsDict(TypedDict):
     remove: NotRequired[pulumi.Input[Optional[_builtins.bool]]]
     """
     Remove intermediate containers after a successful build. Defaults to `true`.
+    """
+    sbom: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    """
+    Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
     """
     secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildSecretArgs']]]]]
     """
@@ -4542,9 +4590,11 @@ class RemoteImageBuildArgs:
                  network_mode: pulumi.Input[Optional[_builtins.str]] = None,
                  no_cache: pulumi.Input[Optional[_builtins.bool]] = None,
                  platform: pulumi.Input[Optional[_builtins.str]] = None,
+                 provenance: pulumi.Input[Optional[_builtins.str]] = None,
                  pull_parent: pulumi.Input[Optional[_builtins.bool]] = None,
                  remote_context: pulumi.Input[Optional[_builtins.str]] = None,
                  remove: pulumi.Input[Optional[_builtins.bool]] = None,
+                 sbom: pulumi.Input[Optional[_builtins.str]] = None,
                  secrets: pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildSecretArgs']]]] = None,
                  security_opts: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  session_id: pulumi.Input[Optional[_builtins.str]] = None,
@@ -4583,9 +4633,11 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[_builtins.str] network_mode: Set the networking mode for the RUN instructions during build
         :param pulumi.Input[_builtins.bool] no_cache: Do not use the cache when building the image
         :param pulumi.Input[_builtins.str] platform: Set the target platform for the build. Defaults to `GOOS/GOARCH`. For more information see the [docker documentation](https://github.com/docker/buildx/blob/master/docs/reference/buildx.md#-set-the-target-platforms-for-the-build---platform)
+        :param pulumi.Input[_builtins.str] provenance: Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
         :param pulumi.Input[_builtins.bool] pull_parent: Attempt to pull the image even if an older image exists locally
         :param pulumi.Input[_builtins.str] remote_context: A Git repository URI or HTTP/HTTPS context URI. Will be ignored if `builder` is set.
         :param pulumi.Input[_builtins.bool] remove: Remove intermediate containers after a successful build. Defaults to `true`.
+        :param pulumi.Input[_builtins.str] sbom: Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
         :param pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildSecretArgs']]] secrets: Set build-time secrets. Only available when you use a buildx builder.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] security_opts: The security options
         :param pulumi.Input[_builtins.str] session_id: Set an ID for the build session
@@ -4649,12 +4701,16 @@ class RemoteImageBuildArgs:
             pulumi.set(__self__, "no_cache", no_cache)
         if platform is not None:
             pulumi.set(__self__, "platform", platform)
+        if provenance is not None:
+            pulumi.set(__self__, "provenance", provenance)
         if pull_parent is not None:
             pulumi.set(__self__, "pull_parent", pull_parent)
         if remote_context is not None:
             pulumi.set(__self__, "remote_context", remote_context)
         if remove is not None:
             pulumi.set(__self__, "remove", remove)
+        if sbom is not None:
+            pulumi.set(__self__, "sbom", sbom)
         if secrets is not None:
             pulumi.set(__self__, "secrets", secrets)
         if security_opts is not None:
@@ -4991,6 +5047,18 @@ class RemoteImageBuildArgs:
         pulumi.set(self, "platform", value)
 
     @_builtins.property
+    @pulumi.getter
+    def provenance(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don't support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+        """
+        return pulumi.get(self, "provenance")
+
+    @provenance.setter
+    def provenance(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "provenance", value)
+
+    @_builtins.property
     @pulumi.getter(name="pullParent")
     def pull_parent(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
@@ -5025,6 +5093,18 @@ class RemoteImageBuildArgs:
     @remove.setter
     def remove(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "remove", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def sbom(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+        """
+        return pulumi.get(self, "sbom")
+
+    @sbom.setter
+    def sbom(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "sbom", value)
 
     @_builtins.property
     @pulumi.getter

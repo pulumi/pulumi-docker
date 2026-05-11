@@ -93,7 +93,11 @@ export class ServiceConfig extends pulumi.CustomResource {
     /**
      * Base64-url-safe-encoded config data
      */
-    declare public readonly data: pulumi.Output<string>;
+    declare public readonly data: pulumi.Output<string | undefined>;
+    /**
+     * Raw (plain text) config data
+     */
+    declare public readonly dataRaw: pulumi.Output<string | undefined>;
     /**
      * User-defined key/value metadata
      */
@@ -110,21 +114,20 @@ export class ServiceConfig extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: ServiceConfigArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, args?: ServiceConfigArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: ServiceConfigArgs | ServiceConfigState, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as ServiceConfigState | undefined;
             resourceInputs["data"] = state?.data;
+            resourceInputs["dataRaw"] = state?.dataRaw;
             resourceInputs["labels"] = state?.labels;
             resourceInputs["name"] = state?.name;
         } else {
             const args = argsOrState as ServiceConfigArgs | undefined;
-            if (args?.data === undefined && !opts.urn) {
-                throw new Error("Missing required property 'data'");
-            }
             resourceInputs["data"] = args?.data;
+            resourceInputs["dataRaw"] = args?.dataRaw;
             resourceInputs["labels"] = args?.labels;
             resourceInputs["name"] = args?.name;
         }
@@ -142,6 +145,10 @@ export interface ServiceConfigState {
      */
     data?: pulumi.Input<string | undefined>;
     /**
+     * Raw (plain text) config data
+     */
+    dataRaw?: pulumi.Input<string | undefined>;
+    /**
      * User-defined key/value metadata
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceConfigLabel>[] | undefined>;
@@ -158,7 +165,11 @@ export interface ServiceConfigArgs {
     /**
      * Base64-url-safe-encoded config data
      */
-    data: pulumi.Input<string>;
+    data?: pulumi.Input<string | undefined>;
+    /**
+     * Raw (plain text) config data
+     */
+    dataRaw?: pulumi.Input<string | undefined>;
     /**
      * User-defined key/value metadata
      */

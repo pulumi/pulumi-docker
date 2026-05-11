@@ -79,14 +79,28 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
      * 
      */
     @Export(name="data", refs={String.class}, tree="[0]")
-    private Output<String> data;
+    private Output</* @Nullable */ String> data;
 
     /**
      * @return Base64-url-safe-encoded config data
      * 
      */
-    public Output<String> data() {
-        return this.data;
+    public Output<Optional<String>> data() {
+        return Codegen.optional(this.data);
+    }
+    /**
+     * Raw (plain text) config data
+     * 
+     */
+    @Export(name="dataRaw", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> dataRaw;
+
+    /**
+     * @return Raw (plain text) config data
+     * 
+     */
+    public Output<Optional<String>> dataRaw() {
+        return Codegen.optional(this.dataRaw);
     }
     /**
      * User-defined key/value metadata
@@ -129,7 +143,7 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public ServiceConfig(java.lang.String name, ServiceConfigArgs args) {
+    public ServiceConfig(java.lang.String name, @Nullable ServiceConfigArgs args) {
         this(name, args, null);
     }
     /**
@@ -138,7 +152,7 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public ServiceConfig(java.lang.String name, ServiceConfigArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public ServiceConfig(java.lang.String name, @Nullable ServiceConfigArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         super("docker:index/serviceConfig:ServiceConfig", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
@@ -146,7 +160,7 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
         super("docker:index/serviceConfig:ServiceConfig", name, state, makeResourceOptions(options, id), false);
     }
 
-    private static ServiceConfigArgs makeArgs(ServiceConfigArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    private static ServiceConfigArgs makeArgs(@Nullable ServiceConfigArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         if (options != null && options.getUrn().isPresent()) {
             return null;
         }

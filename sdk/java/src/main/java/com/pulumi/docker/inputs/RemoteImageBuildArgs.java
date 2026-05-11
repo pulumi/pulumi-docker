@@ -414,6 +414,21 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
     }
 
     /**
+     * Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don&#39;t support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     * 
+     */
+    @Import(name="provenance")
+    private @Nullable Output<String> provenance;
+
+    /**
+     * @return Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don&#39;t support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+     * 
+     */
+    public Optional<Output<String>> provenance() {
+        return Optional.ofNullable(this.provenance);
+    }
+
+    /**
      * Attempt to pull the image even if an older image exists locally
      * 
      */
@@ -456,6 +471,21 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
      */
     public Optional<Output<Boolean>> remove() {
         return Optional.ofNullable(this.remove);
+    }
+
+    /**
+     * Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     * 
+     */
+    @Import(name="sbom")
+    private @Nullable Output<String> sbom;
+
+    /**
+     * @return Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+     * 
+     */
+    public Optional<Output<String>> sbom() {
+        return Optional.ofNullable(this.sbom);
     }
 
     /**
@@ -652,9 +682,11 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         this.networkMode = $.networkMode;
         this.noCache = $.noCache;
         this.platform = $.platform;
+        this.provenance = $.provenance;
         this.pullParent = $.pullParent;
         this.remoteContext = $.remoteContext;
         this.remove = $.remove;
+        this.sbom = $.sbom;
         this.secrets = $.secrets;
         this.securityOpts = $.securityOpts;
         this.sessionId = $.sessionId;
@@ -1283,6 +1315,27 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         /**
+         * @param provenance Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don&#39;t support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder provenance(@Nullable Output<String> provenance) {
+            $.provenance = provenance;
+            return this;
+        }
+
+        /**
+         * @param provenance Set provenance attestation for the build. BuildKit v0.11+ adds provenance attestations by default, which creates OCI image manifests that some registries (like AWS Lambda) don&#39;t support. Set to `false` to disable. Valid values: `false`, `true`, `min`, `max`, `mode=min`, `mode=max`, or a full provenance specification. Only available when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder provenance(String provenance) {
+            return provenance(Output.of(provenance));
+        }
+
+        /**
          * @param pullParent Attempt to pull the image even if an older image exists locally
          * 
          * @return builder
@@ -1343,6 +1396,27 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
          */
         public Builder remove(Boolean remove) {
             return remove(Output.of(remove));
+        }
+
+        /**
+         * @param sbom Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder sbom(@Nullable Output<String> sbom) {
+            $.sbom = sbom;
+            return this;
+        }
+
+        /**
+         * @param sbom Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder sbom(String sbom) {
+            return sbom(Output.of(sbom));
         }
 
         /**
