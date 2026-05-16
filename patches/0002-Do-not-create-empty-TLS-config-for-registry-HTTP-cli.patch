@@ -13,10 +13,10 @@ Upstream: N/A
 Test: examples/test-registry-image-dockerhub (TestRegistryImageDockerHub)
 
 diff --git a/internal/provider/resource_docker_registry_image_funcs.go b/internal/provider/resource_docker_registry_image_funcs.go
-index 2d58038..5652db2 100644
+index 7dbbfed..24ad3cc 100644
 --- a/internal/provider/resource_docker_registry_image_funcs.go
 +++ b/internal/provider/resource_docker_registry_image_funcs.go
-@@ -304,15 +304,12 @@ func getAuthConfigForRegistry(
+@@ -311,15 +311,12 @@ func getAuthConfigForRegistry(
  }
  
  func buildHttpClientForRegistry(registryAddressWithProtocol string, insecureSkipVerify bool) *http.Client {
