@@ -903,7 +903,7 @@
                 },
                 "hostPath": {
                     "type": "string",
-                    "description": "The path on the host where the volume is coming from.\n",
+                    "description": "The path on the host where the volume is coming from. If \u003cspan pulumi-lang-nodejs=\"`hostPath`\" pulumi-lang-dotnet=\"`HostPath`\" pulumi-lang-go=\"`hostPath`\" pulumi-lang-python=\"`host_path`\" pulumi-lang-yaml=\"`hostPath`\" pulumi-lang-java=\"`hostPath`\"\u003e`hostPath`\u003c/span\u003e is set, it takes precedence over \u003cspan pulumi-lang-nodejs=\"`volumeName`\" pulumi-lang-dotnet=\"`VolumeName`\" pulumi-lang-go=\"`volumeName`\" pulumi-lang-python=\"`volume_name`\" pulumi-lang-yaml=\"`volumeName`\" pulumi-lang-java=\"`volumeName`\"\u003e`volumeName`\u003c/span\u003e.\n",
                     "willReplaceOnChanges": true
                 },
                 "readOnly": {
@@ -918,7 +918,7 @@
                 },
                 "volumeName": {
                     "type": "string",
-                    "description": "The name of the docker volume which should be mounted.\n",
+                    "description": "The name of the docker volume which should be mounted. Ignored when \u003cspan pulumi-lang-nodejs=\"`hostPath`\" pulumi-lang-dotnet=\"`HostPath`\" pulumi-lang-go=\"`hostPath`\" pulumi-lang-python=\"`host_path`\" pulumi-lang-yaml=\"`hostPath`\" pulumi-lang-java=\"`hostPath`\"\u003e`hostPath`\u003c/span\u003e is set.\n",
                     "willReplaceOnChanges": true
                 }
             },

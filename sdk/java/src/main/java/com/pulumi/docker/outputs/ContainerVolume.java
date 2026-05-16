@@ -23,7 +23,7 @@ public final class ContainerVolume {
      */
     private @Nullable String fromContainer;
     /**
-     * @return The path on the host where the volume is coming from.
+     * @return The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
      * 
      */
     private @Nullable String hostPath;
@@ -38,7 +38,7 @@ public final class ContainerVolume {
      */
     private @Nullable String selinuxRelabel;
     /**
-     * @return The name of the docker volume which should be mounted.
+     * @return The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
      * 
      */
     private @Nullable String volumeName;
@@ -59,7 +59,7 @@ public final class ContainerVolume {
         return Optional.ofNullable(this.fromContainer);
     }
     /**
-     * @return The path on the host where the volume is coming from.
+     * @return The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
      * 
      */
     public Optional<String> hostPath() {
@@ -80,7 +80,7 @@ public final class ContainerVolume {
         return Optional.ofNullable(this.selinuxRelabel);
     }
     /**
-     * @return The name of the docker volume which should be mounted.
+     * @return The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
      * 
      */
     public Optional<String> volumeName() {

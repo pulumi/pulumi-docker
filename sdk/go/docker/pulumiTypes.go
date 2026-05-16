@@ -4269,13 +4269,13 @@ type ContainerVolume struct {
 	ContainerPath *string `pulumi:"containerPath"`
 	// The container where the volume is coming from.
 	FromContainer *string `pulumi:"fromContainer"`
-	// The path on the host where the volume is coming from.
+	// The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
 	HostPath *string `pulumi:"hostPath"`
 	// If `true`, this volume will be readonly. Defaults to `false`.
 	ReadOnly *bool `pulumi:"readOnly"`
 	// SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
 	SelinuxRelabel *string `pulumi:"selinuxRelabel"`
-	// The name of the docker volume which should be mounted.
+	// The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
 	VolumeName *string `pulumi:"volumeName"`
 }
 
@@ -4295,13 +4295,13 @@ type ContainerVolumeArgs struct {
 	ContainerPath pulumi.StringPtrInput `pulumi:"containerPath"`
 	// The container where the volume is coming from.
 	FromContainer pulumi.StringPtrInput `pulumi:"fromContainer"`
-	// The path on the host where the volume is coming from.
+	// The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
 	HostPath pulumi.StringPtrInput `pulumi:"hostPath"`
 	// If `true`, this volume will be readonly. Defaults to `false`.
 	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
 	// SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
 	SelinuxRelabel pulumi.StringPtrInput `pulumi:"selinuxRelabel"`
-	// The name of the docker volume which should be mounted.
+	// The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
 	VolumeName pulumi.StringPtrInput `pulumi:"volumeName"`
 }
 
@@ -4366,7 +4366,7 @@ func (o ContainerVolumeOutput) FromContainer() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.FromContainer }).(pulumi.StringPtrOutput)
 }
 
-// The path on the host where the volume is coming from.
+// The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
 func (o ContainerVolumeOutput) HostPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.HostPath }).(pulumi.StringPtrOutput)
 }
@@ -4381,7 +4381,7 @@ func (o ContainerVolumeOutput) SelinuxRelabel() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.SelinuxRelabel }).(pulumi.StringPtrOutput)
 }
 
-// The name of the docker volume which should be mounted.
+// The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
 func (o ContainerVolumeOutput) VolumeName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.VolumeName }).(pulumi.StringPtrOutput)
 }
