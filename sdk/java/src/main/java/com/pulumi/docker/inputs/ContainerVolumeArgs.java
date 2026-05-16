@@ -47,14 +47,14 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
-     * The path on the host where the volume is coming from.
+     * The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
      * 
      */
     @Import(name="hostPath")
     private @Nullable Output<String> hostPath;
 
     /**
-     * @return The path on the host where the volume is coming from.
+     * @return The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
      * 
      */
     public Optional<Output<String>> hostPath() {
@@ -92,14 +92,14 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
-     * The name of the docker volume which should be mounted.
+     * The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
      * 
      */
     @Import(name="volumeName")
     private @Nullable Output<String> volumeName;
 
     /**
-     * @return The name of the docker volume which should be mounted.
+     * @return The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
      * 
      */
     public Optional<Output<String>> volumeName() {
@@ -178,7 +178,7 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param hostPath The path on the host where the volume is coming from.
+         * @param hostPath The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
          * 
          * @return builder
          * 
@@ -189,7 +189,7 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param hostPath The path on the host where the volume is coming from.
+         * @param hostPath The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
          * 
          * @return builder
          * 
@@ -241,7 +241,7 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param volumeName The name of the docker volume which should be mounted.
+         * @param volumeName The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
          * 
          * @return builder
          * 
@@ -252,7 +252,7 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param volumeName The name of the docker volume which should be mounted.
+         * @param volumeName The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
          * 
          * @return builder
          * 

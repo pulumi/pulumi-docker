@@ -572,7 +572,7 @@ export interface ContainerVolume {
      */
     fromContainer?: pulumi.Input<string | undefined>;
     /**
-     * The path on the host where the volume is coming from.
+     * The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
      */
     hostPath?: pulumi.Input<string | undefined>;
     /**
@@ -584,7 +584,7 @@ export interface ContainerVolume {
      */
     selinuxRelabel?: pulumi.Input<string | undefined>;
     /**
-     * The name of the docker volume which should be mounted.
+     * The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
      */
     volumeName?: pulumi.Input<string | undefined>;
 }

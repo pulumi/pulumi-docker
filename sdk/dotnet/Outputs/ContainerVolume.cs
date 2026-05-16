@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? FromContainer;
         /// <summary>
-        /// The path on the host where the volume is coming from.
+        /// The path on the host where the volume is coming from. If `HostPath` is set, it takes precedence over `VolumeName`.
         /// </summary>
         public readonly string? HostPath;
         /// <summary>
@@ -34,7 +34,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? SelinuxRelabel;
         /// <summary>
-        /// The name of the docker volume which should be mounted.
+        /// The name of the docker volume which should be mounted. Ignored when `HostPath` is set.
         /// </summary>
         public readonly string? VolumeName;
 

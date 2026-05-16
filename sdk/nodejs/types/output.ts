@@ -562,7 +562,7 @@ export interface ContainerVolume {
      */
     fromContainer?: string;
     /**
-     * The path on the host where the volume is coming from.
+     * The path on the host where the volume is coming from. If `hostPath` is set, it takes precedence over `volumeName`.
      */
     hostPath?: string;
     /**
@@ -574,7 +574,7 @@ export interface ContainerVolume {
      */
     selinuxRelabel?: string;
     /**
-     * The name of the docker volume which should be mounted.
+     * The name of the docker volume which should be mounted. Ignored when `hostPath` is set.
      */
     volumeName?: string;
 }

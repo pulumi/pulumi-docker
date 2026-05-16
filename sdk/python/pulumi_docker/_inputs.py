@@ -2744,7 +2744,7 @@ class ContainerVolumeArgsDict(TypedDict):
     """
     host_path: NotRequired[pulumi.Input[Optional[_builtins.str]]]
     """
-    The path on the host where the volume is coming from.
+    The path on the host where the volume is coming from. If `host_path` is set, it takes precedence over `volume_name`.
     """
     read_only: NotRequired[pulumi.Input[Optional[_builtins.bool]]]
     """
@@ -2756,7 +2756,7 @@ class ContainerVolumeArgsDict(TypedDict):
     """
     volume_name: NotRequired[pulumi.Input[Optional[_builtins.str]]]
     """
-    The name of the docker volume which should be mounted.
+    The name of the docker volume which should be mounted. Ignored when `host_path` is set.
     """
 
 @pulumi.input_type
@@ -2771,10 +2771,10 @@ class ContainerVolumeArgs:
         """
         :param pulumi.Input[_builtins.str] container_path: The path in the container where the volume will be mounted.
         :param pulumi.Input[_builtins.str] from_container: The container where the volume is coming from.
-        :param pulumi.Input[_builtins.str] host_path: The path on the host where the volume is coming from.
+        :param pulumi.Input[_builtins.str] host_path: The path on the host where the volume is coming from. If `host_path` is set, it takes precedence over `volume_name`.
         :param pulumi.Input[_builtins.bool] read_only: If `true`, this volume will be readonly. Defaults to `false`.
         :param pulumi.Input[_builtins.str] selinux_relabel: SELinux relabel mode for bind mounts. Supported values are `z` and `Z`.
-        :param pulumi.Input[_builtins.str] volume_name: The name of the docker volume which should be mounted.
+        :param pulumi.Input[_builtins.str] volume_name: The name of the docker volume which should be mounted. Ignored when `host_path` is set.
         """
         if container_path is not None:
             pulumi.set(__self__, "container_path", container_path)
@@ -2817,7 +2817,7 @@ class ContainerVolumeArgs:
     @pulumi.getter(name="hostPath")
     def host_path(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
-        The path on the host where the volume is coming from.
+        The path on the host where the volume is coming from. If `host_path` is set, it takes precedence over `volume_name`.
         """
         return pulumi.get(self, "host_path")
 
@@ -2853,7 +2853,7 @@ class ContainerVolumeArgs:
     @pulumi.getter(name="volumeName")
     def volume_name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
-        The name of the docker volume which should be mounted.
+        The name of the docker volume which should be mounted. Ignored when `host_path` is set.
         """
         return pulumi.get(self, "volume_name")
 

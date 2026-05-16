@@ -25,7 +25,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? FromContainer { get; set; }
 
         /// <summary>
-        /// The path on the host where the volume is coming from.
+        /// The path on the host where the volume is coming from. If `HostPath` is set, it takes precedence over `VolumeName`.
         /// </summary>
         [Input("hostPath")]
         public Input<string>? HostPath { get; set; }
@@ -43,7 +43,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? SelinuxRelabel { get; set; }
 
         /// <summary>
-        /// The name of the docker volume which should be mounted.
+        /// The name of the docker volume which should be mounted. Ignored when `HostPath` is set.
         /// </summary>
         [Input("volumeName")]
         public Input<string>? VolumeName { get; set; }
