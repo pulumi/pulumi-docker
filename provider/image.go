@@ -229,7 +229,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		go func() {
 			err := sess.Run(ctx, dialSession)
 			if err != nil {
-				_ = p.host.Log(ctx, "error", urn, fmt.Sprintf("Error running BuildKit session: %v", err))
+				_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Error running BuildKit session: %v", err))
 			}
 		}()
 		defer sess.Close()
