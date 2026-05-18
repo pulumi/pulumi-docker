@@ -2,11 +2,13 @@ package provider
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"runtime"
 	"strings"
 	"testing"
 
+	"github.com/distribution/reference"
 	"github.com/docker/docker/api/types/build"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
@@ -734,4 +736,67 @@ func TestDockerIgnore(t *testing.T) {
 			assert.Equal(t, tt.want, actual)
 		})
 	}
+}
+
+func TestParseRepoDigestFromAux(t *testing.T) {
+	const validDigest = "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+
+	mustParse := func(t *testing.T, name string) reference.Named {
+		t.Helper()
+		ref, err := reference.ParseNormalizedNamed(name)
+		require.NoError(t, err)
+		return ref
+	}
+
+	t.Run("valid push result returns registry-pinned digest", func(t *testing.T) {
+		imageName := mustParse(t, "docker.io/example/app:v1")
+		aux, err := json.Marshal(map[string]interface{}{
+			"Tag":    "v1",
+			"Digest": validDigest,
+			"Size":   1234,
+		})
+		require.NoError(t, err)
+
+		ref, msg := parseRepoDigestFromAux(aux, imageName)
+		require.NotNil(t, ref)
+		assert.Equal(t, "docker.io/example/app@"+validDigest, ref.String())
+		assert.Contains(t, msg, validDigest)
+	})
+
+	t.Run("input image name with tag is trimmed before applying digest", func(t *testing.T) {
+		imageName := mustParse(t, "registry.example.com/team/app:v2")
+		aux, err := json.Marshal(map[string]interface{}{"Digest": validDigest})
+		require.NoError(t, err)
+
+		ref, _ := parseRepoDigestFromAux(aux, imageName)
+		require.NotNil(t, ref)
+		assert.Equal(t, "registry.example.com/team/app@"+validDigest, ref.String())
+	})
+
+	t.Run("non-JSON aux message returns nil with no log", func(t *testing.T) {
+		imageName := mustParse(t, "docker.io/example/app:v1")
+		ref, msg := parseRepoDigestFromAux([]byte("not json at all"), imageName)
+		assert.Nil(t, ref)
+		assert.Empty(t, msg)
+	})
+
+	t.Run("malformed digest returns nil with diagnostic message", func(t *testing.T) {
+		imageName := mustParse(t, "docker.io/example/app:v1")
+		aux, err := json.Marshal(map[string]interface{}{"Digest": "not-a-digest"})
+		require.NoError(t, err)
+
+		ref, msg := parseRepoDigestFromAux(aux, imageName)
+		assert.Nil(t, ref)
+		assert.Contains(t, msg, "not-a-digest")
+	})
+
+	t.Run("empty digest returns nil with diagnostic message", func(t *testing.T) {
+		imageName := mustParse(t, "docker.io/example/app:v1")
+		aux, err := json.Marshal(map[string]interface{}{"Tag": "v1"})
+		require.NoError(t, err)
+
+		ref, msg := parseRepoDigestFromAux(aux, imageName)
+		assert.Nil(t, ref)
+		assert.NotEmpty(t, msg)
+	})
 }
