@@ -317,30 +317,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	defer pushOutput.Close()
 
-	// TODO: https://github.com/pulumi/pulumi-docker/issues/846 - Consider relying on the PushResult
-	// for computing the repo digest.
 	var expectedRepoDigest reference.Reference
 	extractRepoDigest := func(rm json.RawMessage) (bool, string, error) {
-		var result types.PushResult
-		err := json.Unmarshal(rm, &result)
-		if err != nil {
-			// Unmarshal failures here mean the message isn't what we expected, return handled = false
-			return false, "", nil
+		ref, msg := parseRepoDigestFromAux(rm, imageName)
+		if ref == nil {
+			return false, msg, nil
 		}
-
-		digest, err := digest.Parse(result.Digest)
-		if err != nil {
-			return false, fmt.Sprintf("Unable to parse pushed digest %q", result.Digest), nil
-		}
-
-		imageNameWithoutTag := reference.TrimNamed(imageName) // removes tags or digests
-		pushedRepoDigest, err := reference.WithDigest(imageNameWithoutTag, digest)
-		if err != nil {
-			return false, fmt.Sprintf("Unable to compute expected repo digest from imageName %q, digest %q",
-				imageName.String(), result.Digest), nil
-		}
-		expectedRepoDigest = pushedRepoDigest
-		return true, fmt.Sprintf("Pushed image with digest %s", result.Digest), nil
+		expectedRepoDigest = ref
+		return true, msg, nil
 	}
 
 	// Print push logs to `Info` progress report
@@ -349,20 +333,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("error reading push output: %v", err)
 	}
 
-	// n.b.: This is one of the few API calls where we can use imageID and not img.Name, as it
-	// inspects the local store.
-	repoDigest, err := p.getRepoDigest(ctx, docker, imageID, img, urn)
-	if err != nil {
-		return "", nil, err
+	// Prefer the digest reported by the push response: it pins the image to the registry,
+	// which matches the intended meaning of repoDigest. Fall back to inspecting the local
+	// store only when the daemon did not emit an aux digest — the local-store digest is
+	// not guaranteed to match the registry digest (see containers/podman#14779).
+	var repoDigest reference.Reference
+	if expectedRepoDigest != nil {
+		repoDigest = expectedRepoDigest
+	} else {
+		_ = p.host.Log(ctx, "warning", urn,
+			"Push completed without reporting a digest; falling back to local image inspect")
+		// n.b.: This is one of the few API calls where we can use imageID and not img.Name, as it
+		// inspects the local store.
+		repoDigest, err = p.getRepoDigest(ctx, docker, imageID, img, urn)
+		if err != nil {
+			return "", nil, err
+		}
 	}
 	outputs["repoDigest"] = repoDigest.String()
-
-	if expectedRepoDigest == nil {
-		_ = p.host.Log(ctx, "warning", urn, "Push completed without reporting a digest")
-	} else if expectedRepoDigest.String() != repoDigest.String() {
-		_ = p.host.Log(ctx, "warning", urn,
-			fmt.Sprintf("Expected repo digest %q, found %q", expectedRepoDigest, repoDigest))
-	}
 
 	pbstruct, err := plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
@@ -408,6 +396,27 @@ func (p *dockerNativeProvider) getRepoDigest(
 		}
 	}
 	return repoDigest, err
+}
+
+// parseRepoDigestFromAux parses the aux JSON emitted on the push stream into a
+// registry-pinned repo digest of the form <imageName>@<digest>. It returns a nil
+// reference when the message is not a parsable PushResult or its digest is invalid.
+// The status string is suitable for logging when non-empty.
+func parseRepoDigestFromAux(rm json.RawMessage, imageName reference.Named) (reference.Reference, string) {
+	var result types.PushResult
+	if err := json.Unmarshal(rm, &result); err != nil {
+		return nil, ""
+	}
+	d, err := digest.Parse(result.Digest)
+	if err != nil {
+		return nil, fmt.Sprintf("Unable to parse pushed digest %q", result.Digest)
+	}
+	pushedRepoDigest, err := reference.WithDigest(reference.TrimNamed(imageName), d)
+	if err != nil {
+		return nil, fmt.Sprintf("Unable to compute expected repo digest from imageName %q, digest %q",
+			imageName.String(), result.Digest)
+	}
+	return pushedRepoDigest, fmt.Sprintf("Pushed image with digest %s", result.Digest)
 }
 
 // runImageBuild runs the image build and ensures that the correct image exists in the local image
