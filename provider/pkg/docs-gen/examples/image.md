@@ -559,7 +559,7 @@ public class App {
                 .build())
             .imageName(ecrRepository.repositoryUrl().applyValue(_repositoryUrl -> String.format("%s:latest", _repositoryUrl)))
             .registry(RegistryArgs.builder()
-                .password(Output.ofSecret(authToken.applyValue(_authToken -> _authToken.password())))
+                .password(authToken.applyValue(_authToken -> _authToken.password()).asSecret())
                 .server(ecrRepository.repositoryUrl())
                 .username(authToken.applyValue(_authToken -> _authToken.userName()))
                 .build())

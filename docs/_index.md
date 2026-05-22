@@ -28,7 +28,7 @@ Use the navigation to the left to read about the available resources.
 
 
 
-{{< chooser language "typescript,python,go,csharp,java,yaml" >}}
+{{< chooser language "typescript,python,go,csharp,java,yaml,hcl" >}}
 {{% choosable language typescript %}}
 ```yaml
 # Pulumi.yaml provider configuration file
@@ -230,6 +230,28 @@ public class App {
             .build());
 
     }
+}
+```
+
+{{% /choosable %}}
+{{% choosable language hcl %}}
+```hcl
+pulumi {
+  required_providers {
+    docker = {
+      source = "pulumi/docker"
+    }
+  }
+}
+
+# Pulls the image
+resource "docker_remoteimage" "ubuntu" {
+  name = "ubuntu:latest"
+}
+# Create a container
+resource "docker_container" "foo" {
+  image = docker_remoteimage.ubuntu.image_id
+  name  = "foo"
 }
 ```
 

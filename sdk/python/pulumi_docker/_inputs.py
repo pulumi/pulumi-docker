@@ -468,7 +468,7 @@ class BuildxBuilderKubernetesArgsDict(TypedDict):
     """
     Sets additional labels on the deployments and pods.
     """
-    limits: NotRequired[pulumi.Input[Optional['BuildxBuilderKubernetesLimitsArgs']]]
+    limits: NotRequired[pulumi.Input[Optional['BuildxBuilderKubernetesLimitsArgsDict']]]
     """
     Resource limits for CPU, memory, and ephemeral storage.
     """
@@ -484,7 +484,7 @@ class BuildxBuilderKubernetesArgsDict(TypedDict):
     """
     Sets the pod's nodeSelector label(s).
     """
-    qemu: NotRequired[pulumi.Input[Optional['BuildxBuilderKubernetesQemuArgs']]]
+    qemu: NotRequired[pulumi.Input[Optional['BuildxBuilderKubernetesQemuArgsDict']]]
     """
     QEMU emulation configuration.
     """
@@ -492,7 +492,7 @@ class BuildxBuilderKubernetesArgsDict(TypedDict):
     """
     Sets the number of Pod replicas to create.
     """
-    requests: NotRequired[pulumi.Input[Optional['BuildxBuilderKubernetesRequestsArgs']]]
+    requests: NotRequired[pulumi.Input[Optional['BuildxBuilderKubernetesRequestsArgsDict']]]
     """
     Resource requests for CPU, memory, and ephemeral storage.
     """
@@ -1722,7 +1722,7 @@ class ContainerMountArgsDict(TypedDict):
     """
     The mount type
     """
-    bind_options: NotRequired[pulumi.Input[Optional['ContainerMountBindOptionsArgs']]]
+    bind_options: NotRequired[pulumi.Input[Optional['ContainerMountBindOptionsArgsDict']]]
     """
     Optional configuration for the bind type.
     """
@@ -1734,11 +1734,11 @@ class ContainerMountArgsDict(TypedDict):
     """
     Mount source (e.g. a volume name, a host path).
     """
-    tmpfs_options: NotRequired[pulumi.Input[Optional['ContainerMountTmpfsOptionsArgs']]]
+    tmpfs_options: NotRequired[pulumi.Input[Optional['ContainerMountTmpfsOptionsArgsDict']]]
     """
     Optional configuration for the tmpfs type.
     """
-    volume_options: NotRequired[pulumi.Input[Optional['ContainerMountVolumeOptionsArgs']]]
+    volume_options: NotRequired[pulumi.Input[Optional['ContainerMountVolumeOptionsArgsDict']]]
     """
     Optional configuration for the volume type.
     """
@@ -1947,7 +1947,7 @@ class ContainerMountVolumeOptionsArgsDict(TypedDict):
     """
     key/value map of driver specific options.
     """
-    labels: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]]]
+    labels: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgsDict']]]]]
     """
     User-defined key/value metadata.
     """
@@ -3250,7 +3250,7 @@ class RegistryImageBuildArgsDict(TypedDict):
     """
     A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
     """
-    auth_configs: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgs']]]]]
+    auth_configs: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildAuthConfigArgsDict']]]]]
     """
     The configuration for the authentication
     """
@@ -3366,7 +3366,7 @@ class RegistryImageBuildArgsDict(TypedDict):
     """
     Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
     """
-    secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildSecretArgs']]]]]
+    secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildSecretArgsDict']]]]]
     """
     Set build-time secrets. Only available when you use a buildx builder.
     """
@@ -3398,7 +3398,7 @@ class RegistryImageBuildArgsDict(TypedDict):
     """
     Set the target build stage to build
     """
-    ulimits: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildUlimitArgs']]]]]
+    ulimits: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RegistryImageBuildUlimitArgsDict']]]]]
     """
     Configuration for ulimits
     """
@@ -4400,7 +4400,7 @@ class RemoteImageBuildArgsDict(TypedDict):
     """
     A list of additional build contexts. Only supported when using a buildx builder. Example: `["name=path", "src = https://example.org"}`. Please see https://docs.docker.com/reference/cli/docker/buildx/build/#build-context for more information.
     """
-    auth_configs: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgs']]]]]
+    auth_configs: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgsDict']]]]]
     """
     The configuration for the authentication
     """
@@ -4516,7 +4516,7 @@ class RemoteImageBuildArgsDict(TypedDict):
     """
     Set SBOM (Software Bill of Materials) attestation for the build. Set to `false` to disable. Valid values: `false`, `true`, or a full SBOM specification. Only available when using a buildx builder.
     """
-    secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildSecretArgs']]]]]
+    secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildSecretArgsDict']]]]]
     """
     Set build-time secrets. Only available when you use a buildx builder.
     """
@@ -4548,7 +4548,7 @@ class RemoteImageBuildArgsDict(TypedDict):
     """
     Set the target build stage to build
     """
-    ulimits: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]]]]
+    ulimits: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['RemoteImageBuildUlimitArgsDict']]]]]
     """
     Configuration for ulimits
     """
@@ -5757,7 +5757,7 @@ class ServiceEndpointSpecArgsDict(TypedDict):
     """
     The mode of resolution to use for internal load balancing between tasks
     """
-    ports: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]]]]
+    ports: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceEndpointSpecPortArgsDict']]]]]
     """
     List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
     """
@@ -5961,7 +5961,7 @@ class ServiceModeArgsDict(TypedDict):
     """
     The global service mode. Defaults to `false`
     """
-    replicated: NotRequired[pulumi.Input[Optional['ServiceModeReplicatedArgs']]]
+    replicated: NotRequired[pulumi.Input[Optional['ServiceModeReplicatedArgsDict']]]
     """
     The replicated service mode
     """
@@ -6172,23 +6172,23 @@ class ServiceTaskSpecArgsDict(TypedDict):
     """
     A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
     """
-    log_driver: NotRequired[pulumi.Input[Optional['ServiceTaskSpecLogDriverArgs']]]
+    log_driver: NotRequired[pulumi.Input[Optional['ServiceTaskSpecLogDriverArgsDict']]]
     """
     Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
     """
-    networks_advanceds: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecNetworksAdvancedArgs']]]]]
+    networks_advanceds: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecNetworksAdvancedArgsDict']]]]]
     """
     The networks the container is attached to
     """
-    placement: NotRequired[pulumi.Input[Optional['ServiceTaskSpecPlacementArgs']]]
+    placement: NotRequired[pulumi.Input[Optional['ServiceTaskSpecPlacementArgsDict']]]
     """
     The placement preferences
     """
-    resources: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesArgs']]]
+    resources: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesArgsDict']]]
     """
     Resource requirements which apply to each individual container created as part of the service
     """
-    restart_policy: NotRequired[pulumi.Input[Optional['ServiceTaskSpecRestartPolicyArgs']]]
+    restart_policy: NotRequired[pulumi.Input[Optional['ServiceTaskSpecRestartPolicyArgsDict']]]
     """
     Specification for the restart policy which applies to containers created as part of this service.
     """
@@ -6352,7 +6352,7 @@ class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
     """
     The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
     """
-    configs: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]]]
+    configs: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgsDict']]]]]
     """
     References to zero or more configs that will be exposed to the service
     """
@@ -6360,7 +6360,7 @@ class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
     """
     The working directory for commands to run in
     """
-    dns_config: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecDnsConfigArgs']]]
+    dns_config: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecDnsConfigArgsDict']]]
     """
     Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
     """
@@ -6372,7 +6372,7 @@ class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
     """
     A list of additional groups that the container process will run as
     """
-    healthcheck: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecHealthcheckArgs']]]
+    healthcheck: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecHealthcheckArgsDict']]]
     """
     A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
     """
@@ -6380,7 +6380,7 @@ class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
     """
     The hostname to use for the container, as a valid RFC 1123 hostname
     """
-    hosts: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]]]
+    hosts: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgsDict']]]]]
     """
     A list of hostname/IP mappings to add to the container's hosts file
     """
@@ -6388,15 +6388,15 @@ class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
     """
     Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
     """
-    labels: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]]]
+    labels: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgsDict']]]]]
     """
     User-defined key/value metadata
     """
-    mounts: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]]]
+    mounts: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgsDict']]]]]
     """
     Specification for mounts to be added to containers created as part of the service
     """
-    privileges: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecPrivilegesArgs']]]
+    privileges: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecPrivilegesArgsDict']]]
     """
     Security options for the container
     """
@@ -6404,7 +6404,7 @@ class ServiceTaskSpecContainerSpecArgsDict(TypedDict):
     """
     Mount the container's root filesystem as read only
     """
-    secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]]]
+    secrets: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgsDict']]]]]
     """
     References to zero or more secrets that will be exposed to the service
     """
@@ -7206,7 +7206,7 @@ class ServiceTaskSpecContainerSpecMountArgsDict(TypedDict):
     """
     The mount type
     """
-    bind_options: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecMountBindOptionsArgs']]]
+    bind_options: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecMountBindOptionsArgsDict']]]
     """
     Optional configuration for the bind type
     """
@@ -7218,11 +7218,11 @@ class ServiceTaskSpecContainerSpecMountArgsDict(TypedDict):
     """
     Mount source (e.g. a volume name, a host path)
     """
-    tmpfs_options: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs']]]
+    tmpfs_options: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgsDict']]]
     """
     Optional configuration for the tmpfs type
     """
-    volume_options: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecMountVolumeOptionsArgs']]]
+    volume_options: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecMountVolumeOptionsArgsDict']]]
     """
     Optional configuration for the volume type
     """
@@ -7431,7 +7431,7 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgsDict(TypedDict):
     """
     key/value map of driver specific options
     """
-    labels: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]]]
+    labels: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgsDict']]]]]
     """
     User-defined key/value metadata
     """
@@ -7559,11 +7559,11 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs:
 
 
 class ServiceTaskSpecContainerSpecPrivilegesArgsDict(TypedDict):
-    credential_spec: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs']]]
+    credential_spec: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgsDict']]]
     """
     CredentialSpec for managed service account (Windows only)
     """
-    se_linux_context: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs']]]
+    se_linux_context: NotRequired[pulumi.Input[Optional['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgsDict']]]
     """
     SELinux labels of the container
     """
@@ -8042,7 +8042,7 @@ class ServiceTaskSpecPlacementArgsDict(TypedDict):
     """
     Maximum number of replicas for per node (default value is `0`, which is unlimited)
     """
-    platforms: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]]]
+    platforms: NotRequired[pulumi.Input[Optional[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgsDict']]]]]
     """
     Platforms stores all the platforms that the service's image can run on
     """
@@ -8170,11 +8170,11 @@ class ServiceTaskSpecPlacementPlatformArgs:
 
 
 class ServiceTaskSpecResourcesArgsDict(TypedDict):
-    limits: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesLimitsArgs']]]
+    limits: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesLimitsArgsDict']]]
     """
     Describes the resources which can be advertised by a node and requested by a task
     """
-    reservation: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesReservationArgs']]]
+    reservation: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesReservationArgsDict']]]
     """
     An object describing the resources which can be advertised by a node and requested by a task
     """
@@ -8268,7 +8268,7 @@ class ServiceTaskSpecResourcesLimitsArgs:
 
 
 class ServiceTaskSpecResourcesReservationArgsDict(TypedDict):
-    generic_resources: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesReservationGenericResourcesArgs']]]
+    generic_resources: NotRequired[pulumi.Input[Optional['ServiceTaskSpecResourcesReservationGenericResourcesArgsDict']]]
     """
     User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
     """
@@ -8909,7 +8909,7 @@ class DockerBuildArgsDict(TypedDict):
     """
     The version of the Docker builder.
     """
-    cache_from: NotRequired[pulumi.Input[Optional['CacheFromArgs']]]
+    cache_from: NotRequired[pulumi.Input[Optional['CacheFromArgsDict']]]
     """
     A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
     """
