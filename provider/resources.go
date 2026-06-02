@@ -360,11 +360,11 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
-				"semver": "^5.4.0",
+				"semver": "^7.0.0",
 			},
 			DevDependencies: map[string]string{
 				"@types/node":   "^10.0.0",
-				"@types/semver": "^5.4.0",
+				"@types/semver": "^7.0.0",
 			},
 			RespectSchemaVersion: true,
 		},
