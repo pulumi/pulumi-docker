@@ -13,7 +13,7 @@ Upstream: N/A
 Test: examples/test-registry-image-dockerhub (TestRegistryImageDockerHub)
 
 diff --git a/internal/provider/resource_docker_registry_image_funcs.go b/internal/provider/resource_docker_registry_image_funcs.go
-index 7dbbfed..24ad3cc 100644
+index 5f67bfc..56ea41f 100644
 --- a/internal/provider/resource_docker_registry_image_funcs.go
 +++ b/internal/provider/resource_docker_registry_image_funcs.go
 @@ -311,15 +311,12 @@ func getAuthConfigForRegistry(
