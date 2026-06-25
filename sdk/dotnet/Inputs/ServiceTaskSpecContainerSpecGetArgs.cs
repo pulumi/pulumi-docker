@@ -139,6 +139,12 @@ namespace Pulumi.Docker.Inputs
         public Input<string> Image { get; set; } = null!;
 
         /// <summary>
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `Dockerd` defaults.
+        /// </summary>
+        [Input("init")]
+        public Input<bool>? Init { get; set; }
+
+        /// <summary>
         /// Isolation technology of the containers running the service. (Windows only). Defaults to `Default`.
         /// </summary>
         [Input("isolation")]

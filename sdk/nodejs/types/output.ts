@@ -1414,6 +1414,10 @@ export interface ServiceTaskSpecContainerSpec {
      */
     image: string;
     /**
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     */
+    init: boolean;
+    /**
      * Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
      */
     isolation?: string;

@@ -9431,6 +9431,8 @@ type ServiceTaskSpecContainerSpec struct {
 	Hosts []ServiceTaskSpecContainerSpecHost `pulumi:"hosts"`
 	// The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repoDigest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
 	Image string `pulumi:"image"`
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init *bool `pulumi:"init"`
 	// Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
 	Isolation *string `pulumi:"isolation"`
 	// User-defined key/value metadata
@@ -9491,6 +9493,8 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	Hosts ServiceTaskSpecContainerSpecHostArrayInput `pulumi:"hosts"`
 	// The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repoDigest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
 	Image pulumi.StringInput `pulumi:"image"`
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init pulumi.BoolPtrInput `pulumi:"init"`
 	// Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
 	Isolation pulumi.StringPtrInput `pulumi:"isolation"`
 	// User-defined key/value metadata
@@ -9653,6 +9657,11 @@ func (o ServiceTaskSpecContainerSpecOutput) Hosts() ServiceTaskSpecContainerSpec
 // The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repoDigest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
 func (o ServiceTaskSpecContainerSpecOutput) Image() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) string { return v.Image }).(pulumi.StringOutput)
+}
+
+// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+func (o ServiceTaskSpecContainerSpecOutput) Init() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *bool { return v.Init }).(pulumi.BoolPtrOutput)
 }
 
 // Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
@@ -9857,6 +9866,16 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) Image() pulumi.StringPtrOutput {
 		}
 		return &v.Image
 	}).(pulumi.StringPtrOutput)
+}
+
+// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Init() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Init
+	}).(pulumi.BoolPtrOutput)
 }
 
 // Isolation technology of the containers running the service. (Windows only). Defaults to `default`.

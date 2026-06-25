@@ -223,6 +223,21 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
     }
 
     /**
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     * 
+     */
+    @Import(name="init")
+    private @Nullable Output<Boolean> init;
+
+    /**
+     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     * 
+     */
+    public Optional<Output<Boolean>> init() {
+        return Optional.ofNullable(this.init);
+    }
+
+    /**
      * Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
      * 
      */
@@ -388,6 +403,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         this.hostname = $.hostname;
         this.hosts = $.hosts;
         this.image = $.image;
+        this.init = $.init;
         this.isolation = $.isolation;
         this.labels = $.labels;
         this.mounts = $.mounts;
@@ -759,6 +775,27 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
          */
         public Builder image(String image) {
             return image(Output.of(image));
+        }
+
+        /**
+         * @param init Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder init(@Nullable Output<Boolean> init) {
+            $.init = init;
+            return this;
+        }
+
+        /**
+         * @param init Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder init(Boolean init) {
+            return init(Output.of(init));
         }
 
         /**
