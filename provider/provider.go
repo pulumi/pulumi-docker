@@ -78,7 +78,7 @@ func (p *dockerNativeProvider) DiffConfig(context.Context, *rpc.DiffRequest) (*r
 
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
-	config := setConfiguration(req.GetVariables())
+	config := setConfiguration(req.GetVariables()) //nolint:staticcheck // native provider reads the legacy flat config map
 	for key, val := range config {
 		p.config[key] = val
 	}
