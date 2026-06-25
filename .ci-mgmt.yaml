@@ -24,6 +24,9 @@ env:
     DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
     PRIVATE_SSH_KEY_FOR_DIGITALOCEAN: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
 makeTemplate: bridged
+buildProviderCmd: |
+    cd provider && GOOS=$(1) GOARCH=$(2) go mod download && \
+    GOOS=$(1) GOARCH=$(2) CGO_ENABLED=0 go build -v -tags no_compose $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o "$(3)" -ldflags "$(LDFLAGS)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(PROVIDER)
 docsCmd: "cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./"
 hybrid: true
 team: ecosystem
