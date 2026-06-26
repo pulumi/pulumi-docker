@@ -66,6 +66,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string Image;
         /// <summary>
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `Dockerd` defaults.
+        /// </summary>
+        public readonly bool? Init;
+        /// <summary>
         /// Isolation technology of the containers running the service. (Windows only). Defaults to `Default`.
         /// </summary>
         public readonly string? Isolation;
@@ -134,6 +138,8 @@ namespace Pulumi.Docker.Outputs
 
             string image,
 
+            bool? init,
+
             string? isolation,
 
             ImmutableArray<Outputs.ServiceTaskSpecContainerSpecLabel> labels,
@@ -167,6 +173,7 @@ namespace Pulumi.Docker.Outputs
             Hostname = hostname;
             Hosts = hosts;
             Image = image;
+            Init = init;
             Isolation = isolation;
             Labels = labels;
             Mounts = mounts;

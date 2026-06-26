@@ -89,6 +89,11 @@ public final class ServiceTaskSpecContainerSpec {
      */
     private String image;
     /**
+     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     * 
+     */
+    private @Nullable Boolean init;
+    /**
      * @return Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
      * 
      */
@@ -232,6 +237,13 @@ public final class ServiceTaskSpecContainerSpec {
         return this.image;
     }
     /**
+     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     * 
+     */
+    public Optional<Boolean> init() {
+        return Optional.ofNullable(this.init);
+    }
+    /**
      * @return Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
      * 
      */
@@ -324,6 +336,7 @@ public final class ServiceTaskSpecContainerSpec {
         private @Nullable String hostname;
         private @Nullable List<ServiceTaskSpecContainerSpecHost> hosts;
         private String image;
+        private @Nullable Boolean init;
         private @Nullable String isolation;
         private @Nullable List<ServiceTaskSpecContainerSpecLabel> labels;
         private @Nullable List<ServiceTaskSpecContainerSpecMount> mounts;
@@ -350,6 +363,7 @@ public final class ServiceTaskSpecContainerSpec {
     	      this.hostname = defaults.hostname;
     	      this.hosts = defaults.hosts;
     	      this.image = defaults.image;
+    	      this.init = defaults.init;
     	      this.isolation = defaults.isolation;
     	      this.labels = defaults.labels;
     	      this.mounts = defaults.mounts;
@@ -464,6 +478,12 @@ public final class ServiceTaskSpecContainerSpec {
             return this;
         }
         @CustomType.Setter
+        public Builder init(@Nullable Boolean init) {
+
+            this.init = init;
+            return this;
+        }
+        @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
 
             this.isolation = isolation;
@@ -547,6 +567,7 @@ public final class ServiceTaskSpecContainerSpec {
             _resultValue.hostname = hostname;
             _resultValue.hosts = hosts;
             _resultValue.image = image;
+            _resultValue.init = init;
             _resultValue.isolation = isolation;
             _resultValue.labels = labels;
             _resultValue.mounts = mounts;

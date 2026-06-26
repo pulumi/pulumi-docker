@@ -51,6 +51,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecPortArgs;
  * import java.util.ArrayList;
  * import java.util.Arrays;
  * import java.util.Map;
@@ -104,6 +105,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecPortArgs;
  * import java.util.ArrayList;
  * import java.util.Arrays;
  * import java.util.Map;
@@ -164,9 +166,17 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.ServiceArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecConfigArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecSecretArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecLabelArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecPrivilegesArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountBindOptionsArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecHealthcheckArgs;
+ * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecHostArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecDnsConfigArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecResourcesArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecResourcesLimitsArgs;
@@ -179,6 +189,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceUpdateConfigArgs;
  * import com.pulumi.docker.inputs.ServiceRollbackConfigArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecPortArgs;
  * import java.util.ArrayList;
  * import java.util.Arrays;
  * import java.util.Map;
@@ -323,7 +334,7 @@ import javax.annotation.Nullable;
  *                             .build())
  *                         .build())
  *                     .build())
- *                 .restartPolicy(ServiceTaskSpecRestartPolicyArgs.builder()
+ *                 .restartPolicy(com.pulumi.docker.inputs.ServiceTaskSpecRestartPolicyArgs.builder()
  *                     .condition("on-failure")
  *                     .delay("3s")
  *                     .maxAttempts(4)
@@ -419,6 +430,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
  * import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
  * import com.pulumi.docker.inputs.ServiceEndpointSpecArgs;
+ * import com.pulumi.docker.inputs.ServiceEndpointSpecPortArgs;
  * import java.util.ArrayList;
  * import java.util.Arrays;
  * import java.util.Map;

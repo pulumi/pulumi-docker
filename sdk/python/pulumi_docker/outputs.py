@@ -4433,6 +4433,7 @@ class ServiceTaskSpecContainerSpec(dict):
                  healthcheck: Optional['outputs.ServiceTaskSpecContainerSpecHealthcheck'] = None,
                  hostname: Optional[_builtins.str] = None,
                  hosts: Optional[Sequence['outputs.ServiceTaskSpecContainerSpecHost']] = None,
+                 init: Optional[_builtins.bool] = None,
                  isolation: Optional[_builtins.str] = None,
                  labels: Optional[Sequence['outputs.ServiceTaskSpecContainerSpecLabel']] = None,
                  mounts: Optional[Sequence['outputs.ServiceTaskSpecContainerSpecMount']] = None,
@@ -4457,6 +4458,7 @@ class ServiceTaskSpecContainerSpec(dict):
         :param 'ServiceTaskSpecContainerSpecHealthcheckArgs' healthcheck: A test to perform to check that the container is healthy. It works in the same way, and has the same default values, as the HEALTHCHECK Dockerfile instruction set by the service's Docker image. Your Compose file can override the values set in the Dockerfile.
         :param _builtins.str hostname: The hostname to use for the container, as a valid RFC 1123 hostname
         :param Sequence['ServiceTaskSpecContainerSpecHostArgs'] hosts: A list of hostname/IP mappings to add to the container's hosts file
+        :param _builtins.bool init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param _builtins.str isolation: Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
         :param Sequence['ServiceTaskSpecContainerSpecLabelArgs'] labels: User-defined key/value metadata
         :param Sequence['ServiceTaskSpecContainerSpecMountArgs'] mounts: Specification for mounts to be added to containers created as part of the service
@@ -4493,6 +4495,8 @@ class ServiceTaskSpecContainerSpec(dict):
             pulumi.set(__self__, "hostname", hostname)
         if hosts is not None:
             pulumi.set(__self__, "hosts", hosts)
+        if init is not None:
+            pulumi.set(__self__, "init", init)
         if isolation is not None:
             pulumi.set(__self__, "isolation", isolation)
         if labels is not None:
@@ -4617,6 +4621,14 @@ class ServiceTaskSpecContainerSpec(dict):
         A list of hostname/IP mappings to add to the container's hosts file
         """
         return pulumi.get(self, "hosts")
+
+    @_builtins.property
+    @pulumi.getter
+    def init(self) -> Optional[_builtins.bool]:
+        """
+        Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        """
+        return pulumi.get(self, "init")
 
     @_builtins.property
     @pulumi.getter

@@ -459,11 +459,11 @@ func main() {
 			}).(pulumi.StringOutput),
 			Registry: &docker.RegistryArgs{
 				Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
-					return &authToken.Password, nil
+					return authToken.Password, nil
 				}).(pulumi.StringPtrOutput)).(pulumi.StringOutput),
 				Server: ecrRepository.RepositoryUrl,
 				Username: authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
-					return &authToken.UserName, nil
+					return authToken.UserName, nil
 				}).(pulumi.StringPtrOutput),
 			},
 		}, pulumi.Version("v4.1.2"))

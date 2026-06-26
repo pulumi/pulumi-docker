@@ -1461,6 +1461,10 @@ export interface ServiceTaskSpecContainerSpec {
      */
     image: pulumi.Input<string>;
     /**
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     */
+    init?: pulumi.Input<boolean | undefined>;
+    /**
      * Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
      */
     isolation?: pulumi.Input<string | undefined>;
