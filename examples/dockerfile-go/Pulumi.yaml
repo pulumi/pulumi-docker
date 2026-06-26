@@ -1,5 +1,0 @@
-name: dockerfile-go
-runtime: go
-description: A minimal Go Pulumi program
-template:
-  description: A minimal Go Pulumi program

@@ -1,3 +1,0 @@
-name: cbp-docker-csharp
-runtime: dotnet
-description: A minimal C# Pulumi program
