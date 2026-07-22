@@ -230,7 +230,6 @@ class ServiceConfig(pulumi.CustomResource):
         $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
         ```
 
-
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] data: Base64-url-safe-encoded config data
@@ -298,7 +297,6 @@ class ServiceConfig(pulumi.CustomResource):
         ```sh
         $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
         ```
-
 
         :param str resource_name: The name of the resource.
         :param ServiceConfigArgs args: The arguments to use to populate this resource's properties.
