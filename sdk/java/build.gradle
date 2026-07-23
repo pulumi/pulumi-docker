@@ -95,7 +95,7 @@ publishing {
                 inceptionYear = "2022"
                 name = "pulumi-docker"
                 packaging = "jar"
-                description = "A Pulumi package for interacting with Docker in Pulumi programs"
+                description = $/A Pulumi package for interacting with Docker in Pulumi programs/$
 
                 url = "https://github.com/pulumi/pulumi-docker"
 

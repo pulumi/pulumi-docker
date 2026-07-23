@@ -216,7 +216,6 @@ class Image(pulumi.CustomResource):
         pulumi.export("imageName", my_app_image.image_name)
         ```
 
-
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union['DockerBuildArgs', 'DockerBuildArgsDict']] build: The Docker build context
@@ -323,7 +322,6 @@ class Image(pulumi.CustomResource):
             opts = pulumi.ResourceOptions(version="v4.1.2"))
         pulumi.export("imageName", my_app_image.image_name)
         ```
-
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.
@@ -458,11 +456,11 @@ class Image(pulumi.CustomResource):
         """
         **For pushed images:**
         The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
-        This reference is unique per image build and push. 
+        This reference is unique per image build and push.
         Only available for images pushed to a registry.
         Use when passing a reference to a pushed image to container management resources.
 
-        **Local-only images**For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` 
+        **Local-only images**For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119`
         """
         return pulumi.get(self, "repo_digest")
 
