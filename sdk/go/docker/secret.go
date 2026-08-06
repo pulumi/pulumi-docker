@@ -32,7 +32,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			invokeBase64encode, err := std.Base64encode(ctx, map[string]interface{}{
+//			invokeBase64encode, err := std.Base64encode(ctx, map[string]string{
 //				"input": "{\"foo\": \"s3cr3t\"}",
 //			}, nil)
 //			if err != nil {
