@@ -169,7 +169,7 @@ import (
 //					ContainerSpec: &docker.ServiceTaskSpecContainerSpecArgs{
 //						Configs: docker.ServiceTaskSpecContainerSpecConfigArray{
 //							&docker.ServiceTaskSpecContainerSpecConfigArgs{
-//								ConfigId:   serviceConfig.ID(),
+//								ConfigId:   serviceConfig.ID().ToIDOutput().ToStringOutput(),
 //								ConfigName: serviceConfig.Name,
 //								FileName:   pulumi.String("/configs.json"),
 //							},
@@ -177,7 +177,7 @@ import (
 //						},
 //						Secrets: docker.ServiceTaskSpecContainerSpecSecretArray{
 //							&docker.ServiceTaskSpecContainerSpecSecretArgs{
-//								SecretId:   serviceSecret.ID(),
+//								SecretId:   serviceSecret.ID().ToIDOutput().ToStringOutput(),
 //								SecretName: serviceSecret.Name,
 //								FileName:   pulumi.String("/secrets.json"),
 //								FileUid:    pulumi.String("0"),
@@ -315,7 +315,7 @@ import (
 //					},
 //					ForceUpdate: pulumi.Int(0),
 //					Runtime:     pulumi.String("container"),
-//					Networks: pulumi.StringArray{
+//					Networks: pulumi.IDArray{
 //						testNetwork.ID(),
 //					},
 //					LogDriver: &docker.ServiceTaskSpecLogDriverArgs{
