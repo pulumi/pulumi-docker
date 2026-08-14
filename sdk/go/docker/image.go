@@ -148,13 +148,9 @@ import (
 //					return fmt.Sprintf("%v:latest", repositoryUrl), nil
 //				}).(pulumi.StringOutput),
 //				Registry: &docker.RegistryArgs{
-//					Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
-//						return authToken.Password, nil
-//					}).(pulumi.StringPtrOutput)).(pulumi.StringOutput),
-//					Server: ecrRepository.RepositoryUrl,
-//					Username: authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
-//						return authToken.UserName, nil
-//					}).(pulumi.StringPtrOutput),
+//					Password: pulumi.ToSecret(authToken.Password()).(pulumi.StringPtrOutput),
+//					Server:   ecrRepository.RepositoryUrl,
+//					Username: authToken.UserName(),
 //				},
 //			}, pulumi.Version("v4.1.2"))
 //			if err != nil {

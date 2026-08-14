@@ -100,9 +100,9 @@ import * as utilities from "./utilities";
  *     },
  *     imageName: pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`,
  *     registry: {
- *         password: pulumi.secret(authToken.apply(authToken => authToken.password)),
+ *         password: pulumi.secret(authToken.password),
  *         server: ecrRepository.repositoryUrl,
- *         username: authToken.apply(authToken => authToken.userName),
+ *         username: authToken.userName,
  *     },
  * }, {
  *     version: "v4.1.2",
