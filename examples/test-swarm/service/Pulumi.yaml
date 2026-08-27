@@ -1,9 +1,0 @@
-name: swarm-service
-runtime: yaml
-resources:
-  service:
-    type: docker:Service
-    properties:
-      taskSpec:
-        containerSpec:
-          image: nginx

@@ -1,3 +1,0 @@
-name: cbp-aws-csharp
-runtime: dotnet
-description: An example of building/publishing a Docker container image to AWS ECR
