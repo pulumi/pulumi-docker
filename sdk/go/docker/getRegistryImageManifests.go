@@ -47,12 +47,8 @@ type GetRegistryImageManifestsResult struct {
 }
 
 func GetRegistryImageManifestsOutput(ctx *pulumi.Context, args GetRegistryImageManifestsOutputArgs, opts ...pulumi.InvokeOption) GetRegistryImageManifestsResultOutput {
-	return pulumi.ToOutputWithContext(ctx.Context(), args).
-		ApplyT(func(v interface{}) (GetRegistryImageManifestsResultOutput, error) {
-			args := v.(GetRegistryImageManifestsArgs)
-			options := pulumi.InvokeOutputOptions{InvokeOptions: internal.PkgInvokeDefaultOpts(opts)}
-			return ctx.InvokeOutput("docker:index/getRegistryImageManifests:getRegistryImageManifests", args, GetRegistryImageManifestsResultOutput{}, options).(GetRegistryImageManifestsResultOutput), nil
-		}).(GetRegistryImageManifestsResultOutput)
+	options := pulumi.InvokeOutputOptions{InvokeOptions: internal.PkgInvokeDefaultOpts(opts)}
+	return ctx.InvokeOutput("docker:index/getRegistryImageManifests:getRegistryImageManifests", args, GetRegistryImageManifestsResultOutput{}, options).(GetRegistryImageManifestsResultOutput)
 }
 
 // A collection of arguments for invoking getRegistryImageManifests.

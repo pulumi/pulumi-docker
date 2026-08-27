@@ -87,12 +87,8 @@ type LookupRemoteImageResult struct {
 }
 
 func LookupRemoteImageOutput(ctx *pulumi.Context, args LookupRemoteImageOutputArgs, opts ...pulumi.InvokeOption) LookupRemoteImageResultOutput {
-	return pulumi.ToOutputWithContext(ctx.Context(), args).
-		ApplyT(func(v interface{}) (LookupRemoteImageResultOutput, error) {
-			args := v.(LookupRemoteImageArgs)
-			options := pulumi.InvokeOutputOptions{InvokeOptions: internal.PkgInvokeDefaultOpts(opts)}
-			return ctx.InvokeOutput("docker:index/getRemoteImage:getRemoteImage", args, LookupRemoteImageResultOutput{}, options).(LookupRemoteImageResultOutput), nil
-		}).(LookupRemoteImageResultOutput)
+	options := pulumi.InvokeOutputOptions{InvokeOptions: internal.PkgInvokeDefaultOpts(opts)}
+	return ctx.InvokeOutput("docker:index/getRemoteImage:getRemoteImage", args, LookupRemoteImageResultOutput{}, options).(LookupRemoteImageResultOutput)
 }
 
 // A collection of arguments for invoking getRemoteImage.
