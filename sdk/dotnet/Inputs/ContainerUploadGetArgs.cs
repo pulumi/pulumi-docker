@@ -37,6 +37,18 @@ namespace Pulumi.Docker.Inputs
         public Input<string> File { get; set; } = null!;
 
         /// <summary>
+        /// The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+        /// </summary>
+        [Input("group")]
+        public Input<string>? Group { get; set; }
+
+        /// <summary>
+        /// The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+        /// </summary>
+        [Input("owner")]
+        public Input<string>? Owner { get; set; }
+
+        /// <summary>
         /// The permission mode for the file in the container. Has precedence over `Executable`.
         /// </summary>
         [Input("permissions")]

@@ -539,6 +539,14 @@ export interface ContainerUpload {
      */
     file: string;
     /**
+     * The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+     */
+    group?: string;
+    /**
+     * The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+     */
+    owner?: string;
+    /**
      * The permission mode for the file in the container. Has precedence over `executable`.
      */
     permissions?: string;

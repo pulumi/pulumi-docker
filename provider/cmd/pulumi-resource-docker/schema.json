@@ -868,6 +868,16 @@
                     "description": "Path to the file in the container where is upload goes to\n",
                     "willReplaceOnChanges": true
                 },
+                "group": {
+                    "type": "string",
+                    "description": "The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.\n",
+                    "willReplaceOnChanges": true
+                },
+                "owner": {
+                    "type": "string",
+                    "description": "The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.\n",
+                    "willReplaceOnChanges": true
+                },
                 "permissions": {
                     "type": "string",
                     "description": "The permission mode for the file in the container. Has precedence over \u003cspan pulumi-lang-nodejs=\"`executable`\" pulumi-lang-dotnet=\"`Executable`\" pulumi-lang-go=\"`executable`\" pulumi-lang-python=\"`executable`\" pulumi-lang-yaml=\"`executable`\" pulumi-lang-java=\"`executable`\" pulumi-lang-hcl=\"`executable`\"\u003e`executable`\u003c/span\u003e.\n",
@@ -3351,6 +3361,13 @@
                     "type": "integer",
                     "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after \u003cspan pulumi-lang-nodejs=\"`n`\" pulumi-lang-dotnet=\"`N`\" pulumi-lang-go=\"`n`\" pulumi-lang-python=\"`n`\" pulumi-lang-yaml=\"`n`\" pulumi-lang-java=\"`n`\" pulumi-lang-hcl=\"`n`\"\u003e`n`\u003c/span\u003e seconds or on successful stop.\n"
                 },
+                "deviceCgroupRules": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Cgroup rules to allow access to classes of devices without binding specific device nodes.\n"
+                },
                 "deviceReadBps": {
                     "type": "array",
                     "items": {
@@ -3762,6 +3779,14 @@
                     "type": "integer",
                     "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after \u003cspan pulumi-lang-nodejs=\"`n`\" pulumi-lang-dotnet=\"`N`\" pulumi-lang-go=\"`n`\" pulumi-lang-python=\"`n`\" pulumi-lang-yaml=\"`n`\" pulumi-lang-java=\"`n`\" pulumi-lang-hcl=\"`n`\"\u003e`n`\u003c/span\u003e seconds or on successful stop.\n"
                 },
+                "deviceCgroupRules": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Cgroup rules to allow access to classes of devices without binding specific device nodes.\n",
+                    "willReplaceOnChanges": true
+                },
                 "deviceReadBps": {
                     "type": "array",
                     "items": {
@@ -3866,7 +3891,8 @@
                 },
                 "healthcheck": {
                     "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
-                    "description": "A test to perform to check that the container is healthy\n"
+                    "description": "A test to perform to check that the container is healthy\n",
+                    "willReplaceOnChanges": true
                 },
                 "hostname": {
                     "type": "string",
@@ -4194,6 +4220,14 @@
                         "type": "integer",
                         "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after \u003cspan pulumi-lang-nodejs=\"`n`\" pulumi-lang-dotnet=\"`N`\" pulumi-lang-go=\"`n`\" pulumi-lang-python=\"`n`\" pulumi-lang-yaml=\"`n`\" pulumi-lang-java=\"`n`\" pulumi-lang-hcl=\"`n`\"\u003e`n`\u003c/span\u003e seconds or on successful stop.\n"
                     },
+                    "deviceCgroupRules": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Cgroup rules to allow access to classes of devices without binding specific device nodes.\n",
+                        "willReplaceOnChanges": true
+                    },
                     "deviceReadBps": {
                         "type": "array",
                         "items": {
@@ -4302,7 +4336,8 @@
                     },
                     "healthcheck": {
                         "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
-                        "description": "A test to perform to check that the container is healthy\n"
+                        "description": "A test to perform to check that the container is healthy\n",
+                        "willReplaceOnChanges": true
                     },
                     "hostname": {
                         "type": "string",

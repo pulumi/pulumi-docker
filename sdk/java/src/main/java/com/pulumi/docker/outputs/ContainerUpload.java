@@ -34,6 +34,16 @@ public final class ContainerUpload {
      */
     private String file;
     /**
+     * @return The group of the file in the container. Names are resolved using the Terraform host&#39;s group database; numeric IDs can be used directly.
+     * 
+     */
+    private @Nullable String group;
+    /**
+     * @return The owner of the file in the container. Names are resolved using the Terraform host&#39;s user database; numeric IDs can be used directly.
+     * 
+     */
+    private @Nullable String owner;
+    /**
      * @return The permission mode for the file in the container. Has precedence over `executable`.
      * 
      */
@@ -79,6 +89,20 @@ public final class ContainerUpload {
         return this.file;
     }
     /**
+     * @return The group of the file in the container. Names are resolved using the Terraform host&#39;s group database; numeric IDs can be used directly.
+     * 
+     */
+    public Optional<String> group() {
+        return Optional.ofNullable(this.group);
+    }
+    /**
+     * @return The owner of the file in the container. Names are resolved using the Terraform host&#39;s user database; numeric IDs can be used directly.
+     * 
+     */
+    public Optional<String> owner() {
+        return Optional.ofNullable(this.owner);
+    }
+    /**
      * @return The permission mode for the file in the container. Has precedence over `executable`.
      * 
      */
@@ -113,6 +137,8 @@ public final class ContainerUpload {
         private @Nullable String contentBase64;
         private @Nullable Boolean executable;
         private String file;
+        private @Nullable String group;
+        private @Nullable String owner;
         private @Nullable String permissions;
         private @Nullable String source;
         private @Nullable String sourceHash;
@@ -123,6 +149,8 @@ public final class ContainerUpload {
     	      this.contentBase64 = defaults.contentBase64;
     	      this.executable = defaults.executable;
     	      this.file = defaults.file;
+    	      this.group = defaults.group;
+    	      this.owner = defaults.owner;
     	      this.permissions = defaults.permissions;
     	      this.source = defaults.source;
     	      this.sourceHash = defaults.sourceHash;
@@ -155,6 +183,18 @@ public final class ContainerUpload {
             return this;
         }
         @CustomType.Setter
+        public Builder group(@Nullable String group) {
+
+            this.group = group;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder owner(@Nullable String owner) {
+
+            this.owner = owner;
+            return this;
+        }
+        @CustomType.Setter
         public Builder permissions(@Nullable String permissions) {
 
             this.permissions = permissions;
@@ -178,6 +218,8 @@ public final class ContainerUpload {
             _resultValue.contentBase64 = contentBase64;
             _resultValue.executable = executable;
             _resultValue.file = file;
+            _resultValue.group = group;
+            _resultValue.owner = owner;
             _resultValue.permissions = permissions;
             _resultValue.source = source;
             _resultValue.sourceHash = sourceHash;

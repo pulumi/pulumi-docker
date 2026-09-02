@@ -58,6 +58,9 @@
                     "command": {
                         "maxItemsOne": false
                     },
+                    "device_cgroup_rules": {
+                        "maxItemsOne": false
+                    },
                     "device_read_bps": {
                         "maxItemsOne": false
                     },

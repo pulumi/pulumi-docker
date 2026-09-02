@@ -34,6 +34,7 @@ class ContainerArgs:
                  cpu_shares: pulumi.Input[Optional[_builtins.int]] = None,
                  cpus: pulumi.Input[Optional[_builtins.str]] = None,
                  destroy_grace_seconds: pulumi.Input[Optional[_builtins.int]] = None,
+                 device_cgroup_rules: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  device_read_bps: pulumi.Input[Optional[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]] = None,
                  device_read_iops: pulumi.Input[Optional[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]] = None,
                  device_requests: pulumi.Input[Optional[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]] = None,
@@ -110,6 +111,7 @@ class ContainerArgs:
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] device_cgroup_rules: Cgroup rules to allow access to classes of devices without binding specific device nodes.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
@@ -196,6 +198,8 @@ class ContainerArgs:
             pulumi.set(__self__, "cpus", cpus)
         if destroy_grace_seconds is not None:
             pulumi.set(__self__, "destroy_grace_seconds", destroy_grace_seconds)
+        if device_cgroup_rules is not None:
+            pulumi.set(__self__, "device_cgroup_rules", device_cgroup_rules)
         if device_read_bps is not None:
             pulumi.set(__self__, "device_read_bps", device_read_bps)
         if device_read_iops is not None:
@@ -472,6 +476,18 @@ class ContainerArgs:
     @destroy_grace_seconds.setter
     def destroy_grace_seconds(self, value: pulumi.Input[Optional[_builtins.int]]):
         pulumi.set(self, "destroy_grace_seconds", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceCgroupRules")
+    def device_cgroup_rules(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        Cgroup rules to allow access to classes of devices without binding specific device nodes.
+        """
+        return pulumi.get(self, "device_cgroup_rules")
+
+    @device_cgroup_rules.setter
+    def device_cgroup_rules(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "device_cgroup_rules", value)
 
     @_builtins.property
     @pulumi.getter(name="deviceReadBps")
@@ -1211,6 +1227,7 @@ class _ContainerState:
                  cpu_shares: pulumi.Input[Optional[_builtins.int]] = None,
                  cpus: pulumi.Input[Optional[_builtins.str]] = None,
                  destroy_grace_seconds: pulumi.Input[Optional[_builtins.int]] = None,
+                 device_cgroup_rules: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  device_read_bps: pulumi.Input[Optional[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]]] = None,
                  device_read_iops: pulumi.Input[Optional[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]]] = None,
                  device_requests: pulumi.Input[Optional[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]]] = None,
@@ -1291,6 +1308,7 @@ class _ContainerState:
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] device_cgroup_rules: Cgroup rules to allow access to classes of devices without binding specific device nodes.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadBpArgs']]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceReadIopArgs']]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerDeviceRequestArgs']]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
@@ -1383,6 +1401,8 @@ class _ContainerState:
             pulumi.set(__self__, "cpus", cpus)
         if destroy_grace_seconds is not None:
             pulumi.set(__self__, "destroy_grace_seconds", destroy_grace_seconds)
+        if device_cgroup_rules is not None:
+            pulumi.set(__self__, "device_cgroup_rules", device_cgroup_rules)
         if device_read_bps is not None:
             pulumi.set(__self__, "device_read_bps", device_read_bps)
         if device_read_iops is not None:
@@ -1677,6 +1697,18 @@ class _ContainerState:
     @destroy_grace_seconds.setter
     def destroy_grace_seconds(self, value: pulumi.Input[Optional[_builtins.int]]):
         pulumi.set(self, "destroy_grace_seconds", value)
+
+    @_builtins.property
+    @pulumi.getter(name="deviceCgroupRules")
+    def device_cgroup_rules(self) -> pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        Cgroup rules to allow access to classes of devices without binding specific device nodes.
+        """
+        return pulumi.get(self, "device_cgroup_rules")
+
+    @device_cgroup_rules.setter
+    def device_cgroup_rules(self, value: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "device_cgroup_rules", value)
 
     @_builtins.property
     @pulumi.getter(name="deviceReadBps")
@@ -2453,6 +2485,7 @@ class Container(pulumi.CustomResource):
                  cpu_shares: pulumi.Input[Optional[_builtins.int]] = None,
                  cpus: pulumi.Input[Optional[_builtins.str]] = None,
                  destroy_grace_seconds: pulumi.Input[Optional[_builtins.int]] = None,
+                 device_cgroup_rules: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  device_read_bps: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]]] = None,
                  device_read_iops: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]]] = None,
                  device_requests: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]]] = None,
@@ -2590,6 +2623,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] device_cgroup_rules: Cgroup rules to allow access to classes of devices without binding specific device nodes.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
@@ -2746,6 +2780,7 @@ class Container(pulumi.CustomResource):
                  cpu_shares: pulumi.Input[Optional[_builtins.int]] = None,
                  cpus: pulumi.Input[Optional[_builtins.str]] = None,
                  destroy_grace_seconds: pulumi.Input[Optional[_builtins.int]] = None,
+                 device_cgroup_rules: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
                  device_read_bps: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]]] = None,
                  device_read_iops: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]]] = None,
                  device_requests: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]]] = None,
@@ -2828,6 +2863,7 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["cpu_shares"] = cpu_shares
             __props__.__dict__["cpus"] = cpus
             __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
+            __props__.__dict__["device_cgroup_rules"] = device_cgroup_rules
             __props__.__dict__["device_read_bps"] = device_read_bps
             __props__.__dict__["device_read_iops"] = device_read_iops
             __props__.__dict__["device_requests"] = device_requests
@@ -2919,6 +2955,7 @@ class Container(pulumi.CustomResource):
             cpu_shares: pulumi.Input[Optional[_builtins.int]] = None,
             cpus: pulumi.Input[Optional[_builtins.str]] = None,
             destroy_grace_seconds: pulumi.Input[Optional[_builtins.int]] = None,
+            device_cgroup_rules: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
             device_read_bps: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]]] = None,
             device_read_iops: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]]] = None,
             device_requests: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]]] = None,
@@ -3003,6 +3040,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[_builtins.int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[_builtins.str] cpus: Specify how much of the available CPU resources a container can use. e.g a value of 1.5 means the container is guaranteed at most one and a half of the CPUs. Has precedence over `cpu_period` and `cpu_quota`.
         :param pulumi.Input[_builtins.int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] device_cgroup_rules: Cgroup rules to allow access to classes of devices without binding specific device nodes.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadBpArgs', 'ContainerDeviceReadBpArgsDict']]]] device_read_bps: Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceReadIopArgs', 'ContainerDeviceReadIopArgsDict']]]] device_read_iops: Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
         :param pulumi.Input[Sequence[pulumi.Input[Union['ContainerDeviceRequestArgs', 'ContainerDeviceRequestArgsDict']]]] device_requests: Device requests for the container, such as CDI devices (e.g., `nvidia.com/gpu=all`) or GPU requests. This is the equivalent to using the `--device` flag for CDI devices in `docker run`.
@@ -3085,6 +3123,7 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["cpu_shares"] = cpu_shares
         __props__.__dict__["cpus"] = cpus
         __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
+        __props__.__dict__["device_cgroup_rules"] = device_cgroup_rules
         __props__.__dict__["device_read_bps"] = device_read_bps
         __props__.__dict__["device_read_iops"] = device_read_iops
         __props__.__dict__["device_requests"] = device_requests
@@ -3261,6 +3300,14 @@ class Container(pulumi.CustomResource):
         If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         """
         return pulumi.get(self, "destroy_grace_seconds")
+
+    @_builtins.property
+    @pulumi.getter(name="deviceCgroupRules")
+    def device_cgroup_rules(self) -> pulumi.Output[Optional[Sequence[_builtins.str]]]:
+        """
+        Cgroup rules to allow access to classes of devices without binding specific device nodes.
+        """
+        return pulumi.get(self, "device_cgroup_rules")
 
     @_builtins.property
     @pulumi.getter(name="deviceReadBps")

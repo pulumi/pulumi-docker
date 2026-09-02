@@ -181,6 +181,12 @@ namespace Pulumi.Docker
         public Output<int?> DestroyGraceSeconds { get; private set; } = null!;
 
         /// <summary>
+        /// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+        /// </summary>
+        [Output("deviceCgroupRules")]
+        public Output<ImmutableArray<string>> DeviceCgroupRules { get; private set; } = null!;
+
+        /// <summary>
         /// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
         /// </summary>
         [Output("deviceReadBps")]
@@ -681,6 +687,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
+
+        [Input("deviceCgroupRules")]
+        private InputList<string>? _deviceCgroupRules;
+
+        /// <summary>
+        /// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+        /// </summary>
+        public InputList<string> DeviceCgroupRules
+        {
+            get => _deviceCgroupRules ?? (_deviceCgroupRules = new InputList<string>());
+            set => _deviceCgroupRules = value;
+        }
 
         [Input("deviceReadBps")]
         private InputList<Inputs.ContainerDeviceReadBpArgs>? _deviceReadBps;
@@ -1295,6 +1313,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
+
+        [Input("deviceCgroupRules")]
+        private InputList<string>? _deviceCgroupRules;
+
+        /// <summary>
+        /// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+        /// </summary>
+        public InputList<string> DeviceCgroupRules
+        {
+            get => _deviceCgroupRules ?? (_deviceCgroupRules = new InputList<string>());
+            set => _deviceCgroupRules = value;
+        }
 
         [Input("deviceReadBps")]
         private InputList<Inputs.ContainerDeviceReadBpGetArgs>? _deviceReadBps;

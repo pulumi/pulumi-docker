@@ -78,6 +78,36 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
+     * The group of the file in the container. Names are resolved using the Terraform host&#39;s group database; numeric IDs can be used directly.
+     * 
+     */
+    @Import(name="group")
+    private @Nullable Output<String> group;
+
+    /**
+     * @return The group of the file in the container. Names are resolved using the Terraform host&#39;s group database; numeric IDs can be used directly.
+     * 
+     */
+    public Optional<Output<String>> group() {
+        return Optional.ofNullable(this.group);
+    }
+
+    /**
+     * The owner of the file in the container. Names are resolved using the Terraform host&#39;s user database; numeric IDs can be used directly.
+     * 
+     */
+    @Import(name="owner")
+    private @Nullable Output<String> owner;
+
+    /**
+     * @return The owner of the file in the container. Names are resolved using the Terraform host&#39;s user database; numeric IDs can be used directly.
+     * 
+     */
+    public Optional<Output<String>> owner() {
+        return Optional.ofNullable(this.owner);
+    }
+
+    /**
      * The permission mode for the file in the container. Has precedence over `executable`.
      * 
      */
@@ -129,6 +159,8 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         this.contentBase64 = $.contentBase64;
         this.executable = $.executable;
         this.file = $.file;
+        this.group = $.group;
+        this.owner = $.owner;
         this.permissions = $.permissions;
         this.source = $.source;
         this.sourceHash = $.sourceHash;
@@ -234,6 +266,48 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
          */
         public Builder file(String file) {
             return file(Output.of(file));
+        }
+
+        /**
+         * @param group The group of the file in the container. Names are resolved using the Terraform host&#39;s group database; numeric IDs can be used directly.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder group(@Nullable Output<String> group) {
+            $.group = group;
+            return this;
+        }
+
+        /**
+         * @param group The group of the file in the container. Names are resolved using the Terraform host&#39;s group database; numeric IDs can be used directly.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder group(String group) {
+            return group(Output.of(group));
+        }
+
+        /**
+         * @param owner The owner of the file in the container. Names are resolved using the Terraform host&#39;s user database; numeric IDs can be used directly.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder owner(@Nullable Output<String> owner) {
+            $.owner = owner;
+            return this;
+        }
+
+        /**
+         * @param owner The owner of the file in the container. Names are resolved using the Terraform host&#39;s user database; numeric IDs can be used directly.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder owner(String owner) {
+            return owner(Output.of(owner));
         }
 
         /**
