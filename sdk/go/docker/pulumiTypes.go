@@ -4122,6 +4122,10 @@ type ContainerUpload struct {
 	Executable *bool `pulumi:"executable"`
 	// Path to the file in the container where is upload goes to
 	File string `pulumi:"file"`
+	// The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+	Group *string `pulumi:"group"`
+	// The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+	Owner *string `pulumi:"owner"`
 	// The permission mode for the file in the container. Has precedence over `executable`.
 	Permissions *string `pulumi:"permissions"`
 	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
@@ -4150,6 +4154,10 @@ type ContainerUploadArgs struct {
 	Executable pulumi.BoolPtrInput `pulumi:"executable"`
 	// Path to the file in the container where is upload goes to
 	File pulumi.StringInput `pulumi:"file"`
+	// The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+	Group pulumi.StringPtrInput `pulumi:"group"`
+	// The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+	Owner pulumi.StringPtrInput `pulumi:"owner"`
 	// The permission mode for the file in the container. Has precedence over `executable`.
 	Permissions pulumi.StringPtrInput `pulumi:"permissions"`
 	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
@@ -4227,6 +4235,16 @@ func (o ContainerUploadOutput) Executable() pulumi.BoolPtrOutput {
 // Path to the file in the container where is upload goes to
 func (o ContainerUploadOutput) File() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerUpload) string { return v.File }).(pulumi.StringOutput)
+}
+
+// The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+func (o ContainerUploadOutput) Group() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerUpload) *string { return v.Group }).(pulumi.StringPtrOutput)
+}
+
+// The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+func (o ContainerUploadOutput) Owner() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ContainerUpload) *string { return v.Owner }).(pulumi.StringPtrOutput)
 }
 
 // The permission mode for the file in the container. Has precedence over `executable`.

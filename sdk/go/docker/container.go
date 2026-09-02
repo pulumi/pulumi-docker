@@ -140,6 +140,8 @@ type Container struct {
 	Cpus pulumi.StringPtrOutput `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrOutput `pulumi:"destroyGraceSeconds"`
+	// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+	DeviceCgroupRules pulumi.StringArrayOutput `pulumi:"deviceCgroupRules"`
 	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
 	DeviceReadBps ContainerDeviceReadBpArrayOutput `pulumi:"deviceReadBps"`
 	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
@@ -329,6 +331,8 @@ type containerState struct {
 	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
+	// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+	DeviceCgroupRules []string `pulumi:"deviceCgroupRules"`
 	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
 	DeviceReadBps []ContainerDeviceReadBp `pulumi:"deviceReadBps"`
 	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
@@ -486,6 +490,8 @@ type ContainerState struct {
 	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
+	// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+	DeviceCgroupRules pulumi.StringArrayInput
 	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
 	DeviceReadBps ContainerDeviceReadBpArrayInput
 	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
@@ -643,6 +649,8 @@ type containerArgs struct {
 	Cpus *string `pulumi:"cpus"`
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
+	// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+	DeviceCgroupRules []string `pulumi:"deviceCgroupRules"`
 	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
 	DeviceReadBps []ContainerDeviceReadBp `pulumi:"deviceReadBps"`
 	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
@@ -793,6 +801,8 @@ type ContainerArgs struct {
 	Cpus pulumi.StringPtrInput
 	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
+	// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+	DeviceCgroupRules pulumi.StringArrayInput
 	// Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
 	DeviceReadBps ContainerDeviceReadBpArrayInput
 	// Limit read rate (IO per second) from a device. This is the equivalent to repeating `--device-read-iops` for `docker run`.
@@ -1072,6 +1082,11 @@ func (o ContainerOutput) Cpus() pulumi.StringPtrOutput {
 // If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
 func (o ContainerOutput) DestroyGraceSeconds() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.DestroyGraceSeconds }).(pulumi.IntPtrOutput)
+}
+
+// Cgroup rules to allow access to classes of devices without binding specific device nodes.
+func (o ContainerOutput) DeviceCgroupRules() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.DeviceCgroupRules }).(pulumi.StringArrayOutput)
 }
 
 // Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.

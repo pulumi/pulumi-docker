@@ -217,6 +217,21 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     * 
+     */
+    @Import(name="deviceCgroupRules")
+    private @Nullable Output<List<String>> deviceCgroupRules;
+
+    /**
+     * @return Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     * 
+     */
+    public Optional<Output<List<String>>> deviceCgroupRules() {
+        return Optional.ofNullable(this.deviceCgroupRules);
+    }
+
+    /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      * 
      */
@@ -1146,6 +1161,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.cpuShares = $.cpuShares;
         this.cpus = $.cpus;
         this.destroyGraceSeconds = $.destroyGraceSeconds;
+        this.deviceCgroupRules = $.deviceCgroupRules;
         this.deviceReadBps = $.deviceReadBps;
         this.deviceReadIops = $.deviceReadIops;
         this.deviceRequests = $.deviceRequests;
@@ -1487,6 +1503,37 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder destroyGraceSeconds(Integer destroyGraceSeconds) {
             return destroyGraceSeconds(Output.of(destroyGraceSeconds));
+        }
+
+        /**
+         * @param deviceCgroupRules Cgroup rules to allow access to classes of devices without binding specific device nodes.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceCgroupRules(@Nullable Output<List<String>> deviceCgroupRules) {
+            $.deviceCgroupRules = deviceCgroupRules;
+            return this;
+        }
+
+        /**
+         * @param deviceCgroupRules Cgroup rules to allow access to classes of devices without binding specific device nodes.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceCgroupRules(List<String> deviceCgroupRules) {
+            return deviceCgroupRules(Output.of(deviceCgroupRules));
+        }
+
+        /**
+         * @param deviceCgroupRules Cgroup rules to allow access to classes of devices without binding specific device nodes.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deviceCgroupRules(String... deviceCgroupRules) {
+            return deviceCgroupRules(List.of(deviceCgroupRules));
         }
 
         /**

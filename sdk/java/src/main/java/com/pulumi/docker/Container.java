@@ -347,6 +347,20 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.destroyGraceSeconds);
     }
     /**
+     * Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     * 
+     */
+    @Export(name="deviceCgroupRules", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> deviceCgroupRules;
+
+    /**
+     * @return Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     * 
+     */
+    public Output<Optional<List<String>>> deviceCgroupRules() {
+        return Codegen.optional(this.deviceCgroupRules);
+    }
+    /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      * 
      */

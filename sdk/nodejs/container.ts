@@ -154,6 +154,10 @@ export class Container extends pulumi.CustomResource {
      */
     declare public readonly destroyGraceSeconds: pulumi.Output<number | undefined>;
     /**
+     * Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     */
+    declare public readonly deviceCgroupRules: pulumi.Output<string[] | undefined>;
+    /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      */
     declare public readonly deviceReadBps: pulumi.Output<outputs.ContainerDeviceReadBp[] | undefined>;
@@ -433,6 +437,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["cpuShares"] = state?.cpuShares;
             resourceInputs["cpus"] = state?.cpus;
             resourceInputs["destroyGraceSeconds"] = state?.destroyGraceSeconds;
+            resourceInputs["deviceCgroupRules"] = state?.deviceCgroupRules;
             resourceInputs["deviceReadBps"] = state?.deviceReadBps;
             resourceInputs["deviceReadIops"] = state?.deviceReadIops;
             resourceInputs["deviceRequests"] = state?.deviceRequests;
@@ -513,6 +518,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["cpuShares"] = args?.cpuShares;
             resourceInputs["cpus"] = args?.cpus;
             resourceInputs["destroyGraceSeconds"] = args?.destroyGraceSeconds;
+            resourceInputs["deviceCgroupRules"] = args?.deviceCgroupRules;
             resourceInputs["deviceReadBps"] = args?.deviceReadBps;
             resourceInputs["deviceReadIops"] = args?.deviceReadIops;
             resourceInputs["deviceRequests"] = args?.deviceRequests;
@@ -644,6 +650,10 @@ export interface ContainerState {
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
     destroyGraceSeconds?: pulumi.Input<number | undefined>;
+    /**
+     * Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     */
+    deviceCgroupRules?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      */
@@ -950,6 +960,10 @@ export interface ContainerArgs {
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
     destroyGraceSeconds?: pulumi.Input<number | undefined>;
+    /**
+     * Cgroup rules to allow access to classes of devices without binding specific device nodes.
+     */
+    deviceCgroupRules?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Limit read rate (bytes per second) from a device. This is the equivalent to repeating `--device-read-bps` for `docker run`.
      */

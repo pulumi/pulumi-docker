@@ -549,6 +549,14 @@ export interface ContainerUpload {
      */
     file: pulumi.Input<string>;
     /**
+     * The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+     */
+    group?: pulumi.Input<string | undefined>;
+    /**
+     * The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+     */
+    owner?: pulumi.Input<string | undefined>;
+    /**
      * The permission mode for the file in the container. Has precedence over `executable`.
      */
     permissions?: pulumi.Input<string | undefined>;

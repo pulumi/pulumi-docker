@@ -30,6 +30,14 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string File;
         /// <summary>
+        /// The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+        /// </summary>
+        public readonly string? Group;
+        /// <summary>
+        /// The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+        /// </summary>
+        public readonly string? Owner;
+        /// <summary>
         /// The permission mode for the file in the container. Has precedence over `Executable`.
         /// </summary>
         public readonly string? Permissions;
@@ -52,6 +60,10 @@ namespace Pulumi.Docker.Outputs
 
             string file,
 
+            string? group,
+
+            string? owner,
+
             string? permissions,
 
             string? source,
@@ -62,6 +74,8 @@ namespace Pulumi.Docker.Outputs
             ContentBase64 = contentBase64;
             Executable = executable;
             File = file;
+            Group = group;
+            Owner = owner;
             Permissions = permissions;
             Source = source;
             SourceHash = sourceHash;

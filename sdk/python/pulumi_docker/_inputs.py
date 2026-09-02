@@ -2602,6 +2602,14 @@ class ContainerUploadArgsDict(TypedDict):
     """
     If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
     """
+    group: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    """
+    The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+    """
+    owner: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    """
+    The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+    """
     permissions: NotRequired[pulumi.Input[Optional[_builtins.str]]]
     """
     The permission mode for the file in the container. Has precedence over `executable`.
@@ -2622,6 +2630,8 @@ class ContainerUploadArgs:
                  content: pulumi.Input[Optional[_builtins.str]] = None,
                  content_base64: pulumi.Input[Optional[_builtins.str]] = None,
                  executable: pulumi.Input[Optional[_builtins.bool]] = None,
+                 group: pulumi.Input[Optional[_builtins.str]] = None,
+                 owner: pulumi.Input[Optional[_builtins.str]] = None,
                  permissions: pulumi.Input[Optional[_builtins.str]] = None,
                  source: pulumi.Input[Optional[_builtins.str]] = None,
                  source_hash: pulumi.Input[Optional[_builtins.str]] = None):
@@ -2630,6 +2640,8 @@ class ContainerUploadArgs:
         :param pulumi.Input[_builtins.str] content: Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` & `source`
         :param pulumi.Input[_builtins.str] content_base64: Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
         :param pulumi.Input[_builtins.bool] executable: If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+        :param pulumi.Input[_builtins.str] group: The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+        :param pulumi.Input[_builtins.str] owner: The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
         :param pulumi.Input[_builtins.str] permissions: The permission mode for the file in the container. Has precedence over `executable`.
         :param pulumi.Input[_builtins.str] source: A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `content_base64`
         :param pulumi.Input[_builtins.str] source_hash: If using `source`, this will force an update if the file content has updated but the filename has not.
@@ -2641,6 +2653,10 @@ class ContainerUploadArgs:
             pulumi.set(__self__, "content_base64", content_base64)
         if executable is not None:
             pulumi.set(__self__, "executable", executable)
+        if group is not None:
+            pulumi.set(__self__, "group", group)
+        if owner is not None:
+            pulumi.set(__self__, "owner", owner)
         if permissions is not None:
             pulumi.set(__self__, "permissions", permissions)
         if source is not None:
@@ -2695,6 +2711,30 @@ class ContainerUploadArgs:
     @executable.setter
     def executable(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "executable", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def group(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        The group of the file in the container. Names are resolved using the Terraform host's group database; numeric IDs can be used directly.
+        """
+        return pulumi.get(self, "group")
+
+    @group.setter
+    def group(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "group", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def owner(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        The owner of the file in the container. Names are resolved using the Terraform host's user database; numeric IDs can be used directly.
+        """
+        return pulumi.get(self, "owner")
+
+    @owner.setter
+    def owner(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "owner", value)
 
     @_builtins.property
     @pulumi.getter
