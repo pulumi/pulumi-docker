@@ -297,7 +297,7 @@ class RemoteImage(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
+                 build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict', 'outputs.RemoteImageBuild']]] = None,
                  force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
                  keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
@@ -373,7 +373,7 @@ class RemoteImage(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict', 'outputs.RemoteImageBuild']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[_builtins.str] name: The name of the Docker image, including any tags or SHA256 repo digests.
@@ -468,7 +468,7 @@ class RemoteImage(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
+                 build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict', 'outputs.RemoteImageBuild']]] = None,
                  force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
                  keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
@@ -505,7 +505,7 @@ class RemoteImage(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']]] = None,
+            build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict', 'outputs.RemoteImageBuild']]] = None,
             force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
             image_id: pulumi.Input[Optional[_builtins.str]] = None,
             keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
@@ -521,7 +521,7 @@ class RemoteImage(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict', 'outputs.RemoteImageBuild']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[_builtins.str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[_builtins.bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.

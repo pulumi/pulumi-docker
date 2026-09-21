@@ -494,15 +494,15 @@ class BuildxBuilder(pulumi.CustomResource):
                  bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
                  buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
                  buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
-                 docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
+                 docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict', 'outputs.BuildxBuilderDockerContainer']]] = None,
                  driver: pulumi.Input[Optional[_builtins.str]] = None,
                  driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  endpoint: pulumi.Input[Optional[_builtins.str]] = None,
-                 kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
+                 kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict', 'outputs.BuildxBuilderKubernetes']]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
                  node: pulumi.Input[Optional[_builtins.str]] = None,
                  platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
+                 remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict', 'outputs.BuildxBuilderRemote']]] = None,
                  use: pulumi.Input[Optional[_builtins.bool]] = None,
                  __props__=None):
         """
@@ -531,15 +531,15 @@ class BuildxBuilder(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] bootstrap: Automatically boot the builder after creation. Defaults to `false`
         :param pulumi.Input[_builtins.str] buildkit_config: BuildKit daemon config file
         :param pulumi.Input[_builtins.str] buildkit_flags: BuildKit flags to set for the builder.
-        :param pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']] docker_container: Configuration block for the Docker-Container driver.
+        :param pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict', 'outputs.BuildxBuilderDockerContainer']] docker_container: Configuration block for the Docker-Container driver.
         :param pulumi.Input[_builtins.str] driver: The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] driver_options: Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
         :param pulumi.Input[_builtins.str] endpoint: The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
-        :param pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']] kubernetes: Configuration block for the Kubernetes driver.
+        :param pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict', 'outputs.BuildxBuilderKubernetes']] kubernetes: Configuration block for the Kubernetes driver.
         :param pulumi.Input[_builtins.str] name: The name of the Buildx builder. IF not specified, a random name will be generated.
         :param pulumi.Input[_builtins.str] node: Create/modify node with given name
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] platforms: Fixed platforms for current node
-        :param pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']] remote: Configuration block for the Remote driver.
+        :param pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict', 'outputs.BuildxBuilderRemote']] remote: Configuration block for the Remote driver.
         :param pulumi.Input[_builtins.bool] use: Set the current builder instance as the default for the current context.
         """
         ...
@@ -587,15 +587,15 @@ class BuildxBuilder(pulumi.CustomResource):
                  bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
                  buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
                  buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
-                 docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
+                 docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict', 'outputs.BuildxBuilderDockerContainer']]] = None,
                  driver: pulumi.Input[Optional[_builtins.str]] = None,
                  driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  endpoint: pulumi.Input[Optional[_builtins.str]] = None,
-                 kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
+                 kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict', 'outputs.BuildxBuilderKubernetes']]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
                  node: pulumi.Input[Optional[_builtins.str]] = None,
                  platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
-                 remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
+                 remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict', 'outputs.BuildxBuilderRemote']]] = None,
                  use: pulumi.Input[Optional[_builtins.bool]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -634,15 +634,15 @@ class BuildxBuilder(pulumi.CustomResource):
             bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
             buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
             buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
-            docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']]] = None,
+            docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict', 'outputs.BuildxBuilderDockerContainer']]] = None,
             driver: pulumi.Input[Optional[_builtins.str]] = None,
             driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
             endpoint: pulumi.Input[Optional[_builtins.str]] = None,
-            kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']]] = None,
+            kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict', 'outputs.BuildxBuilderKubernetes']]] = None,
             name: pulumi.Input[Optional[_builtins.str]] = None,
             node: pulumi.Input[Optional[_builtins.str]] = None,
             platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
-            remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']]] = None,
+            remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict', 'outputs.BuildxBuilderRemote']]] = None,
             use: pulumi.Input[Optional[_builtins.bool]] = None) -> 'BuildxBuilder':
         """
         Get an existing BuildxBuilder resource's state with the given name, id, and optional extra
@@ -655,15 +655,15 @@ class BuildxBuilder(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] bootstrap: Automatically boot the builder after creation. Defaults to `false`
         :param pulumi.Input[_builtins.str] buildkit_config: BuildKit daemon config file
         :param pulumi.Input[_builtins.str] buildkit_flags: BuildKit flags to set for the builder.
-        :param pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict']] docker_container: Configuration block for the Docker-Container driver.
+        :param pulumi.Input[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict', 'outputs.BuildxBuilderDockerContainer']] docker_container: Configuration block for the Docker-Container driver.
         :param pulumi.Input[_builtins.str] driver: The driver to use for the Buildx builder (e.g., docker-container, kubernetes).
         :param pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]] driver_options: Additional options for the Buildx driver in the form of `key=value,...`. These options are driver-specific.
         :param pulumi.Input[_builtins.str] endpoint: The endpoint or context to use for the Buildx builder, where context is the name of a context from docker context ls and endpoint is the address for Docker socket (eg. DOCKER_HOST value). By default, the current Docker configuration is used for determining the context/endpoint value.
-        :param pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict']] kubernetes: Configuration block for the Kubernetes driver.
+        :param pulumi.Input[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict', 'outputs.BuildxBuilderKubernetes']] kubernetes: Configuration block for the Kubernetes driver.
         :param pulumi.Input[_builtins.str] name: The name of the Buildx builder. IF not specified, a random name will be generated.
         :param pulumi.Input[_builtins.str] node: Create/modify node with given name
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] platforms: Fixed platforms for current node
-        :param pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict']] remote: Configuration block for the Remote driver.
+        :param pulumi.Input[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict', 'outputs.BuildxBuilderRemote']] remote: Configuration block for the Remote driver.
         :param pulumi.Input[_builtins.bool] use: Set the current builder instance as the default for the current context.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
