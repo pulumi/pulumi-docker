@@ -94,16 +94,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-	reg := marshalRegistry(inputs["registry"])
-	skipPush := marshalSkipPush(inputs["skipPush"])
+	reg := marshalRegistry(inputs[lintRegistry])
+	skipPush := marshalSkipPush(inputs[lintSkipPush])
 	// read in values to Image
 	img := Image{
-		Name:     inputs["imageName"].StringValue(),
+		Name:     inputs[lintImageName].StringValue(),
 		SkipPush: skipPush,
 		Registry: reg,
 	}
 
-	build, err := marshalBuildAndApplyDefaults(inputs["build"])
+	build, err := marshalBuildAndApplyDefaults(inputs[lintBuild])
 	if err != nil {
 		return "", nil, err
 	}
@@ -270,12 +270,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	outputs := map[string]interface{}{
-		"dockerfile":     relDockerfile,
-		"context":        img.Build.Context,
-		"baseImageName":  img.Name,
-		"registryServer": img.Registry.Server,
-		"imageName":      img.Name,
-		"platform":       img.Build.Platform,
+		lintDockerfile:     relDockerfile,
+		lintContext:        img.Build.Context,
+		lintBaseImageName:  img.Name,
+		lintRegistryServer: img.Registry.Server,
+		lintImageName:      img.Name,
+		lintPlatform:       img.Build.Platform,
 	}
 
 	imageName, err := reference.ParseNormalizedNamed(img.Name)
@@ -301,7 +301,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	_ = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
-	authConfigBytes, err := json.Marshal(regAuth)
+	authConfigBytes, err := json.Marshal(regAuth) //nolint:gosec // The registry password must be serialized for Docker.
 	if err != nil {
 		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
 	}
@@ -502,7 +502,8 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 	if cachedImage != "" {
 		_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
 
-		cachedImageAuthBytes, err := json.Marshal(authConfig)
+		// The registry password must be serialized for Docker.
+		cachedImageAuthBytes, err := json.Marshal(authConfig) //nolint:gosec
 		if err != nil {
 			return err
 		}
@@ -543,22 +544,22 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	buildObject := b.ObjectValue()
 
 	// Context
-	if !buildObject["context"].ContainsUnknowns() {
-		if buildObject["context"].IsNull() {
+	if !buildObject[lintContext].ContainsUnknowns() {
+		if buildObject[lintContext].IsNull() {
 			// set default
 			build.Context = "."
 		} else {
-			build.Context = buildObject["context"].StringValue()
+			build.Context = buildObject[lintContext].StringValue()
 		}
 	}
 
 	// Dockerfile
-	if !buildObject["dockerfile"].ContainsUnknowns() {
-		if buildObject["dockerfile"].IsNull() {
+	if !buildObject[lintDockerfile].ContainsUnknowns() {
+		if buildObject[lintDockerfile].IsNull() {
 			// set default
 			build.Dockerfile = path.Join(build.Context, defaultDockerfile)
 		} else {
-			build.Dockerfile = buildObject["dockerfile"].StringValue()
+			build.Dockerfile = buildObject[lintDockerfile].StringValue()
 		}
 	}
 
@@ -570,7 +571,7 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	build.BuilderVersion = version
 
 	// Args
-	build.Args = marshalArgs(buildObject["args"])
+	build.Args = marshalArgs(buildObject[lintArgs])
 
 	// Target
 	if !buildObject["target"].IsNull() && !buildObject["target"].ContainsUnknowns() {
@@ -597,8 +598,8 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	}
 
 	// Platform
-	if !buildObject["platform"].IsNull() && !buildObject["platform"].ContainsUnknowns() {
-		build.Platform = buildObject["platform"].StringValue()
+	if !buildObject[lintPlatform].IsNull() && !buildObject[lintPlatform].ContainsUnknowns() {
+		build.Platform = buildObject[lintPlatform].StringValue()
 	}
 	return build, nil
 }
@@ -627,7 +628,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	if !b.IsObject() {
 		return cacheImages, nil
 	}
-	c := b.ObjectValue()["cacheFrom"]
+	c := b.ObjectValue()[lintCacheFrom]
 
 	if c.IsNull() || !c.IsObject() {
 		return cacheImages, nil
@@ -635,7 +636,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 
 	// if we specify a list of stages, then we only pull those
 	cacheFrom := c.ObjectValue()
-	images, ok := cacheFrom["images"]
+	images, ok := cacheFrom[lintImages]
 	if !ok {
 		return cacheImages, fmt.Errorf("cacheFrom requires an `images` field")
 	}
@@ -665,14 +666,14 @@ func marshalRegistry(r resource.PropertyValue) Registry {
 
 	if !r.IsNull() && r.IsObject() {
 
-		if !r.ObjectValue()["server"].IsNull() && !r.ObjectValue()["server"].ContainsUnknowns() {
-			reg.Server = r.ObjectValue()["server"].StringValue()
+		if !r.ObjectValue()[lintServer].IsNull() && !r.ObjectValue()[lintServer].ContainsUnknowns() {
+			reg.Server = r.ObjectValue()[lintServer].StringValue()
 		}
-		if !r.ObjectValue()["username"].IsNull() && !r.ObjectValue()["username"].ContainsUnknowns() {
-			reg.Username = r.ObjectValue()["username"].StringValue()
+		if !r.ObjectValue()[lintUsername].IsNull() && !r.ObjectValue()[lintUsername].ContainsUnknowns() {
+			reg.Username = r.ObjectValue()[lintUsername].StringValue()
 		}
-		if !r.ObjectValue()["password"].IsNull() && !r.ObjectValue()["password"].ContainsUnknowns() {
-			reg.Password = r.ObjectValue()["password"].StringValue()
+		if !r.ObjectValue()[lintPassword].IsNull() && !r.ObjectValue()[lintPassword].ContainsUnknowns() {
+			reg.Password = r.ObjectValue()[lintPassword].StringValue()
 		}
 	}
 	return reg
@@ -704,9 +705,9 @@ func marshalBuilder(builder resource.PropertyValue) (buildtypes.BuilderVersion, 
 	}
 	// verify valid input
 	switch builder.StringValue() {
-	case "BuilderV1":
+	case lintBuilderV1:
 		return "1", nil
-	case "BuilderBuildKit":
+	case lintBuilderBuildKit:
 		return "2", nil
 	default:
 		// because the Docker client will default to `BuilderV1`
@@ -929,7 +930,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 // instead of the system-wide one.
 // `verify` is a testing affordance and will always be true in production.
 func configureDockerClient(configs map[string]string, verify bool) (*client.Client, error) {
-	host, isExplicitHost := configs["host"]
+	host, isExplicitHost := configs[lintHost]
 
 	if !isExplicitHost {
 		host = client.DefaultDockerHost
@@ -994,7 +995,7 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 func configureDockerClientInner(configs map[string]string, host string) (*client.Client, error) {
 	// check for TLS inputs
 	var caMaterial, certMaterial, keyMaterial, certPath string
-	if val, ok := configs["caMaterial"]; ok {
+	if val, ok := configs[lintCAMaterial]; ok {
 		caMaterial = val
 	}
 	if val, ok := configs["certMaterial"]; ok {
