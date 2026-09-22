@@ -250,8 +250,8 @@ class RegistryImage(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
-                 build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
+                 auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict', 'outputs.RegistryImageAuthConfig']]] = None,
+                 build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict', 'outputs.RegistryImageBuild']]] = None,
                  insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
                  keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
@@ -283,8 +283,8 @@ class RegistryImage(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
-        :param pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict', 'outputs.RegistryImageAuthConfig']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
+        :param pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict', 'outputs.RegistryImageBuild']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[_builtins.bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[_builtins.str] name: The name of the Docker image.
@@ -335,8 +335,8 @@ class RegistryImage(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
-                 build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
+                 auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict', 'outputs.RegistryImageAuthConfig']]] = None,
+                 build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict', 'outputs.RegistryImageBuild']]] = None,
                  insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
                  keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
@@ -367,8 +367,8 @@ class RegistryImage(pulumi.CustomResource):
     def get(resource_name: str,
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
-            auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']]] = None,
-            build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']]] = None,
+            auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict', 'outputs.RegistryImageAuthConfig']]] = None,
+            build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict', 'outputs.RegistryImageBuild']]] = None,
             insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
             keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
             name: pulumi.Input[Optional[_builtins.str]] = None,
@@ -381,8 +381,8 @@ class RegistryImage(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
-        :param pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict', 'outputs.RegistryImageAuthConfig']] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
+        :param pulumi.Input[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict', 'outputs.RegistryImageBuild']] build: Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[_builtins.bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[_builtins.bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[_builtins.str] name: The name of the Docker image.

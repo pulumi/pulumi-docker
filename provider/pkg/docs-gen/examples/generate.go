@@ -29,9 +29,9 @@ func main() {
 		yamlPath = filepath.Join(cwd, yamlPath)
 	}
 
-	fileInfo, err := os.Lstat(mdPath)
+	fileInfo, err := os.Lstat(mdPath) //nolint:gosec // This CLI accepts the documentation output path.
 	if err != nil && os.IsNotExist(err) {
-		if err := os.MkdirAll(mdPath, 0600); err != nil {
+		if err := os.MkdirAll(mdPath, 0600); err != nil { //nolint:gosec // This CLI accepts the documentation output path.
 			panic(err)
 		}
 	}
@@ -108,7 +108,7 @@ func convert(language, tempDir, programFile string) (string, error) {
 }
 
 func processYaml(path string, mdDir string) error {
-	yamlFile, err := os.Open(path)
+	yamlFile, err := os.Open(path) //nolint:gosec // The path comes from a directory entry read by this CLI.
 	if err != nil {
 		return err
 	}
@@ -177,7 +177,8 @@ func processYaml(path string, mdDir string) error {
 	}
 	contract.AssertNoErrorf(err, "")
 	fmt.Fprintf(os.Stdout, "Writing %s\n", filepath.Join(mdDir, md))
-	f, err := os.OpenFile(filepath.Join(mdDir, md), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	f, err := os.OpenFile( //nolint:gosec // This CLI accepts the documentation output directory.
+		filepath.Join(mdDir, md), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
 		return err
 	}

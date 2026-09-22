@@ -92,7 +92,7 @@ func Provider() tfbridge.ProviderInfo {
 		GitHubOrg:        "kreuzwerker",
 		DocRules:         &tfbridge.DocRuleInfo{EditRules: editRules},
 		Config: map[string]*tfbridge.SchemaInfo{
-			"host": {
+			lintHost: {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"DOCKER_HOST"},
 					ComputeDefault: func(_ context.Context, _ tfbridge.ComputeDefaultOptions) (interface{}, error) {
@@ -141,23 +141,23 @@ func Provider() tfbridge.ProviderInfo {
 		ExtraTypes: map[string]schema.ComplexTypeSpec{
 			dockerResource(dockerMod, "Registry").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type:        "object",
+					Type:        lintObject,
 					Description: "Describes a Docker container registry",
 					Properties: map[string]schema.PropertySpec{
-						"server": {
+						lintServer: {
 							Description: "The URL of the Docker registry server",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"username": {
+						lintUsername: {
 							Description: "The username to authenticate to the registry. " +
 								"Does not cause image rebuild when changed.",
-							TypeSpec: schema.TypeSpec{Type: "string"},
+							TypeSpec: schema.TypeSpec{Type: lintStringType},
 						},
 
-						"password": {
+						lintPassword: {
 							Description: "The password to authenticate to the registry. " +
 								"Does not cause image rebuild when changed.",
-							TypeSpec: schema.TypeSpec{Type: "string"},
+							TypeSpec: schema.TypeSpec{Type: lintStringType},
 							Secret:   true,
 						},
 					},
@@ -165,18 +165,18 @@ func Provider() tfbridge.ProviderInfo {
 			},
 			dockerResource(dockerMod, "DockerBuild").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type:        "object",
+					Type:        lintObject,
 					Description: "The Docker build context",
 					Properties: map[string]schema.PropertySpec{
-						"context": {
+						lintContext: {
 							Description: "The path to the build context to use.",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"dockerfile": {
+						lintDockerfile: {
 							Description: "The path to the Dockerfile to use.",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"cacheFrom": {
+						lintCacheFrom: {
 							Description: "A list of image names to use as build cache. " +
 								"Images provided must have a cache manifest. " +
 								"Must provide authentication to cache registry.",
@@ -185,20 +185,20 @@ func Provider() tfbridge.ProviderInfo {
 								Ref: "#/types/docker:index/cacheFrom:CacheFrom",
 							},
 						},
-						"args": {
+						lintArgs: {
 							Description: "An optional map of named build-time argument variables to set " +
 								"during the Docker build. This flag allows you to pass build-time variables " +
 								"that can be accessed like environment variables inside the RUN instruction.",
 							TypeSpec: schema.TypeSpec{
-								Type: "object",
+								Type: lintObject,
 								AdditionalProperties: &schema.TypeSpec{
-									Type: "string",
+									Type: lintStringType,
 								},
 							},
 						},
 						"target": {
 							Description: "The target of the Dockerfile to build",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
 						"builderVersion": {
 							Description: "The version of the Docker builder.",
@@ -206,33 +206,33 @@ func Provider() tfbridge.ProviderInfo {
 								Ref: "#/types/docker:index/builderVersion:BuilderVersion",
 							},
 						},
-						"platform": {
+						lintPlatform: {
 							Description: "The architecture of the platform you want to build this image for, " +
 								"e.g. `linux/arm64`.",
-							TypeSpec: schema.TypeSpec{Type: "string"},
+							TypeSpec: schema.TypeSpec{Type: lintStringType},
 						},
 						"addHosts": {
 							Description: "Custom host-to-IP mappings to use while building (format: \"host:ip\")",
-							TypeSpec:    schema.TypeSpec{Type: "array", Items: &schema.TypeSpec{Type: "string"}},
+							TypeSpec:    schema.TypeSpec{Type: "array", Items: &schema.TypeSpec{Type: lintStringType}},
 						},
 						"network": {
 							Description: "Set the networking mode for RUN instructions",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
 					},
 				},
 			},
 			dockerResource(dockerMod, "CacheFrom").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type:        "object",
+					Type:        lintObject,
 					Description: "Contains a list of images to reference when building using a cache",
 					Properties: map[string]schema.PropertySpec{
-						"images": {
+						lintImages: {
 							Description: "Specifies cached images",
 							TypeSpec: schema.TypeSpec{
 								Type: "array",
 								Items: &schema.TypeSpec{
-									Type: "string",
+									Type: lintStringType,
 								},
 							},
 						},
@@ -242,15 +242,15 @@ func Provider() tfbridge.ProviderInfo {
 			dockerResource(dockerMod, "BuilderVersion").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Description: "The version of the Docker builder.",
-					Type:        "string",
+					Type:        lintStringType,
 				},
 				Enum: []schema.EnumValueSpec{
 					{
-						Name: "BuilderV1", Value: "BuilderV1",
+						Name: lintBuilderV1, Value: lintBuilderV1,
 						Description: "The first generation builder for Docker Daemon",
 					},
 					{
-						Name: "BuilderBuildKit", Value: "BuilderBuildKit",
+						Name: lintBuilderBuildKit, Value: lintBuilderBuildKit,
 						Description: "The builder based on moby/buildkit project",
 					},
 				},
@@ -259,31 +259,31 @@ func Provider() tfbridge.ProviderInfo {
 		ExtraResources: map[string]schema.ResourceSpec{
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type:        "object",
+					Type:        lintObject,
 					Description: docImage,
 					Required: []string{
-						"dockerfile", "context", "baseImageName", "registryServer", "imageName", "repoDigest",
+						lintDockerfile, lintContext, lintBaseImageName, lintRegistryServer, lintImageName, "repoDigest",
 					},
 					Properties: map[string]schema.PropertySpec{
-						"imageName": {
+						lintImageName: {
 							Description: "The fully qualified image name",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"registryServer": {
+						lintRegistryServer: {
 							Description: "The name of the registry server hosting the image.",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"baseImageName": {
+						lintBaseImageName: {
 							Description: "The fully qualified image name that was pushed to the registry.",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"dockerfile": {
+						lintDockerfile: {
 							Description: "The location of the Dockerfile relative to the docker build context.",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
-						"context": {
+						lintContext: {
 							Description: "The path to the build context to use.",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
 						"repoDigest": {
 							Description: "**For pushed images:**\n" +
@@ -297,44 +297,44 @@ func Provider() tfbridge.ProviderInfo {
 								"For local images, this field is the image ID of the built local image, of the format " +
 								"<algorithm>:<hash>, " +
 								"e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` \n",
-							TypeSpec: schema.TypeSpec{Type: "string"},
+							TypeSpec: schema.TypeSpec{Type: lintStringType},
 						},
-						"platform": {
+						lintPlatform: {
 							Description: "The image's architecture and OS",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							TypeSpec:    schema.TypeSpec{Type: lintStringType},
 						},
 					},
 				},
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
-					"imageName": {
+					lintImageName: {
 						Description: "The image name, of the format repository[:tag], " +
 							"e.g. `docker.io/username/demo-image:v1`.\n" +
 							"This reference is not unique to each build and push." +
 							"For the unique manifest SHA of a pushed docker image, or the local image ID, " +
 							"please use `repoDigest`.",
-						TypeSpec: schema.TypeSpec{Type: "string"},
+						TypeSpec: schema.TypeSpec{Type: lintStringType},
 					},
-					"registry": {
+					lintRegistry: {
 						Description: "The registry to push the image to",
 						TypeSpec: schema.TypeSpec{
 							Ref: "#/types/docker:index/registry:Registry",
 						},
 					},
-					"build": {
+					lintBuild: {
 						Description: "The Docker build context",
 						TypeSpec: schema.TypeSpec{
 							Ref: "#/types/docker:index/dockerBuild:DockerBuild",
 						},
 					},
-					"skipPush": {
+					lintSkipPush: {
 						Description: "A flag to skip a registry push.",
 						TypeSpec: schema.TypeSpec{
 							Type: "boolean",
 						},
 						Default: false,
 					},
-					"buildOnPreview": {
+					lintBuildOnPreview: {
 						Description: "A flag to build an image on preview",
 						TypeSpec: schema.TypeSpec{
 							Type: "boolean",
@@ -342,7 +342,7 @@ func Provider() tfbridge.ProviderInfo {
 						Default: false,
 					},
 				},
-				RequiredInputs: []string{"imageName"},
+				RequiredInputs: []string{lintImageName},
 				Aliases: []schema.AliasSpec{
 					{
 						Type: "docker:image:Image",

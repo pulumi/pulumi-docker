@@ -28,7 +28,7 @@ func TestProviderHostDefaultMatchesPlatform(t *testing.T) {
 	})
 
 	info := Provider()
-	host := info.Config["host"]
+	host := info.Config[lintHost]
 	require.NotNil(t, host)
 	require.NotNil(t, host.Default)
 	assert.Equal(t, []string{"DOCKER_HOST"}, host.Default.EnvVars)
@@ -44,9 +44,9 @@ func TestDiffUpdates(t *testing.T) {
 	t.Run("No diff happens on changed password", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{}
 		input := map[resource.PropertyKey]resource.ValueDiff{
-			"registry": {
+			lintRegistry: {
 				Object: &resource.ObjectDiff{
-					Updates: map[resource.PropertyKey]resource.ValueDiff{"password": {
+					Updates: map[resource.PropertyKey]resource.ValueDiff{lintPassword: {
 						Old: resource.PropertyValue{
 							V: "FancyToken",
 						},
@@ -66,9 +66,9 @@ func TestDiffUpdates(t *testing.T) {
 	t.Run("No diff happens on changed username", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{}
 		input := map[resource.PropertyKey]resource.ValueDiff{
-			"registry": {
+			lintRegistry: {
 				Object: &resource.ObjectDiff{
-					Updates: map[resource.PropertyKey]resource.ValueDiff{"username": {
+					Updates: map[resource.PropertyKey]resource.ValueDiff{lintUsername: {
 						Old: resource.PropertyValue{
 							V: "platypus",
 						},
@@ -87,14 +87,14 @@ func TestDiffUpdates(t *testing.T) {
 
 	t.Run("Diff happens on changed server name", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{
-			"registry": {
+			lintRegistry: {
 				Kind: rpc.PropertyDiff_UPDATE,
 			},
 		}
 		input := map[resource.PropertyKey]resource.ValueDiff{
-			"registry": {
+			lintRegistry: {
 				Object: &resource.ObjectDiff{
-					Updates: map[resource.PropertyKey]resource.ValueDiff{"server": {
+					Updates: map[resource.PropertyKey]resource.ValueDiff{lintServer: {
 						Old: resource.PropertyValue{
 							V: "dockerhub",
 						},
@@ -113,16 +113,16 @@ func TestDiffUpdates(t *testing.T) {
 
 	t.Run("Diff happens on unknown new registry", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{
-			"registry": {
+			lintRegistry: {
 				Kind: rpc.PropertyDiff_UPDATE,
 			},
 		}
 		input := map[resource.PropertyKey]resource.ValueDiff{
-			"registry": {
+			lintRegistry: {
 				Old: resource.NewObjectProperty(resource.PropertyMap{
-					"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
-					"username": resource.NewStringProperty("pulumipus"),
-					"password": resource.NewStringProperty("supersecret"),
+					lintServer:   resource.NewStringProperty("https://index.docker.io/v1/"),
+					lintUsername: resource.NewStringProperty(lintPulumipus),
+					lintPassword: resource.NewStringProperty("supersecret"),
 				}),
 				New: resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("X")}),
 			},
@@ -133,12 +133,12 @@ func TestDiffUpdates(t *testing.T) {
 
 	t.Run("Diff happens on changed build context", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{
-			"build": {
+			lintBuild: {
 				Kind: rpc.PropertyDiff_UPDATE,
 			},
 		}
 		input := map[resource.PropertyKey]resource.ValueDiff{
-			"build": {
+			lintBuild: {
 				Object: &resource.ObjectDiff{
 					Updates: map[resource.PropertyKey]resource.ValueDiff{"contextDigest": {
 						Old: resource.PropertyValue{
@@ -259,7 +259,7 @@ func TestHashFilemodeMatters(t *testing.T) {
 
 func TestHashDeepSymlinks(t *testing.T) {
 	dir := "./testdata/symlinks"
-	_, err := hashContext(dir, filepath.Join(dir, "Dockerfile"))
+	_, err := hashContext(dir, filepath.Join(dir, defaultDockerfile))
 	assert.NoError(t, err)
 }
 
@@ -267,7 +267,7 @@ func TestIgnoreIrregularFiles(t *testing.T) {
 	dir := t.TempDir()
 
 	// Create a Dockerfile
-	dockerfile := filepath.Join(dir, "Dockerfile")
+	dockerfile := filepath.Join(dir, defaultDockerfile)
 	err := os.WriteFile(dockerfile, []byte{}, 0o600)
 	require.NoError(t, err)
 
@@ -300,35 +300,35 @@ func TestHashUnignoredDirs(t *testing.T) {
 func TestSetConfiguration(t *testing.T) {
 	t.Run("Sets provider config correctly when passed a valid input map", func(t *testing.T) {
 		expected := map[string]string{
-			"host":       "thisisatesthost",
-			"caMaterial": "materialsareweird",
+			lintHost:       lintTestHost,
+			lintCAMaterial: lintTestCAMaterial,
 		}
 		input := map[string]string{
-			"host":       "thisisatesthost",
-			"caMaterial": "materialsareweird",
+			lintHost:       lintTestHost,
+			lintCAMaterial: lintTestCAMaterial,
 		}
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Sets provider config correctly from environment variables", func(t *testing.T) {
 		expected := map[string]string{
-			"host":       "thisisatesthost",
-			"caMaterial": "materialsareweird",
+			lintHost:       lintTestHost,
+			lintCAMaterial: lintTestCAMaterial,
 		}
-		t.Setenv("DOCKER_HOST", "thisisatesthost")
-		t.Setenv("DOCKER_CA_MATERIAL", "materialsareweird")
+		t.Setenv("DOCKER_HOST", lintTestHost)
+		t.Setenv("DOCKER_CA_MATERIAL", lintTestCAMaterial)
 		input := map[string]string{}
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Sets provider config with preference to stack config variables", func(t *testing.T) {
 		expected := map[string]string{
-			"host":       "thisisatesthost",
-			"caMaterial": "materialsareweird",
+			lintHost:       lintTestHost,
+			lintCAMaterial: lintTestCAMaterial,
 		}
 		input := map[string]string{
-			"host":       "thisisatesthost",
-			"caMaterial": "materialsareweird",
+			lintHost:       lintTestHost,
+			lintCAMaterial: lintTestCAMaterial,
 		}
 
 		t.Setenv("DOCKER_HOST", "thishostshouldbeignored")
@@ -338,16 +338,16 @@ func TestSetConfiguration(t *testing.T) {
 	})
 	t.Run("Sets provider config by correctly merging stack config and env vars", func(t *testing.T) {
 		expected := map[string]string{
-			"host":        "thisisatesthost",
-			"caMaterial":  "materialsareweird",
-			"authConfigs": "authConfigs",
+			lintHost:        lintTestHost,
+			lintCAMaterial:  lintTestCAMaterial,
+			lintAuthConfigs: lintAuthConfigs,
 		}
 		input := map[string]string{
-			"caMaterial":  "materialsareweird",
-			"authConfigs": "authConfigs",
+			lintCAMaterial:  lintTestCAMaterial,
+			lintAuthConfigs: lintAuthConfigs,
 		}
 
-		t.Setenv("DOCKER_HOST", "thisisatesthost")
+		t.Setenv("DOCKER_HOST", lintTestHost)
 
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
@@ -364,10 +364,10 @@ func TestCheck(t *testing.T) {
 		{
 			name: "can't push a non-canonical image name",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("not-fully-qualified-image-name:latest"),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewStringProperty("not-fully-qualified-image-name:latest"),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
 					},
 				),
 			},
@@ -376,11 +376,11 @@ func TestCheck(t *testing.T) {
 		{
 			name: "image name can be non-canonical if not pushing",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("not-pushing:latest"),
-				"skipPush":  resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewStringProperty("not-pushing:latest"),
+				lintSkipPush:  resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
 					},
 				),
 			},
@@ -389,16 +389,16 @@ func TestCheck(t *testing.T) {
 		{
 			name: "image name can be non-canonical if registry server is provided",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("foo/bar:latest"),
-				"skipPush":  resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewStringProperty("foo/bar:latest"),
+				lintSkipPush:  resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
 					},
 				),
-				"registry": resource.NewObjectProperty(
+				lintRegistry: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"server": resource.NewStringProperty("docker.io"),
+						lintServer: resource.NewStringProperty("docker.io"),
 					},
 				),
 			},
@@ -407,14 +407,14 @@ func TestCheck(t *testing.T) {
 		{
 			name: "image name must be canonical if using caching, even when not pushing",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("not-pushing:latest"),
-				"skipPush":  resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewStringProperty("not-pushing:latest"),
+				lintSkipPush:  resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
-						"cacheFrom": resource.NewObjectProperty(
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
+						lintCacheFrom: resource.NewObjectProperty(
 							resource.PropertyMap{
-								"images": resource.NewArrayProperty(
+								lintImages: resource.NewArrayProperty(
 									[]resource.PropertyValue{resource.NewStringProperty("docker.io/pulumi/pulumi:latest")},
 								),
 							},
@@ -427,13 +427,13 @@ func TestCheck(t *testing.T) {
 		{
 			name: "cacheFrom can infer host from imageName",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewStringProperty("docker.io/foo/bar:latest"),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
-						"cacheFrom": resource.NewObjectProperty(
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
+						lintCacheFrom: resource.NewObjectProperty(
 							resource.PropertyMap{
-								"images": resource.NewArrayProperty(
+								lintImages: resource.NewArrayProperty(
 									[]resource.PropertyValue{resource.NewStringProperty("foo/bar:latest")},
 								),
 							},
@@ -446,22 +446,22 @@ func TestCheck(t *testing.T) {
 		{
 			name: "can use non-canonical cacheFrom with a registry server",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("foo/bar:latest"),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewStringProperty("foo/bar:latest"),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
-						"cacheFrom": resource.NewObjectProperty(
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
+						lintCacheFrom: resource.NewObjectProperty(
 							resource.PropertyMap{
-								"images": resource.NewArrayProperty(
+								lintImages: resource.NewArrayProperty(
 									[]resource.PropertyValue{resource.NewStringProperty("not-fully-qualified-cache:latest")},
 								),
 							},
 						),
 					},
 				),
-				"registry": resource.NewObjectProperty(
+				lintRegistry: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"server": resource.NewStringProperty("docker.io"),
+						lintServer: resource.NewStringProperty("docker.io"),
 					},
 				),
 			},
@@ -470,13 +470,13 @@ func TestCheck(t *testing.T) {
 		{
 			name: "validation is skipped if imageName is unknown",
 			news: resource.PropertyMap{
-				"imageName": resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("foo")}),
-				"build": resource.NewObjectProperty(
+				lintImageName: resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("foo")}),
+				lintBuild: resource.NewObjectProperty(
 					resource.PropertyMap{
-						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
-						"cacheFrom": resource.NewObjectProperty(
+						lintDockerfile: resource.NewStringProperty("testdata/Dockerfile"),
+						lintCacheFrom: resource.NewObjectProperty(
 							resource.PropertyMap{
-								"images": resource.NewArrayProperty(
+								lintImages: resource.NewArrayProperty(
 									[]resource.PropertyValue{resource.NewStringProperty("foo/bar:latest")},
 								),
 							},
@@ -489,8 +489,8 @@ func TestCheck(t *testing.T) {
 		{
 			name: "build is unknown",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
-				"build":     resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("a")}),
+				lintImageName: resource.NewStringProperty("docker.io/foo/bar:latest"),
+				lintBuild:     resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("a")}),
 			},
 			wantErr: nil,
 		},
@@ -525,7 +525,7 @@ func TestCanPreview(t *testing.T) {
 		{
 			name: "buildOnPreview is unknown",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewComputedProperty(
+				lintBuildOnPreview: resource.NewComputedProperty(
 					resource.Computed{},
 				),
 			},
@@ -534,18 +534,18 @@ func TestCanPreview(t *testing.T) {
 		{
 			name: "buildOnPreview is false",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewBoolProperty(false),
+				lintBuildOnPreview: resource.NewBoolProperty(false),
 			},
 			want: false,
 		},
 		{
 			name: "dockerfile is unknown",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(resource.PropertyMap{
-					"dockerfile": resource.NewComputedProperty(resource.Computed{}),
-					"context":    resource.NewStringProperty("."),
-					"args":       resource.NewObjectProperty(resource.PropertyMap{}),
+				lintBuildOnPreview: resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(resource.PropertyMap{
+					lintDockerfile: resource.NewComputedProperty(resource.Computed{}),
+					lintContext:    resource.NewStringProperty("."),
+					lintArgs:       resource.NewObjectProperty(resource.PropertyMap{}),
 				}),
 			},
 			want: false,
@@ -553,11 +553,11 @@ func TestCanPreview(t *testing.T) {
 		{
 			name: "context is unknown",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(resource.PropertyMap{
-					"dockerfile": resource.NewStringProperty("Dockerfile"),
-					"context":    resource.NewComputedProperty(resource.Computed{}),
-					"args":       resource.NewObjectProperty(resource.PropertyMap{}),
+				lintBuildOnPreview: resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(resource.PropertyMap{
+					lintDockerfile: resource.NewStringProperty(defaultDockerfile),
+					lintContext:    resource.NewComputedProperty(resource.Computed{}),
+					lintArgs:       resource.NewObjectProperty(resource.PropertyMap{}),
 				}),
 			},
 			want: false,
@@ -565,11 +565,11 @@ func TestCanPreview(t *testing.T) {
 		{
 			name: "args is unknown",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(resource.PropertyMap{
-					"dockerfile": resource.NewStringProperty("Dockerfile"),
-					"context":    resource.NewStringProperty("."),
-					"args":       resource.NewComputedProperty(resource.Computed{}),
+				lintBuildOnPreview: resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(resource.PropertyMap{
+					lintDockerfile: resource.NewStringProperty(defaultDockerfile),
+					lintContext:    resource.NewStringProperty("."),
+					lintArgs:       resource.NewComputedProperty(resource.Computed{}),
 				}),
 			},
 			want: false,
@@ -577,11 +577,11 @@ func TestCanPreview(t *testing.T) {
 		{
 			name: "args contains unknown",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(resource.PropertyMap{
-					"dockerfile": resource.NewStringProperty("Dockerfile"),
-					"context":    resource.NewStringProperty("."),
-					"args": resource.NewObjectProperty(resource.PropertyMap{
+				lintBuildOnPreview: resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(resource.PropertyMap{
+					lintDockerfile: resource.NewStringProperty(defaultDockerfile),
+					lintContext:    resource.NewStringProperty("."),
+					lintArgs: resource.NewObjectProperty(resource.PropertyMap{
 						"unknown": resource.NewComputedProperty(resource.Computed{}),
 					}),
 				}),
@@ -591,11 +591,11 @@ func TestCanPreview(t *testing.T) {
 		{
 			name: "everything known",
 			inputs: resource.PropertyMap{
-				"buildOnPreview": resource.NewBoolProperty(true),
-				"build": resource.NewObjectProperty(resource.PropertyMap{
-					"dockerfile": resource.NewStringProperty("Dockerfile"),
-					"context":    resource.NewStringProperty("."),
-					"args":       resource.NewObjectProperty(resource.PropertyMap{}),
+				lintBuildOnPreview: resource.NewBoolProperty(true),
+				lintBuild: resource.NewObjectProperty(resource.PropertyMap{
+					lintDockerfile: resource.NewStringProperty(defaultDockerfile),
+					lintContext:    resource.NewStringProperty("."),
+					lintArgs:       resource.NewObjectProperty(resource.PropertyMap{}),
 				}),
 			},
 			want: true,

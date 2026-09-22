@@ -139,28 +139,28 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 
 	buildOnPreview := marshalBuildOnPreview(inputs)
-	inputs["buildOnPreview"] = resource.NewBoolProperty(buildOnPreview)
+	inputs[lintBuildOnPreview] = resource.NewBoolProperty(buildOnPreview)
 
-	build, err := marshalBuildAndApplyDefaults(inputs["build"])
+	build, err := marshalBuildAndApplyDefaults(inputs[lintBuild])
 	if err != nil {
 		return nil, err
 	}
 	// Set the resource inputs to the default values
 	var knownDockerfile bool
-	if inputs["build"].IsNull() {
-		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty(build.Dockerfile),
-			"context":    resource.NewStringProperty(build.Context),
+	if inputs[lintBuild].IsNull() {
+		inputs[lintBuild] = resource.NewObjectProperty(resource.PropertyMap{
+			lintDockerfile: resource.NewStringProperty(build.Dockerfile),
+			lintContext:    resource.NewStringProperty(build.Context),
 		})
 		knownDockerfile = true
-	} else if inputs["build"].IsObject() {
-		// avoid panic if inputs["build"] is not an Object - we only want to set these fields if their values are Known.
-		if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
-			inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
+	} else if inputs[lintBuild].IsObject() {
+		// avoid panic if inputs[lintBuild] is not an Object - we only want to set these fields if their values are Known.
+		if !inputs[lintBuild].ObjectValue()[lintDockerfile].ContainsUnknowns() {
+			inputs[lintBuild].ObjectValue()[lintDockerfile] = resource.NewStringProperty(build.Dockerfile)
 			knownDockerfile = true
 		}
-		if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
-			inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
+		if !inputs[lintBuild].ObjectValue()[lintContext].ContainsUnknowns() {
+			inputs[lintBuild].ObjectValue()[lintContext] = resource.NewStringProperty(build.Context)
 		}
 
 	}
@@ -204,7 +204,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			return nil, err
 		}
 		// add implicit resource contextDigest
-		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+		inputs[lintBuild].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
 
 	}
 
@@ -218,17 +218,17 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
 	// build options: set default host platform
-	if inputs["build"].IsNull() {
-		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-			"platform": resource.NewStringProperty(hostPlatform),
+	if inputs[lintBuild].IsNull() {
+		inputs[lintBuild] = resource.NewObjectProperty(resource.PropertyMap{
+			lintPlatform: resource.NewStringProperty(hostPlatform),
 		})
 		err = p.log(ctx, "info", urn, msg)
 		if err != nil {
 			return nil, err
 		}
-	} else if inputs["build"].IsObject() {
-		if inputs["build"].ObjectValue()["platform"].IsNull() {
-			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
+	} else if inputs[lintBuild].IsObject() {
+		if inputs[lintBuild].ObjectValue()[lintPlatform].IsNull() {
+			inputs[lintBuild].ObjectValue()[lintPlatform] = resource.NewStringProperty(hostPlatform)
 			err = p.log(ctx, "info", urn, msg)
 			if err != nil {
 				return nil, err
@@ -237,15 +237,15 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 
 	// Make sure image names are fully qualified.
-	cache, err := marshalCachedImages(inputs["build"])
+	cache, err := marshalCachedImages(inputs[lintBuild])
 	if err != nil {
 		return nil, err
 	}
 	// imageName only needs to be canonical if we're pushing or using cacheFrom.
-	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
-	if needCanonicalImage && !inputs["imageName"].IsNull() && inputs["imageName"].IsString() {
-		registry := marshalRegistry(inputs["registry"])
-		host, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue())
+	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs[lintSkipPush])
+	if needCanonicalImage && !inputs[lintImageName].IsNull() && inputs[lintImageName].IsString() {
+		registry := marshalRegistry(inputs[lintRegistry])
+		host, err := getRegistryAddrForAuth(registry.Server, inputs[lintImageName].StringValue())
 		if err != nil {
 			return nil, err
 		}
@@ -332,10 +332,10 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 	for key, valueDiff := range updates {
 		update := true
 
-		if string(key) == "registry" && valueDiff.Object != nil {
-			// only register a diff on "server" field, but not on "username" or "password",
+		if string(key) == lintRegistry && valueDiff.Object != nil {
+			// only register a diff on lintServer field, but not on lintUsername or lintPassword,
 			// as they can change frequently and should not trigger a rebuild.
-			_, update = valueDiff.Object.Updates["server"]
+			_, update = valueDiff.Object.Updates[lintServer]
 		}
 
 		if update {
@@ -618,7 +618,7 @@ func hashContext(dockerContextPath string, dockerfilePath string) (string, error
 	// "foo.Dockerfile" or "bar.Dockerfile", the builder only cares about its contents, not its name.
 	//
 	// If the dockerfile is inside the build context, we will hash it twice, but that is OK. We hash
-	// it here the first time with the name "Dockerfile", and then in the WalkDir loop on we hash it
+	// it here the first time with the name defaultDockerfile, and then in the WalkDir loop on we hash it
 	// again with its actual name.
 	err = accumulator.hashPath(dockerfilePath, defaultDockerfile, 0)
 	if err != nil {
@@ -656,9 +656,9 @@ func hashContext(dockerContextPath string, dockerfilePath string) (string, error
 func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]string, error) {
 	paths := []string{
 		// Prefer <Dockerfile>.dockerignore if it's present.
-		dockerfilePath + ".dockerignore",
+		dockerfilePath + lintDockerignore,
 		// Otherwise fall back to the ignore-file at the root of our build context.
-		filepath.Join(contextRoot, ".dockerignore"),
+		filepath.Join(contextRoot, lintDockerignore),
 	}
 
 	// Attempt to parse our candidate ignore-files, skipping any that don't
@@ -692,16 +692,16 @@ func setConfiguration(configVars map[string]string) map[string]string {
 	}
 	// add env vars, if any. Stack config will have precedence.
 
-	_, ok := envConfig["host"]
+	_, ok := envConfig[lintHost]
 	if !ok {
 		if value := os.Getenv("DOCKER_HOST"); value != "" {
-			envConfig["host"] = value
+			envConfig[lintHost] = value
 		}
 	}
-	_, ok = envConfig["caMaterial"]
+	_, ok = envConfig[lintCAMaterial]
 	if !ok {
 		if value := os.Getenv("DOCKER_CA_MATERIAL"); value != "" {
-			envConfig["caMaterial"] = value
+			envConfig[lintCAMaterial] = value
 		}
 	}
 	_, ok = envConfig["certMaterial"]
@@ -728,22 +728,22 @@ func setConfiguration(configVars map[string]string) map[string]string {
 
 func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
 	// set default if not set
-	if inputs["buildOnPreview"].IsNull() || inputs["buildOnPreview"].ContainsUnknowns() {
+	if inputs[lintBuildOnPreview].IsNull() || inputs[lintBuildOnPreview].ContainsUnknowns() {
 		return false
 	}
-	return inputs["buildOnPreview"].BoolValue()
+	return inputs[lintBuildOnPreview].BoolValue()
 }
 
 func ensureMinimumBuildInputs(inputs resource.PropertyMap) bool {
-	if !inputs["build"].IsObject() {
+	if !inputs[lintBuild].IsObject() {
 		return false
 	}
-	if inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() ||
-		inputs["build"].ObjectValue()["context"].ContainsUnknowns() ||
-		inputs["build"].ObjectValue()["args"].ContainsUnknowns() {
+	if inputs[lintBuild].ObjectValue()[lintDockerfile].ContainsUnknowns() ||
+		inputs[lintBuild].ObjectValue()[lintContext].ContainsUnknowns() ||
+		inputs[lintBuild].ObjectValue()[lintArgs].ContainsUnknowns() {
 		return false
 	}
-	if inputs["imageName"].ContainsUnknowns() {
+	if inputs[lintImageName].ContainsUnknowns() {
 		return false
 	}
 	return true
@@ -757,14 +757,14 @@ func (p *dockerNativeProvider) canPreview(
 	urn resource.URN,
 ) (bool, error) {
 	// verify buildOnPreview is Known; if not, send warning and continue.
-	if inputs["buildOnPreview"].ContainsUnknowns() {
+	if inputs[lintBuildOnPreview].ContainsUnknowns() {
 		msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
 			"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
 		err := p.log(ctx, "warning", urn, msg)
 		return false, err
 	}
 	// if we're in preview mode and buildOnPreview is set to false, there's nothing to do.
-	if inputs["buildOnPreview"].IsBool() && !inputs["buildOnPreview"].BoolValue() {
+	if inputs[lintBuildOnPreview].IsBool() && !inputs[lintBuildOnPreview].BoolValue() {
 		return false, nil
 	}
 

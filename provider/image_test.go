@@ -21,13 +21,13 @@ func TestSetRegistry(t *testing.T) {
 	t.Run("Valid Registry", func(t *testing.T) {
 		expected := Registry{
 			Server:   "https://index.docker.io/v1/",
-			Username: "pulumipus",
+			Username: lintPulumipus,
 			Password: "supersecret",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
-			"username": resource.NewStringProperty("pulumipus"),
-			"password": resource.NewStringProperty("supersecret"),
+			lintServer:   resource.NewStringProperty("https://index.docker.io/v1/"),
+			lintUsername: resource.NewStringProperty(lintPulumipus),
+			lintPassword: resource.NewStringProperty("supersecret"),
 		})
 
 		actual := marshalRegistry(input)
@@ -36,12 +36,12 @@ func TestSetRegistry(t *testing.T) {
 	t.Run("Incomplete Registry sets all available fields", func(t *testing.T) {
 		expected := Registry{
 			Server:   "https://index.docker.io/v1/",
-			Username: "pulumipus",
+			Username: lintPulumipus,
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
-			"username": resource.NewStringProperty("pulumipus"),
-			"password": resource.NewStringProperty(""),
+			lintServer:   resource.NewStringProperty("https://index.docker.io/v1/"),
+			lintUsername: resource.NewStringProperty(lintPulumipus),
+			lintPassword: resource.NewStringProperty(""),
 		})
 
 		actual := marshalRegistry(input)
@@ -57,13 +57,13 @@ func TestSetRegistry(t *testing.T) {
 
 	t.Run("Unknown Registry Server", func(t *testing.T) {
 		expected := Registry{
-			Username: "pulumipus",
+			Username: lintPulumipus,
 			Password: "supersecret",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"server":   resource.MakeComputed(resource.NewStringProperty("X")),
-			"username": resource.NewStringProperty("pulumipus"),
-			"password": resource.NewStringProperty("supersecret"),
+			lintServer:   resource.MakeComputed(resource.NewStringProperty("X")),
+			lintUsername: resource.NewStringProperty(lintPulumipus),
+			lintPassword: resource.NewStringProperty("supersecret"),
 		})
 
 		actual := marshalRegistry(input)
@@ -75,7 +75,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Default Build on empty input", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			BuilderVersion: "2",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{})
@@ -90,8 +90,8 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 				BuilderVersion: "2",
 			}
 			input := resource.NewObjectProperty(resource.PropertyMap{
-				"dockerfile": resource.MakeComputed(resource.NewStringProperty("dockerfile-from-elsewhere")),
-				"context":    resource.MakeComputed(resource.NewStringProperty("context-is-computed-at-up-time")),
+				lintDockerfile: resource.MakeComputed(resource.NewStringProperty("dockerfile-from-elsewhere")),
+				lintContext:    resource.MakeComputed(resource.NewStringProperty("context-is-computed-at-up-time")),
 			})
 			actual, err := marshalBuildAndApplyDefaults(input)
 			assert.Equal(t, expected, actual)
@@ -105,7 +105,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			BuilderVersion: "2",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
+			lintDockerfile: resource.NewStringProperty("TheLastUnicorn"),
 		})
 		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
@@ -119,8 +119,8 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			BuilderVersion: "2",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
-			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+			lintDockerfile: resource.NewStringProperty("TheLastUnicorn"),
+			lintContext:    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -132,16 +132,16 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		argval := "Alicorn"
 		expected := Build{
 			Context:    ".",
-			Dockerfile: "Dockerfile",
+			Dockerfile: defaultDockerfile,
 			Args: map[string]*string{
-				"Swiftwind": &argval,
+				lintSwiftwind: &argval,
 			},
 			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"args": resource.NewObjectProperty(resource.PropertyMap{
-				"Swiftwind": resource.NewStringProperty("Alicorn"),
+			lintArgs: resource.NewObjectProperty(resource.PropertyMap{
+				lintSwiftwind: resource.NewStringProperty("Alicorn"),
 			}),
 		})
 
@@ -154,17 +154,17 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		argval := "rainbow-mane"
 		expected := Build{
 			Context:    ".",
-			Dockerfile: "Dockerfile",
+			Dockerfile: defaultDockerfile,
 			Args: map[string]*string{
-				"Swiftwind": &argval,
+				lintSwiftwind: &argval,
 			},
 			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"args": resource.NewObjectProperty(resource.PropertyMap{
-				"Swiftwind":  resource.NewStringProperty("rainbow-mane"),
-				"Fluttershy": resource.MakeComputed(resource.NewStringProperty("pink-hair")),
+			lintArgs: resource.NewObjectProperty(resource.PropertyMap{
+				lintSwiftwind: resource.NewStringProperty("rainbow-mane"),
+				"Fluttershy":  resource.MakeComputed(resource.NewStringProperty("pink-hair")),
 			}),
 		})
 
@@ -176,7 +176,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Sets Target", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			Target:         "bullseye",
 			BuilderVersion: "2",
 		}
@@ -193,7 +193,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Handles Unknown Target", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			BuilderVersion: "2",
 		}
 
@@ -209,13 +209,13 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Sets Platform", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			Platform:       "linux/leg32",
 			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"platform": resource.NewStringProperty("linux/leg32"),
+			lintPlatform: resource.NewStringProperty("linux/leg32"),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -226,12 +226,12 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Handles Unknown Platform", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"platform": resource.MakeComputed(resource.NewStringProperty("wheres-my-train")),
+			lintPlatform: resource.MakeComputed(resource.NewStringProperty("wheres-my-train")),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -242,12 +242,12 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Sets Builder to classic V1 builder", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			BuilderVersion: "1",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"builderVersion": resource.NewStringProperty("BuilderV1"),
+			"builderVersion": resource.NewStringProperty(lintBuilderV1),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -257,7 +257,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	t.Run("Sets Builder to default on no input", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
-			Dockerfile:     "Dockerfile",
+			Dockerfile:     defaultDockerfile,
 			BuilderVersion: "2",
 		}
 
@@ -275,14 +275,14 @@ func TestMarshalArgs(t *testing.T) {
 		p := "Pegasus"
 		tl := "Unicorn"
 		expected := map[string]*string{
-			"Swiftwind": &a,
-			"Fledge":    &p,
-			"The Last":  &tl,
+			lintSwiftwind: &a,
+			lintFledge:    &p,
+			"The Last":    &tl,
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"Swiftwind": resource.NewStringProperty("alicorn"),
-			"Fledge":    resource.NewStringProperty("Pegasus"),
-			"The Last":  resource.NewStringProperty("Unicorn"),
+			lintSwiftwind: resource.NewStringProperty("alicorn"),
+			lintFledge:    resource.NewStringProperty("Pegasus"),
+			"The Last":    resource.NewStringProperty("Unicorn"),
 		})
 		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
@@ -291,11 +291,11 @@ func TestMarshalArgs(t *testing.T) {
 		a := "unicorn-with-wings"
 
 		expected := map[string]*string{
-			"Swiftwind": &a,
+			lintSwiftwind: &a,
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"Swiftwind": resource.NewStringProperty("unicorn-with-wings"),
-			"Fledge":    resource.MakeComputed(resource.NewStringProperty("pegasus")),
+			lintSwiftwind: resource.NewStringProperty("unicorn-with-wings"),
+			lintFledge:    resource.MakeComputed(resource.NewStringProperty("pegasus")),
 		})
 		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
@@ -313,11 +313,11 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images", func(t *testing.T) {
 		expected := []string{"apple", "banana", "cherry"}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
-			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+			lintDockerfile: resource.NewStringProperty("TheLastUnicorn"),
+			lintContext:    resource.NewStringProperty("/twilight/sparkle/bin"),
 
-			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewArrayProperty([]resource.PropertyValue{
+			lintCacheFrom: resource.NewObjectProperty(resource.PropertyMap{
+				lintImages: resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewStringProperty("apple"),
 					resource.NewStringProperty("banana"),
 					resource.NewStringProperty("cherry"),
@@ -339,8 +339,8 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images No cacheFrom Input Returns Nil", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
-			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+			lintDockerfile: resource.NewStringProperty("TheLastUnicorn"),
+			lintContext:    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
@@ -349,10 +349,10 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Non-array Images Returns Nil and Error", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
-			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
-			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewStringProperty("Shadowfax"),
+			lintDockerfile: resource.NewStringProperty("TheLastUnicorn"),
+			lintContext:    resource.NewStringProperty("/twilight/sparkle/bin"),
+			lintCacheFrom: resource.NewObjectProperty(resource.PropertyMap{
+				lintImages: resource.NewStringProperty("Shadowfax"),
 			}),
 		})
 		actual, err := marshalCachedImages(buildInput)
@@ -365,9 +365,9 @@ func TestMarshalCachedImages(t *testing.T) {
 	})
 	t.Run("Test Cached Images No images Input Returns Nil and error", func(t *testing.T) {
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
-			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
-			"cacheFrom":  resource.NewObjectProperty(resource.PropertyMap{}),
+			lintDockerfile: resource.NewStringProperty("TheLastUnicorn"),
+			lintContext:    resource.NewStringProperty("/twilight/sparkle/bin"),
+			lintCacheFrom:  resource.NewObjectProperty(resource.PropertyMap{}),
 		})
 		actual, err := marshalCachedImages(buildInput)
 		expectedError := fmt.Errorf("cacheFrom requires an `images` field")
@@ -380,8 +380,8 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknowns", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewArrayProperty([]resource.PropertyValue{
+			lintCacheFrom: resource.NewObjectProperty(resource.PropertyMap{
+				lintImages: resource.NewArrayProperty([]resource.PropertyValue{
 					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 				}),
 			}),
@@ -393,8 +393,8 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images For Preview Passes On Unknowns And Keeps Knowns", func(t *testing.T) {
 		expected := []string{"apple", "banana", "cherry"}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewArrayProperty([]resource.PropertyValue{
+			lintCacheFrom: resource.NewObjectProperty(resource.PropertyMap{
+				lintImages: resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewNullProperty(),
 					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 					resource.NewStringProperty("apple"),
@@ -410,8 +410,8 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknown Images List", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewComputedProperty(
+			lintCacheFrom: resource.NewObjectProperty(resource.PropertyMap{
+				lintImages: resource.NewComputedProperty(
 					resource.Computed{
 						Element: resource.NewArrayProperty([]resource.PropertyValue{
 							resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
@@ -427,7 +427,7 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknown cacheFrom", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"cacheFrom": resource.NewComputedProperty(
+			lintCacheFrom: resource.NewComputedProperty(
 				resource.Computed{Element: resource.NewObjectProperty(
 					resource.NewPropertyMapFromMap(map[string]interface{}{}),
 				)},
@@ -450,7 +450,7 @@ func TestMarshalBuilder(t *testing.T) {
 	})
 	t.Run("Test Builder BuildKit Version", func(t *testing.T) {
 		expected := build.BuilderBuildKit
-		input := resource.NewStringProperty("BuilderBuildKit")
+		input := resource.NewStringProperty(lintBuilderBuildKit)
 
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
@@ -458,7 +458,7 @@ func TestMarshalBuilder(t *testing.T) {
 	})
 	t.Run("Test Builder V1 Version", func(t *testing.T) {
 		expected := build.BuilderV1
-		input := resource.NewStringProperty("BuilderV1")
+		input := resource.NewStringProperty(lintBuilderV1)
 
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
@@ -466,7 +466,7 @@ func TestMarshalBuilder(t *testing.T) {
 	})
 	t.Run("Test Invalid Builder Returns Error", func(t *testing.T) {
 		expected := build.BuilderV1
-		input := resource.NewStringProperty("BuilderV1")
+		input := resource.NewStringProperty(lintBuilderV1)
 
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
@@ -526,7 +526,7 @@ func TestConfigureDockerClient(t *testing.T) {
 	t.Run("Given a host passed via pulumi config, a client should have that host", func(t *testing.T) {
 		expected := "testhost://something.sock"
 		input := map[string]string{
-			"host": "testhost://something.sock",
+			lintHost: "testhost://something.sock",
 		}
 
 		actual, err := configureDockerClient(input, false)
@@ -536,7 +536,7 @@ func TestConfigureDockerClient(t *testing.T) {
 
 	t.Run("For TLS, must pass certMaterial, keyMaterial, and caMaterial", func(t *testing.T) {
 		input := map[string]string{
-			"caMaterial": "raw-cert-string",
+			lintCAMaterial: lintTestRawCert,
 		}
 		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
@@ -547,7 +547,7 @@ func TestConfigureDockerClient(t *testing.T) {
 	})
 	t.Run("Errors if only caMaterial is specified", func(t *testing.T) {
 		input := map[string]string{
-			"caMaterial": "raw-ca-string",
+			lintCAMaterial: lintRawCAString,
 		}
 		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
@@ -570,8 +570,8 @@ func TestConfigureDockerClient(t *testing.T) {
 
 	t.Run("Errors if not all of certMaterial, keyMaterial, and caMaterial are specified", func(t *testing.T) {
 		input := map[string]string{
-			"caMaterial":   "raw-ca-string",
-			"certMaterial": "raw-cert-string",
+			lintCAMaterial: lintRawCAString,
+			"certMaterial": lintTestRawCert,
 		}
 		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
@@ -584,9 +584,9 @@ func TestConfigureDockerClient(t *testing.T) {
 	t.Run("Fails if both a certPath and raw certificates are passed", func(t *testing.T) {
 		input := map[string]string{
 			"certPath":     "path/to/certs",
-			"caMaterial":   "raw-ca-string",
+			lintCAMaterial: lintRawCAString,
 			"keyMaterial":  "raw-key-string",
-			"certMaterial": "raw-cert-string",
+			"certMaterial": lintTestRawCert,
 		}
 		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("when using raw certificates, certPath must not be specified")
@@ -599,7 +599,7 @@ func TestConfigureDockerClient(t *testing.T) {
 	t.Run("When passed a valid ssh scheme for the host, a client with a helper daemon host will be returned",
 		func(t *testing.T) {
 			input := map[string]string{
-				"host": "ssh://test@128.199.8.23",
+				lintHost: "ssh://test@128.199.8.23",
 			}
 			actual, _ := configureDockerClient(input, false)
 			// The connection helper returns http://docker.example.com as the client's daemon host.
@@ -608,7 +608,7 @@ func TestConfigureDockerClient(t *testing.T) {
 	t.Run("When passed an invalid ssh scheme for the host, no client is returned",
 		func(t *testing.T) {
 			input := map[string]string{
-				"host": "ssh://this/is?invalid",
+				lintHost: "ssh://this/is?invalid",
 			}
 			actual, err := configureDockerClient(input, false)
 			assert.Nil(t, actual)
@@ -618,14 +618,14 @@ func TestConfigureDockerClient(t *testing.T) {
 	t.Run("When passed a valid non-ssh scheme for the host, a client without daemon host will be returned",
 		func(t *testing.T) {
 			input := map[string]string{
-				"host": "unix:///var/run/docker.sock",
+				lintHost: "unix:///var/run/docker.sock",
 			}
 			actual, _ := configureDockerClient(input, false)
-			assert.Equal(t, actual.DaemonHost(), input["host"])
+			assert.Equal(t, actual.DaemonHost(), input[lintHost])
 		})
 	t.Run("When host is empty, returns default host ", func(t *testing.T) {
 		input := map[string]string{
-			"host": "",
+			lintHost: "",
 		}
 		actual, _ := configureDockerClient(input, false)
 
@@ -652,40 +652,40 @@ func TestDockerIgnore(t *testing.T) {
 	}{
 		{
 			name:       "Dockerfile with root dockerignore",
-			dockerfile: "./foo/Dockerfile",
+			dockerfile: lintFooDockerfile,
 			fs: map[string]string{
-				".dockerignore": "rootignore",
+				lintDockerignore: lintTestRootIgnore,
 			},
-			want: []string{"rootignore"},
+			want: []string{lintTestRootIgnore},
 		},
 		{
 			name:       "Dockerfile with root dockerignore and custom dockerignore",
-			dockerfile: "./foo/Dockerfile",
+			dockerfile: lintFooDockerfile,
 			fs: map[string]string{
-				"foo/Dockerfile.dockerignore": "customignore",
-				".dockerignore":               "rootignore",
+				"foo/Dockerfile.dockerignore": lintCustomIgnore,
+				lintDockerignore:              lintTestRootIgnore,
 			},
-			want: []string{"customignore"},
+			want: []string{lintCustomIgnore},
 		},
 		{
 			name:       "Dockerfile with root dockerignore and relative context",
-			dockerfile: "./foo/Dockerfile",
+			dockerfile: lintFooDockerfile,
 			context:    "../",
 			fs: map[string]string{
-				"../.dockerignore": "rootignore",
+				"../.dockerignore": lintTestRootIgnore,
 			},
-			want: []string{"rootignore"},
+			want: []string{lintTestRootIgnore},
 		},
 		{
 			name:       "Dockerfile without root dockerignore",
-			dockerfile: "./foo/Dockerfile",
+			dockerfile: lintFooDockerfile,
 			want:       nil,
 		},
 		{
 			name:       "Dockerfile with invalid root dockerignore",
-			dockerfile: "./foo/Dockerfile",
+			dockerfile: lintFooDockerfile,
 			fs: map[string]string{
-				".dockerignore": strings.Repeat("*", bufio.MaxScanTokenSize),
+				lintDockerignore: strings.Repeat("*", bufio.MaxScanTokenSize),
 			},
 			wantErr: bufio.ErrTooLong,
 		},
@@ -698,26 +698,26 @@ func TestDockerIgnore(t *testing.T) {
 			name:       "custom.Dockerfile with custom dockerignore and without root dockerignore",
 			dockerfile: "./foo/custom.Dockerfile",
 			fs: map[string]string{
-				"foo/custom.Dockerfile.dockerignore": "customignore",
+				"foo/custom.Dockerfile.dockerignore": lintCustomIgnore,
 			},
-			want: []string{"customignore"},
+			want: []string{lintCustomIgnore},
 		},
 		{
 			name:       "custom.Dockerfile with custom dockerignore and with root dockerignore",
 			dockerfile: "foo/custom.Dockerfile",
 			fs: map[string]string{
-				"foo/custom.Dockerfile.dockerignore": "customignore",
-				".dockerignore":                      "rootignore",
+				"foo/custom.Dockerfile.dockerignore": lintCustomIgnore,
+				lintDockerignore:                     lintTestRootIgnore,
 			},
-			want: []string{"customignore"},
+			want: []string{lintCustomIgnore},
 		},
 		{
 			name:       "custom.Dockerfile without custom dockerignore and with root dockerignore",
 			dockerfile: "foo/custom.Dockerfile",
 			fs: map[string]string{
-				".dockerignore": "rootignore",
+				lintDockerignore: lintTestRootIgnore,
 			},
-			want: []string{"rootignore"},
+			want: []string{lintTestRootIgnore},
 		},
 	}
 
@@ -751,9 +751,9 @@ func TestParseRepoDigestFromAux(t *testing.T) {
 	t.Run("valid push result returns registry-pinned digest", func(t *testing.T) {
 		imageName := mustParse(t, "docker.io/example/app:v1")
 		aux, err := json.Marshal(map[string]interface{}{
-			"Tag":    "v1",
-			"Digest": validDigest,
-			"Size":   1234,
+			"Tag":      "v1",
+			lintDigest: validDigest,
+			"Size":     1234,
 		})
 		require.NoError(t, err)
 
@@ -765,7 +765,7 @@ func TestParseRepoDigestFromAux(t *testing.T) {
 
 	t.Run("input image name with tag is trimmed before applying digest", func(t *testing.T) {
 		imageName := mustParse(t, "registry.example.com/team/app:v2")
-		aux, err := json.Marshal(map[string]interface{}{"Digest": validDigest})
+		aux, err := json.Marshal(map[string]interface{}{lintDigest: validDigest})
 		require.NoError(t, err)
 
 		ref, _ := parseRepoDigestFromAux(aux, imageName)
@@ -782,7 +782,7 @@ func TestParseRepoDigestFromAux(t *testing.T) {
 
 	t.Run("malformed digest returns nil with diagnostic message", func(t *testing.T) {
 		imageName := mustParse(t, "docker.io/example/app:v1")
-		aux, err := json.Marshal(map[string]interface{}{"Digest": "not-a-digest"})
+		aux, err := json.Marshal(map[string]interface{}{lintDigest: "not-a-digest"})
 		require.NoError(t, err)
 
 		ref, msg := parseRepoDigestFromAux(aux, imageName)

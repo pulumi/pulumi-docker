@@ -99,7 +99,7 @@ class AwaitableGetRegistryImageManifestsResult(GetRegistryImageManifestsResult):
             name=self.name)
 
 
-def get_registry_image_manifests(auth_config: Optional[Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict']] = None,
+def get_registry_image_manifests(auth_config: Optional[Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict', 'outputs.GetRegistryImageManifestsAuthConfigResult']] = None,
                                  insecure_skip_verify: Optional[_builtins.bool] = None,
                                  name: Optional[_builtins.str] = None,
                                  opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetRegistryImageManifestsResult:
@@ -107,7 +107,7 @@ def get_registry_image_manifests(auth_config: Optional[Union['GetRegistryImageMa
     Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
 
 
-    :param Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
+    :param Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict', 'outputs.GetRegistryImageManifestsAuthConfigResult'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
     :param _builtins.bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
     :param _builtins.str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """
@@ -124,7 +124,7 @@ def get_registry_image_manifests(auth_config: Optional[Union['GetRegistryImageMa
         insecure_skip_verify=pulumi.get(__ret__, 'insecure_skip_verify'),
         manifests=pulumi.get(__ret__, 'manifests'),
         name=pulumi.get(__ret__, 'name'))
-def get_registry_image_manifests_output(auth_config: pulumi.Input[Optional[Optional[Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict']]]] = None,
+def get_registry_image_manifests_output(auth_config: pulumi.Input[Optional[Optional[Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict', 'outputs.GetRegistryImageManifestsAuthConfigResult']]]] = None,
                                         insecure_skip_verify: pulumi.Input[Optional[Optional[_builtins.bool]]] = None,
                                         name: pulumi.Input[Optional[_builtins.str]] = None,
                                         opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetRegistryImageManifestsResult]:
@@ -132,7 +132,7 @@ def get_registry_image_manifests_output(auth_config: pulumi.Input[Optional[Optio
     Reads the image metadata for each manifest in a Docker multi-arch image from a Docker Registry.
 
 
-    :param Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
+    :param Union['GetRegistryImageManifestsAuthConfigArgs', 'GetRegistryImageManifestsAuthConfigArgsDict', 'outputs.GetRegistryImageManifestsAuthConfigResult'] auth_config: Authentication configuration for the Docker registry. It is only used for this resource.
     :param _builtins.bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
     :param _builtins.str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """

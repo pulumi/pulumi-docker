@@ -353,7 +353,7 @@ class Plugin(pulumi.CustomResource):
                  force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
                  force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
                  grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
-                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
+                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict', 'outputs.PluginGrantPermission']]]]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         """
@@ -377,7 +377,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] force_destroy: If true, then the plugin is destroyed forcibly
         :param pulumi.Input[_builtins.bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[_builtins.bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
-        :param pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]] grant_permissions: Grant specific permissions only
+        :param pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict', 'outputs.PluginGrantPermission']]]] grant_permissions: Grant specific permissions only
         :param pulumi.Input[_builtins.str] name: Docker Plugin name
         """
         ...
@@ -420,7 +420,7 @@ class Plugin(pulumi.CustomResource):
                  force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
                  force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
                  grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
-                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
+                 grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict', 'outputs.PluginGrantPermission']]]]] = None,
                  name: pulumi.Input[Optional[_builtins.str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -458,7 +458,7 @@ class Plugin(pulumi.CustomResource):
             force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
             force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
             grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
-            grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]]] = None,
+            grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict', 'outputs.PluginGrantPermission']]]]] = None,
             name: pulumi.Input[Optional[_builtins.str]] = None,
             plugin_reference: pulumi.Input[Optional[_builtins.str]] = None) -> 'Plugin':
         """
@@ -475,7 +475,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] force_destroy: If true, then the plugin is destroyed forcibly
         :param pulumi.Input[_builtins.bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[_builtins.bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
-        :param pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict']]]] grant_permissions: Grant specific permissions only
+        :param pulumi.Input[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict', 'outputs.PluginGrantPermission']]]] grant_permissions: Grant specific permissions only
         :param pulumi.Input[_builtins.str] name: Docker Plugin name
         :param pulumi.Input[_builtins.str] plugin_reference: Docker Plugin Reference
         """
