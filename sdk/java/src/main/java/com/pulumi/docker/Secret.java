@@ -49,7 +49,7 @@ import javax.annotation.Nullable;
  *     public static void stack(Context ctx) {
  *         var foo = new Secret("foo", SecretArgs.builder()
  *             .name("foo")
- *             .data(StdFunctions.base64encode(Map.of("input", "{\"foo\": \"s3cr3t\"}")).result())
+ *             .data(StdFunctions.base64encode(Map.of("input", "{\"foo\": \"s3cr3t\"}")).get("result"))
  *             .build());
  * 
  *     }
