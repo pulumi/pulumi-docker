@@ -303,7 +303,7 @@ import (
 //						"delay":       "3s",
 //						"maxAttempts": 4,
 //						"window":      "10s",
-//					}[0],
+//					}[0].(docker.ServiceTaskSpecRestartPolicyArgs),
 //					Placement: &docker.ServiceTaskSpecPlacementArgs{
 //						Constraints: pulumi.StringArray{
 //							pulumi.String("node.role==manager"),

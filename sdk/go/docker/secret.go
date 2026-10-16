@@ -40,7 +40,7 @@ import (
 //			}
 //			_, err = docker.NewSecret(ctx, "foo", &docker.SecretArgs{
 //				Name: pulumi.String("foo"),
-//				Data: invokeBase64encode.Result,
+//				Data: invokeBase64encode.Result.(pulumi.String),
 //			})
 //			if err != nil {
 //				return err
