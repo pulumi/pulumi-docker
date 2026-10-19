@@ -236,7 +236,7 @@ public class App {
 {{% /choosable %}}
 {{% choosable language hcl %}}
 ```hcl
-pulumi {
+terraform {
   required_providers {
     docker = {
       source = "pulumi/docker"
@@ -245,12 +245,18 @@ pulumi {
 }
 
 # Pulls the image
-resource "docker_remoteimage" "ubuntu" {
+resource "docker_remote_image" "ubuntu" {
+  lifecycle {
+    create_before_destroy = true
+  }
   name = "ubuntu:latest"
 }
 # Create a container
 resource "docker_container" "foo" {
-  image = docker_remoteimage.ubuntu.image_id
+  lifecycle {
+    create_before_destroy = true
+  }
+  image = docker_remote_image.ubuntu.image_id
   name  = "foo"
 }
 ```
