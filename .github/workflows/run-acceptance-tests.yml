@@ -211,19 +211,6 @@ jobs:
       run: make schema
       env:
         PROVIDER_VERSION: ${{ needs.prerequisites.outputs.version }}
-    - name: DEBUG convert
-      continue-on-error: true
-      run: |
-        set -x
-        which -a pulumi pulumi-converter-terraform pulumi-language-java || true
-        pulumi version
-        ls -la .pulumi/plugins || true
-        pulumi plugin ls || true
-        mv .pulumi/examples-cache /tmp/examples-cache-bak
-        rm -f .make/schema
-        make schema 2>&1 | grep -v "using pulumi-resource-aws" | tail -100
-        rm -rf .pulumi/examples-cache && mv /tmp/examples-cache-bak .pulumi/examples-cache
-        git checkout -- . || true
     - name: Build registry docs
       run: make build_registry_docs
     - name: Check worktree clean
