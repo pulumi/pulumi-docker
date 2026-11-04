@@ -546,6 +546,30 @@ class RemoteImage(pulumi.CustomResource):
         __props__.__dict__["triggers"] = triggers
         return RemoteImage(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            build: pulumi.Input[Optional[Union['RemoteImageBuildArgs', 'RemoteImageBuildArgsDict', 'outputs.RemoteImageBuild']]] = None,
+            force_remove: pulumi.Input[Optional[_builtins.bool]] = None,
+            image_id: pulumi.Input[Optional[_builtins.str]] = None,
+            keep_locally: pulumi.Input[Optional[_builtins.bool]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            platform: pulumi.Input[Optional[_builtins.str]] = None,
+            pull_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            repo_digest: pulumi.Input[Optional[_builtins.str]] = None,
+            triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["build"] = build
+        __props__["forceRemove"] = force_remove
+        __props__["imageId"] = image_id
+        __props__["keepLocally"] = keep_locally
+        __props__["name"] = name
+        __props__["platform"] = platform
+        __props__["pullTriggers"] = pull_triggers
+        __props__["repoDigest"] = repo_digest
+        __props__["triggers"] = triggers
+        return pulumi.runtime.exists_resource(None, 'docker:index/remoteImage:RemoteImage', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def build(self) -> pulumi.Output[Optional['outputs.RemoteImageBuild']]:

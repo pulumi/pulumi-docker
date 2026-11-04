@@ -64,22 +64,20 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
     /**
      * Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
      * 
-     * @deprecated
-     * Use the id attribute.
+     * @deprecated Use the id attribute.
      * 
      */
-    @Deprecated /* Use the id attribute. */
+    @Deprecated
     @Import(name="name")
     private @Nullable Output<String> name;
 
     /**
      * @return Deprecated attribute. The name/id of the docker network. Conflicts with `id` attribute.
      * 
-     * @deprecated
-     * Use the id attribute.
+     * @deprecated Use the id attribute.
      * 
      */
-    @Deprecated /* Use the id attribute. */
+    @Deprecated
     public Optional<Output<String>> name() {
         return Optional.ofNullable(this.name);
     }
@@ -199,11 +197,10 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
          * 
          * @return builder
          * 
-         * @deprecated
-         * Use the id attribute.
+         * @deprecated Use the id attribute.
          * 
          */
-        @Deprecated /* Use the id attribute. */
+        @Deprecated
         public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
@@ -214,11 +211,10 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
          * 
          * @return builder
          * 
-         * @deprecated
-         * Use the id attribute.
+         * @deprecated Use the id attribute.
          * 
          */
-        @Deprecated /* Use the id attribute. */
+        @Deprecated
         public Builder name(String name) {
             return name(Output.of(name));
         }

@@ -415,6 +415,24 @@ class Volume(pulumi.CustomResource):
         __props__.__dict__["name"] = name
         return Volume(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            cluster: pulumi.Input[Optional[Union['VolumeClusterArgs', 'VolumeClusterArgsDict', 'outputs.VolumeCluster']]] = None,
+            driver: pulumi.Input[Optional[_builtins.str]] = None,
+            driver_opts: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['VolumeLabelArgs', 'VolumeLabelArgsDict', 'outputs.VolumeLabel']]]]] = None,
+            mountpoint: pulumi.Input[Optional[_builtins.str]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["cluster"] = cluster
+        __props__["driver"] = driver
+        __props__["driverOpts"] = driver_opts
+        __props__["labels"] = labels
+        __props__["mountpoint"] = mountpoint
+        __props__["name"] = name
+        return pulumi.runtime.exists_resource(None, 'docker:index/volume:Volume', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def cluster(self) -> pulumi.Output[Optional['outputs.VolumeCluster']]:

@@ -235,6 +235,12 @@ func (RemoteImageState) ElementType() reflect.Type {
 	return reflect.TypeOf((*remoteImageState)(nil)).Elem()
 }
 
+// RemoteImageExists checks whether an existing RemoteImage resource with the given ID exists.
+func RemoteImageExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *RemoteImageState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/remoteImage:RemoteImage", id, state, "", opts...)
+}
+
 type remoteImageArgs struct {
 	// Configuration to build an image. Requires the `Use containerd for pulling and storing images` option to be disabled in the Docker Host(https://github.com/kreuzwerker/terraform-provider-docker/issues/534). Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`

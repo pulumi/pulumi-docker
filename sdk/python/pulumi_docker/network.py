@@ -649,6 +649,36 @@ class Network(pulumi.CustomResource):
         __props__.__dict__["scope"] = scope
         return Network(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            attachable: pulumi.Input[Optional[_builtins.bool]] = None,
+            driver: pulumi.Input[Optional[_builtins.str]] = None,
+            ingress: pulumi.Input[Optional[_builtins.bool]] = None,
+            internal: pulumi.Input[Optional[_builtins.bool]] = None,
+            ipam_configs: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkIpamConfigArgs', 'NetworkIpamConfigArgsDict', 'outputs.NetworkIpamConfig']]]]] = None,
+            ipam_driver: pulumi.Input[Optional[_builtins.str]] = None,
+            ipam_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            ipv6: pulumi.Input[Optional[_builtins.bool]] = None,
+            labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['NetworkLabelArgs', 'NetworkLabelArgsDict', 'outputs.NetworkLabel']]]]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            scope: pulumi.Input[Optional[_builtins.str]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["attachable"] = attachable
+        __props__["driver"] = driver
+        __props__["ingress"] = ingress
+        __props__["internal"] = internal
+        __props__["ipamConfigs"] = ipam_configs
+        __props__["ipamDriver"] = ipam_driver
+        __props__["ipamOptions"] = ipam_options
+        __props__["ipv6"] = ipv6
+        __props__["labels"] = labels
+        __props__["name"] = name
+        __props__["options"] = options
+        __props__["scope"] = scope
+        return pulumi.runtime.exists_resource(None, 'docker:index/network:Network', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def attachable(self) -> pulumi.Output[Optional[_builtins.bool]]:

@@ -241,6 +241,12 @@ func (ImageState) ElementType() reflect.Type {
 	return reflect.TypeOf((*imageState)(nil)).Elem()
 }
 
+// ImageExists checks whether an existing Image resource with the given ID exists.
+func ImageExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *ImageState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/image:Image", id, state, "", opts...)
+}
+
 type imageArgs struct {
 	// The Docker build context
 	Build *DockerBuild `pulumi:"build"`

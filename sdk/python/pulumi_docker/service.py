@@ -1056,6 +1056,30 @@ class Service(pulumi.CustomResource):
         __props__.__dict__["update_config"] = update_config
         return Service(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            auth: pulumi.Input[Optional[Union['ServiceAuthArgs', 'ServiceAuthArgsDict', 'outputs.ServiceAuth']]] = None,
+            converge_config: pulumi.Input[Optional[Union['ServiceConvergeConfigArgs', 'ServiceConvergeConfigArgsDict', 'outputs.ServiceConvergeConfig']]] = None,
+            endpoint_spec: pulumi.Input[Optional[Union['ServiceEndpointSpecArgs', 'ServiceEndpointSpecArgsDict', 'outputs.ServiceEndpointSpec']]] = None,
+            labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ServiceLabelArgs', 'ServiceLabelArgsDict', 'outputs.ServiceLabel']]]]] = None,
+            mode: pulumi.Input[Optional[Union['ServiceModeArgs', 'ServiceModeArgsDict', 'outputs.ServiceMode']]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            rollback_config: pulumi.Input[Optional[Union['ServiceRollbackConfigArgs', 'ServiceRollbackConfigArgsDict', 'outputs.ServiceRollbackConfig']]] = None,
+            task_spec: pulumi.Input[Optional[Union['ServiceTaskSpecArgs', 'ServiceTaskSpecArgsDict', 'outputs.ServiceTaskSpec']]] = None,
+            update_config: pulumi.Input[Optional[Union['ServiceUpdateConfigArgs', 'ServiceUpdateConfigArgsDict', 'outputs.ServiceUpdateConfig']]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["auth"] = auth
+        __props__["convergeConfig"] = converge_config
+        __props__["endpointSpec"] = endpoint_spec
+        __props__["labels"] = labels
+        __props__["mode"] = mode
+        __props__["name"] = name
+        __props__["rollbackConfig"] = rollback_config
+        __props__["taskSpec"] = task_spec
+        __props__["updateConfig"] = update_config
+        return pulumi.runtime.exists_resource(None, 'docker:index/service:Service', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def auth(self) -> pulumi.Output[Optional['outputs.ServiceAuth']]:

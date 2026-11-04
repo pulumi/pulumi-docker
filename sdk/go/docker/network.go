@@ -208,6 +208,12 @@ func (NetworkState) ElementType() reflect.Type {
 	return reflect.TypeOf((*networkState)(nil)).Elem()
 }
 
+// NetworkExists checks whether an existing Network resource with the given ID exists.
+func NetworkExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *NetworkState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/network:Network", id, state, "", opts...)
+}
+
 type networkArgs struct {
 	// Enable manual container attachment to the network.
 	Attachable *bool `pulumi:"attachable"`
