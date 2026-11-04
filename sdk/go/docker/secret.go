@@ -130,6 +130,12 @@ func (SecretState) ElementType() reflect.Type {
 	return reflect.TypeOf((*secretState)(nil)).Elem()
 }
 
+// SecretExists checks whether an existing Secret resource with the given ID exists.
+func SecretExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *SecretState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/secret:Secret", id, state, "", opts...)
+}
+
 type secretArgs struct {
 	// Base64-url-safe-encoded secret data
 	Data string `pulumi:"data"`

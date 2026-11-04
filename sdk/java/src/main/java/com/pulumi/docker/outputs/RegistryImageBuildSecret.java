@@ -18,7 +18,7 @@ public final class RegistryImageBuildSecret {
      */
     private @Nullable String env;
     /**
-     * @return ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+     * @return ID of the secret. By default, secrets are mounted to /run/secrets/&#92;n&#92;n
      * 
      */
     private String id;
@@ -37,7 +37,7 @@ public final class RegistryImageBuildSecret {
         return Optional.ofNullable(this.env);
     }
     /**
-     * @return ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+     * @return ID of the secret. By default, secrets are mounted to /run/secrets/&#92;n&#92;n
      * 
      */
     public String id() {

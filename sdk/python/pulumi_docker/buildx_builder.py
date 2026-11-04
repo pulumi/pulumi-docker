@@ -686,6 +686,40 @@ class BuildxBuilder(pulumi.CustomResource):
         __props__.__dict__["use"] = use
         return BuildxBuilder(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            append: pulumi.Input[Optional[_builtins.bool]] = None,
+            bootstrap: pulumi.Input[Optional[_builtins.bool]] = None,
+            buildkit_config: pulumi.Input[Optional[_builtins.str]] = None,
+            buildkit_flags: pulumi.Input[Optional[_builtins.str]] = None,
+            docker_container: pulumi.Input[Optional[Union['BuildxBuilderDockerContainerArgs', 'BuildxBuilderDockerContainerArgsDict', 'outputs.BuildxBuilderDockerContainer']]] = None,
+            driver: pulumi.Input[Optional[_builtins.str]] = None,
+            driver_options: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+            endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+            kubernetes: pulumi.Input[Optional[Union['BuildxBuilderKubernetesArgs', 'BuildxBuilderKubernetesArgsDict', 'outputs.BuildxBuilderKubernetes']]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            node: pulumi.Input[Optional[_builtins.str]] = None,
+            platforms: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            remote: pulumi.Input[Optional[Union['BuildxBuilderRemoteArgs', 'BuildxBuilderRemoteArgsDict', 'outputs.BuildxBuilderRemote']]] = None,
+            use: pulumi.Input[Optional[_builtins.bool]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["append"] = append
+        __props__["bootstrap"] = bootstrap
+        __props__["buildkitConfig"] = buildkit_config
+        __props__["buildkitFlags"] = buildkit_flags
+        __props__["dockerContainer"] = docker_container
+        __props__["driver"] = driver
+        __props__["driverOptions"] = driver_options
+        __props__["endpoint"] = endpoint
+        __props__["kubernetes"] = kubernetes
+        __props__["name"] = name
+        __props__["node"] = node
+        __props__["platforms"] = platforms
+        __props__["remote"] = remote
+        __props__["use"] = use
+        return pulumi.runtime.exists_resource(None, 'docker:index/buildxBuilder:BuildxBuilder', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def append(self) -> pulumi.Output[Optional[_builtins.bool]]:

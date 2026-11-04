@@ -41,19 +41,19 @@ import javax.annotation.Nullable;
  * import java.nio.file.Files;
  * import java.nio.file.Paths;
  * 
- * public class App {
- *     public static void main(String[] args) {
+ * public class App }{{@code
+ *     public static void main(String[] args) }{{@code
  *         Pulumi.run(App::stack);
- *     }
+ *     }}{@code
  * 
- *     public static void stack(Context ctx) {
+ *     public static void stack(Context ctx) }{{@code
  *         var foo = new Secret("foo", SecretArgs.builder()
  *             .name("foo")
- *             .data(StdFunctions.base64encode(Map.of("input", "{\"foo\": \"s3cr3t\"}")).get("result"))
+ *             .data(StdFunctions.base64encode(Map.of("input", "}{&#92;{@code "foo}&#92;{@code ": }&#92;{@code "s3cr3t}&#92;{@code "}}{@code ")).get("result"))
  *             .build());
  * 
- *     }
- * }
+ *     }}{@code
+ * }}{@code
  * }
  * </pre>
  * 

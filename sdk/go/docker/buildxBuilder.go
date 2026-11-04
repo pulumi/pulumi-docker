@@ -172,6 +172,12 @@ func (BuildxBuilderState) ElementType() reflect.Type {
 	return reflect.TypeOf((*buildxBuilderState)(nil)).Elem()
 }
 
+// BuildxBuilderExists checks whether an existing BuildxBuilder resource with the given ID exists.
+func BuildxBuilderExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *BuildxBuilderState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/buildxBuilder:BuildxBuilder", id, state, "", opts...)
+}
+
 type buildxBuilderArgs struct {
 	// Append a node to builder instead of changing it
 	Append *bool `pulumi:"append"`

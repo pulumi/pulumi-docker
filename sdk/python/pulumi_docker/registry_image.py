@@ -402,6 +402,26 @@ class RegistryImage(pulumi.CustomResource):
         __props__.__dict__["triggers"] = triggers
         return RegistryImage(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            auth_config: pulumi.Input[Optional[Union['RegistryImageAuthConfigArgs', 'RegistryImageAuthConfigArgsDict', 'outputs.RegistryImageAuthConfig']]] = None,
+            build: pulumi.Input[Optional[Union['RegistryImageBuildArgs', 'RegistryImageBuildArgsDict', 'outputs.RegistryImageBuild']]] = None,
+            insecure_skip_verify: pulumi.Input[Optional[_builtins.bool]] = None,
+            keep_remotely: pulumi.Input[Optional[_builtins.bool]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            sha256_digest: pulumi.Input[Optional[_builtins.str]] = None,
+            triggers: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["authConfig"] = auth_config
+        __props__["build"] = build
+        __props__["insecureSkipVerify"] = insecure_skip_verify
+        __props__["keepRemotely"] = keep_remotely
+        __props__["name"] = name
+        __props__["sha256Digest"] = sha256_digest
+        __props__["triggers"] = triggers
+        return pulumi.runtime.exists_resource(None, 'docker:index/registryImage:RegistryImage', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter(name="authConfig")
     def auth_config(self) -> pulumi.Output[Optional['outputs.RegistryImageAuthConfig']]:

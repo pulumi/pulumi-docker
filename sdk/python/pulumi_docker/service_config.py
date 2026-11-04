@@ -366,6 +366,20 @@ class ServiceConfig(pulumi.CustomResource):
         __props__.__dict__["name"] = name
         return ServiceConfig(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            data: pulumi.Input[Optional[_builtins.str]] = None,
+            data_raw: pulumi.Input[Optional[_builtins.str]] = None,
+            labels: pulumi.Input[Optional[Sequence[pulumi.Input[Union['ServiceConfigLabelArgs', 'ServiceConfigLabelArgsDict', 'outputs.ServiceConfigLabel']]]]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["data"] = data
+        __props__["dataRaw"] = data_raw
+        __props__["labels"] = labels
+        __props__["name"] = name
+        return pulumi.runtime.exists_resource(None, 'docker:index/serviceConfig:ServiceConfig', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def data(self) -> pulumi.Output[Optional[_builtins.str]]:

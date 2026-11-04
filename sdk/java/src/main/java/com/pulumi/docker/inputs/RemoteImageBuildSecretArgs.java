@@ -32,14 +32,14 @@ public final class RemoteImageBuildSecretArgs extends com.pulumi.resources.Resou
     }
 
     /**
-     * ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+     * ID of the secret. By default, secrets are mounted to /run/secrets/&#92;n&#92;n
      * 
      */
     @Import(name="id", required=true)
     private Output<String> id;
 
     /**
-     * @return ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+     * @return ID of the secret. By default, secrets are mounted to /run/secrets/&#92;n&#92;n
      * 
      */
     public Output<String> id() {
@@ -109,7 +109,7 @@ public final class RemoteImageBuildSecretArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param id ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+         * @param id ID of the secret. By default, secrets are mounted to /run/secrets/&#92;n&#92;n
          * 
          * @return builder
          * 
@@ -120,7 +120,7 @@ public final class RemoteImageBuildSecretArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param id ID of the secret. By default, secrets are mounted to /run/secrets/\n\n
+         * @param id ID of the secret. By default, secrets are mounted to /run/secrets/&#92;n&#92;n
          * 
          * @return builder
          * 

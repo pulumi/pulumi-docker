@@ -495,6 +495,32 @@ class Plugin(pulumi.CustomResource):
         __props__.__dict__["plugin_reference"] = plugin_reference
         return Plugin(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            alias: pulumi.Input[Optional[_builtins.str]] = None,
+            enable_timeout: pulumi.Input[Optional[_builtins.int]] = None,
+            enabled: pulumi.Input[Optional[_builtins.bool]] = None,
+            envs: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            force_destroy: pulumi.Input[Optional[_builtins.bool]] = None,
+            force_disable: pulumi.Input[Optional[_builtins.bool]] = None,
+            grant_all_permissions: pulumi.Input[Optional[_builtins.bool]] = None,
+            grant_permissions: pulumi.Input[Optional[Sequence[pulumi.Input[Union['PluginGrantPermissionArgs', 'PluginGrantPermissionArgsDict', 'outputs.PluginGrantPermission']]]]] = None,
+            name: pulumi.Input[Optional[_builtins.str]] = None,
+            plugin_reference: pulumi.Input[Optional[_builtins.str]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["alias"] = alias
+        __props__["enableTimeout"] = enable_timeout
+        __props__["enabled"] = enabled
+        __props__["envs"] = envs
+        __props__["forceDestroy"] = force_destroy
+        __props__["forceDisable"] = force_disable
+        __props__["grantAllPermissions"] = grant_all_permissions
+        __props__["grantPermissions"] = grant_permissions
+        __props__["name"] = name
+        __props__["pluginReference"] = plugin_reference
+        return pulumi.runtime.exists_resource(None, 'docker:index/plugin:Plugin', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter
     def alias(self) -> pulumi.Output[_builtins.str]:

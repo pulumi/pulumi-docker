@@ -245,6 +245,20 @@ class Tag(pulumi.CustomResource):
         __props__.__dict__["target_image"] = target_image
         return Tag(resource_name, opts=opts, __props__=__props__)
 
+    @staticmethod
+    def exists(id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            source_image: pulumi.Input[Optional[_builtins.str]] = None,
+            source_image_id: pulumi.Input[Optional[_builtins.str]] = None,
+            tag_triggers: pulumi.Input[Optional[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            target_image: pulumi.Input[Optional[_builtins.str]] = None) -> pulumi.Output[bool]:
+        __props__: dict = {}
+        __props__["sourceImage"] = source_image
+        __props__["sourceImageId"] = source_image_id
+        __props__["tagTriggers"] = tag_triggers
+        __props__["targetImage"] = target_image
+        return pulumi.runtime.exists_resource(None, 'docker:index/tag:Tag', id, __props__, opts or pulumi.ResourceOptions())
+
     @_builtins.property
     @pulumi.getter(name="sourceImage")
     def source_image(self) -> pulumi.Output[_builtins.str]:

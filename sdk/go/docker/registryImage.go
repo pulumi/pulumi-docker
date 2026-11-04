@@ -144,6 +144,12 @@ func (RegistryImageState) ElementType() reflect.Type {
 	return reflect.TypeOf((*registryImageState)(nil)).Elem()
 }
 
+// RegistryImageExists checks whether an existing RegistryImage resource with the given ID exists.
+func RegistryImageExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *RegistryImageState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/registryImage:RegistryImage", id, state, "", opts...)
+}
+
 type registryImageArgs struct {
 	// Authentication configuration for the Docker registry. It is only used for this resource.
 	AuthConfig *RegistryImageAuthConfig `pulumi:"authConfig"`

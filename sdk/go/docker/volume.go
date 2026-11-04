@@ -172,6 +172,12 @@ func (VolumeState) ElementType() reflect.Type {
 	return reflect.TypeOf((*volumeState)(nil)).Elem()
 }
 
+// VolumeExists checks whether an existing Volume resource with the given ID exists.
+func VolumeExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *VolumeState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/volume:Volume", id, state, "", opts...)
+}
+
 type volumeArgs struct {
 	// Cluster-specific options for volume creation. Only works if the Docker daemon is running in swarm mode and is the swarm manager.
 	Cluster *VolumeCluster `pulumi:"cluster"`

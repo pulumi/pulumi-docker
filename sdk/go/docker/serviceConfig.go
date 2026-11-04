@@ -134,6 +134,12 @@ func (ServiceConfigState) ElementType() reflect.Type {
 	return reflect.TypeOf((*serviceConfigState)(nil)).Elem()
 }
 
+// ServiceConfigExists checks whether an existing ServiceConfig resource with the given ID exists.
+func ServiceConfigExists(ctx *pulumi.Context,
+	id pulumi.StringInput, state *ServiceConfigState, opts ...pulumi.ResourceOption) pulumi.BoolOutput {
+	return ctx.ExistsResource("docker:index/serviceConfig:ServiceConfig", id, state, "", opts...)
+}
+
 type serviceConfigArgs struct {
 	// Base64-url-safe-encoded config data
 	Data *string `pulumi:"data"`
