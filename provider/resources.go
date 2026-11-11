@@ -15,6 +15,7 @@
 package provider
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"path/filepath"
@@ -406,7 +407,20 @@ func Provider() tfbridge.ProviderInfo {
 }
 
 func editRules(defaults []tfbridge.DocsEdit) []tfbridge.DocsEdit {
-	return append(defaults, fixupCertPathExpansion)
+	return append(defaults, fixupCertPathExpansion, documentHostDefault)
+}
+
+// Upstream's Configuration Reference doesn't say where `host` comes from when it isn't set. The provider reads
+// DOCKER_HOST, then falls back to the platform's default socket, which on Windows is a named pipe.
+var documentHostDefault = tfbridge.DocsEdit{
+	Path: "index.md",
+	Edit: func(_ string, content []byte) ([]byte, error) {
+		return bytes.Replace(content,
+			[]byte("- `host` (String) The Docker daemon address\n"),
+			[]byte("- `host` (String) The Docker daemon address. Can also be set via `DOCKER_HOST` environment variable. "+
+				"Defaults to `unix:///var/run/docker.sock`, or `npipe:////./pipe/docker_engine` on Windows.\n"),
+			1), nil
+	},
 }
 
 var fixupCertPathExpansion = tfbridge.DocsEdit{
