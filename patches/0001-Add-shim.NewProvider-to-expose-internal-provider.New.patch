@@ -6,7 +6,7 @@ Subject: [PATCH] Add `shim.NewProvider` to expose `internal/provider.New`
 
 diff --git a/shim/shim.go b/shim/shim.go
 new file mode 100644
-index 0000000..fb00354
+index 000000000000..fb0035432623
 --- /dev/null
 +++ b/shim/shim.go
 @@ -0,0 +1,10 @@
