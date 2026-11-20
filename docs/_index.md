@@ -350,7 +350,7 @@ config:
 - `certPath` (String) Path to directory with Docker TLS config
 - `context` (String) The name of the Docker context to use. Can also be set via `DOCKER_CONTEXT` environment variable. Overrides the `host` if set.
 - `disableDockerDaemonCheck` (Boolean) If set to `true`, the provider will not check if the Docker daemon is running. This is useful for resources/data_sourcess that do not require a running Docker daemon, such as the function `docker.RegistryImage`.
-- `host` (String) The Docker daemon address
+- `host` (String) The Docker daemon address. Can also be set via `DOCKER_HOST` environment variable. Defaults to `unix:///var/run/docker.sock`, or `npipe:////./pipe/docker_engine` on Windows.
 - `keyMaterial` (String) PEM-encoded content of Docker client private key
 - `registryAuth` (Block Set) (see below for nested schema)
 - `sshOpts` (List of String) Additional SSH option flags to be appended when using `ssh://` protocol
