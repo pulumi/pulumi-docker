@@ -15,6 +15,7 @@
 package provider
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"path/filepath"
@@ -28,6 +29,7 @@ import (
 	"github.com/terraform-providers/terraform-provider-docker/shim"
 
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
+	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/info"
 	tfbridgetokens "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/tokens"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
@@ -406,7 +408,18 @@ func Provider() tfbridge.ProviderInfo {
 }
 
 func editRules(defaults []tfbridge.DocsEdit) []tfbridge.DocsEdit {
-	return append(defaults, fixupCertPathExpansion)
+	return append(defaults, fixupCertPathExpansion, fixupUpstreamRepoLinks)
+}
+
+// The bridge's default edit rules replace "terraform" with "pulumi" throughout the prose, which turns links to the
+// upstream kreuzwerker/terraform-provider-docker repository into links to a repository that doesn't exist.
+var fixupUpstreamRepoLinks = tfbridge.DocsEdit{
+	Path: "*",
+	Edit: func(_ string, content []byte) ([]byte, error) {
+		return bytes.ReplaceAll(content,
+			[]byte("kreuzwerker/pulumi-provider-docker"), []byte("kreuzwerker/terraform-provider-docker")), nil
+	},
+	Phase: info.PostCodeTranslation,
 }
 
 var fixupCertPathExpansion = tfbridge.DocsEdit{
