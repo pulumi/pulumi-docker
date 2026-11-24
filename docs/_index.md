@@ -364,7 +364,7 @@ Required:
 
 Optional:
 
-- `authDisabled` (Boolean) Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see <https://github.com/kreuzwerker/pulumi-provider-docker/issues/470> for more information). Defaults to `false`.
+- `authDisabled` (Boolean) Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see <https://github.com/kreuzwerker/terraform-provider-docker/issues/470> for more information). Defaults to `false`.
 - `configFile` (String) Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` env variable is set, the value of `DOCKER_CONFIG` is used as the path. `DOCKER_CONFIG` can be set to a directory (as per Docker CLI) or a file path directly. `configFile` has precedence over all other options.
 - `configFileContent` (String) Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 - `password` (String, Sensitive) Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
